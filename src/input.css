@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom utilities for ChuuAuction */
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, #f97316 0%, #dc2626 50%, #7c2d12 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
