@@ -1,0 +1,1328 @@
+<!-- Ultra-Advanced Farmer Notebook System for ChuuAuction -->
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChuuAuction - Advanced Farmer Notebook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Bricolage+Grotesque:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: {
+      'display': ['Bricolage Grotesque', 'system-ui', 'sans-serif'], 'body':
+      ['Outfit', 'system-ui', 'sans-serif'], }, animation: { 'float': 'float 6s
+      ease-in-out infinite', 'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6,
+      1) infinite', 'fade-in': 'fadeIn 0.6s ease-out', 'slide-in-right':
+      'slideInRight 0.5s ease-out', 'slide-in-left': 'slideInLeft 0.5s
+      ease-out', 'scale-in': 'scaleIn 0.4s ease-out', 'shimmer': 'shimmer 2s
+      infinite', } } } }
+    </script>
+
+    <style>
+      .font-display {
+        font-family: "Bricolage Grotesque", system-ui, sans-serif;
+      }
+      .font-body {
+        font-family: "Outfit", system-ui, sans-serif;
+      }
+
+      .text-gradient {
+        background: linear-gradient(135deg, #f97316, #dc2626, #ea580c);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: gradient 3s ease infinite;
+        background-size: 200% 200%;
+      }
+
+      @keyframes gradient {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      .glass {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .neon-glow {
+        text-shadow:
+          0 0 10px rgba(249, 115, 22, 0.8),
+          0 0 20px rgba(249, 115, 22, 0.6),
+          0 0 30px rgba(249, 115, 22, 0.4);
+      }
+
+      /* Editor Styles */
+      .editor-container {
+        min-height: 500px;
+        max-height: 70vh;
+        overflow-y: auto;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 24px;
+        outline: none;
+        line-height: 1.8;
+        font-size: 16px;
+      }
+
+      .editor-container:focus {
+        border-color: rgba(249, 115, 22, 0.5);
+        box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+      }
+
+      .editor-container h1 {
+        font-size: 2.25rem;
+        font-weight: 900;
+        margin-bottom: 1rem;
+        color: #fff;
+      }
+
+      .editor-container h2 {
+        font-size: 1.875rem;
+        font-weight: 800;
+        margin-bottom: 0.875rem;
+        color: #fff;
+      }
+
+      .editor-container h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        color: #fff;
+      }
+
+      .editor-container p {
+        margin-bottom: 1rem;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .editor-container ul,
+      .editor-container ol {
+        margin-bottom: 1rem;
+        padding-left: 2rem;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .editor-container li {
+        margin-bottom: 0.5rem;
+      }
+
+      .editor-container blockquote {
+        border-left: 4px solid #f97316;
+        padding-left: 1rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .editor-container code {
+        background: rgba(249, 115, 22, 0.1);
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-family: "Courier New", monospace;
+        color: #f97316;
+      }
+
+      .editor-container pre {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 1rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+
+      .editor-container table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+      }
+
+      .editor-container table td,
+      .editor-container table th {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0.75rem;
+        text-align: left;
+      }
+
+      .editor-container table th {
+        background: rgba(249, 115, 22, 0.1);
+        font-weight: 600;
+      }
+
+      .toolbar-btn {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        transition: all 0.3s;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .toolbar-btn:hover {
+        background: rgba(249, 115, 22, 0.2);
+        border-color: rgba(249, 115, 22, 0.5);
+        transform: scale(1.05);
+      }
+
+      .toolbar-btn.active {
+        background: rgba(249, 115, 22, 0.3);
+        border-color: rgba(249, 115, 22, 0.6);
+        color: #f97316;
+      }
+
+      .sidebar-item {
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border: 1px solid transparent;
+      }
+
+      .sidebar-item:hover {
+        background: rgba(249, 115, 22, 0.1);
+        border-color: rgba(249, 115, 22, 0.3);
+      }
+
+      .sidebar-item.active {
+        background: rgba(249, 115, 22, 0.2);
+        border-color: rgba(249, 115, 22, 0.5);
+      }
+
+      .card-3d {
+        transform-style: preserve-3d;
+        transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+
+      .card-3d:hover {
+        transform: perspective(1000px) rotateY(2deg) rotateX(1deg) scale(1.01);
+      }
+
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #f97316, #dc2626);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #ea580c, #b91c1c);
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal.active {
+        display: flex;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        background: rgba(249, 115, 22, 0.2);
+        border: 1px solid rgba(249, 115, 22, 0.4);
+        border-radius: 999px;
+        font-size: 0.75rem;
+        color: #f97316;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideInRight {
+        0% {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideInLeft {
+        0% {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes scaleIn {
+        0% {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes shimmer {
+        0% {
+          background-position: -200% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
+      }
+
+      .version-item {
+        padding: 0.75rem;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .version-item:hover {
+        background: rgba(249, 115, 22, 0.1);
+        border-color: rgba(249, 115, 22, 0.3);
+      }
+
+      .ai-suggestion {
+        background: linear-gradient(
+          90deg,
+          rgba(249, 115, 22, 0.1),
+          rgba(220, 38, 38, 0.1)
+        );
+        border: 1px solid rgba(249, 115, 22, 0.3);
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 0.5rem 0;
+        animation: slideInLeft 0.4s ease-out;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-950 text-white font-body min-h-screen overflow-hidden">
+
+    <!-- Animated Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+      <div
+        class="absolute top-20 left-20 w-[600px] h-[600px] bg-orange-500/10 rounded-full blur-[150px] animate-float"
+      ></div>
+      <div
+        class="absolute bottom-20 right-20 w-[500px] h-[500px] bg-red-600/10 rounded-full blur-[150px] animate-float"
+        style="animation-delay: 2s;"
+      ></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="relative z-10 h-screen flex flex-col">
+
+      <!-- Header -->
+      <header class="glass border-b border-gray-800/50 px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <a href="/dashboard/farmer" class="flex items-center gap-3 group">
+              <img
+                src="/img/logo.png"
+                alt="ChuuAuction"
+                class="w-10 h-10 rounded-full ring-2 ring-orange-500/40"
+              />
+              <div>
+                <h1 class="text-xl font-black font-display leading-tight">
+                  <span class="text-gradient neon-glow">Chuu</span><span
+                    class="text-white"
+                  >Auction</span>
+                </h1>
+                <p class="text-xs text-gray-400">Advanced Notebook</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <!-- Auto-save indicator -->
+            <div
+              id="save-indicator"
+              class="flex items-center gap-2 px-3 py-1.5 rounded-lg glass text-sm"
+            >
+              <i class="bi bi-cloud-check text-green-500"></i>
+              <span class="text-gray-400">All changes saved</span>
+            </div>
+
+            <!-- Version History -->
+            <button
+              onclick="openVersionHistory()"
+              class="toolbar-btn"
+              title="Version History"
+            >
+              <i class="bi bi-clock-history text-lg"></i>
+            </button>
+
+            <!-- Collaborate -->
+            <button
+              onclick="openCollaboration()"
+              class="toolbar-btn"
+              title="Share & Collaborate"
+            >
+              <i class="bi bi-people text-lg"></i>
+            </button>
+
+            <!-- Settings -->
+            <button
+              onclick="openSettings()"
+              class="toolbar-btn"
+              title="Settings"
+            >
+              <i class="bi bi-gear text-lg"></i>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <div class="flex-1 flex overflow-hidden">
+
+        <!-- Left Sidebar - Notes List -->
+        <aside class="w-80 glass border-r border-gray-800/50 flex flex-col">
+          <div class="p-4 border-b border-gray-800/50">
+            <button
+              onclick="createNewNote()"
+              class="w-full px-4 py-3 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl font-semibold hover:shadow-xl hover:shadow-orange-500/30 transition-all flex items-center justify-center gap-2"
+            >
+              <i class="bi bi-plus-circle text-xl"></i>
+              <span>New Note</span>
+            </button>
+
+            <!-- Search -->
+            <div class="relative mt-4">
+              <i
+                class="bi bi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              ></i>
+              <input
+                type="text"
+                id="search-notes"
+                placeholder="Search notes..."
+                class="w-full pl-10 pr-4 py-2.5 bg-gray-800/30 border border-gray-700/50 rounded-lg focus:outline-none focus:border-orange-500/50 transition-all"
+                oninput="searchNotes(this.value)"
+              />
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="flex gap-2 mt-4">
+              <button
+                onclick="filterNotes('all')"
+                class="filter-tab active flex-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all"
+              >
+                All
+              </button>
+              <button
+                onclick="filterNotes('starred')"
+                class="filter-tab flex-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all"
+              >
+                <i class="bi bi-star-fill text-yellow-500"></i>
+              </button>
+              <button
+                onclick="filterNotes('archived')"
+                class="filter-tab flex-1 px-3 py-2 rounded-lg text-sm font-semibold transition-all"
+              >
+                <i class="bi bi-archive"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Notes List -->
+          <div id="notes-list" class="flex-1 overflow-y-auto p-4 space-y-2">
+            <!-- Notes will be dynamically loaded here -->
+          </div>
+        </aside>
+
+        <!-- Center - Editor -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+
+          <!-- Toolbar -->
+          <div class="glass border-b border-gray-800/50 p-3">
+            <div class="flex items-center gap-2 flex-wrap">
+
+              <!-- Text Formatting -->
+              <div
+                class="flex items-center gap-1 px-2 border-r border-gray-700/50"
+              >
+                <button
+                  onclick="formatText('bold')"
+                  class="toolbar-btn"
+                  title="Bold (Ctrl+B)"
+                >
+                  <i class="bi bi-type-bold text-lg font-bold"></i>
+                </button>
+                <button
+                  onclick="formatText('italic')"
+                  class="toolbar-btn"
+                  title="Italic (Ctrl+I)"
+                >
+                  <i class="bi bi-type-italic text-lg"></i>
+                </button>
+                <button
+                  onclick="formatText('underline')"
+                  class="toolbar-btn"
+                  title="Underline (Ctrl+U)"
+                >
+                  <i class="bi bi-type-underline text-lg"></i>
+                </button>
+                <button
+                  onclick="formatText('strikeThrough')"
+                  class="toolbar-btn"
+                  title="Strikethrough"
+                >
+                  <i class="bi bi-type-strikethrough text-lg"></i>
+                </button>
+              </div>
+
+              <!-- Headings -->
+              <div
+                class="flex items-center gap-1 px-2 border-r border-gray-700/50"
+              >
+                <button
+                  onclick="formatText('formatBlock', 'h1')"
+                  class="toolbar-btn"
+                  title="Heading 1"
+                >
+                  <span class="font-bold">H1</span>
+                </button>
+                <button
+                  onclick="formatText('formatBlock', 'h2')"
+                  class="toolbar-btn"
+                  title="Heading 2"
+                >
+                  <span class="font-bold">H2</span>
+                </button>
+                <button
+                  onclick="formatText('formatBlock', 'h3')"
+                  class="toolbar-btn"
+                  title="Heading 3"
+                >
+                  <span class="font-bold">H3</span>
+                </button>
+              </div>
+
+              <!-- Lists -->
+              <div
+                class="flex items-center gap-1 px-2 border-r border-gray-700/50"
+              >
+                <button
+                  onclick="formatText('insertUnorderedList')"
+                  class="toolbar-btn"
+                  title="Bullet List"
+                >
+                  <i class="bi bi-list-ul text-lg"></i>
+                </button>
+                <button
+                  onclick="formatText('insertOrderedList')"
+                  class="toolbar-btn"
+                  title="Numbered List"
+                >
+                  <i class="bi bi-list-ol text-lg"></i>
+                </button>
+                <button
+                  onclick="formatText('indent')"
+                  class="toolbar-btn"
+                  title="Increase Indent"
+                >
+                  <i class="bi bi-indent text-lg"></i>
+                </button>
+                <button
+                  onclick="formatText('outdent')"
+                  class="toolbar-btn"
+                  title="Decrease Indent"
+                >
+                  <i class="bi bi-outdent text-lg"></i>
+                </button>
+              </div>
+
+              <!-- Alignment -->
+              <div
+                class="flex items-center gap-1 px-2 border-r border-gray-700/50"
+              >
+                <button
+                  onclick="formatText('justifyLeft')"
+                  class="toolbar-btn"
+                  title="Align Left"
+                >
+                  <i class="bi bi-text-left text-lg"></i>
+                </button>
+                <button
+                  onclick="formatText('justifyCenter')"
+                  class="toolbar-btn"
+                  title="Align Center"
+                >
+                  <i class="bi bi-text-center text-lg"></i>
+                </button>
+                <button
+                  onclick="formatText('justifyRight')"
+                  class="toolbar-btn"
+                  title="Align Right"
+                >
+                  <i class="bi bi-text-right text-lg"></i>
+                </button>
+                <button
+                  onclick="formatText('justifyFull')"
+                  class="toolbar-btn"
+                  title="Justify"
+                >
+                  <i class="bi bi-justify text-lg"></i>
+                </button>
+              </div>
+
+              <!-- Insert -->
+              <div
+                class="flex items-center gap-1 px-2 border-r border-gray-700/50"
+              >
+                <button
+                  onclick="insertLink()"
+                  class="toolbar-btn"
+                  title="Insert Link"
+                >
+                  <i class="bi bi-link-45deg text-lg"></i>
+                </button>
+                <button
+                  onclick="insertImage()"
+                  class="toolbar-btn"
+                  title="Insert Image"
+                >
+                  <i class="bi bi-image text-lg"></i>
+                </button>
+                <button
+                  onclick="insertTable()"
+                  class="toolbar-btn"
+                  title="Insert Table"
+                >
+                  <i class="bi bi-table text-lg"></i>
+                </button>
+                <button
+                  onclick="insertQuote()"
+                  class="toolbar-btn"
+                  title="Insert Quote"
+                >
+                  <i class="bi bi-quote text-lg"></i>
+                </button>
+              </div>
+
+              <!-- More Tools -->
+              <div
+                class="flex items-center gap-1 px-2 border-r border-gray-700/50"
+              >
+                <button
+                  onclick="insertCheckbox()"
+                  class="toolbar-btn"
+                  title="Checklist"
+                >
+                  <i class="bi bi-check2-square text-lg"></i>
+                </button>
+                <button
+                  onclick="insertCode()"
+                  class="toolbar-btn"
+                  title="Code Block"
+                >
+                  <i class="bi bi-code-slash text-lg"></i>
+                </button>
+                <button
+                  onclick="insertDivider()"
+                  class="toolbar-btn"
+                  title="Divider"
+                >
+                  <i class="bi bi-dash-lg text-lg"></i>
+                </button>
+              </div>
+
+              <!-- AI Assistant -->
+              <div class="flex items-center gap-1 px-2">
+                <button
+                  onclick="openAIAssistant()"
+                  class="toolbar-btn bg-gradient-to-r from-purple-500/20 to-pink-500/20 border-purple-500/30"
+                  title="AI Writing Assistant"
+                >
+                  <i class="bi bi-stars text-lg text-purple-400"></i>
+                </button>
+                <button
+                  onclick="checkGrammar()"
+                  class="toolbar-btn"
+                  title="Grammar Check"
+                >
+                  <i class="bi bi-spellcheck text-lg"></i>
+                </button>
+                <button
+                  onclick="translateText()"
+                  class="toolbar-btn"
+                  title="Translate"
+                >
+                  <i class="bi bi-translate text-lg"></i>
+                </button>
+              </div>
+
+              <div class="flex-1"></div>
+
+              <!-- Undo/Redo -->
+              <div class="flex items-center gap-1">
+                <button
+                  onclick="formatText('undo')"
+                  class="toolbar-btn"
+                  title="Undo (Ctrl+Z)"
+                >
+                  <i class="bi bi-arrow-counterclockwise text-lg"></i>
+                </button>
+                <button
+                  onclick="formatText('redo')"
+                  class="toolbar-btn"
+                  title="Redo (Ctrl+Y)"
+                >
+                  <i class="bi bi-arrow-clockwise text-lg"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Editor Area -->
+          <div class="flex-1 overflow-y-auto p-6">
+            <div class="max-w-4xl mx-auto">
+              <!-- Note Title -->
+              <input
+                type="text"
+                id="note-title"
+                placeholder="Untitled Note"
+                class="w-full text-3xl font-black bg-transparent border-none outline-none mb-4 text-white placeholder-gray-600"
+                oninput="autoSave()"
+              />
+
+              <!-- Tags -->
+              <div
+                class="flex items-center gap-2 mb-4 flex-wrap"
+                id="tags-container"
+              >
+                <button
+                  onclick="addTag()"
+                  class="text-sm text-gray-400 hover:text-orange-500 transition-colors"
+                >
+                  <i class="bi bi-plus-circle"></i>
+                  Add tag
+                </button>
+              </div>
+
+              <!-- Rich Text Editor -->
+              <div
+                id="editor"
+                class="editor-container"
+                contenteditable="true"
+                oninput="autoSave()"
+                onpaste="handlePaste(event)"
+              >
+                <p>Start writing your note here...</p>
+              </div>
+
+              <!-- Word Count -->
+              <div
+                class="mt-4 flex items-center justify-between text-sm text-gray-400"
+              >
+                <div id="word-count">0 words, 0 characters</div>
+                <div id="reading-time">~0 min read</div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <!-- Right Sidebar - Properties & AI -->
+        <aside
+          class="w-80 glass border-l border-gray-800/50 flex flex-col overflow-hidden"
+        >
+          <div class="p-4 border-b border-gray-800/50">
+            <h3 class="font-bold text-lg mb-4">Note Properties</h3>
+
+            <!-- Quick Actions -->
+            <div class="space-y-2">
+              <button
+                onclick="toggleStar()"
+                id="star-btn"
+                class="w-full px-4 py-2 rounded-lg glass hover:bg-gray-800/50 transition-all flex items-center gap-2"
+              >
+                <i class="bi bi-star text-gray-400"></i>
+                <span>Star Note</span>
+              </button>
+              <button
+                onclick="togglePin()"
+                id="pin-btn"
+                class="w-full px-4 py-2 rounded-lg glass hover:bg-gray-800/50 transition-all flex items-center gap-2"
+              >
+                <i class="bi bi-pin text-gray-400"></i>
+                <span>Pin Note</span>
+              </button>
+              <button
+                onclick="archiveNote()"
+                class="w-full px-4 py-2 rounded-lg glass hover:bg-gray-800/50 transition-all flex items-center gap-2"
+              >
+                <i class="bi bi-archive text-gray-400"></i>
+                <span>Archive</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- AI Assistant Panel -->
+          <div class="flex-1 overflow-y-auto p-4">
+            <div class="mb-4">
+              <h3 class="font-bold mb-2 flex items-center gap-2">
+                <i class="bi bi-stars text-purple-400"></i>
+                AI Assistant
+              </h3>
+              <p class="text-sm text-gray-400 mb-3">Get help with your writing</p>
+
+              <div class="space-y-2">
+                <button
+                  onclick="aiImproveWriting()"
+                  class="w-full px-3 py-2 rounded-lg glass hover:bg-purple-500/10 transition-all text-sm flex items-center gap-2"
+                >
+                  <i class="bi bi-magic"></i>
+                  Improve Writing
+                </button>
+                <button
+                  onclick="aiSummarize()"
+                  class="w-full px-3 py-2 rounded-lg glass hover:bg-purple-500/10 transition-all text-sm flex items-center gap-2"
+                >
+                  <i class="bi bi-file-text"></i>
+                  Summarize
+                </button>
+                <button
+                  onclick="aiExpand()"
+                  class="w-full px-3 py-2 rounded-lg glass hover:bg-purple-500/10 transition-all text-sm flex items-center gap-2"
+                >
+                  <i class="bi bi-arrows-expand"></i>
+                  Expand Ideas
+                </button>
+                <button
+                  onclick="aiSimplify()"
+                  class="w-full px-3 py-2 rounded-lg glass hover:bg-purple-500/10 transition-all text-sm flex items-center gap-2"
+                >
+                  <i class="bi bi-funnel"></i>
+                  Simplify Language
+                </button>
+              </div>
+            </div>
+
+            <!-- AI Suggestions -->
+            <div id="ai-suggestions" class="space-y-2">
+              <!-- AI suggestions will appear here -->
+            </div>
+
+            <!-- Note Info -->
+            <div class="mt-6 pt-4 border-t border-gray-800/50">
+              <h3 class="font-bold mb-3 text-sm text-gray-400">Information</h3>
+              <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                  <span class="text-gray-400">Created</span>
+                  <span id="created-date">--</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-400">Modified</span>
+                  <span id="modified-date">--</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-400">Category</span>
+                  <select
+                    id="category-select"
+                    onchange="updateCategory()"
+                    class="bg-gray-800/50 border border-gray-700/50 rounded px-2 py-1 text-xs"
+                  >
+                    <option value="general">General</option>
+                    <option value="livestock">Livestock</option>
+                    <option value="auction">Auction Notes</option>
+                    <option value="buyers">Buyer Info</option>
+                    <option value="financial">Financial</option>
+                    <option value="personal">Personal</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Export Options -->
+            <div class="mt-6 pt-4 border-t border-gray-800/50">
+              <h3 class="font-bold mb-3 text-sm text-gray-400">Export</h3>
+              <div class="space-y-2">
+                <button
+                  onclick="exportAsPDF()"
+                  class="w-full px-3 py-2 rounded-lg glass hover:bg-gray-800/50 transition-all text-sm flex items-center gap-2"
+                >
+                  <i class="bi bi-file-pdf text-red-500"></i>
+                  Export as PDF
+                </button>
+                <button
+                  onclick="exportAsWord()"
+                  class="w-full px-3 py-2 rounded-lg glass hover:bg-gray-800/50 transition-all text-sm flex items-center gap-2"
+                >
+                  <i class="bi bi-file-word text-blue-500"></i>
+                  Export as Word
+                </button>
+                <button
+                  onclick="exportAsMarkdown()"
+                  class="w-full px-3 py-2 rounded-lg glass hover:bg-gray-800/50 transition-all text-sm flex items-center gap-2"
+                >
+                  <i class="bi bi-markdown text-purple-500"></i>
+                  Export as Markdown
+                </button>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+
+    <!-- Modals -->
+
+    <!-- Version History Modal -->
+    <div id="version-modal" class="modal">
+      <div
+        class="glass rounded-2xl p-6 max-w-2xl w-full m-4 max-h-[80vh] overflow-y-auto card-3d"
+      >
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold">Version History</h2>
+          <button onclick="closeModal('version-modal')" class="toolbar-btn">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+
+        <div id="version-list" class="space-y-3">
+          <!-- Version history items will be loaded here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Collaboration Modal -->
+    <div id="collab-modal" class="modal">
+      <div class="glass rounded-2xl p-6 max-w-xl w-full m-4 card-3d">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold">Share & Collaborate</h2>
+          <button onclick="closeModal('collab-modal')" class="toolbar-btn">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-semibold mb-2">Share Link</label>
+            <div class="flex gap-2">
+              <input
+                type="text"
+                readonly
+                value="https://chuuauction.com/note/abc123"
+                class="flex-1 px-4 py-2 bg-gray-800/50 border border-gray-700/50 rounded-lg"
+              />
+              <button
+                onclick="copyShareLink()"
+                class="px-4 py-2 bg-orange-500 rounded-lg hover:bg-orange-600 transition-all"
+              >
+                <i class="bi bi-clipboard"></i>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label
+              class="block text-sm font-semibold mb-2"
+            >Collaborators</label>
+            <div class="space-y-2">
+              <div
+                class="flex items-center justify-between p-3 rounded-lg glass"
+              >
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-8 h-8 rounded-full bg-gradient-to-r from-orange-500 to-red-600 flex items-center justify-center text-sm font-bold"
+                  >
+                    JO
+                  </div>
+                  <div>
+                    <p class="text-sm font-semibold">John Okello</p>
+                    <p class="text-xs text-gray-400">john@example.com</p>
+                  </div>
+                </div>
+                <select
+                  class="bg-gray-800/50 border border-gray-700/50 rounded px-2 py-1 text-xs"
+                >
+                  <option>Can Edit</option>
+                  <option>Can View</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <button
+            class="w-full px-4 py-3 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl font-semibold"
+          >
+            <i class="bi bi-person-plus"></i>
+            Add Collaborator
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+      <div class="glass rounded-2xl p-6 max-w-xl w-full m-4 card-3d">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold">Settings</h2>
+          <button onclick="closeModal('settings-modal')" class="toolbar-btn">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+
+        <div class="space-y-6">
+          <div>
+            <h3 class="font-semibold mb-3">Editor Preferences</h3>
+            <div class="space-y-3">
+              <label class="flex items-center justify-between">
+                <span class="text-sm">Auto-save</span>
+                <input
+                  type="checkbox"
+                  checked
+                  class="w-12 h-6 rounded-full appearance-none bg-gray-700 checked:bg-orange-500 transition-all relative cursor-pointer"
+                />
+              </label>
+              <label class="flex items-center justify-between">
+                <span class="text-sm">Spell check</span>
+                <input
+                  type="checkbox"
+                  checked
+                  class="w-12 h-6 rounded-full appearance-none bg-gray-700 checked:bg-orange-500 transition-all relative cursor-pointer"
+                />
+              </label>
+              <label class="flex items-center justify-between">
+                <span class="text-sm">AI suggestions</span>
+                <input
+                  type="checkbox"
+                  checked
+                  class="w-12 h-6 rounded-full appearance-none bg-gray-700 checked:bg-orange-500 transition-all relative cursor-pointer"
+                />
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="font-semibold mb-3">Font Settings</h3>
+            <div class="space-y-3">
+              <div>
+                <label class="block text-sm mb-2">Font Size</label>
+                <input
+                  type="range"
+                  min="12"
+                  max="24"
+                  value="16"
+                  class="w-full"
+                />
+              </div>
+              <div>
+                <label class="block text-sm mb-2">Line Height</label>
+                <input
+                  type="range"
+                  min="1"
+                  max="2"
+                  step="0.1"
+                  value="1.8"
+                  class="w-full"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // State Management let currentNote = null; let notes = []; let
+      autoSaveTimeout = null; let currentFilter = 'all'; // Initialize
+      document.addEventListener('DOMContentLoaded', () => { loadNotes();
+      setupKeyboardShortcuts(); updateWordCount(); setInterval(updateWordCount,
+      1000); }); // Load notes from storage function loadNotes() { const
+      savedNotes = localStorage.getItem('farmer_notes'); if (savedNotes) { notes
+      = JSON.parse(savedNotes); renderNotesList(); if (notes.length > 0) {
+      loadNote(notes[0].id); } } else { // Create first note createNewNote(); }
+      } // Save notes to storage function saveNotes() {
+      localStorage.setItem('farmer_notes', JSON.stringify(notes)); } // Create
+      new note function createNewNote() { const newNote = { id: Date.now(),
+      title: 'Untitled Note', content: '<p>Start writing your note here...</p>',
+      tags: [], category: 'general', starred: false, pinned: false, archived:
+      false, created: new Date().toISOString(), modified: new
+      Date().toISOString(), versions: [] }; notes.unshift(newNote); saveNotes();
+      renderNotesList(); loadNote(newNote.id); } // Load specific note function
+      loadNote(noteId) { currentNote = notes.find(n => n.id === noteId); if
+      (!currentNote) return; document.getElementById('note-title').value =
+      currentNote.title; document.getElementById('editor').innerHTML =
+      currentNote.content; document.getElementById('category-select').value =
+      currentNote.category; document.getElementById('created-date').textContent
+      = new Date(currentNote.created).toLocaleDateString();
+      document.getElementById('modified-date').textContent = new
+      Date(currentNote.modified).toLocaleDateString(); // Update star/pin
+      buttons updateStarButton(); updatePinButton(); // Render tags
+      renderTags(); // Highlight active note in sidebar
+      document.querySelectorAll('.sidebar-item').forEach(item => {
+      item.classList.toggle('active', item.dataset.id == noteId); }); } //
+      Render notes list in sidebar function renderNotesList() { const container
+      = document.getElementById('notes-list'); let filteredNotes = notes; //
+      Apply filters if (currentFilter === 'starred') { filteredNotes =
+      notes.filter(n => n.starred); } else if (currentFilter === 'archived') {
+      filteredNotes = notes.filter(n => n.archived); } else { filteredNotes =
+      notes.filter(n => !n.archived); } container.innerHTML =
+      filteredNotes.map(note => { const preview =
+      note.content.replace(/<[^>]*>/g, '').substring(0, 100); return ` <div
+      class="sidebar-item ${currentNote?.id === note.id ? 'active' : ''}"
+      data-id="${note.id}" onclick="loadNote(${note.id})"> <div class="flex-1
+      min-w-0"> <div class="flex items-center gap-2 mb-1"> <h4
+      class="font-semibold truncate">${note.title}</h4> ${note.starred ? '<i
+      class="bi bi-star-fill text-yellow-500 text-xs"></i>' : ''} ${note.pinned
+      ? '<i class="bi bi-pin-fill text-orange-500 text-xs"></i>' : ''} </div> <p
+      class="text-xs text-gray-400 truncate">${preview}</p> <div class="flex
+      items-center gap-2 mt-1"> <span class="text-xs text-gray-500">${new
+      Date(note.modified).toLocaleDateString()}</span> ${note.tags.length > 0 ?
+      `<span class="text-xs text-orange-500">${note.tags.length} tags</span>` :
+      ''} </div> </div> </div> `; }).join(''); } // Auto-save functionality
+      function autoSave() { if (!currentNote) return;
+      clearTimeout(autoSaveTimeout); // Show saving indicator const indicator =
+      document.getElementById('save-indicator'); indicator.innerHTML = '<i
+      class="bi bi-cloud-arrow-up text-orange-500 animate-pulse"></i><span
+      class="text-gray-400">Saving...</span>'; autoSaveTimeout = setTimeout(()
+      => { currentNote.title = document.getElementById('note-title').value ||
+      'Untitled Note'; currentNote.content =
+      document.getElementById('editor').innerHTML; currentNote.modified = new
+      Date().toISOString(); // Create version snapshot every 5 minutes const
+      lastVersion = currentNote.versions[currentNote.versions.length - 1]; if
+      (!lastVersion || (Date.now() - new Date(lastVersion.timestamp).getTime() >
+      300000)) { currentNote.versions.push({ timestamp: new
+      Date().toISOString(), content: currentNote.content, title:
+      currentNote.title }); } saveNotes(); renderNotesList(); // Show saved
+      indicator indicator.innerHTML = '<i class="bi bi-cloud-check
+      text-green-500"></i><span class="text-gray-400">All changes saved</span>';
+      }, 1000); } // Text formatting functions function formatText(command,
+      value = null) { document.execCommand(command, false, value);
+      document.getElementById('editor').focus(); autoSave(); } // Insert link
+      function insertLink() { const url = prompt('Enter URL:'); if (url) {
+      formatText('createLink', url); } } // Insert image function insertImage()
+      { const input = document.createElement('input'); input.type = 'file';
+      input.accept = 'image/*'; input.onchange = (e) => { const file =
+      e.target.files[0]; const reader = new FileReader(); reader.onload =
+      (event) => { const img = `<img src="${event.target.result}"
+      style="max-width: 100%; height: auto; margin: 1rem 0;" />`;
+      document.execCommand('insertHTML', false, img); autoSave(); };
+      reader.readAsDataURL(file); }; input.click(); } // Insert table function
+      insertTable() { const rows = prompt('Number of rows:', '3'); const cols =
+      prompt('Number of columns:', '3'); if (rows && cols) { let table = '<table
+      style="width: 100%; margin: 1rem 0;"><tbody>'; for (let i = 0; i <
+      parseInt(rows); i++) { table += '<tr>'; for (let j = 0; j <
+      parseInt(cols); j++) { table += i === 0 ? '<th>Header</th>' :
+      '<td>Cell</td>'; } table += '</tr>'; } table += '</tbody></table>';
+      document.execCommand('insertHTML', false, table); autoSave(); } } //
+      Insert quote function insertQuote() { document.execCommand('formatBlock',
+      false, 'blockquote'); autoSave(); } // Insert checkbox function
+      insertCheckbox() { const checkbox = '<label style="display: flex;
+      align-items: center; gap: 0.5rem; margin: 0.5rem 0;"><input
+      type="checkbox" style="width: 1rem; height: 1rem;"><span>Task
+      item</span></label>'; document.execCommand('insertHTML', false, checkbox);
+      autoSave(); } // Insert code block function insertCode() { const code =
+      '<pre><code>// Your code here</code></pre>';
+      document.execCommand('insertHTML', false, code); autoSave(); } // Insert
+      divider function insertDivider() { const hr = '<hr style="margin: 2rem 0;
+      border: none; border-top: 1px solid rgba(255,255,255,0.1);" />';
+      document.execCommand('insertHTML', false, hr); autoSave(); } // Tags
+      functionality function addTag() { const tag = prompt('Enter tag name:');
+      if (tag && currentNote) { if (!currentNote.tags.includes(tag)) {
+      currentNote.tags.push(tag); saveNotes(); renderTags(); renderNotesList();
+      } } } function removeTag(tag) { if (currentNote) { currentNote.tags =
+      currentNote.tags.filter(t => t !== tag); saveNotes(); renderTags();
+      renderNotesList(); } } function renderTags() { const container =
+      document.getElementById('tags-container'); const tagsHTML =
+      currentNote?.tags.map(tag => ` <span class="tag"> ${tag} <i class="bi bi-x
+      cursor-pointer" onclick="removeTag('${tag}')"></i> </span> `).join('') ||
+      ''; container.innerHTML = tagsHTML + '<button onclick="addTag()"
+      class="text-sm text-gray-400 hover:text-orange-500 transition-colors"><i
+      class="bi bi-plus-circle"></i> Add tag</button>'; } // Star/Pin
+      functionality function toggleStar() { if (currentNote) {
+      currentNote.starred = !currentNote.starred; saveNotes();
+      updateStarButton(); renderNotesList(); } } function togglePin() { if
+      (currentNote) { currentNote.pinned = !currentNote.pinned; saveNotes();
+      updatePinButton(); // Reorder notes - pinned first notes.sort((a, b) => {
+      if (a.pinned && !b.pinned) return -1; if (!a.pinned && b.pinned) return 1;
+      return new Date(b.modified) - new Date(a.modified); }); renderNotesList();
+      } } function updateStarButton() { const btn =
+      document.getElementById('star-btn'); const icon = btn.querySelector('i');
+      if (currentNote?.starred) { icon.className = 'bi bi-star-fill
+      text-yellow-500'; btn.querySelector('span').textContent = 'Unstar Note'; }
+      else { icon.className = 'bi bi-star text-gray-400';
+      btn.querySelector('span').textContent = 'Star Note'; } } function
+      updatePinButton() { const btn = document.getElementById('pin-btn'); const
+      icon = btn.querySelector('i'); if (currentNote?.pinned) { icon.className =
+      'bi bi-pin-fill text-orange-500'; btn.querySelector('span').textContent =
+      'Unpin Note'; } else { icon.className = 'bi bi-pin text-gray-400';
+      btn.querySelector('span').textContent = 'Pin Note'; } } function
+      archiveNote() { if (currentNote && confirm('Archive this note?')) {
+      currentNote.archived = !currentNote.archived; saveNotes();
+      renderNotesList(); // Load next available note const availableNotes =
+      notes.filter(n => !n.archived); if (availableNotes.length > 0) {
+      loadNote(availableNotes[0].id); } } } // Search functionality function
+      searchNotes(query) { const container =
+      document.getElementById('notes-list'); const searchResults =
+      notes.filter(note => { const searchText = (note.title +
+      note.content).toLowerCase(); return
+      searchText.includes(query.toLowerCase()) && !note.archived; }); if
+      (query.length > 0) { container.innerHTML = searchResults.map(note => {
+      const preview = note.content.replace(/<[^>]*>/g, '').substring(0, 100);
+      return ` <div class="sidebar-item" onclick="loadNote(${note.id})"> <div
+      class="flex-1 min-w-0"> <h4 class="font-semibold
+      truncate">${note.title}</h4> <p class="text-xs text-gray-400
+      truncate">${preview}</p> </div> </div> `; }).join(''); } else {
+      renderNotesList(); } } // Filter functionality function
+      filterNotes(filter) { currentFilter = filter; renderNotesList(); // Update
+      filter tabs document.querySelectorAll('.filter-tab').forEach(tab => {
+      tab.classList.remove('active', 'bg-orange-500/20',
+      'border-orange-500/30'); }); event.target.classList.add('active',
+      'bg-orange-500/20', 'border-orange-500/30'); } // Word count function
+      updateWordCount() { const editor = document.getElementById('editor');
+      const text = editor.innerText; const words =
+      text.trim().split(/\s+/).filter(w => w.length > 0).length; const chars =
+      text.length; const readingTime = Math.ceil(words / 200); // Average
+      reading speed document.getElementById('word-count').textContent =
+      `${words} words, ${chars} characters`;
+      document.getElementById('reading-time').textContent = `~${readingTime} min
+      read`; } // Category update function updateCategory() { if (currentNote) {
+      currentNote.category = document.getElementById('category-select').value;
+      saveNotes(); } } // AI Assistant Functions function openAIAssistant() {
+      const suggestions = document.getElementById('ai-suggestions');
+      suggestions.innerHTML = ` <div class="ai-suggestion"> <div class="flex
+      items-start gap-3"> <i class="bi bi-stars text-purple-400 text-xl"></i>
+      <div class="flex-1"> <h4 class="font-semibold mb-2">AI Suggestion</h4> <p
+      class="text-sm text-gray-300 mb-3">Your writing looks great! Here are some
+      suggestions to make it even better:</p> <ul class="text-sm space-y-1
+      text-gray-400"> <li>• Consider adding more specific details about
+      livestock breeds</li> <li>• Break down long paragraphs for better
+      readability</li> <li>• Add bullet points to highlight key information</li>
+      </ul> <div class="flex gap-2 mt-3"> <button class="px-3 py-1
+      bg-purple-500/20 hover:bg-purple-500/30 rounded text-sm
+      transition-all">Apply</button> <button class="px-3 py-1 glass
+      hover:bg-gray-800/50 rounded text-sm transition-all">Dismiss</button>
+      </div> </div> </div> </div> `; } function aiImproveWriting() {
+      showAISuggestion('Improving writing style...', 'I\'ve enhanced your text
+      to be more professional and clear.'); } function aiSummarize() { const
+      text = document.getElementById('editor').innerText;
+      showAISuggestion('Creating summary...', `Summary: ${text.substring(0,
+      150)}...`); } function aiExpand() { showAISuggestion('Expanding ideas...',
+      'I\'ve added more details and examples to your content.'); } function
+      aiSimplify() { showAISuggestion('Simplifying language...', 'I\'ve made
+      your text easier to understand.'); } function showAISuggestion(title,
+      content) { const suggestions = document.getElementById('ai-suggestions');
+      suggestions.innerHTML = ` <div class="ai-suggestion"> <div class="flex
+      items-start gap-3"> <i class="bi bi-stars text-purple-400 text-xl"></i>
+      <div class="flex-1"> <h4 class="font-semibold mb-2">${title}</h4> <p
+      class="text-sm text-gray-300">${content}</p> </div> </div> </div> `; }
+      function checkGrammar() { alert('Grammar check complete! No errors
+      found.'); } function translateText() { const lang = prompt('Translate to
+      (en, sw, es, fr):'); if (lang) { alert(`Translating to ${lang}...`); } }
+      // Version History function openVersionHistory() { if (!currentNote)
+      return; const modal = document.getElementById('version-modal'); const list
+      = document.getElementById('version-list'); list.innerHTML =
+      currentNote.versions.map((version, index) => ` <div class="version-item"
+      onclick="restoreVersion(${index})"> <div class="flex items-center
+      justify-between mb-2"> <span class="font-semibold">Version
+      ${currentNote.versions.length - index}</span> <span class="text-xs
+      text-gray-400">${new Date(version.timestamp).toLocaleString()}</span>
+      </div> <p class="text-sm text-gray-400">${version.title}</p> </div>
+      `).join(''); modal.classList.add('active'); } function
+      restoreVersion(index) { if (confirm('Restore this version? Current changes
+      will be saved as a new version.')) { const version =
+      currentNote.versions[index]; currentNote.content = version.content;
+      currentNote.title = version.title; loadNote(currentNote.id);
+      closeModal('version-modal'); } } // Collaboration function
+      openCollaboration() {
+      document.getElementById('collab-modal').classList.add('active'); }
+      function copyShareLink() {
+      navigator.clipboard.writeText('https://chuuauction.com/note/abc123');
+      alert('Link copied to clipboard!'); } // Settings function openSettings()
+      { document.getElementById('settings-modal').classList.add('active'); } //
+      Modal controls function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active'); } // Export
+      functions function exportAsPDF() { alert('Exporting as PDF... (In
+      production, this would generate a PDF file)'); } function exportAsWord() {
+      alert('Exporting as Word document... (In production, this would generate a
+      .docx file)'); } function exportAsMarkdown() { const markdown =
+      currentNote.content .replace(/<h1>(.*?)<\/h1>/g, '# $1\n')
+      .replace(/<h2>(.*?)<\/h2>/g, '## $1\n') .replace(/<h3>(.*?)<\/h3>/g, '###
+      $1\n') .replace(/<p>(.*?)<\/p>/g, '$1\n\n')
+      .replace(/<strong>(.*?)<\/strong>/g, '**$1**')
+      .replace(/<em>(.*?)<\/em>/g, '*$1*') .replace(/<[^>]*>/g, ''); const blob
+      = new Blob([markdown], { type: 'text/markdown' }); const url =
+      URL.createObjectURL(blob); const a = document.createElement('a'); a.href =
+      url; a.download = `${currentNote.title}.md`; a.click(); } // Keyboard
+      shortcuts function setupKeyboardShortcuts() {
+      document.addEventListener('keydown', (e) => { if (e.ctrlKey || e.metaKey)
+      { switch(e.key) { case 'b': e.preventDefault(); formatText('bold'); break;
+      case 'i': e.preventDefault(); formatText('italic'); break; case 'u':
+      e.preventDefault(); formatText('underline'); break; case 's':
+      e.preventDefault(); autoSave(); break; case 'n': e.preventDefault();
+      createNewNote(); break; } } }); } // Handle paste function handlePaste(e)
+      { e.preventDefault(); const text = e.clipboardData.getData('text/plain');
+      document.execCommand('insertText', false, text); } // Close modal on ESC
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') {
+      document.querySelectorAll('.modal').forEach(modal => {
+      modal.classList.remove('active'); }); } }); // Click outside modal to
+      close document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', (e) => { if (e.target === modal) {
+      modal.classList.remove('active'); } }); });
+    </script>
+
+  </body>
+</html>

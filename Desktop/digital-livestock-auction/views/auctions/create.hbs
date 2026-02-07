@@ -1,0 +1,1650 @@
+<!-- Ultra-Advanced Livestock Auction Creation System - World-Class Final Year Project -->
+
+<style>
+  /* Advanced Custom Styles */
+  .font-display {
+    font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  }
+  .font-body {
+    font-family: "Outfit", system-ui, sans-serif;
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #f97316, #dc2626, #ea580c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient 3s ease infinite;
+    background-size: 200% 200%;
+  }
+
+  @keyframes gradient {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .neon-glow {
+    text-shadow:
+      0 0 10px rgba(249, 115, 22, 0.8),
+      0 0 20px rgba(249, 115, 22, 0.6),
+      0 0 30px rgba(249, 115, 22, 0.4);
+  }
+
+  .card-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .card-3d:hover {
+    transform: perspective(1000px) rotateY(2deg) rotateX(1deg) scale(1.01);
+  }
+
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(249, 115, 22, 0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particleFloat 5s ease-in-out infinite;
+  }
+
+  @keyframes particleFloat {
+    0%,
+    100% {
+      transform: translateY(0) translateX(0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-100px) translateX(30px);
+      opacity: 0;
+    }
+  }
+
+  .custom-input,
+  .custom-select {
+    background: rgba(17, 24, 39, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    color: white;
+  }
+
+  .custom-input:focus,
+  .custom-select:focus {
+    background: rgba(17, 24, 39, 0.95);
+    border-color: #f97316;
+    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+    outline: none;
+  }
+
+  .custom-input:hover,
+  .custom-select:hover {
+    border-color: rgba(249, 115, 22, 0.3);
+  }
+
+  /* Dropdown option styling */
+  .custom-select option {
+    background: #1f2937;
+    color: white;
+    padding: 12px;
+  }
+
+  .custom-select option:hover {
+    background: #374151;
+  }
+
+  /* Date and Time picker styling */
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 4px;
+  }
+
+  input[type="date"],
+  input[type="time"] {
+    position: relative;
+  }
+
+  /* Price input UGX label handling */
+  .price-input-wrapper {
+    position: relative;
+  }
+
+  .price-input-wrapper .ugx-label {
+    position: absolute;
+    left: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(156, 163, 175, 0.5);
+    font-weight: bold;
+    font-size: 1.125rem;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .price-input-wrapper input:focus ~ .ugx-label,
+  .price-input-wrapper input:not(:placeholder-shown) ~ .ugx-label {
+    opacity: 0;
+  }
+
+  /* Advanced Radio Cards */
+  .radio-card-advanced {
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .radio-card-advanced::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(249, 115, 22, 0.1);
+    transform: translate(-50%, -50%);
+    transition:
+      width 0.6s,
+      height 0.6s;
+  }
+
+  .radio-card-advanced:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .radio-card-advanced input[type="radio"]:checked + label {
+    background: rgba(249, 115, 22, 0.15);
+    border-color: #f97316;
+    box-shadow: 0 0 30px rgba(249, 115, 22, 0.3);
+  }
+
+  /* Image Upload Gallery */
+  .image-upload-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+
+  .image-upload-grid.hidden {
+    display: none;
+  }
+
+  .image-preview-card {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .image-preview-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 40px rgba(249, 115, 22, 0.3);
+    border-color: #f97316;
+  }
+
+  .image-preview-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Progress Steps */
+  .step-indicator {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .step-indicator::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: -1;
+  }
+
+  .step-number {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .step-number.active {
+    background: linear-gradient(135deg, #f97316, #dc2626);
+    border-color: #f97316;
+    box-shadow: 0 0 30px rgba(249, 115, 22, 0.5);
+    animation: pulse 2s infinite;
+  }
+
+  .step-number.completed {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-color: #10b981;
+  }
+
+  /* Floating Labels */
+  .floating-label-group {
+    position: relative;
+  }
+
+  .floating-label {
+    position: absolute;
+    left: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    color: rgba(156, 163, 175, 0.7);
+  }
+
+  .custom-input:focus ~ .floating-label,
+  .custom-input:not(:placeholder-shown) ~ .floating-label {
+    top: -0.5rem;
+    left: 1rem;
+    font-size: 0.75rem;
+    background: #030712;
+    padding: 0 0.5rem;
+    color: #f97316;
+  }
+
+  /* Checkbox Toggle Switch */
+  .toggle-switch {
+    position: relative;
+    width: 3.5rem;
+    height: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .toggle-switch::after {
+    content: "";
+    position: absolute;
+    top: 0.25rem;
+    left: 0.25rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  input:checked + .toggle-switch {
+    background: linear-gradient(135deg, #f97316, #dc2626);
+  }
+
+  input:checked + .toggle-switch::after {
+    left: calc(100% - 1.75rem);
+  }
+
+  /* Auction Timer Preview */
+  .auction-timer-preview {
+    background: linear-gradient(
+      135deg,
+      rgba(249, 115, 22, 0.1),
+      rgba(220, 38, 38, 0.1)
+    );
+    border: 2px solid rgba(249, 115, 22, 0.3);
+    border-radius: 1rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .timer-digit {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: "Courier New", monospace;
+  }
+
+  /* Glow Effects */
+  @keyframes glow {
+    0%,
+    100% {
+      box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
+    }
+    50% {
+      box-shadow:
+        0 0 40px rgba(249, 115, 22, 0.6),
+        0 0 60px rgba(249, 115, 22, 0.3);
+    }
+  }
+
+  .glow-effect {
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  /* Animations */
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes slideUp {
+    0% {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes scaleIn {
+    0% {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  @keyframes slideInRight {
+    0% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out;
+  }
+  .animate-scale-in {
+    animation: scaleIn 0.4s ease-out;
+  }
+  .animate-slide-in-right {
+    animation: slideInRight 0.5s ease-out;
+  }
+
+  /* Price Calculator */
+  .price-calculator {
+    background: linear-gradient(
+      135deg,
+      rgba(16, 185, 129, 0.1),
+      rgba(5, 150, 105, 0.1)
+    );
+    border: 2px solid rgba(16, 185, 129, 0.3);
+    border-radius: 1rem;
+    padding: 1.5rem;
+  }
+
+  .price-display {
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #10b981, #059669);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Custom Select Dropdown */
+  .custom-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23f97316'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.5rem;
+    padding-right: 3rem;
+  }
+
+  /* Tooltip */
+  .tooltip {
+    position: relative;
+    cursor: help;
+  }
+
+  .tooltip:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    z-index: 100;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Photo Upload Zone */
+  .photo-upload-zone {
+    border: 2px dashed rgba(249, 115, 22, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .photo-upload-zone::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(249, 115, 22, 0.1),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+
+  .photo-upload-zone:hover::before {
+    left: 100%;
+  }
+
+  .photo-upload-zone:hover {
+    border-color: #f97316;
+    background: rgba(249, 115, 22, 0.05);
+  }
+
+  .photo-upload-zone.active {
+    border-color: #f97316;
+    background: rgba(249, 115, 22, 0.1);
+  }
+</style>
+
+<div
+  class="min-h-screen bg-gray-950 text-white font-body overflow-x-hidden pb-20"
+>
+
+  <!-- Animated Background -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div
+      class="absolute top-20 left-20 w-[600px] h-[600px] bg-orange-500/10 rounded-full blur-[150px] animate-float"
+    ></div>
+    <div
+      class="absolute bottom-20 right-20 w-[500px] h-[500px] bg-red-600/10 rounded-full blur-[150px] animate-float"
+      style="animation-delay: 2s;"
+    ></div>
+    <div
+      class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-orange-500/5 to-red-600/5 rounded-full blur-3xl"
+    ></div>
+
+    <!-- Particles -->
+    <div
+      class="particle"
+      style="left: 10%; top: 20%; animation-delay: 0s;"
+    ></div>
+    <div
+      class="particle"
+      style="left: 80%; top: 30%; animation-delay: 1s;"
+    ></div>
+    <div
+      class="particle"
+      style="left: 50%; top: 60%; animation-delay: 2s;"
+    ></div>
+    <div
+      class="particle"
+      style="left: 30%; top: 80%; animation-delay: 1.5s;"
+    ></div>
+    <div
+      class="particle"
+      style="left: 70%; top: 15%; animation-delay: 0.5s;"
+    ></div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="relative z-10 container mx-auto px-4 py-8 md:py-12 max-w-6xl">
+
+    <!-- Header Section -->
+    <div class="mb-12 text-center animate-fade-in">
+      <div class="flex items-center justify-center gap-4 mb-6">
+        <div
+          class="w-20 h-20 rounded-3xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center border-2 border-orange-500/30 shadow-2xl shadow-orange-500/20 card-3d"
+        >
+          <i class="bi bi-hammer text-5xl text-orange-500"></i>
+        </div>
+      </div>
+
+      <h1 class="text-5xl md:text-7xl font-black font-display mb-4">
+        Create
+        <span class="text-gradient neon-glow">Live Auction</span>
+      </h1>
+      <p class="text-gray-400 text-lg md:text-xl max-w-3xl mx-auto">
+        List your premium livestock and let buyers compete in real-time bidding
+      </p>
+
+      <!-- Progress Steps -->
+      <div class="mt-10 max-w-4xl mx-auto">
+        <div class="flex items-center justify-between">
+          <div class="flex flex-col items-center gap-2">
+            <div class="step-number active" id="step1">
+              <i class="bi bi-clipboard-data text-xl"></i>
+            </div>
+            <span class="text-xs font-semibold text-orange-500">Details</span>
+          </div>
+          <div class="flex-1 h-0.5 bg-gray-800 mx-4"></div>
+          <div class="flex flex-col items-center gap-2">
+            <div class="step-number" id="step2">
+              <i class="bi bi-images text-xl"></i>
+            </div>
+            <span class="text-xs font-semibold text-gray-400">Photos</span>
+          </div>
+          <div class="flex-1 h-0.5 bg-gray-800 mx-4"></div>
+          <div class="flex flex-col items-center gap-2">
+            <div class="step-number" id="step3">
+              <i class="bi bi-cash-stack text-xl"></i>
+            </div>
+            <span class="text-xs font-semibold text-gray-400">Pricing</span>
+          </div>
+          <div class="flex-1 h-0.5 bg-gray-800 mx-4"></div>
+          <div class="flex flex-col items-center gap-2">
+            <div class="step-number" id="step4">
+              <i class="bi bi-graph-up-arrow text-xl"></i>
+            </div>
+            <span class="text-xs font-semibold text-gray-400">Launch</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Auction Form -->
+    <form
+      action="/auctions"
+      method="POST"
+      enctype="multipart/form-data"
+      id="auctionForm"
+      class="space-y-8"
+    >
+
+      <!-- STEP 1: Animal Details -->
+      <div
+        class="form-section glass-strong rounded-3xl p-8 md:p-12 relative overflow-hidden card-3d animate-scale-in"
+        id="section1"
+      >
+
+        <div class="relative z-10">
+          <!-- Section Header -->
+          <div
+            class="flex items-center gap-4 mb-8 pb-6 border-b-2 border-gray-800/50"
+          >
+            <div
+              class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-indigo-600/20 flex items-center justify-center"
+            >
+              <i class="bi bi-clipboard-data text-blue-500 text-3xl"></i>
+            </div>
+            <div class="flex-1">
+              <h2 class="text-3xl font-black font-display">Step 1: Animal
+                Information</h2>
+              <p class="text-sm text-gray-400">Provide detailed specifications
+                of your livestock</p>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-6">
+
+            <!-- Animal Type -->
+            <div>
+              <label class="block text-sm font-semibold text-gray-300 mb-3">
+                <i class="bi bi-filter-circle text-orange-500 mr-2"></i>Animal
+                Type
+                <span class="text-red-500">*</span>
+              </label>
+              <select
+                name="animalType"
+                required
+                class="w-full px-6 py-4 rounded-xl custom-select text-white font-medium"
+              >
+                <option value="" disabled selected>Select animal category</option>
+                <option value="1">🐄 Cattle</option>
+                <option value="2">🐐 Goat</option>
+                <option value="3">🐑 Sheep</option>
+                <option value="4">🐷 Pig</option>
+                <option value="5">🐔 Poultry</option>
+                <option value="6">🐰 Rabbit</option>
+                <option value="7">🦆 Duck</option>
+              </select>
+            </div>
+
+            <!-- Breed -->
+            <div>
+              <label class="block text-sm font-semibold text-gray-300 mb-3">
+                <i class="bi bi-award text-orange-500 mr-2"></i>Breed
+                <span class="text-red-500">*</span>
+                <span
+                  class="tooltip ml-1"
+                  data-tooltip="Breed heavily affects bidding behavior"
+                >
+                  <i class="bi bi-info-circle text-gray-500 text-xs"></i>
+                </span>
+              </label>
+              <input
+                type="text"
+                name="breed"
+                required
+                placeholder="e.g., Boer Goat, Ankole Cattle, Local Crossbreed"
+                class="w-full px-6 py-4 rounded-xl custom-input text-white placeholder-gray-500 font-medium"
+              />
+            </div>
+
+            <!-- Age -->
+            <div>
+              <label class="block text-sm font-semibold text-gray-300 mb-3">
+                <i class="bi bi-calendar-event text-orange-500 mr-2"></i>Age
+                <span class="text-red-500">*</span>
+              </label>
+              <div class="grid grid-cols-2 gap-3">
+                <input
+                  type="number"
+                  name="ageYears"
+                  required
+                  min="0"
+                  max="20"
+                  placeholder="Years"
+                  class="w-full px-6 py-4 rounded-xl custom-input text-white placeholder-gray-500 font-medium"
+                />
+                <input
+                  type="number"
+                  name="ageMonths"
+                  required
+                  min="0"
+                  max="11"
+                  placeholder="Months"
+                  class="w-full px-6 py-4 rounded-xl custom-input text-white placeholder-gray-500 font-medium"
+                />
+              </div>
+              <p class="text-xs text-gray-500 mt-2"><i
+                  class="bi bi-lightbulb mr-1"
+                ></i>Age = productivity + resale value</p>
+            </div>
+
+            <!-- Sex -->
+            <div>
+              <label class="block text-sm font-semibold text-gray-300 mb-3">
+                <i class="bi bi-gender-ambiguous text-orange-500 mr-2"></i>Sex
+                <span class="text-red-500">*</span>
+              </label>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="radio-card-advanced">
+                  <input
+                    type="radio"
+                    name="sex"
+                    value="Male"
+                    id="sexMale"
+                    class="hidden"
+                    required
+                  />
+                  <label
+                    for="sexMale"
+                    class="block px-6 py-5 rounded-xl glass border border-gray-800/50 text-center font-semibold cursor-pointer transition-all relative z-10"
+                  >
+                    <i
+                      class="bi bi-gender-male text-blue-500 text-3xl mb-2 block"
+                    ></i>
+                    <span class="block">Male</span>
+                  </label>
+                </div>
+                <div class="radio-card-advanced">
+                  <input
+                    type="radio"
+                    name="sex"
+                    value="Female"
+                    id="sexFemale"
+                    class="hidden"
+                  />
+                  <label
+                    for="sexFemale"
+                    class="block px-6 py-5 rounded-xl glass border border-gray-800/50 text-center font-semibold cursor-pointer transition-all relative z-10"
+                  >
+                    <i
+                      class="bi bi-gender-female text-pink-500 text-3xl mb-2 block"
+                    ></i>
+                    <span class="block">Female</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Weight -->
+            <div>
+              <label class="block text-sm font-semibold text-gray-300 mb-3">
+                <i class="bi bi-speedometer text-orange-500 mr-2"></i>Estimated
+                Weight (KG)
+                <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <input
+                  type="number"
+                  name="weight"
+                  required
+                  min="1"
+                  step="0.1"
+                  placeholder="Enter weight in kilograms"
+                  class="w-full px-6 py-4 rounded-xl custom-input text-white placeholder-gray-500 font-medium"
+                />
+                <span
+                  class="absolute right-6 top-1/2 -translate-y-1/2 text-gray-500 font-bold"
+                >KG</span>
+              </div>
+              <p class="text-xs text-gray-500 mt-2"><i
+                  class="bi bi-info-circle mr-1"
+                ></i>Weight = meat value + productivity</p>
+            </div>
+
+            <!-- Health Status -->
+            <div>
+              <label class="block text-sm font-semibold text-gray-300 mb-3">
+                <i class="bi bi-heart-pulse text-orange-500 mr-2"></i>Health /
+                Condition
+                <span class="text-red-500">*</span>
+              </label>
+              <select
+                name="healthStatus"
+                required
+                class="w-full px-6 py-4 rounded-xl custom-select text-white font-medium"
+              >
+                <option value="" disabled selected>Select health condition</option>
+                <option value="Excellent">💚 Excellent - Perfect condition</option>
+                <option value="Good">💙 Good - Minor wear, healthy</option>
+                <option value="Fair">💛 Fair - Acceptable condition</option>
+              </select>
+            </div>
+
+            <!-- Quantity -->
+            <div>
+              <label class="block text-sm font-semibold text-gray-300 mb-3">
+                <i class="bi bi-123 text-orange-500 mr-2"></i>Quantity
+                <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                name="quantity"
+                required
+                min="1"
+                max="100"
+                value="1"
+                placeholder="Number of animals"
+                class="w-full px-6 py-4 rounded-xl custom-input text-white placeholder-gray-500 font-medium"
+              />
+              <p class="text-xs text-gray-500 mt-2"><i
+                  class="bi bi-lightbulb mr-1"
+                ></i>Selling multiple animals? Set quantity here</p>
+            </div>
+
+            <!-- Location -->
+            <div>
+              <label class="block text-sm font-semibold text-gray-300 mb-3">
+                <i class="bi bi-geo-alt text-orange-500 mr-2"></i>Location
+                (District/Town)
+                <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="location"
+                required
+                placeholder="e.g., Kampala, Mbarara, Gulu"
+                class="w-full px-6 py-4 rounded-xl custom-input text-white placeholder-gray-500 font-medium"
+              />
+              <p class="text-xs text-gray-500 mt-2"><i
+                  class="bi bi-truck mr-1"
+                ></i>Transport cost kills deals - be specific</p>
+            </div>
+
+            <!-- Vaccinated Toggle -->
+            <div class="md:col-span-2">
+              <div
+                class="flex items-center justify-between p-6 rounded-xl glass border border-gray-800/50"
+              >
+                <div class="flex items-center gap-4">
+                  <div
+                    class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-600/20 flex items-center justify-center"
+                  >
+                    <i class="bi bi-shield-check text-green-500 text-2xl"></i>
+                  </div>
+                  <div>
+                    <label
+                      class="block font-semibold text-white mb-1"
+                    >Vaccination Status</label>
+                    <p class="text-sm text-gray-400">Has this animal been
+                      vaccinated?</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    name="vaccinated"
+                    id="vaccinatedToggle"
+                    class="hidden"
+                  />
+                  <label for="vaccinatedToggle" class="toggle-switch"></label>
+                  <span
+                    class="text-sm font-semibold text-gray-400"
+                    id="vaccinatedLabel"
+                  >No</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Vaccination License (Conditional) -->
+            <div id="vaccinationLicenseSection" class="md:col-span-2 hidden">
+              <label class="block text-sm font-semibold text-gray-300 mb-3">
+                <i
+                  class="bi bi-file-earmark-medical text-orange-500 mr-2"
+                ></i>Vaccination License Number
+              </label>
+              <input
+                type="text"
+                name="vaccinationLicense"
+                id="vaccinationLicense"
+                placeholder="Enter vaccination certificate number"
+                class="w-full px-6 py-4 rounded-xl custom-input text-white placeholder-gray-500 font-medium font-mono uppercase"
+              />
+              <p class="text-xs text-green-500 mt-2"><i
+                  class="bi bi-check-circle mr-1"
+                ></i>Huge trust signal for buyers</p>
+            </div>
+
+            <!-- Description -->
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold text-gray-300 mb-3">
+                <i class="bi bi-pencil-square text-orange-500 mr-2"></i>Detailed
+                Description
+                <span class="text-red-500">*</span>
+              </label>
+              <textarea
+                name="description"
+                required
+                rows="5"
+                minlength="50"
+                maxlength="1000"
+                placeholder="Provide comprehensive details:
+• Behavior and temperament
+• Visible defects or unique features
+• Special notes for buyers
+• Feeding habits
+• Any other relevant information
+
+Quality descriptions build buyer confidence!"
+                class="w-full px-6 py-4 rounded-xl custom-input text-white placeholder-gray-500 font-medium resize-none"
+              ></textarea>
+              <div class="flex items-center justify-between mt-2">
+                <p class="text-xs text-gray-500"><i
+                    class="bi bi-info-circle mr-1"
+                  ></i>Minimum 50 characters</p>
+                <span class="text-xs font-semibold" id="descCharCountWrapper">
+                  <span id="descCharCount" class="text-red-500">0</span><span
+                    class="text-gray-500"
+                  >/1000</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Quick Stats Preview Card -->
+            <div class="md:col-span-2 mt-4">
+              <div
+                class="bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-500/20 rounded-xl p-6"
+              >
+                <h4
+                  class="font-bold text-orange-400 mb-4 flex items-center gap-2"
+                >
+                  <i class="bi bi-speedometer"></i>
+                  Listing Preview
+                </h4>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div class="text-center p-3 rounded-lg bg-black/30">
+                    <i
+                      class="bi bi-filter-circle text-orange-500 text-2xl mb-1 block"
+                    ></i>
+                    <p class="text-xs text-gray-400">Category</p>
+                    <p
+                      class="text-sm font-bold text-white"
+                      id="previewCategory"
+                    >-</p>
+                  </div>
+                  <div class="text-center p-3 rounded-lg bg-black/30">
+                    <i
+                      class="bi bi-award text-blue-500 text-2xl mb-1 block"
+                    ></i>
+                    <p class="text-xs text-gray-400">Breed</p>
+                    <p
+                      class="text-sm font-bold text-white"
+                      id="previewBreed"
+                    >-</p>
+                  </div>
+                  <div class="text-center p-3 rounded-lg bg-black/30">
+                    <i
+                      class="bi bi-speedometer text-green-500 text-2xl mb-1 block"
+                    ></i>
+                    <p class="text-xs text-gray-400">Weight</p>
+                    <p
+                      class="text-sm font-bold text-white"
+                      id="previewWeight"
+                    >-</p>
+                  </div>
+                  <div class="text-center p-3 rounded-lg bg-black/30">
+                    <i
+                      class="bi bi-geo-alt text-purple-500 text-2xl mb-1 block"
+                    ></i>
+                    <p class="text-xs text-gray-400">Location</p>
+                    <p
+                      class="text-sm font-bold text-white"
+                      id="previewLocation"
+                    >-</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: Photo Gallery -->
+      <div
+        class="form-section glass-strong rounded-3xl p-8 md:p-12 relative overflow-hidden card-3d animate-slide-up"
+        style="animation-delay: 0.1s;"
+        id="section2"
+      >
+
+        <div class="relative z-10">
+          <!-- Section Header -->
+          <div
+            class="flex items-center gap-4 mb-8 pb-6 border-b-2 border-gray-800/50"
+          >
+            <div
+              class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-600/20 flex items-center justify-center"
+            >
+              <i class="bi bi-images text-purple-500 text-3xl"></i>
+            </div>
+            <div class="flex-1">
+              <h2 class="text-3xl font-black font-display">Step 2: Photo Gallery</h2>
+              <p class="text-sm text-gray-400">Upload 2-4 high-quality images
+                (No photo = No serious buyer)</p>
+            </div>
+          </div>
+
+          <!-- Upload Zone -->
+          <div
+            class="photo-upload-zone rounded-2xl p-12 text-center relative overflow-hidden mb-6"
+            onclick="if(event.target === this || event.target.closest('#uploadPrompt')) document.getElementById('animalPhotosInput').click()"
+          >
+            <input
+              type="file"
+              name="animalPhotos"
+              id="animalPhotosInput"
+              accept="image/*"
+              multiple
+              required
+              class="hidden"
+            />
+            <div id="uploadPrompt">
+              <div class="mb-6">
+                <i
+                  class="bi bi-cloud-arrow-up text-8xl text-purple-500/50 block mb-4"
+                ></i>
+                <h3 class="text-2xl font-bold mb-2">Drag & Drop Images Here</h3>
+                <p class="text-gray-400 mb-6">or click anywhere to browse from
+                  your device</p>
+              </div>
+
+              <button
+                type="button"
+                onclick="event.stopPropagation(); document.getElementById('animalPhotosInput').click()"
+                class="px-8 py-4 rounded-xl bg-gradient-to-r from-purple-500 to-pink-600 text-white font-bold text-lg shadow-xl shadow-purple-500/30 hover:shadow-purple-500/50 transition-all inline-flex items-center gap-3 group"
+              >
+                <i class="bi bi-camera-fill text-2xl"></i>
+                <span>Select Photos</span>
+              </button>
+
+              <div
+                class="mt-6 flex items-center justify-center gap-6 text-sm text-gray-500"
+              >
+                <span><i class="bi bi-check-circle text-green-500 mr-1"></i>JPG,
+                  PNG supported</span>
+                <span><i class="bi bi-check-circle text-green-500 mr-1"></i>Max
+                  5MB per image</span>
+                <span><i class="bi bi-check-circle text-green-500 mr-1"></i>2-4
+                  photos recommended</span>
+              </div>
+            </div>
+
+            <!-- Preview Grid Inside Upload Zone -->
+            <div
+              id="photoPreviewGrid"
+              class="image-upload-grid hidden mt-6"
+            ></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- STEP 3: Pricing Strategy -->
+      <div
+        class="form-section glass-strong rounded-3xl p-8 md:p-12 relative overflow-hidden card-3d animate-slide-up"
+        style="animation-delay: 0.2s;"
+        id="section3"
+      >
+
+        <div class="relative z-10">
+          <!-- Section Header -->
+          <div
+            class="flex items-center gap-4 mb-8 pb-6 border-b-2 border-gray-800/50"
+          >
+            <div
+              class="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-500/20 to-emerald-600/20 flex items-center justify-center"
+            >
+              <i class="bi bi-cash-stack text-green-500 text-3xl"></i>
+            </div>
+            <div class="flex-1">
+              <h2 class="text-3xl font-black font-display">Step 3: Pricing &
+                Strategy</h2>
+              <p class="text-sm text-gray-400">Set competitive prices to attract
+                serious buyers</p>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-8">
+
+            <!-- Starting Bid Price -->
+            <div>
+              <label class="block text-sm font-semibold text-gray-300 mb-3">
+                <i
+                  class="bi bi-currency-dollar text-orange-500 mr-2"
+                ></i>Starting Bid Price (UGX)
+                <span class="text-red-500">*</span>
+              </label>
+              <div class="price-input-wrapper">
+                <input
+                  type="number"
+                  name="startingPrice"
+                  id="startingPrice"
+                  required
+                  min="10000"
+                  step="1000"
+                  placeholder="Enter starting price"
+                  class="w-full px-6 py-5 rounded-xl custom-input text-white placeholder-gray-500 font-bold text-2xl"
+                />
+                <span class="ugx-label">UGX</span>
+              </div>
+              <p class="text-xs text-gray-500 mt-2"><i
+                  class="bi bi-lightbulb mr-1"
+                ></i>Lower starting price = more bidders</p>
+            </div>
+
+            <!-- Reserve Price -->
+            <div>
+              <label class="block text-sm font-semibold text-gray-300 mb-3">
+                <i class="bi bi-shield-lock text-orange-500 mr-2"></i>Reserve
+                Price (UGX)
+                <span
+                  class="tooltip ml-1"
+                  data-tooltip="Hidden minimum price you'll accept"
+                >
+                  <i class="bi bi-info-circle text-gray-500 text-xs"></i>
+                </span>
+              </label>
+              <div class="price-input-wrapper">
+                <input
+                  type="number"
+                  name="reservePrice"
+                  id="reservePrice"
+                  min="10000"
+                  step="1000"
+                  placeholder="Optional - minimum acceptable"
+                  class="w-full px-6 py-5 rounded-xl custom-input text-white placeholder-gray-500 font-bold text-2xl"
+                />
+                <span class="ugx-label">UGX</span>
+              </div>
+              <p class="text-xs text-yellow-500 mt-2"><i
+                  class="bi bi-eye-slash mr-1"
+                ></i>Hidden from buyers - protects you from low bids</p>
+            </div>
+
+            <!-- Pricing Tips -->
+            <div class="md:col-span-2">
+              <div
+                class="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-xl p-6"
+              >
+                <h4
+                  class="font-bold text-blue-400 mb-3 flex items-center gap-2"
+                >
+                  <i class="bi bi-lightbulb-fill"></i>
+                  Pro Pricing Tips
+                </h4>
+                <div class="grid md:grid-cols-3 gap-4 text-sm text-gray-300">
+                  <div class="flex items-start gap-2">
+                    <i class="bi bi-check-circle text-green-500 mt-0.5"></i>
+                    <span>Research similar livestock prices in your area</span>
+                  </div>
+                  <div class="flex items-start gap-2">
+                    <i class="bi bi-check-circle text-green-500 mt-0.5"></i>
+                    <span>Set reserve 20-30% above starting price</span>
+                  </div>
+                  <div class="flex items-start gap-2">
+                    <i class="bi bi-check-circle text-green-500 mt-0.5"></i>
+                    <span>Consider weight, age, and breed value</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4: Auction Timing -->
+      <div
+        class="form-section glass-strong rounded-3xl p-8 md:p-12 relative overflow-hidden card-3d animate-slide-up"
+        style="animation-delay: 0.3s;"
+        id="section4"
+      >
+
+        <div class="relative z-10">
+          <!-- Section Header -->
+          <div
+            class="flex items-center gap-4 mb-8 pb-6 border-b-2 border-gray-800/50"
+          >
+            <div
+              class="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center"
+            >
+              <i class="bi bi-clock-history text-orange-500 text-3xl"></i>
+            </div>
+            <div class="flex-1">
+              <h2 class="text-3xl font-black font-display">Step 4: Auction
+                Duration</h2>
+              <p class="text-sm text-gray-400">Set when your auction starts and
+                ends</p>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-8">
+
+            <!-- Auction End Date -->
+            <div>
+              <label class="block text-sm font-semibold text-gray-300 mb-3">
+                <i class="bi bi-calendar-event text-orange-500 mr-2"></i>Auction
+                End Date
+                <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="date"
+                name="endDate"
+                id="endDate"
+                required
+                class="w-full px-6 py-4 rounded-xl custom-input text-white font-medium"
+                style="color-scheme: dark;"
+              />
+            </div>
+
+            <!-- Auction End Time -->
+            <div>
+              <label class="block text-sm font-semibold text-gray-300 mb-3">
+                <i class="bi bi-clock text-orange-500 mr-2"></i>Auction End Time
+                <span class="text-red-500">*</span>
+              </label>
+              <input
+                type="time"
+                name="endTime"
+                id="endTime"
+                required
+                class="w-full px-6 py-4 rounded-xl custom-input text-white font-medium"
+                style="color-scheme: dark;"
+              />
+            </div>
+
+            <!-- Timezone -->
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold text-gray-300 mb-3">
+                <i class="bi bi-globe text-orange-500 mr-2"></i>Timezone
+              </label>
+              <select
+                name="timezone"
+                class="w-full px-6 py-4 rounded-xl custom-select text-white font-medium"
+              >
+                <option value="EAT" selected>🌍 East Africa Time (EAT - UTC+3)</option>
+                <option value="UTC">🌐 Universal Time (UTC)</option>
+              </select>
+            </div>
+
+            <!-- Auction Timer Preview -->
+            <div class="md:col-span-2">
+              <div class="auction-timer-preview">
+                <div class="flex-1">
+                  <h4 class="font-bold text-white mb-2 flex items-center gap-2">
+                    <i class="bi bi-stopwatch"></i>
+                    Auction Duration Preview
+                  </h4>
+                  <p class="text-sm text-gray-400" id="durationPreview">Select
+                    end date and time to see duration</p>
+                </div>
+                <div class="flex gap-2" id="timerDisplay">
+                  <div class="text-center">
+                    <div class="timer-digit" id="daysLeft">00</div>
+                    <p class="text-xs text-gray-400 mt-1">Days</p>
+                  </div>
+                  <div class="text-center">
+                    <div class="timer-digit" id="hoursLeft">00</div>
+                    <p class="text-xs text-gray-400 mt-1">Hours</p>
+                  </div>
+                  <div class="text-center">
+                    <div class="timer-digit" id="minsLeft">00</div>
+                    <p class="text-xs text-gray-400 mt-1">Mins</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Final Review & Submit -->
+      <div
+        class="glass-strong rounded-3xl p-8 md:p-12 relative overflow-hidden card-3d animate-slide-up glow-effect"
+        style="animation-delay: 0.4s;"
+      >
+
+        <div class="relative z-10">
+          <!-- Final Checklist -->
+          <div class="mb-8">
+            <h3
+              class="text-2xl font-black font-display mb-6 flex items-center gap-3"
+            >
+              <i class="bi bi-check2-square text-green-500 text-3xl"></i>
+              Pre-Launch Checklist
+            </h3>
+
+            <div class="space-y-3">
+              <div
+                class="flex items-center gap-3 p-4 rounded-xl bg-gray-800/30"
+              >
+                <i class="bi bi-check-circle text-green-500 text-xl"></i>
+                <span class="text-gray-300">All animal details provided
+                  accurately</span>
+              </div>
+              <div
+                class="flex items-center gap-3 p-4 rounded-xl bg-gray-800/30"
+              >
+                <i class="bi bi-check-circle text-green-500 text-xl"></i>
+                <span class="text-gray-300">At least 2 clear photos uploaded</span>
+              </div>
+              <div
+                class="flex items-center gap-3 p-4 rounded-xl bg-gray-800/30"
+              >
+                <i class="bi bi-check-circle text-green-500 text-xl"></i>
+                <span class="text-gray-300">Competitive pricing strategy set</span>
+              </div>
+              <div
+                class="flex items-center gap-3 p-4 rounded-xl bg-gray-800/30"
+              >
+                <i class="bi bi-check-circle text-green-500 text-xl"></i>
+                <span class="text-gray-300">Auction timing configured with
+                  timezone</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Terms Agreement -->
+          <div
+            class="bg-yellow-500/5 border border-yellow-500/20 rounded-xl p-6 mb-8"
+          >
+            <label class="flex items-start gap-4 cursor-pointer group">
+              <input
+                type="checkbox"
+                name="terms"
+                id="termsCheckbox"
+                required
+                class="mt-1 w-6 h-6 rounded border-2 border-gray-600 bg-transparent checked:bg-orange-500 checked:border-orange-500 transition-all cursor-pointer flex-shrink-0"
+              />
+              <span
+                class="text-sm font-medium text-gray-300 group-hover:text-white transition-colors"
+              >
+                I confirm that all information provided is accurate and I
+                understand the
+                <strong class="text-orange-500">auction terms and conditions</strong>.
+                I agree to honor the highest bid if it meets or exceeds my
+                reserve price.
+              </span>
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="flex gap-4">
+            <button
+              type="button"
+              id="saveDraftBtn"
+              class="px-8 py-5 rounded-xl glass border-2 border-gray-700 text-white font-bold text-lg hover:border-orange-500/50 hover:bg-orange-500/10 transition-all duration-300 flex items-center justify-center gap-3 group"
+            >
+              <i
+                class="bi bi-folder-plus text-xl group-hover:scale-110 transition-transform"
+              ></i>
+              <span>Save Draft</span>
+            </button>
+
+            <button
+              type="submit"
+              id="submitBtn"
+              class="flex-1 py-5 rounded-xl bg-gradient-to-r from-orange-500 via-red-600 to-orange-500 text-white font-bold text-xl shadow-2xl shadow-orange-500/50 hover:shadow-orange-500/70 transition-all duration-500 flex items-center justify-center gap-3 group disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
+              style="background-size: 200% auto;"
+            >
+              <div
+                class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
+              ></div>
+              <i
+                class="bi bi-gavel text-2xl group-hover:rotate-12 transition-transform relative z-10"
+              ></i>
+              <span class="relative z-10">Launch Auction Now</span>
+            </button>
+          </div>
+
+          <p class="text-center text-sm text-gray-500 mt-6">
+            <i class="bi bi-shield-check text-green-500 mr-2"></i>
+            Your auction will go live immediately and start accepting bids
+          </p>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+<!-- Success Modal -->
+{{#if successMessage}}
+  <div
+    class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade-in"
+  >
+    <div
+      class="glass-strong rounded-3xl p-8 md:p-12 max-w-2xl w-full text-center animate-scale-in border-2 border-green-500/30"
+    >
+      <div
+        class="w-28 h-28 mx-auto mb-6 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center animate-scale-in shadow-2xl shadow-green-500/50"
+      >
+        <i class="bi bi-check-lg text-6xl text-white"></i>
+      </div>
+
+      <h2 class="text-5xl font-black font-display mb-4">
+        <span class="text-gradient">Auction Live!</span>
+      </h2>
+
+      <p class="text-gray-300 text-xl mb-8">
+        {{successMessage}}
+      </p>
+
+      <div class="bg-gray-800/50 rounded-2xl p-8 mb-8">
+        <p class="text-sm text-gray-400 mb-3">Your Auction ID</p>
+        <p
+          class="text-4xl font-bold text-orange-500 font-mono"
+        >{{auctionId}}</p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 mb-8">
+        <a
+          href="/auctions/{{auctionId}}"
+          class="px-6 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold hover:shadow-xl hover:shadow-orange-500/30 transition-all"
+        >
+          <i class="bi bi-eye mr-2"></i>View Auction
+        </a>
+        <a
+          href="/dashboard/farmer"
+          class="px-6 py-4 rounded-xl glass border border-gray-700 text-white font-bold hover:bg-gray-800/50 transition-all"
+        >
+          <i class="bi bi-house-door mr-2"></i>Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+{{/if}}
+
+<script>
+  // Character counter for description const descTextarea =
+  document.querySelector('textarea[name="description"]'); const descCharCount =
+  document.getElementById('descCharCount'); const descCharCountWrapper =
+  document.getElementById('descCharCountWrapper'); if (descTextarea &&
+  descCharCount) { descTextarea.addEventListener('input', (e) => { const count =
+  e.target.value.length; descCharCount.textContent = count; if (count >= 50) {
+  descCharCount.classList.add('text-green-500');
+  descCharCount.classList.remove('text-red-500'); } else {
+  descCharCount.classList.add('text-red-500');
+  descCharCount.classList.remove('text-green-500'); } }); } // Live Preview
+  Updates const animalTypeSelect =
+  document.querySelector('select[name="animalType"]'); const breedInput =
+  document.querySelector('input[name="breed"]'); const weightInput =
+  document.querySelector('input[name="weight"]'); const locationInput =
+  document.querySelector('input[name="location"]'); const updatePreview = () =>
+  { const categoryMap = { '1': 'Cattle', '2': 'Goat', '3': 'Sheep', '4': 'Pig',
+  '5': 'Poultry', '6': 'Rabbit', '7': 'Duck' }; if (animalTypeSelect?.value) {
+  document.getElementById('previewCategory').textContent =
+  categoryMap[animalTypeSelect.value] || '-'; } if (breedInput?.value) {
+  document.getElementById('previewBreed').textContent = breedInput.value || '-';
+  } if (weightInput?.value) {
+  document.getElementById('previewWeight').textContent = weightInput.value + '
+  KG' || '-'; } if (locationInput?.value) {
+  document.getElementById('previewLocation').textContent = locationInput.value
+  || '-'; } }; animalTypeSelect?.addEventListener('change', updatePreview);
+  breedInput?.addEventListener('input', updatePreview);
+  weightInput?.addEventListener('input', updatePreview);
+  locationInput?.addEventListener('input', updatePreview); // Vaccination toggle
+  const vaccinatedToggle = document.getElementById('vaccinatedToggle'); const
+  vaccinatedLabel = document.getElementById('vaccinatedLabel'); const
+  vaccinationLicenseSection =
+  document.getElementById('vaccinationLicenseSection'); const vaccinationLicense
+  = document.getElementById('vaccinationLicense');
+  vaccinatedToggle?.addEventListener('change', (e) => { if (e.target.checked) {
+  vaccinatedLabel.textContent = 'Yes';
+  vaccinatedLabel.classList.add('text-green-500');
+  vaccinatedLabel.classList.remove('text-gray-400');
+  vaccinationLicenseSection.classList.remove('hidden');
+  vaccinationLicenseSection.classList.add('animate-slide-up');
+  vaccinationLicense.required = true; } else { vaccinatedLabel.textContent =
+  'No'; vaccinatedLabel.classList.remove('text-green-500');
+  vaccinatedLabel.classList.add('text-gray-400');
+  vaccinationLicenseSection.classList.add('hidden'); vaccinationLicense.required
+  = false; } }); // Photo upload handler const photoInput =
+  document.getElementById('animalPhotosInput'); const photoPreviewGrid =
+  document.getElementById('photoPreviewGrid'); const uploadPrompt =
+  document.getElementById('uploadPrompt');
+  photoInput?.addEventListener('change', (e) => { const files = e.target.files;
+  console.log('Files selected:', files.length); if (files.length > 0) {
+  photoPreviewGrid.innerHTML = ''; photoPreviewGrid.classList.remove('hidden');
+  uploadPrompt.classList.add('hidden'); Array.from(files).forEach((file, index)
+  => { if (file.size > 5 * 1024 * 1024) { alert(`${file.name} is too large. Max
+  size is 5MB`); return; } const reader = new FileReader(); reader.onload =
+  (event) => { const div = document.createElement('div'); div.className =
+  'image-preview-card group'; div.innerHTML = ` <img
+  src="${event.target.result}" alt="Animal ${index + 1}" /> <div class="absolute
+  inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex
+  flex-col items-center justify-center gap-2"> <button type="button"
+  onclick="removeAllPhotos()" class="px-4 py-2 bg-red-500 rounded-lg text-white
+  text-sm font-bold hover:bg-red-600 transition-colors"> <i class="bi
+  bi-trash"></i> Remove </button> <span class="text-xs text-white">${(file.size
+  / 1024).toFixed(0)}KB</span> </div> <div class="absolute top-2 left-2 px-2
+  py-1 bg-orange-500 rounded-full text-xs font-bold text-white"> ${index + 1}
+  </div> `; photoPreviewGrid.appendChild(div); }; reader.readAsDataURL(file);
+  }); // Update step 2 progress
+  document.getElementById('step2')?.classList.add('completed');
+  if(document.getElementById('step2')) {
+  document.getElementById('step2').innerHTML = '<i class="bi bi-check-lg
+  text-xl"></i>'; } } }); window.removeAllPhotos = function() { if(photoInput)
+  photoInput.value = ''; if(uploadPrompt)
+  uploadPrompt.classList.remove('hidden'); if(photoPreviewGrid) {
+  photoPreviewGrid.classList.add('hidden'); photoPreviewGrid.innerHTML = ''; }
+  document.getElementById('step2')?.classList.remove('completed');
+  if(document.getElementById('step2')) {
+  document.getElementById('step2').innerHTML = '<i class="bi bi-images
+  text-xl"></i>'; } }; // Drag and drop const uploadZone =
+  document.querySelector('.photo-upload-zone');
+  uploadZone?.addEventListener('dragover', (e) => { e.preventDefault();
+  uploadZone.classList.add('active'); });
+  uploadZone?.addEventListener('dragleave', () => {
+  uploadZone.classList.remove('active'); });
+  uploadZone?.addEventListener('drop', (e) => { e.preventDefault();
+  uploadZone.classList.remove('active'); photoInput.files =
+  e.dataTransfer.files; photoInput.dispatchEvent(new Event('change', { bubbles:
+  true })); }); // Price calculator
+  document.getElementById('calculatePrice')?.addEventListener('click', () => {
+  const animalType = document.querySelector('select[name="animalType"]').value;
+  const weight =
+  parseFloat(document.querySelector('input[name="weight"]').value) || 0; const
+  age = parseFloat(document.querySelector('input[name="ageYears"]').value) || 0;
+  if (animalType && weight > 0) { // Simple calculation logic (adjust based on
+  your market data) const basePrice = { '1': 1500000, // Cattle '2': 400000, //
+  Goat '3': 350000, // Sheep '4': 300000, // Pig '5': 50000, // Poultry }; const
+  base = basePrice[animalType] || 100000; const weightFactor = weight * 2000;
+  const ageFactor = age * 50000; const estimated = base + weightFactor +
+  ageFactor; const recommendedStart = Math.floor(estimated * 0.7); const
+  expectedHigh = Math.floor(estimated * 1.3);
+  document.getElementById('marketAvg').textContent = `UGX
+  ${estimated.toLocaleString()}`;
+  document.getElementById('recommendedStart').textContent = `UGX
+  ${recommendedStart.toLocaleString()}`;
+  document.getElementById('expectedRange').textContent =
+  `${recommendedStart.toLocaleString()}-${expectedHigh.toLocaleString()}`; //
+  Auto-fill starting price document.getElementById('startingPrice').value =
+  recommendedStart; // Update step 3
+  document.getElementById('step3').classList.add('completed');
+  document.getElementById('step3').innerHTML = '<i class="bi bi-check-lg
+  text-xl"></i>'; } else { alert('Please fill in animal type and weight first');
+  } }); // Auction duration calculator function updateDurationPreview() { const
+  endDate = document.getElementById('endDate').value; const endTime =
+  document.getElementById('endTime').value; if (endDate && endTime) { const
+  endDateTime = new Date(`${endDate}T${endTime}`); const now = new Date(); const
+  diff = endDateTime - now; if (diff > 0) { const days = Math.floor(diff / (1000
+  * 60 * 60 * 24)); const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) /
+  (1000 * 60 * 60)); const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 *
+  60)); document.getElementById('daysLeft').textContent =
+  String(days).padStart(2, '0');
+  document.getElementById('hoursLeft').textContent = String(hours).padStart(2,
+  '0'); document.getElementById('minsLeft').textContent =
+  String(mins).padStart(2, '0');
+  document.getElementById('durationPreview').textContent = `Auction will run for
+  ${days} days, ${hours} hours, and ${mins} minutes`; // Update step 4
+  document.getElementById('step4').classList.add('completed');
+  document.getElementById('step4').innerHTML = '<i class="bi bi-check-lg
+  text-xl"></i>'; } else {
+  document.getElementById('durationPreview').textContent = 'End time must be in
+  the future'; } } }
+  document.getElementById('endDate')?.addEventListener('change',
+  updateDurationPreview);
+  document.getElementById('endTime')?.addEventListener('change',
+  updateDurationPreview); // Set minimum date to tomorrow const tomorrow = new
+  Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+  document.getElementById('endDate').min = tomorrow.toISOString().split('T')[0];
+  // Form submission
+  document.getElementById('auctionForm')?.addEventListener('submit', (e) => {
+  const terms = document.getElementById('termsCheckbox'); if (!terms.checked) {
+  e.preventDefault(); alert('You must agree to the terms and conditions');
+  terms.focus(); return; } const submitBtn =
+  document.getElementById('submitBtn'); submitBtn.disabled = true;
+  submitBtn.innerHTML = ` <i class="bi bi-hourglass-split animate-spin
+  text-2xl"></i> <span>Creating Your Auction...</span> `; }); // Save Draft
+  functionality
+  document.getElementById('saveDraftBtn')?.addEventListener('click', () => {
+  const formData = new FormData(document.getElementById('auctionForm')); const
+  draftData = {}; for (let [key, value] of formData.entries()) { if (key !==
+  'animalPhotos' && key !== 'lc1Document') { draftData[key] = value; } }
+  localStorage.setItem('auctionDraft', JSON.stringify(draftData)); // Show
+  success message const btn = document.getElementById('saveDraftBtn'); const
+  originalHTML = btn.innerHTML; btn.innerHTML = '<i class="bi bi-check-circle
+  text-green-500 text-xl"></i><span>Draft Saved!</span>';
+  btn.classList.add('border-green-500', 'bg-green-500/10'); setTimeout(() => {
+  btn.innerHTML = originalHTML; btn.classList.remove('border-green-500',
+  'bg-green-500/10'); }, 2000); }); // Load draft on page load
+  window.addEventListener('DOMContentLoaded', () => { const savedDraft =
+  localStorage.getItem('auctionDraft'); if (savedDraft) { try { const draftData
+  = JSON.parse(savedDraft); Object.keys(draftData).forEach(key => { const input
+  = document.querySelector(`[name="${key}"]`); if (input) { if (input.type ===
+  'radio') { const radio =
+  document.querySelector(`[name="${key}"][value="${draftData[key]}"]`); if
+  (radio) radio.checked = true; } else if (input.type === 'checkbox') {
+  input.checked = draftData[key] === 'on'; } else { input.value =
+  draftData[key]; } } }); } catch (e) { console.error('Error loading draft:',
+  e); } } }); // Progress tracking const form =
+  document.getElementById('auctionForm'); const sections =
+  document.querySelectorAll('.form-section'); // Update steps based on form
+  completion form?.addEventListener('input', () => { // Step 1 check const
+  animalType = document.querySelector('select[name="animalType"]').value; const
+  breed = document.querySelector('input[name="breed"]').value; const weight =
+  document.querySelector('input[name="weight"]').value; if (animalType && breed
+  && weight) { document.getElementById('step1').classList.add('completed');
+  document.getElementById('step1').innerHTML = '<i class="bi bi-check-lg
+  text-xl"></i>'; } });
+</script>

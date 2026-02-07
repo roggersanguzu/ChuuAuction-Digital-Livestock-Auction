@@ -1,0 +1,2145 @@
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChuuAuction — Admin Command Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Bricolage+Grotesque:opsz,wght@12..60,400;12..60,500;12..60,600;12..60,700;12..60,800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: {
+      'display': ['Bricolage Grotesque', 'system-ui', 'sans-serif'], 'body':
+      ['Outfit', 'system-ui', 'sans-serif'], }, colors: { 'admin': {
+      50:'#fff7ed', 100:'#ffedd5', 200:'#fed7aa', 300:'#fdba74', 400:'#fb923c',
+      500:'#f97316', 600:'#ea580c', 700:'#c2410c', 800:'#9a3412', 900:'#7c2d12'
+      }, }, animation: { 'float': 'float 6s ease-in-out infinite', 'pulse-slow':
+      'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite', 'fade-in': 'fadeIn 0.6s
+      ease-out forwards', 'slide-up': 'slideUp 0.5s cubic-bezier(0.23,1,0.32,1)
+      forwards', 'glow-pulse': 'glowPulse 2s ease-in-out infinite', 'spin-slow':
+      'spin 8s linear infinite', 'counter': 'counterPulse 0.3s ease-out',
+      'toast-in': 'toastIn 0.4s cubic-bezier(0.23,1,0.32,1) forwards',
+      'toast-out': 'toastOut 0.3s ease-in forwards', 'bar-grow': 'barGrow 1s
+      cubic-bezier(0.23,1,0.32,1) forwards', 'ring-ping': 'ringPing 2s
+      cubic-bezier(0, 0, 0.2, 1) infinite', }, keyframes: { float: { '0%,100%':
+      {transform:'translateY(0)'}, '50%': {transform:'translateY(-12px)'} },
+      fadeIn: { '0%': {opacity:'0',transform:'translateY(8px)'}, '100%':
+      {opacity:'1',transform:'translateY(0)'} }, slideUp: { '0%':
+      {opacity:'0',transform:'translateY(20px)'}, '100%':
+      {opacity:'1',transform:'translateY(0)'} }, glowPulse: { '0%,100%':
+      {boxShadow:'0 0 8px rgba(249,115,22,0.3)'}, '50%': {boxShadow:'0 0 24px
+      rgba(249,115,22,0.6)'} }, counterPulse: { '0%': {transform:'scale(1.2)'},
+      '100%': {transform:'scale(1)'} }, toastIn: { '0%':
+      {opacity:'0',transform:'translateX(120%)'}, '100%':
+      {opacity:'1',transform:'translateX(0)'} }, toastOut: { '0%':
+      {opacity:'1',transform:'translateX(0)'}, '100%':
+      {opacity:'0',transform:'translateX(120%)'} }, barGrow: { '0%':
+      {width:'0%'}, '100%': {} }, ringPing: { '0%':
+      {transform:'scale(.8)',opacity:'1'}, '75%,100%':
+      {transform:'scale(2)',opacity:'0'} }, }, backgroundImage: { 'grid-sm':
+      "linear-gradient(rgba(249,115,22,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(249,115,22,0.04) 1px, transparent 1px)", },
+      backgroundSize: { 'grid-sm': '40px 40px' }, } } };
+    </script>
+
+    <style>
+      .font-display {
+        font-family: "Bricolage Grotesque", system-ui, sans-serif;
+      }
+      .font-body {
+        font-family: "Outfit", system-ui, sans-serif;
+      }
+
+      /* Gradient Text */
+      .text-gradient {
+        background: linear-gradient(135deg, #f97316, #dc2626, #ea580c);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        background-size: 200% 200%;
+        animation: gradientShift 3s ease infinite;
+      }
+      @keyframes gradientShift {
+        0%,100%: {
+          background-position: 0% 50%;
+        }
+        50%: {
+          background-position: 100% 50%;
+        }
+      }
+
+      /* Glass Morphism */
+      .glass {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .glass-sm {
+        background: rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #111827;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #f97316, #dc2626);
+        border-radius: 3px;
+      }
+
+      /* Sidebar Nav Active Indicator */
+      .nav-link {
+        position: relative;
+      }
+      .nav-link::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(180deg, #f97316, #dc2626);
+        border-radius: 0 3px 3px 0;
+        transform: scaleY(0);
+        transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      .nav-link:hover::before,
+      .nav-link.active::before {
+        transform: scaleY(1);
+      }
+
+      /* Shimmer on cards */
+      .shimmer-card {
+        position: relative;
+        overflow: hidden;
+      }
+      .shimmer-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          105deg,
+          transparent 40%,
+          rgba(255, 255, 255, 0.03) 50%,
+          transparent 60%
+        );
+        background-size: 200% 100%;
+        animation: shimmerMove 3s infinite;
+        pointer-events: none;
+      }
+      @keyframes shimmerMove {
+        0%: {
+          background-position: 200% 0;
+        }
+        100%: {
+          background-position: -200% 0;
+        }
+      }
+
+      /* Toast */
+      #toast-container {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-end;
+      }
+
+      /* Dropdown */
+      .dropdown-panel {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition:
+          max-height 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+          opacity 0.3s ease;
+      }
+      .dropdown-panel.open {
+        max-height: 300px;
+        opacity: 1;
+      }
+
+      /* Sticky header */
+      .sticky-top {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      /* Sidebar overlay mobile */
+      #sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(3px);
+        z-index: 40;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+      }
+      #sidebar-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /* Chart tooltip */
+      .chart-tooltip {
+        position: absolute;
+        background: rgba(17, 24, 39, 0.95);
+        border: 1px solid rgba(249, 115, 22, 0.4);
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 10px;
+        font-size: 12px;
+        pointer-events: none;
+        white-space: nowrap;
+        z-index: 20;
+        transition: opacity 0.15s;
+      }
+
+      /* Progress ring */
+      .progress-ring-circle {
+        transition: stroke-dashoffset 1s cubic-bezier(0.23, 1, 0.32, 1);
+        transform: rotate(-90deg);
+        transform-origin: 50% 50%;
+      }
+
+      /* Status dot pulse */
+      .status-online {
+        position: relative;
+      }
+      .status-online::after {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        border-radius: 50%;
+        background: inherit;
+        animation: ringPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+      }
+
+      /* Tab underline */
+      .tab-underline {
+        position: relative;
+      }
+      .tab-underline::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #f97316, #dc2626);
+        border-radius: 1px;
+        transform: scaleX(0);
+        transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      .tab-underline.active::after {
+        transform: scaleX(1);
+      }
+
+      /* Mask fade edges on scroll containers */
+      .fade-edges {
+        -webkit-mask-image: linear-gradient(
+          to right,
+          transparent,
+          black 5%,
+          black 95%,
+          transparent
+        );
+        mask-image: linear-gradient(
+          to right,
+          transparent,
+          black 5%,
+          black 95%,
+          transparent
+        );
+      }
+
+      /* Hexagonal pattern bg */
+      .hex-bg {
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='52' viewBox='0 0 60 52' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 2L58 17V45L30 50L2 45V17L30 2Z' stroke='rgba(249,115,22,0.06)' fill='none'/%3E%3C/svg%3E");
+        background-size: 60px 52px;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-gray-950 text-white font-body overflow-x-hidden">
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Sidebar Overlay (Mobile) -->
+    <div id="sidebar-overlay"></div>
+
+    <!-- ============================================================ SIDEBAR ============================================================ -->
+    <aside
+      id="sidebar"
+      class="fixed left-0 top-0 h-full w-72 glass border-r border-gray-800/40 z-50 -translate-x-full lg:translate-x-0 transition-transform duration-500 hex-bg flex flex-col"
+    >
+
+      <!-- Logo -->
+      <div class="p-5 border-b border-gray-800/40">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center shadow-lg shadow-orange-500/30"
+          >
+            <i class="bi bi-shield-check text-white text-xl"></i>
+          </div>
+          <div>
+            <h1 class="text-lg font-black font-display leading-tight"><span
+                class="text-gradient"
+              >Chuu</span><span class="text-white">Auction</span></h1>
+            <p
+              class="text-xs text-gray-500 font-semibold tracking-widest uppercase"
+            >Admin Panel</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+
+        <!-- Section Label -->
+        <p
+          class="text-xs text-gray-600 font-semibold tracking-widest uppercase px-4 mb-2 mt-1"
+        >Overview</p>
+
+        <a
+          href="#"
+          class="nav-link active flex items-center gap-3 px-4 py-2.5 rounded-xl bg-gray-800/40 group"
+          onclick="switchTab('dashboard',this)"
+        >
+          <div
+            class="w-9 h-9 rounded-lg bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center"
+          >
+            <i class="bi bi-speedometer2 text-orange-400 text-lg"></i>
+          </div>
+          <span
+            class="font-semibold text-sm text-gray-200 group-hover:text-white transition-colors"
+          >Dashboard</span>
+        </a>
+
+        <a
+          href="#"
+          class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
+          onclick="switchTab('analytics',this)"
+        >
+          <div
+            class="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-600/20 flex items-center justify-center"
+          >
+            <i class="bi bi-bar-chart text-blue-400 text-lg"></i>
+          </div>
+          <span
+            class="font-semibold text-sm text-gray-400 group-hover:text-white transition-colors"
+          >Analytics</span>
+        </a>
+
+        <!-- Section Label -->
+        <p
+          class="text-xs text-gray-600 font-semibold tracking-widest uppercase px-4 mb-2 mt-4"
+        >Management</p>
+
+        <a
+          href="#"
+          class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
+          onclick="switchTab('users',this)"
+        >
+          <div
+            class="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-500/20 to-teal-600/20 flex items-center justify-center"
+          >
+            <i class="bi bi-people text-emerald-400 text-lg"></i>
+          </div>
+          <span
+            class="font-semibold text-sm text-gray-400 group-hover:text-white transition-colors"
+          >User Management</span>
+          <span
+            class="ml-auto text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full"
+          >142</span>
+        </a>
+
+        <a
+          href="#"
+          class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
+          onclick="switchTab('auctions',this)"
+        >
+          <div
+            class="w-9 h-9 rounded-lg bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center"
+          >
+            <i class="bi bi-hammer text-orange-400 text-lg"></i>
+          </div>
+          <span
+            class="font-semibold text-sm text-gray-400 group-hover:text-white transition-colors"
+          >Live Auctions</span>
+          <span
+            class="ml-auto text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full animate-pulse"
+          >12</span>
+        </a>
+
+        <a
+          href="#"
+          class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
+          onclick="switchTab('transactions',this)"
+        >
+          <div
+            class="w-9 h-9 rounded-lg bg-gradient-to-br from-purple-500/20 to-violet-600/20 flex items-center justify-center"
+          >
+            <i class="bi bi-cash-stack text-purple-400 text-lg"></i>
+          </div>
+          <span
+            class="font-semibold text-sm text-gray-400 group-hover:text-white transition-colors"
+          >Transactions</span>
+        </a>
+
+        <!-- Section Label -->
+        <p
+          class="text-xs text-gray-600 font-semibold tracking-widest uppercase px-4 mb-2 mt-4"
+        >Control</p>
+
+        <a
+          href="#"
+          class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
+          onclick="switchTab('moderation',this)"
+        >
+          <div
+            class="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500/20 to-yellow-600/20 flex items-center justify-center"
+          >
+            <i class="bi bi-shield-exclamation text-amber-400 text-lg"></i>
+          </div>
+          <span
+            class="font-semibold text-sm text-gray-400 group-hover:text-white transition-colors"
+          >Moderation</span>
+          <span
+            class="ml-auto text-xs bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full"
+          >7</span>
+        </a>
+
+        <a
+          href="#"
+          class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
+          onclick="switchTab('system',this)"
+        >
+          <div
+            class="w-9 h-9 rounded-lg bg-gradient-to-br from-sky-500/20 to-indigo-600/20 flex items-center justify-center"
+          >
+            <i class="bi bi-cpu text-sky-400 text-lg"></i>
+          </div>
+          <span
+            class="font-semibold text-sm text-gray-400 group-hover:text-white transition-colors"
+          >System Health</span>
+          <span class="ml-auto"><span
+              class="status-online inline-block w-2.5 h-2.5 bg-green-500 rounded-full"
+            ></span></span>
+        </a>
+
+        <a
+          href="#"
+          class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
+        >
+          <div
+            class="w-9 h-9 rounded-lg bg-gradient-to-br from-gray-500/20 to-gray-700/20 flex items-center justify-center"
+          >
+            <i class="bi bi-gear text-gray-400 text-lg"></i>
+          </div>
+          <span
+            class="font-semibold text-sm text-gray-400 group-hover:text-white transition-colors"
+          >Settings</span>
+        </a>
+
+      </nav>
+
+      <!-- Admin Profile -->
+      <!-- Admin Profile -->
+      <div class="p-4 border-t border-gray-800/40">
+        <form action="/auth/logout" method="POST" class="w-full">
+          <button
+            type="submit"
+            class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-800/30 cursor-pointer transition-colors group"
+          >
+            <div
+              class="w-9 h-9 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center font-bold text-sm shadow-md shadow-orange-500/40"
+            >
+              SA
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold truncate">Super Admin</p>
+              <p class="text-xs text-gray-500 truncate">admin@chuuauction.co</p>
+            </div>
+            <i
+              class="bi bi-box-arrow-left text-gray-600 group-hover:text-red-400 transition-colors text-sm"
+            ></i>
+          </button>
+        </form>
+      </div>
+
+      <!-- Close btn mobile -->
+      <button
+        id="sidebar-close"
+        class="absolute top-4 right-4 w-7 h-7 rounded-lg hover:bg-gray-800/50 flex items-center justify-center lg:hidden"
+      >
+        <i class="bi bi-x-lg text-gray-400 text-sm"></i>
+      </button>
+    </aside>
+
+    <!-- Mobile toggle -->
+    <button
+      id="mobile-menu-btn"
+      class="fixed top-5 left-5 z-50 w-10 h-10 rounded-xl glass border border-orange-500/30 flex items-center justify-center lg:hidden hover:bg-orange-500/10 transition-colors"
+    >
+      <i class="bi bi-list text-xl text-white"></i>
+    </button>
+
+    <!-- ============================================================ MAIN ============================================================ -->
+    <main class="lg:ml-72 min-h-screen relative z-10">
+
+      <!-- Ambient Background -->
+      <div
+        class="fixed inset-0 pointer-events-none overflow-hidden"
+        style="z-index:0;"
+      >
+        <div
+          class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-orange-500/8 rounded-full blur-[120px] animate-float"
+        ></div>
+        <div
+          class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-red-600/8 rounded-full blur-[100px] animate-float"
+          style="animation-delay:3s;"
+        ></div>
+        <div
+          class="absolute inset-0 bg-grid-sm bg-gray-950"
+          style="opacity:0.6;"
+        ></div>
+      </div>
+
+      <div class="relative z-10 p-4 lg:p-7">
+
+        <!-- ===== TOP BAR ===== -->
+        <div
+          class="sticky-top bg-gray-950/80 backdrop-blur-xl border-b border-gray-800/40 -mx-4 lg:-mx-7 px-4 lg:px-7 py-4 mb-6 flex items-center justify-between gap-4"
+        >
+          <!-- Search -->
+          <div class="relative flex-1 max-w-md">
+            <i
+              class="bi bi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-sm"
+            ></i>
+            <input
+              id="global-search"
+              type="text"
+              placeholder="Search users, auctions, transactions…"
+              class="w-full bg-gray-900/60 border border-gray-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/20 transition-all"
+            />
+            <span
+              class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-gray-600 border border-gray-700 rounded px-1.5 py-0.5"
+            >⌘K</span>
+          </div>
+
+          <!-- Right cluster -->
+          <div class="flex items-center gap-2.5">
+            <!-- Real-time indicator -->
+            <div
+              class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-500/10 border border-green-500/20"
+            >
+              <span
+                class="w-2 h-2 bg-green-500 rounded-full animate-pulse"
+              ></span>
+              <span class="text-xs text-green-400 font-semibold">Live</span>
+            </div>
+
+            <!-- Notifications -->
+            <button
+              class="relative w-10 h-10 rounded-xl hover:bg-gray-800/50 flex items-center justify-center transition-colors"
+              onclick="toggleNotifications()"
+            >
+              <i
+                class="bi bi-bell text-gray-400 hover:text-white transition-colors"
+              ></i>
+              <span
+                class="absolute -top-0.5 -right-0.5 w-4.5 h-4.5 bg-red-500 rounded-full flex items-center justify-center text-[10px] font-bold"
+                style="width:18px;height:18px;"
+              >7</span>
+            </button>
+
+            <!-- Notification Dropdown -->
+            <div
+              id="notif-dropdown"
+              class="dropdown-panel absolute top-14 right-4 w-96 bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl shadow-black/40 overflow-hidden"
+            >
+              <div
+                class="p-4 border-b border-gray-800 flex items-center justify-between"
+              >
+                <span class="font-semibold text-sm">Notifications</span>
+                <button
+                  class="text-xs text-orange-500 hover:text-orange-400"
+                >Mark all read</button>
+              </div>
+              <div class="max-h-64 overflow-y-auto">
+                <div
+                  class="flex items-start gap-3 p-3.5 hover:bg-gray-800/40 cursor-pointer transition-colors border-l-2 border-orange-500"
+                >
+                  <div
+                    class="w-8 h-8 rounded-lg bg-orange-500/20 flex items-center justify-center flex-shrink-0"
+                  ><i class="bi bi-hammer text-orange-500 text-sm"></i></div>
+                  <div><p class="text-xs font-semibold text-white">Auction
+                      ending soon</p><p
+                      class="text-xs text-gray-500 mt-0.5"
+                    >Cattle auction #847 ends in 12 minutes</p><p
+                      class="text-xs text-gray-600 mt-1"
+                    >2 min ago</p></div>
+                </div>
+                <div
+                  class="flex items-start gap-3 p-3.5 hover:bg-gray-800/40 cursor-pointer transition-colors border-l-2 border-amber-500"
+                >
+                  <div
+                    class="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center flex-shrink-0"
+                  ><i
+                      class="bi bi-shield-exclamation text-amber-500 text-sm"
+                    ></i></div>
+                  <div><p class="text-xs font-semibold text-white">Flagged
+                      listing</p><p class="text-xs text-gray-500 mt-0.5">Listing
+                      #1204 flagged by buyer for review</p><p
+                      class="text-xs text-gray-600 mt-1"
+                    >18 min ago</p></div>
+                </div>
+                <div
+                  class="flex items-start gap-3 p-3.5 hover:bg-gray-800/40 cursor-pointer transition-colors border-l-2 border-green-500"
+                >
+                  <div
+                    class="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center flex-shrink-0"
+                  ><i
+                      class="bi bi-check-circle text-green-500 text-sm"
+                    ></i></div>
+                  <div><p class="text-xs font-semibold text-white">Payment
+                      confirmed</p><p class="text-xs text-gray-500 mt-0.5">UGX
+                      2,400,000 received for auction #842</p><p
+                      class="text-xs text-gray-600 mt-1"
+                    >1 hr ago</p></div>
+                </div>
+                <div
+                  class="flex items-start gap-3 p-3.5 hover:bg-gray-800/40 cursor-pointer transition-colors border-l-2 border-blue-500"
+                >
+                  <div
+                    class="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center flex-shrink-0"
+                  ><i class="bi bi-person-plus text-blue-500 text-sm"></i></div>
+                  <div><p class="text-xs font-semibold text-white">New user
+                      registered</p><p
+                      class="text-xs text-gray-500 mt-0.5"
+                    >Sarah Amoako joined as a Buyer</p><p
+                      class="text-xs text-gray-600 mt-1"
+                    >3 hr ago</p></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Admin avatar -->
+            <div
+              class="w-9 h-9 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center font-bold text-xs shadow-md shadow-orange-500/30"
+            >SA</div>
+          </div>
+        </div>
+
+        <!-- ===== PAGE HEADER ===== -->
+        <div class="mb-6 animate-fade-in">
+          <div class="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <h1
+                class="text-3xl lg:text-4xl font-black font-display leading-tight"
+              >Admin <span class="text-gradient">Command Center</span></h1>
+              <p class="text-gray-500 text-sm mt-1">Full platform oversight ·
+                <span class="text-green-400">142 active users</span>
+                ·
+                <span class="text-orange-400">12 live auctions</span></p>
+            </div>
+            <!-- Date range picker style -->
+            <div
+              class="flex items-center gap-2 bg-gray-900/60 border border-gray-800 rounded-xl px-4 py-2"
+            >
+              <i class="bi bi-calendar3 text-gray-500 text-sm"></i>
+              <span class="text-sm text-gray-300">Jan 2025 – Feb 2025</span>
+              <i class="bi bi-chevron-down text-gray-500 text-xs"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================ TAB PANELS ============================================================ -->
+
+        <!-- ===== DASHBOARD TAB ===== -->
+        <div id="tab-dashboard" class="tab-panel">
+
+          <!-- KPI Cards Row -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <!-- KPI 1 -->
+            <div
+              class="shimmer-card glass border border-gray-800/40 rounded-2xl p-5 hover:border-orange-500/40 transition-all duration-300 group cursor-pointer animate-slide-up"
+              style="animation-delay:0s;"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <div
+                  class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
+                >
+                  <i class="bi bi-currency-dollar text-green-400 text-lg"></i>
+                </div>
+                <span
+                  class="text-[11px] px-2 py-0.5 rounded-full bg-green-500/15 text-green-400 font-semibold flex items-center gap-1"
+                ><i class="bi bi-arrow-up text-[9px]"></i>18.2%</span>
+              </div>
+              <p class="text-2xl font-black font-display text-white">UGX 12.4M</p>
+              <p class="text-xs text-gray-500 mt-0.5">Total Revenue</p>
+              <div
+                class="mt-3 h-1 bg-gray-800 rounded-full overflow-hidden"
+              ><div
+                  class="h-full bg-gradient-to-r from-green-500 to-emerald-400 rounded-full"
+                  style="width:72%;"
+                ></div></div>
+            </div>
+
+            <!-- KPI 2 -->
+            <div
+              class="shimmer-card glass border border-gray-800/40 rounded-2xl p-5 hover:border-blue-500/40 transition-all duration-300 group cursor-pointer animate-slide-up"
+              style="animation-delay:0.08s;"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <div
+                  class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
+                >
+                  <i class="bi bi-people text-blue-400 text-lg"></i>
+                </div>
+                <span
+                  class="text-[11px] px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-400 font-semibold flex items-center gap-1"
+                ><i class="bi bi-arrow-up text-[9px]"></i>4.1%</span>
+              </div>
+              <p class="text-2xl font-black font-display text-white">142</p>
+              <p class="text-xs text-gray-500 mt-0.5">Active Users</p>
+              <div
+                class="mt-3 h-1 bg-gray-800 rounded-full overflow-hidden"
+              ><div
+                  class="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"
+                  style="width:58%;"
+                ></div></div>
+            </div>
+
+            <!-- KPI 3 -->
+            <div
+              class="shimmer-card glass border border-gray-800/40 rounded-2xl p-5 hover:border-orange-500/40 transition-all duration-300 group cursor-pointer animate-slide-up"
+              style="animation-delay:0.16s;"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <div
+                  class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
+                >
+                  <i class="bi bi-hammer text-orange-400 text-lg"></i>
+                </div>
+                <span
+                  class="text-[11px] px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 font-semibold flex items-center gap-1"
+                ><i
+                    class="bi bi-circle-fill text-[6px] animate-pulse"
+                  ></i>Live</span>
+              </div>
+              <p class="text-2xl font-black font-display text-white">12</p>
+              <p class="text-xs text-gray-500 mt-0.5">Active Auctions</p>
+              <div
+                class="mt-3 h-1 bg-gray-800 rounded-full overflow-hidden"
+              ><div
+                  class="h-full bg-gradient-to-r from-orange-500 to-red-500 rounded-full animate-pulse"
+                  style="width:40%;"
+                ></div></div>
+            </div>
+
+            <!-- KPI 4 -->
+            <div
+              class="shimmer-card glass border border-gray-800/40 rounded-2xl p-5 hover:border-purple-500/40 transition-all duration-300 group cursor-pointer animate-slide-up"
+              style="animation-delay:0.24s;"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <div
+                  class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-violet-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
+                >
+                  <i class="bi bi-trophy text-purple-400 text-lg"></i>
+                </div>
+                <span
+                  class="text-[11px] px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-400 font-semibold"
+                >Top</span>
+              </div>
+              <p class="text-2xl font-black font-display text-white">94.2%</p>
+              <p class="text-xs text-gray-500 mt-0.5">Success Rate</p>
+              <div
+                class="mt-3 h-1 bg-gray-800 rounded-full overflow-hidden"
+              ><div
+                  class="h-full bg-gradient-to-r from-purple-500 to-violet-400 rounded-full"
+                  style="width:94%;"
+                ></div></div>
+            </div>
+          </div>
+
+          <!-- Second KPI Row -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div
+              class="glass border border-gray-800/40 rounded-2xl p-5 hover:border-teal-500/40 transition-all animate-slide-up"
+              style="animation-delay:0.3s;"
+            >
+              <div class="flex items-center gap-3 mb-2">
+                <div
+                  class="w-9 h-9 rounded-lg bg-teal-500/15 flex items-center justify-center"
+                ><i class="bi bi-person-check text-teal-400"></i></div>
+                <div>
+                  <p class="text-lg font-black font-display text-white">89</p>
+                  <p class="text-xs text-gray-500">Farmers</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 mt-2"><span
+                  class="text-[11px] text-green-400 flex items-center gap-1"
+                ><i class="bi bi-arrow-up text-[9px]"></i>+3 this week</span></div>
+            </div>
+            <div
+              class="glass border border-gray-800/40 rounded-2xl p-5 hover:border-pink-500/40 transition-all animate-slide-up"
+              style="animation-delay:0.36s;"
+            >
+              <div class="flex items-center gap-3 mb-2">
+                <div
+                  class="w-9 h-9 rounded-lg bg-pink-500/15 flex items-center justify-center"
+                ><i class="bi bi-bag-check text-pink-400"></i></div>
+                <div>
+                  <p class="text-lg font-black font-display text-white">53</p>
+                  <p class="text-xs text-gray-500">Buyers</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 mt-2"><span
+                  class="text-[11px] text-green-400 flex items-center gap-1"
+                ><i class="bi bi-arrow-up text-[9px]"></i>+7 this week</span></div>
+            </div>
+            <div
+              class="glass border border-gray-800/40 rounded-2xl p-5 hover:border-amber-500/40 transition-all animate-slide-up"
+              style="animation-delay:0.42s;"
+            >
+              <div class="flex items-center gap-3 mb-2">
+                <div
+                  class="w-9 h-9 rounded-lg bg-amber-500/15 flex items-center justify-center"
+                ><i class="bi bi-hourglass-split text-amber-400"></i></div>
+                <div>
+                  <p class="text-lg font-black font-display text-white">23</p>
+                  <p class="text-xs text-gray-500">Pending Bids</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 mt-2"><span
+                  class="text-[11px] text-amber-400"
+                >⚡ 5 urgent</span></div>
+            </div>
+            <div
+              class="glass border border-gray-800/40 rounded-2xl p-5 hover:border-sky-500/40 transition-all animate-slide-up"
+              style="animation-delay:0.48s;"
+            >
+              <div class="flex items-center gap-3 mb-2">
+                <div
+                  class="w-9 h-9 rounded-lg bg-sky-500/15 flex items-center justify-center"
+                ><i class="bi bi-file-earmark-check text-sky-400"></i></div>
+                <div>
+                  <p class="text-lg font-black font-display text-white">18</p>
+                  <p class="text-xs text-gray-500">Docs Pending</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 mt-2"><span
+                  class="text-[11px] text-red-400"
+                >⚠ 3 overdue</span></div>
+            </div>
+          </div>
+
+          <!-- Charts + Activity Row -->
+          <div class="grid lg:grid-cols-3 gap-6">
+            <!-- Revenue Chart -->
+            <div
+              class="lg:col-span-2 glass border border-gray-800/40 rounded-2xl p-6 animate-slide-up"
+              style="animation-delay:0.5s;"
+            >
+              <div class="flex items-center justify-between mb-5">
+                <div>
+                  <h3 class="font-black font-display text-lg">Revenue Overview</h3>
+                  <p class="text-xs text-gray-500">Monthly revenue trend</p>
+                </div>
+                <div class="flex gap-1 bg-gray-900/60 rounded-lg p-0.5">
+                  <button
+                    class="text-xs px-3 py-1 rounded-md bg-orange-500/20 text-orange-400 font-semibold"
+                  >7D</button>
+                  <button
+                    class="text-xs px-3 py-1 rounded-md text-gray-500 hover:text-white transition-colors"
+                  >30D</button>
+                  <button
+                    class="text-xs px-3 py-1 rounded-md text-gray-500 hover:text-white transition-colors"
+                  >90D</button>
+                </div>
+              </div>
+              <!-- SVG Line Chart -->
+              <div class="relative h-56" id="revenue-chart-container">
+                <svg
+                  id="revenue-chart"
+                  width="100%"
+                  height="100%"
+                  viewBox="0 0 800 200"
+                  preserveAspectRatio="none"
+                  class="overflow-visible"
+                >
+                  <defs>
+                    <linearGradient
+                      id="revenueGrad"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop
+                        offset="0%"
+                        stop-color="#f97316"
+                        stop-opacity="0.4"
+                      />
+                      <stop
+                        offset="100%"
+                        stop-color="#f97316"
+                        stop-opacity="0"
+                      />
+                    </linearGradient>
+                    <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stop-color="#dc2626" />
+                      <stop offset="100%" stop-color="#f97316" />
+                    </linearGradient>
+                  </defs>
+                  <!-- Grid lines -->
+                  <line
+                    x1="0"
+                    y1="50"
+                    x2="800"
+                    y2="50"
+                    stroke="rgba(255,255,255,0.04)"
+                    stroke-width="1"
+                  />
+                  <line
+                    x1="0"
+                    y1="100"
+                    x2="800"
+                    y2="100"
+                    stroke="rgba(255,255,255,0.04)"
+                    stroke-width="1"
+                  />
+                  <line
+                    x1="0"
+                    y1="150"
+                    x2="800"
+                    y2="150"
+                    stroke="rgba(255,255,255,0.04)"
+                    stroke-width="1"
+                  />
+                  <!-- Y-axis labels -->
+                  <text
+                    x="5"
+                    y="50"
+                    fill="rgba(255,255,255,0.25)"
+                    font-size="10"
+                    font-family="Outfit"
+                  >12M</text>
+                  <text
+                    x="5"
+                    y="100"
+                    fill="rgba(255,255,255,0.25)"
+                    font-size="10"
+                    font-family="Outfit"
+                  >8M</text>
+                  <text
+                    x="5"
+                    y="150"
+                    fill="rgba(255,255,255,0.25)"
+                    font-size="10"
+                    font-family="Outfit"
+                  >4M</text>
+                  <!-- Fill area -->
+                  <path id="revenue-fill" d="" fill="url(#revenueGrad)" />
+                  <!-- Line -->
+                  <path
+                    id="revenue-line"
+                    d=""
+                    fill="none"
+                    stroke="url(#lineGrad)"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <!-- Dots -->
+                  <g id="revenue-dots"></g>
+                  <!-- X-axis labels -->
+                  <text
+                    x="57"
+                    y="195"
+                    fill="rgba(255,255,255,0.25)"
+                    font-size="10"
+                    font-family="Outfit"
+                    text-anchor="middle"
+                  >Mon</text>
+                  <text
+                    x="171"
+                    y="195"
+                    fill="rgba(255,255,255,0.25)"
+                    font-size="10"
+                    font-family="Outfit"
+                    text-anchor="middle"
+                  >Tue</text>
+                  <text
+                    x="285"
+                    y="195"
+                    fill="rgba(255,255,255,0.25)"
+                    font-size="10"
+                    font-family="Outfit"
+                    text-anchor="middle"
+                  >Wed</text>
+                  <text
+                    x="399"
+                    y="195"
+                    fill="rgba(255,255,255,0.25)"
+                    font-size="10"
+                    font-family="Outfit"
+                    text-anchor="middle"
+                  >Thu</text>
+                  <text
+                    x="513"
+                    y="195"
+                    fill="rgba(255,255,255,0.25)"
+                    font-size="10"
+                    font-family="Outfit"
+                    text-anchor="middle"
+                  >Fri</text>
+                  <text
+                    x="627"
+                    y="195"
+                    fill="rgba(255,255,255,0.25)"
+                    font-size="10"
+                    font-family="Outfit"
+                    text-anchor="middle"
+                  >Sat</text>
+                  <text
+                    x="741"
+                    y="195"
+                    fill="rgba(255,255,255,0.25)"
+                    font-size="10"
+                    font-family="Outfit"
+                    text-anchor="middle"
+                  >Sun</text>
+                </svg>
+                <!-- Tooltip -->
+                <div
+                  id="chart-tooltip"
+                  class="chart-tooltip opacity-0 transition-opacity"
+                  style="pointer-events:none;"
+                ></div>
+              </div>
+            </div>
+
+            <!-- Activity Feed -->
+            <div
+              class="glass border border-gray-800/40 rounded-2xl p-6 animate-slide-up"
+              style="animation-delay:0.55s;"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-black font-display text-lg">Live Activity</h3>
+                <span
+                  class="text-[11px] px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 flex items-center gap-1"
+                ><span
+                    class="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"
+                  ></span>Live</span>
+              </div>
+              <div
+                id="activity-feed"
+                class="space-y-3 max-h-72 overflow-y-auto pr-1"
+              >
+                <!-- populated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== ANALYTICS TAB ===== -->
+        <div id="tab-analytics" class="tab-panel hidden">
+          <div class="grid lg:grid-cols-3 gap-6">
+            <!-- Bar Chart: Auction Volume by Category -->
+            <div
+              class="lg:col-span-2 glass border border-gray-800/40 rounded-2xl p-6"
+            >
+              <div class="flex items-center justify-between mb-5">
+                <div><h3 class="font-black font-display text-lg">Auction Volume
+                    by Category</h3><p class="text-xs text-gray-500">Last 30
+                    days</p></div>
+              </div>
+              <div id="bar-chart" class="space-y-4"></div>
+            </div>
+            <!-- Donut Chart -->
+            <div
+              class="glass border border-gray-800/40 rounded-2xl p-6 flex flex-col items-center"
+            >
+              <div class="flex items-center justify-between w-full mb-4">
+                <div><h3 class="font-black font-display text-lg">Revenue Split</h3><p
+                    class="text-xs text-gray-500"
+                  >By category</p></div>
+              </div>
+              <div class="relative w-48 h-48 mb-4">
+                <svg viewBox="0 0 120 120" class="w-full h-full -rotate-90">
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    fill="none"
+                    stroke="#1f2937"
+                    stroke-width="14"
+                  />
+                  <circle
+                    id="donut-cattle"
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    fill="none"
+                    stroke="#f97316"
+                    stroke-width="14"
+                    stroke-dasharray="314"
+                    stroke-dashoffset="0"
+                    stroke-linecap="round"
+                    class="transition-all duration-1000"
+                  />
+                  <circle
+                    id="donut-goat"
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    fill="none"
+                    stroke="#3b82f6"
+                    stroke-width="14"
+                    stroke-dasharray="314"
+                    stroke-dashoffset="0"
+                    stroke-linecap="round"
+                    class="transition-all duration-1000"
+                  />
+                  <circle
+                    id="donut-sheep"
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    fill="none"
+                    stroke="#a855f7"
+                    stroke-width="14"
+                    stroke-dasharray="314"
+                    stroke-dashoffset="0"
+                    stroke-linecap="round"
+                    class="transition-all duration-1000"
+                  />
+                  <circle
+                    id="donut-poultry"
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    fill="none"
+                    stroke="#10b981"
+                    stroke-width="14"
+                    stroke-dasharray="314"
+                    stroke-dashoffset="0"
+                    stroke-linecap="round"
+                    class="transition-all duration-1000"
+                  />
+                </svg>
+                <div
+                  class="absolute inset-0 flex flex-col items-center justify-center"
+                >
+                  <p class="text-xl font-black font-display text-white">UGX</p>
+                  <p class="text-sm font-bold text-orange-400">12.4M</p>
+                </div>
+              </div>
+              <!-- Legend -->
+              <div class="w-full space-y-2.5">
+                <div class="flex items-center justify-between"><div
+                    class="flex items-center gap-2"
+                  ><span class="w-3 h-3 rounded-full bg-orange-500"></span><span
+                      class="text-xs text-gray-400"
+                    >Cattle</span></div><span
+                    class="text-xs font-semibold text-white"
+                  >45%</span></div>
+                <div class="flex items-center justify-between"><div
+                    class="flex items-center gap-2"
+                  ><span class="w-3 h-3 rounded-full bg-blue-500"></span><span
+                      class="text-xs text-gray-400"
+                    >Goats</span></div><span
+                    class="text-xs font-semibold text-white"
+                  >25%</span></div>
+                <div class="flex items-center justify-between"><div
+                    class="flex items-center gap-2"
+                  ><span class="w-3 h-3 rounded-full bg-purple-500"></span><span
+                      class="text-xs text-gray-400"
+                    >Sheep</span></div><span
+                    class="text-xs font-semibold text-white"
+                  >18%</span></div>
+                <div class="flex items-center justify-between"><div
+                    class="flex items-center gap-2"
+                  ><span
+                      class="w-3 h-3 rounded-full bg-emerald-500"
+                    ></span><span
+                      class="text-xs text-gray-400"
+                    >Poultry</span></div><span
+                    class="text-xs font-semibold text-white"
+                  >12%</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Conversion Funnel -->
+          <div class="glass border border-gray-800/40 rounded-2xl p-6 mt-6">
+            <div class="flex items-center justify-between mb-5">
+              <div><h3 class="font-black font-display text-lg">Conversion Funnel</h3><p
+                  class="text-xs text-gray-500"
+                >Auction lifecycle stages</p></div>
+            </div>
+            <div id="funnel-chart" class="space-y-3"></div>
+          </div>
+        </div>
+
+        <!-- ===== USERS TAB ===== -->
+        <div id="tab-users" class="tab-panel hidden">
+          <!-- Toolbar -->
+          <div
+            class="glass border border-gray-800/40 rounded-2xl p-4 mb-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
+          >
+            <div class="flex items-center gap-3 flex-1">
+              <div class="relative flex-1 max-w-xs">
+                <i
+                  class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm"
+                ></i>
+                <input
+                  id="user-search"
+                  type="text"
+                  placeholder="Search users…"
+                  class="w-full bg-gray-900/60 border border-gray-800 rounded-xl pl-9 pr-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/30"
+                  oninput="filterUsers()"
+                />
+              </div>
+              <select
+                id="role-filter"
+                class="bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2 text-sm text-gray-300 focus:outline-none focus:border-orange-500/50"
+                onchange="filterUsers()"
+              >
+                <option value="all">All Roles</option>
+                <option value="farmer">Farmers</option>
+                <option value="buyer">Buyers</option>
+                <option value="admin">Admins</option>
+              </select>
+              <select
+                id="status-filter"
+                class="bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2 text-sm text-gray-300 focus:outline-none focus:border-orange-500/50"
+                onchange="filterUsers()"
+              >
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="suspended">Suspended</option>
+              </select>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                class="px-4 py-2 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl text-sm font-semibold hover:shadow-lg hover:shadow-orange-500/30 transition-all"
+                onclick="showToast('New user modal would open here','info')"
+              >+ Add User</button>
+              <button
+                class="px-3 py-2 glass border border-gray-800 rounded-xl text-sm text-gray-400 hover:text-white transition-colors"
+              ><i class="bi bi-download"></i> Export</button>
+            </div>
+          </div>
+          <!-- Table -->
+          <div
+            class="glass border border-gray-800/40 rounded-2xl overflow-hidden"
+          >
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="border-b border-gray-800/50 bg-gray-900/40">
+                    <th
+                      class="text-left px-5 py-3.5 text-gray-500 font-semibold cursor-pointer hover:text-orange-400 transition-colors"
+                      onclick="sortUsers('name')"
+                    >Name <i class="bi bi-chevron-down text-[10px]"></i></th>
+                    <th
+                      class="text-left px-5 py-3.5 text-gray-500 font-semibold"
+                    >Email</th>
+                    <th
+                      class="text-left px-5 py-3.5 text-gray-500 font-semibold cursor-pointer hover:text-orange-400 transition-colors"
+                      onclick="sortUsers('role')"
+                    >Role</th>
+                    <th
+                      class="text-left px-5 py-3.5 text-gray-500 font-semibold cursor-pointer hover:text-orange-400 transition-colors"
+                      onclick="sortUsers('status')"
+                    >Status</th>
+                    <th
+                      class="text-left px-5 py-3.5 text-gray-500 font-semibold"
+                    >Joined</th>
+                    <th
+                      class="text-left px-5 py-3.5 text-gray-500 font-semibold"
+                    >Revenue</th>
+                    <th
+                      class="px-5 py-3.5 text-gray-500 font-semibold"
+                    >Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="users-table-body">
+                  <!-- JS populated -->
+                </tbody>
+              </table>
+            </div>
+            <!-- Pagination -->
+            <div
+              class="flex items-center justify-between px-5 py-3.5 border-t border-gray-800/40 bg-gray-900/20"
+            >
+              <span class="text-xs text-gray-500" id="user-count-label">Showing
+                1–10 of 142</span>
+              <div class="flex items-center gap-1">
+                <button
+                  class="w-8 h-8 rounded-lg hover:bg-gray-800/50 text-gray-500 hover:text-white flex items-center justify-center transition-colors"
+                ><i class="bi bi-chevron-left text-sm"></i></button>
+                <button
+                  class="w-8 h-8 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center text-xs font-bold"
+                >1</button>
+                <button
+                  class="w-8 h-8 rounded-lg hover:bg-gray-800/50 text-gray-500 hover:text-white flex items-center justify-center text-xs transition-colors"
+                >2</button>
+                <button
+                  class="w-8 h-8 rounded-lg hover:bg-gray-800/50 text-gray-500 hover:text-white flex items-center justify-center text-xs transition-colors"
+                >3</button>
+                <span class="text-gray-600 text-xs px-1">…</span>
+                <button
+                  class="w-8 h-8 rounded-lg hover:bg-gray-800/50 text-gray-500 hover:text-white flex items-center justify-center text-xs transition-colors"
+                >15</button>
+                <button
+                  class="w-8 h-8 rounded-lg hover:bg-gray-800/50 text-gray-500 hover:text-white flex items-center justify-center transition-colors"
+                ><i class="bi bi-chevron-right text-sm"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== AUCTIONS TAB ===== -->
+        <div id="tab-auctions" class="tab-panel hidden">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+            <div class="flex gap-2">
+              <button
+                class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold bg-red-500/15 text-red-400 active-tab-btn"
+                data-filter="live"
+                onclick="filterAuctions('live',this)"
+              >🔴 Live (12)</button>
+              <button
+                class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-gray-500 hover:text-white transition-colors"
+                data-filter="upcoming"
+                onclick="filterAuctions('upcoming',this)"
+              >⏳ Upcoming (8)</button>
+              <button
+                class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-gray-500 hover:text-white transition-colors"
+                data-filter="completed"
+                onclick="filterAuctions('completed',this)"
+              >✅ Completed (34)</button>
+            </div>
+            <button
+              class="px-4 py-1.5 bg-gradient-to-r from-orange-500 to-red-600 rounded-lg text-xs font-semibold hover:shadow-lg hover:shadow-orange-500/25 transition-all"
+            >+ Create Auction</button>
+          </div>
+          <div
+            id="auctions-grid"
+            class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"
+          >
+            <!-- JS populated -->
+          </div>
+        </div>
+
+        <!-- ===== TRANSACTIONS TAB ===== -->
+        <div id="tab-transactions" class="tab-panel hidden">
+          <!-- Summary cards -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="glass border border-gray-800/40 rounded-2xl p-4"><p
+                class="text-xs text-gray-500"
+              >Total Transactions</p><p
+                class="text-xl font-black font-display mt-1"
+              >284</p><p
+                class="text-[11px] text-green-400 mt-1 flex items-center gap-1"
+              ><i class="bi bi-arrow-up text-[9px]"></i>23% vs last month</p></div>
+            <div class="glass border border-gray-800/40 rounded-2xl p-4"><p
+                class="text-xs text-gray-500"
+              >Total Volume</p><p
+                class="text-xl font-black font-display mt-1"
+              >UGX 12.4M</p><p
+                class="text-[11px] text-green-400 mt-1 flex items-center gap-1"
+              ><i class="bi bi-arrow-up text-[9px]"></i>18% vs last month</p></div>
+            <div class="glass border border-gray-800/40 rounded-2xl p-4"><p
+                class="text-xs text-gray-500"
+              >Avg Transaction</p><p
+                class="text-xl font-black font-display mt-1"
+              >UGX 43.7K</p><p
+                class="text-[11px] text-red-400 mt-1 flex items-center gap-1"
+              ><i class="bi bi-arrow-down text-[9px]"></i>2.1% vs last month</p></div>
+            <div class="glass border border-gray-800/40 rounded-2xl p-4"><p
+                class="text-xs text-gray-500"
+              >Failed Rate</p><p
+                class="text-xl font-black font-display mt-1"
+              >1.8%</p><p
+                class="text-[11px] text-green-400 mt-1 flex items-center gap-1"
+              ><i class="bi bi-arrow-down text-[9px]"></i>0.3% improvement</p></div>
+          </div>
+          <!-- Transactions Table -->
+          <div
+            class="glass border border-gray-800/40 rounded-2xl overflow-hidden"
+          >
+            <div
+              class="flex items-center justify-between px-5 py-4 border-b border-gray-800/40"
+            >
+              <h3 class="font-black font-display">Recent Transactions</h3>
+              <div class="flex items-center gap-2">
+                <div class="relative">
+                  <i
+                    class="bi bi-search absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs"
+                  ></i>
+                  <input
+                    type="text"
+                    placeholder="Search…"
+                    class="bg-gray-900/60 border border-gray-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-orange-500/50 w-44"
+                  />
+                </div>
+                <button
+                  class="px-3 py-1.5 glass border border-gray-800 rounded-lg text-xs text-gray-400 hover:text-white transition-colors"
+                ><i class="bi bi-download"></i> Export CSV</button>
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="border-b border-gray-800/30 bg-gray-900/30">
+                    <th
+                      class="text-left px-5 py-3 text-gray-500 font-semibold"
+                    >Txn ID</th>
+                    <th
+                      class="text-left px-5 py-3 text-gray-500 font-semibold"
+                    >Parties</th>
+                    <th
+                      class="text-left px-5 py-3 text-gray-500 font-semibold"
+                    >Item</th>
+                    <th
+                      class="text-left px-5 py-3 text-gray-500 font-semibold"
+                    >Amount</th>
+                    <th
+                      class="text-left px-5 py-3 text-gray-500 font-semibold"
+                    >Status</th>
+                    <th
+                      class="text-left px-5 py-3 text-gray-500 font-semibold"
+                    >Date</th>
+                    <th
+                      class="px-5 py-3 text-gray-500 font-semibold"
+                    >Action</th>
+                  </tr>
+                </thead>
+                <tbody id="transactions-body"><!-- JS --></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== MODERATION TAB ===== -->
+        <div id="tab-moderation" class="tab-panel hidden">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+            <div><h3 class="font-black font-display text-lg">Moderation Queue</h3><p
+                class="text-xs text-gray-500"
+              >7 items require attention</p></div>
+            <div class="flex gap-2">
+              <button
+                class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-500/15 text-red-400"
+              >🚨 Urgent (2)</button>
+              <button
+                class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500/15 text-amber-400"
+              >⚠ Review (3)</button>
+              <button
+                class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-500/15 text-sky-400"
+              >📋 Docs (2)</button>
+            </div>
+          </div>
+          <div id="moderation-list" class="space-y-4"><!-- JS --></div>
+        </div>
+
+        <!-- ===== SYSTEM TAB ===== -->
+        <div id="tab-system" class="tab-panel hidden">
+          <div class="grid lg:grid-cols-3 gap-6">
+            <!-- Health Cards -->
+            <div class="glass border border-gray-800/40 rounded-2xl p-6">
+              <div class="flex items-center justify-between mb-5">
+                <h3 class="font-black font-display">System Status</h3>
+                <span
+                  class="text-[11px] px-2.5 py-0.5 rounded-full bg-green-500/15 text-green-400 font-semibold flex items-center gap-1.5"
+                ><span
+                    class="status-online inline-block w-2 h-2 bg-green-500 rounded-full"
+                  ></span>All Healthy</span>
+              </div>
+              <div class="space-y-4">
+                <div
+                  class="flex items-center justify-between p-3 rounded-xl bg-gray-900/40"
+                >
+                  <div class="flex items-center gap-3"><div
+                      class="w-8 h-8 rounded-lg bg-green-500/15 flex items-center justify-center"
+                    ><i class="bi bi-cloud-check text-green-400"></i></div><div
+                    ><p class="text-sm font-semibold">API Server</p><p
+                        class="text-xs text-gray-500"
+                      >api.chuuauction.co</p></div></div>
+                  <div class="text-right"><p
+                      class="text-xs text-green-400 font-semibold"
+                    >Online</p><p class="text-xs text-gray-600">99.9% uptime</p></div>
+                </div>
+                <div
+                  class="flex items-center justify-between p-3 rounded-xl bg-gray-900/40"
+                >
+                  <div class="flex items-center gap-3"><div
+                      class="w-8 h-8 rounded-lg bg-green-500/15 flex items-center justify-center"
+                    ><i class="bi bi-database text-green-400"></i></div><div><p
+                        class="text-sm font-semibold"
+                      >Database</p><p
+                        class="text-xs text-gray-500"
+                      >PostgreSQL</p></div></div>
+                  <div class="text-right"><p
+                      class="text-xs text-green-400 font-semibold"
+                    >Connected</p><p class="text-xs text-gray-600">12ms latency</p></div>
+                </div>
+                <div
+                  class="flex items-center justify-between p-3 rounded-xl bg-gray-900/40"
+                >
+                  <div class="flex items-center gap-3"><div
+                      class="w-8 h-8 rounded-lg bg-green-500/15 flex items-center justify-center"
+                    ><i class="bi bi-envelope text-green-400"></i></div><div><p
+                        class="text-sm font-semibold"
+                      >Email Service</p><p class="text-xs text-gray-500">SMTP
+                        Gateway</p></div></div>
+                  <div class="text-right"><p
+                      class="text-xs text-green-400 font-semibold"
+                    >Active</p><p class="text-xs text-gray-600">340ms avg</p></div>
+                </div>
+                <div
+                  class="flex items-center justify-between p-3 rounded-xl bg-gray-900/40"
+                >
+                  <div class="flex items-center gap-3"><div
+                      class="w-8 h-8 rounded-lg bg-amber-500/15 flex items-center justify-center"
+                    ><i class="bi bi-wifi text-amber-400"></i></div><div><p
+                        class="text-sm font-semibold"
+                      >WebSocket</p><p class="text-xs text-gray-500">Real-time
+                        Layer</p></div></div>
+                  <div class="text-right"><p
+                      class="text-xs text-amber-400 font-semibold"
+                    >Degraded</p><p class="text-xs text-gray-600">45 connections</p></div>
+                </div>
+                <div
+                  class="flex items-center justify-between p-3 rounded-xl bg-gray-900/40"
+                >
+                  <div class="flex items-center gap-3"><div
+                      class="w-8 h-8 rounded-lg bg-green-500/15 flex items-center justify-center"
+                    ><i class="bi bi-lock text-green-400"></i></div><div><p
+                        class="text-sm font-semibold"
+                      >SSL / TLS</p><p class="text-xs text-gray-500">Certificate
+                        valid</p></div></div>
+                  <div class="text-right"><p
+                      class="text-xs text-green-400 font-semibold"
+                    >Secure</p><p class="text-xs text-gray-600">Expires Mar 2026</p></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Performance Gauges -->
+            <div class="glass border border-gray-800/40 rounded-2xl p-6">
+              <h3 class="font-black font-display mb-5">Performance</h3>
+              <div class="space-y-6">
+                <!-- CPU -->
+                <div>
+                  <div class="flex items-center justify-between mb-2"><span
+                      class="text-sm font-semibold"
+                    >CPU Usage</span><span
+                      class="text-sm font-bold text-orange-400"
+                      id="cpu-val"
+                    >34%</span></div>
+                  <div class="h-2 bg-gray-800 rounded-full overflow-hidden"><div
+                      id="cpu-bar"
+                      class="h-full bg-gradient-to-r from-orange-500 to-yellow-400 rounded-full transition-all duration-500"
+                      style="width:34%;"
+                    ></div></div>
+                  <p class="text-xs text-gray-600 mt-1">2 cores · 8GB RAM</p>
+                </div>
+                <!-- Memory -->
+                <div>
+                  <div class="flex items-center justify-between mb-2"><span
+                      class="text-sm font-semibold"
+                    >Memory</span><span
+                      class="text-sm font-bold text-blue-400"
+                      id="mem-val"
+                    >61%</span></div>
+                  <div class="h-2 bg-gray-800 rounded-full overflow-hidden"><div
+                      id="mem-bar"
+                      class="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full transition-all duration-500"
+                      style="width:61%;"
+                    ></div></div>
+                  <p class="text-xs text-gray-600 mt-1">4.9GB / 8GB used</p>
+                </div>
+                <!-- Disk -->
+                <div>
+                  <div class="flex items-center justify-between mb-2"><span
+                      class="text-sm font-semibold"
+                    >Disk I/O</span><span
+                      class="text-sm font-bold text-emerald-400"
+                      id="disk-val"
+                    >22%</span></div>
+                  <div class="h-2 bg-gray-800 rounded-full overflow-hidden"><div
+                      id="disk-bar"
+                      class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-500"
+                      style="width:22%;"
+                    ></div></div>
+                  <p class="text-xs text-gray-600 mt-1">18GB / 80GB used</p>
+                </div>
+                <!-- Network -->
+                <div>
+                  <div class="flex items-center justify-between mb-2"><span
+                      class="text-sm font-semibold"
+                    >Network</span><span
+                      class="text-sm font-bold text-purple-400"
+                      id="net-val"
+                    >48%</span></div>
+                  <div class="h-2 bg-gray-800 rounded-full overflow-hidden"><div
+                      id="net-bar"
+                      class="h-full bg-gradient-to-r from-purple-500 to-violet-400 rounded-full transition-all duration-500"
+                      style="width:48%;"
+                    ></div></div>
+                  <p class="text-xs text-gray-600 mt-1">↑ 2.4 MB/s · ↓ 1.8 MB/s</p>
+                </div>
+                <!-- Response Time -->
+                <div>
+                  <div class="flex items-center justify-between mb-2"><span
+                      class="text-sm font-semibold"
+                    >Avg Response</span><span
+                      class="text-sm font-bold text-green-400"
+                    >124ms</span></div>
+                  <div class="h-2 bg-gray-800 rounded-full overflow-hidden"><div
+                      class="h-full bg-gradient-to-r from-green-500 to-lime-400 rounded-full"
+                      style="width:15%;"
+                    ></div></div>
+                  <p class="text-xs text-gray-600 mt-1">p95: 280ms · p99: 510ms</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Logs -->
+            <div
+              class="glass border border-gray-800/40 rounded-2xl p-6 flex flex-col"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-black font-display">System Logs</h3>
+                <div class="flex gap-1 bg-gray-900/60 rounded-lg p-0.5">
+                  <button
+                    class="text-xs px-2 py-0.5 rounded-md bg-gray-800 text-white"
+                  >All</button>
+                  <button
+                    class="text-xs px-2 py-0.5 rounded-md text-red-400 hover:bg-gray-800 transition-colors"
+                  >Error</button>
+                  <button
+                    class="text-xs px-2 py-0.5 rounded-md text-amber-400 hover:bg-gray-800 transition-colors"
+                  >Warn</button>
+                </div>
+              </div>
+              <div
+                id="system-logs"
+                class="flex-1 overflow-y-auto max-h-72 space-y-1.5 font-mono"
+              ><!-- JS --></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end p-4 wrapper -->
+    </main>
+
+    <!-- ============================================================ JAVASCRIPT ============================================================ -->
+    <script>
+      // ─── SIDEBAR MOBILE ─── const sidebar =
+      document.getElementById('sidebar'); const overlay =
+      document.getElementById('sidebar-overlay');
+      document.getElementById('mobile-menu-btn').addEventListener('click', () =>
+      { sidebar.classList.remove('-translate-x-full');
+      overlay.classList.add('active'); });
+      document.getElementById('sidebar-close').addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.remove('active'); }); overlay.addEventListener('click',
+      () => { sidebar.classList.add('-translate-x-full');
+      overlay.classList.remove('active'); }); window.addEventListener('resize',
+      () => { if (window.innerWidth >= 1024) {
+      sidebar.classList.remove('-translate-x-full');
+      overlay.classList.remove('active'); } }); // ─── NOTIFICATIONS DROPDOWN
+      ─── function toggleNotifications() {
+      document.getElementById('notif-dropdown').classList.toggle('open'); }
+      document.addEventListener('click', (e) => { if
+      (!e.target.closest('[onclick="toggleNotifications()"]') &&
+      !e.target.closest('#notif-dropdown'))
+      document.getElementById('notif-dropdown').classList.remove('open'); }); //
+      ─── TOAST SYSTEM ─── let toastId = 0; function showToast(msg, type =
+      'success') { const colors = { success:'bg-green-500', error:'bg-red-500',
+      info:'bg-blue-500', warning:'bg-amber-500' }; const icons = {
+      success:'bi-check-circle', error:'bi-x-circle', info:'bi-info-circle',
+      warning:'bi-exclamation-triangle' }; const id = ++toastId; const el =
+      document.createElement('div'); el.id = 'toast-' + id; el.className = `flex
+      items-center gap-3 px-4 py-3 rounded-xl glass border border-gray-800/50
+      shadow-xl shadow-black/30 animate-toast-in max-w-sm`; el.innerHTML = `<div
+      class="w-7 h-7 rounded-lg ${colors[type]}/20 flex items-center
+      justify-center flex-shrink-0"><i class="bi ${icons[type]} text-${type ===
+      'success' ? 'green' : type === 'error' ? 'red' : type === 'info' ? 'blue'
+      : 'amber'}-400"></i></div><p class="text-sm text-white
+      flex-1">${msg}</p><button
+      onclick="document.getElementById('toast-${id}').remove()"
+      class="text-gray-500 hover:text-white"><i class="bi bi-x
+      text-sm"></i></button>`; // Force color classes
+      el.querySelector('div').style.background = `${type === 'success' ?
+      'rgba(34,197,94' : type === 'error' ? 'rgba(239,68,68' : type === 'info' ?
+      'rgba(59,130,246' : 'rgba(245,158,11'}, 0.15)`;
+      el.querySelector('i').style.color = type === 'success' ? '#4ade80' : type
+      === 'error' ? '#f87171' : type === 'info' ? '#60a5fa' : '#fbbf24';
+      document.getElementById('toast-container').appendChild(el); setTimeout(()
+      => { if (el.parentNode) { el.classList.add('animate-toast-out');
+      el.classList.remove('animate-toast-in'); setTimeout(() => el.remove(),
+      350); } }, 3500); } // ─── TAB SWITCHING ─── function switchTab(name,
+      clickedEl) { document.querySelectorAll('.tab-panel').forEach(p =>
+      p.classList.add('hidden')); document.getElementById('tab-' +
+      name).classList.remove('hidden');
+      document.querySelectorAll('.nav-link').forEach(l =>
+      l.classList.remove('active', 'bg-gray-800/40')); if (clickedEl) {
+      clickedEl.classList.add('active', 'bg-gray-800/40'); } // Close mobile
+      sidebar if (window.innerWidth < 1024) {
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.remove('active'); } // Init charts on first view if
+      (name === 'analytics') initAnalytics(); if (name === 'system')
+      initSystemLogs(); } // ─── REVENUE CHART ─── const revenueData = [320000,
+      480000, 390000, 720000, 560000, 810000, 950000]; function
+      drawRevenueChart() { const svg = document.getElementById('revenue-chart');
+      const container = document.getElementById('revenue-chart-container');
+      const w = 800, h = 180, padL = 40, padR = 20, padT = 10; const maxVal =
+      Math.max(...revenueData); const xs = revenueData.map((_, i) => padL + (i /
+      (revenueData.length - 1)) * (w - padL - padR)); const ys =
+      revenueData.map(v => padT + (1 - v / (maxVal * 1.1)) * h); // Line const
+      linePts = xs.map((x, i) => `${x},${ys[i]}`).join(' '); // Smooth with
+      cubic-bezier approximation let d = `M ${xs[0]} ${ys[0]}`; for (let i = 1;
+      i < xs.length; i++) { const cpx1 = xs[i-1] + (xs[i] - xs[i-1]) * 0.4;
+      const cpx2 = xs[i] - (xs[i] - xs[i-1]) * 0.4; d += ` C ${cpx1} ${ys[i-1]},
+      ${cpx2} ${ys[i]}, ${xs[i]} ${ys[i]}`; }
+      document.getElementById('revenue-line').setAttribute('d', d);
+      document.getElementById('revenue-fill').setAttribute('d', d + ` L
+      ${xs[xs.length-1]} ${h + padT} L ${xs[0]} ${h + padT} Z`); // Dots let
+      dotsHtml = ''; xs.forEach((x, i) => { dotsHtml += `<circle cx="${x}"
+      cy="${ys[i]}" r="4" fill="#f97316" stroke="#111827" stroke-width="2"
+      class="cursor-pointer" data-idx="${i}"
+      onmouseenter="showChartTooltip(event,${i})"
+      onmouseleave="hideChartTooltip()"/>`; });
+      document.getElementById('revenue-dots').innerHTML = dotsHtml; } function
+      showChartTooltip(e, idx) { const days =
+      ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']; const tip =
+      document.getElementById('chart-tooltip'); const container =
+      document.getElementById('revenue-chart-container'); const rect =
+      container.getBoundingClientRect(); const svgEl = e.target; const svgRect =
+      svgEl.closest('svg').getBoundingClientRect(); const cx =
+      parseFloat(svgEl.getAttribute('cx')); const cy =
+      parseFloat(svgEl.getAttribute('cy')); const scaleX = svgRect.width / 800;
+      const scaleY = svgRect.height / 200; tip.innerHTML =
+      `<strong>${days[idx]}</strong><br/>UGX
+      ${(revenueData[idx]/1000).toFixed(0)}K`; tip.style.left = (cx * scaleX -
+      35) + 'px'; tip.style.top = (cy * scaleY - 55) + 'px'; tip.style.opacity =
+      '1'; } function hideChartTooltip() {
+      document.getElementById('chart-tooltip').style.opacity = '0'; } // Draw on
+      load window.addEventListener('load', drawRevenueChart);
+      window.addEventListener('resize', drawRevenueChart); // ─── ACTIVITY FEED
+      ─── const activityItems = [ { icon:'bi-check-circle', color:'green',
+      title:'Sale Completed', desc:'2 cattle sold to John Okello — UGX
+      1,450,000', time:'2 min ago' }, { icon:'bi-hand-thumbs-up', color:'blue',
+      title:'New Bid', desc:'Sarah placed a bid of UGX 400,000 on goats',
+      time:'8 min ago' }, { icon:'bi-broadcast', color:'orange', title:'Auction
+      Started', desc:'Auction #849 for 5 sheep is now live', time:'15 min ago'
+      }, { icon:'bi-person-plus', color:'emerald', title:'New User', desc:'David
+      Munyagwa registered as Farmer', time:'22 min ago' }, {
+      icon:'bi-exclamation-triangle', color:'amber', title:'Flagged Item',
+      desc:'Listing #1204 flagged by buyer', time:'35 min ago' }, {
+      icon:'bi-cash-stack', color:'purple', title:'Payment Received', desc:'UGX
+      2,400,000 deposited via M-Money', time:'1 hr ago' }, {
+      icon:'bi-file-earmark-check', color:'sky', title:'Doc Verified',
+      desc:'Farmer certificate for Peter Adewe approved', time:'2 hr ago' }, ];
+      function renderActivity() { const el =
+      document.getElementById('activity-feed'); el.innerHTML =
+      activityItems.map(a => { const colors = { green:'bg-green-500/15',
+      blue:'bg-blue-500/15', orange:'bg-orange-500/15',
+      emerald:'bg-emerald-500/15', amber:'bg-amber-500/15',
+      purple:'bg-purple-500/15', sky:'bg-sky-500/15' }; const textC = {
+      green:'text-green-400', blue:'text-blue-400', orange:'text-orange-400',
+      emerald:'text-emerald-400', amber:'text-amber-400',
+      purple:'text-purple-400', sky:'text-sky-400' }; return `<div class="flex
+      items-start gap-3 p-2.5 rounded-xl hover:bg-gray-800/30 transition-colors
+      cursor-pointer group"> <div class="w-8 h-8 rounded-lg ${colors[a.color]}
+      flex items-center justify-center flex-shrink-0"><i class="bi ${a.icon}
+      ${textC[a.color]} text-sm"></i></div> <div class="flex-1 min-w-0"><p
+      class="text-xs font-semibold text-white group-hover:text-orange-400
+      transition-colors">${a.title}</p><p class="text-xs text-gray-500
+      truncate">${a.desc}</p></div> <span class="text-[10px] text-gray-600
+      whitespace-nowrap">${a.time}</span> </div>`; }).join(''); }
+      renderActivity(); // Simulate live feed additions setInterval(() => {
+      const newItem = { icon:'bi-arrow-repeat', color:'blue', title:'System
+      Event', desc:'Auto-refresh ping at ' + new Date().toLocaleTimeString(),
+      time:'Just now' }; activityItems.unshift(newItem); if
+      (activityItems.length > 12) activityItems.pop(); renderActivity(); },
+      8000); // ─── USERS TABLE ─── const usersData = [ { name:'Sarah Amoako',
+      email:'sarah.a@email.com', role:'buyer', status:'active', joined:'Jan 28,
+      2025', revenue:'UGX 340K', avatar:'SA' }, { name:'Peter Adewe',
+      email:'peter.ad@email.com', role:'farmer', status:'active', joined:'Jan
+      15, 2025', revenue:'UGX 1.2M', avatar:'PA' }, { name:'John Okello',
+      email:'j.okello@email.com', role:'buyer', status:'active', joined:'Dec 10,
+      2024', revenue:'UGX 890K', avatar:'JO' }, { name:'David Munyagwa',
+      email:'d.munya@email.com', role:'farmer', status:'active', joined:'Jan 30,
+      2025', revenue:'UGX 520K', avatar:'DM' }, { name:'Grace Nabiryo',
+      email:'grace.n@email.com', role:'buyer', status:'inactive', joined:'Nov
+      22, 2024', revenue:'UGX 0', avatar:'GN' }, { name:'Moses Kigunda',
+      email:'moses.k@email.com', role:'farmer', status:'suspended', joined:'Oct
+      5, 2024', revenue:'UGX 780K', avatar:'MK' }, { name:'Linda Acholi',
+      email:'linda.a@email.com', role:'buyer', status:'active', joined:'Jan 20,
+      2025', revenue:'UGX 210K', avatar:'LA' }, { name:'James Ssemukaya',
+      email:'james.s@email.com', role:'farmer', status:'active', joined:'Dec 28,
+      2024', revenue:'UGX 1.8M', avatar:'JS' }, { name:'Ruth Namukasa',
+      email:'ruth.n@email.com', role:'admin', status:'active', joined:'Sep 1,
+      2024', revenue:'—', avatar:'RN' }, { name:'Brian Tumusiime',
+      email:'brian.t@email.com', role:'farmer', status:'active', joined:'Jan 5,
+      2025', revenue:'UGX 440K', avatar:'BT' }, ]; let sortField = '', sortAsc =
+      true; function renderUsers(data) { const body =
+      document.getElementById('users-table-body'); const roleStyles = {
+      farmer:'bg-orange-500/15 text-orange-400', buyer:'bg-blue-500/15
+      text-blue-400', admin:'bg-purple-500/15 text-purple-400' }; const
+      statusStyles = { active:'bg-green-500/15 text-green-400',
+      inactive:'bg-gray-500/15 text-gray-400', suspended:'bg-red-500/15
+      text-red-400' }; body.innerHTML = data.map((u, i) => ` <tr class="border-b
+      border-gray-800/30 hover:bg-gray-800/20 transition-colors group
+      animate-slide-up" style="animation-delay:${i*0.03}s;"> <td class="px-5
+      py-3.5"> <div class="flex items-center gap-3"> <div class="w-8 h-8
+      rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex
+      items-center justify-center text-xs font-bold">${u.avatar}</div> <span
+      class="font-semibold text-sm group-hover:text-orange-400
+      transition-colors">${u.name}</span> </div> </td> <td class="px-5 py-3.5
+      text-sm text-gray-400">${u.email}</td> <td class="px-5 py-3.5"><span
+      class="text-[11px] px-2.5 py-0.5 rounded-full ${roleStyles[u.role]}
+      font-semibold capitalize">${u.role}</span></td> <td class="px-5
+      py-3.5"><span class="text-[11px] px-2.5 py-0.5 rounded-full
+      ${statusStyles[u.status]} font-semibold capitalize flex items-center
+      gap-1.5 w-fit">${u.status === 'active' ? '<span class="w-1.5 h-1.5
+      bg-green-500 rounded-full animate-pulse"></span>' : ''}
+      ${u.status}</span></td> <td class="px-5 py-3.5 text-sm
+      text-gray-400">${u.joined}</td> <td class="px-5 py-3.5 text-sm
+      font-semibold text-white">${u.revenue}</td> <td class="px-5 py-3.5"> <div
+      class="flex items-center justify-center gap-1 opacity-0
+      group-hover:opacity-100 transition-opacity"> <button class="w-7 h-7
+      rounded-lg hover:bg-blue-500/15 flex items-center justify-center
+      transition-colors" title="Edit"><i class="bi bi-pencil text-blue-400
+      text-xs"></i></button> <button class="w-7 h-7 rounded-lg
+      hover:bg-amber-500/15 flex items-center justify-center transition-colors"
+      title="Suspend" onclick="showToast('User ${u.name} action
+      triggered','warning')"><i class="bi bi-ban text-amber-400
+      text-xs"></i></button> <button class="w-7 h-7 rounded-lg
+      hover:bg-red-500/15 flex items-center justify-center transition-colors"
+      title="Delete" onclick="showToast('Delete confirmation for
+      ${u.name}','error')"><i class="bi bi-trash text-red-400
+      text-xs"></i></button> </div> </td> </tr> `).join(''); } function
+      filterUsers() { const search =
+      document.getElementById('user-search').value.toLowerCase(); const role =
+      document.getElementById('role-filter').value; const status =
+      document.getElementById('status-filter').value; let filtered =
+      usersData.filter(u => (search === '' ||
+      u.name.toLowerCase().includes(search) ||
+      u.email.toLowerCase().includes(search)) && (role === 'all' || u.role ===
+      role) && (status === 'all' || u.status === status) );
+      renderUsers(filtered);
+      document.getElementById('user-count-label').textContent = `Showing
+      1–${filtered.length} of ${filtered.length}`; } function sortUsers(field) {
+      sortAsc = sortField === field ? !sortAsc : true; sortField = field;
+      usersData.sort((a, b) => { const cmp = a[field].localeCompare(b[field]);
+      return sortAsc ? cmp : -cmp; }); filterUsers(); showToast(`Sorted by
+      ${field}`, 'info'); } renderUsers(usersData); // ─── AUCTIONS ─── const
+      auctionsData = [ { id:847, title:'Prime Dairy Cattle', category:'Cattle',
+      farmer:'Peter Adewe', startPrice:800000, currentBid:1200000, bids:14,
+      endTime:Date.now()+720*1000, status:'live' }, { id:848, title:'Alpine
+      Goats (x6)', category:'Goats', farmer:'Moses Kigunda', startPrice:350000,
+      currentBid:580000, bids:9, endTime:Date.now()+1800*1000, status:'live' },
+      { id:849, title:'Merino Sheep (x5)', category:'Sheep', farmer:'James
+      Ssemukaya', startPrice:500000, currentBid:720000, bids:7,
+      endTime:Date.now()+3600*1000, status:'live' }, { id:850, title:'Free-Range
+      Poultry', category:'Poultry', farmer:'David Munyagwa', startPrice:120000,
+      currentBid:195000, bids:11, endTime:Date.now()+5400*1000, status:'live' },
+      { id:851, title:'Bull (Single)', category:'Cattle', farmer:'Brian
+      Tumusiime', startPrice:1500000, currentBid:2100000, bids:3,
+      endTime:Date.now()+300*1000, status:'live' }, { id:852, title:'Boer Goats
+      (x3)', category:'Goats', farmer:'Peter Adewe', startPrice:250000,
+      currentBid:410000, bids:6, endTime:Date.now()+7200*1000, status:'live' },
+      ]; function renderAuctions() { const grid =
+      document.getElementById('auctions-grid'); const catColors = {
+      Cattle:'from-orange-500 to-red-600', Goats:'from-blue-500 to-cyan-600',
+      Sheep:'from-purple-500 to-violet-600', Poultry:'from-emerald-500
+      to-teal-600' }; const catBg = { Cattle:'bg-orange-500/15 text-orange-400',
+      Goats:'bg-blue-500/15 text-blue-400', Sheep:'bg-purple-500/15
+      text-purple-400', Poultry:'bg-emerald-500/15 text-emerald-400' };
+      grid.innerHTML = auctionsData.map(a => ` <div class="glass border
+      border-gray-800/40 rounded-2xl p-5 hover:border-orange-500/30
+      transition-all duration-300 group card-hover relative overflow-hidden
+      animate-slide-up"> <!-- Urgent badge for <10 min --> ${a.endTime -
+      Date.now() < 600000 ? '<div class="absolute top-0 left-0 right-0 h-0.5
+      bg-gradient-to-r from-red-500 to-orange-500 animate-pulse"></div>' : ''}
+      <div class="flex items-start justify-between mb-3"> <span class="text-xs
+      px-2.5 py-0.5 rounded-full ${catBg[a.category]}
+      font-semibold">${a.category}</span> <span class="text-[10px]
+      text-gray-600">#${a.id}</span> </div> <h4 class="font-black font-display
+      text-white mb-1 group-hover:text-orange-400
+      transition-colors">${a.title}</h4> <p class="text-xs text-gray-500
+      mb-3">by <span class="text-gray-400 font-semibold">${a.farmer}</span></p>
+      <!-- Bid progress --> <div class="mb-3"> <div class="flex items-center
+      justify-between mb-1.5"> <span class="text-[11px] text-gray-500">Current
+      Bid</span> <span class="text-[11px] text-gray-500">${a.bids} bids</span>
+      </div> <div class="h-1.5 bg-gray-800 rounded-full overflow-hidden"> <div
+      class="h-full bg-gradient-to-r ${catColors[a.category]} rounded-full"
+      style="width:${Math.min((a.currentBid/a.startPrice)*40, 95)}%;"></div>
+      </div> </div> <!-- Price row --> <div class="flex items-center
+      justify-between"> <div><p class="text-xs text-gray-500">Start</p><p
+      class="text-sm font-semibold text-gray-400">UGX
+      ${(a.startPrice/1000).toFixed(0)}K</p></div> <div class="text-right"><p
+      class="text-xs text-gray-500">Current</p><p class="text-lg font-black
+      font-display text-white">UGX ${(a.currentBid/1000).toFixed(0)}K</p></div>
+      </div> <!-- Timer --> <div class="flex items-center justify-between mt-3
+      pt-3 border-t border-gray-800/40"> <span class="countdown text-xs
+      font-semibold flex items-center gap-1.5 ${a.endTime - Date.now() < 600000
+      ? 'text-red-400' : 'text-amber-400'}" data-end="${a.endTime}"><i class="bi
+      bi-clock text-[10px]"></i><span class="countdown-text">...</span></span>
+      <button class="px-3 py-1 bg-gradient-to-r from-orange-500 to-red-600
+      rounded-lg text-[11px] font-semibold hover:shadow-md
+      hover:shadow-orange-500/30 transition-all" onclick="showToast('Monitoring
+      auction #${a.id}','success')">Monitor</button> </div> </div> `).join('');
+      startCountdowns(); } function filterAuctions(filter, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => {
+      b.classList.remove('bg-red-500/15','text-red-400','active-tab-btn');
+      b.classList.add('text-gray-500'); });
+      btn.classList.add('bg-red-500/15','text-red-400','active-tab-btn');
+      btn.classList.remove('text-gray-500'); // For demo just re-render (all are
+      'live') renderAuctions(); showToast(`Filtered to ${filter} auctions`,
+      'info'); } renderAuctions(); // Countdown timers function
+      startCountdowns() { document.querySelectorAll('.countdown').forEach(el =>
+      { const end = parseInt(el.dataset.end); function tick() { const diff = end
+      - Date.now(); if (diff <= 0) {
+      el.querySelector('.countdown-text').textContent = 'Ended'; return; } const
+      m = Math.floor(diff / 60000), s = Math.floor((diff % 60000) / 1000);
+      el.querySelector('.countdown-text').textContent = `${m}m ${s}s left`; if
+      (diff < 600000) { el.classList.add('text-red-400');
+      el.classList.remove('text-amber-400'); } setTimeout(tick, 1000); } tick();
+      }); } // ─── TRANSACTIONS ─── const txnData = [ { id:'TXN-8471',
+      from:'Sarah Amoako', to:'Peter Adewe', item:'2 Cattle',
+      amount:'1,450,000', status:'completed', date:'Feb 2, 2025' }, {
+      id:'TXN-8470', from:'John Okello', to:'James Ssemukaya', item:'5 Sheep',
+      amount:'720,000', status:'completed', date:'Feb 2, 2025' }, {
+      id:'TXN-8469', from:'Linda Acholi', to:'David Munyagwa', item:'Poultry
+      (20)', amount:'195,000', status:'pending', date:'Feb 1, 2025' }, {
+      id:'TXN-8468', from:'Brian Tumusiime', to:'Moses Kigunda', item:'3 Goats',
+      amount:'410,000', status:'failed', date:'Feb 1, 2025' }, { id:'TXN-8467',
+      from:'Grace Nabiryo', to:'Peter Adewe', item:'1 Bull', amount:'2,100,000',
+      status:'completed', date:'Jan 30, 2025' }, { id:'TXN-8466', from:'Sarah
+      Amoako', to:'Brian Tumusiime', item:'6 Goats', amount:'580,000',
+      status:'pending', date:'Jan 30, 2025' }, { id:'TXN-8465', from:'David
+      Munyagwa', to:'James Ssemukaya', item:'4 Sheep', amount:'440,000',
+      status:'completed', date:'Jan 29, 2025' }, ]; function
+      renderTransactions() { const statusS = { completed:'bg-green-500/15
+      text-green-400', pending:'bg-amber-500/15 text-amber-400',
+      failed:'bg-red-500/15 text-red-400' };
+      document.getElementById('transactions-body').innerHTML = txnData.map((t,
+      i) => ` <tr class="border-b border-gray-800/20 hover:bg-gray-800/20
+      transition-colors group animate-slide-up"
+      style="animation-delay:${i*0.04}s;"> <td class="px-5 py-3.5"><span
+      class="text-sm font-mono text-gray-300">${t.id}</span></td> <td
+      class="px-5 py-3.5"><div class="flex items-center gap-1.5 text-xs
+      text-gray-400"><span class="font-semibold text-white">${t.from}</span><i
+      class="bi bi-arrow-right text-gray-600"></i><span class="font-semibold
+      text-white">${t.to}</span></div></td> <td class="px-5 py-3.5 text-sm
+      text-gray-400">${t.item}</td> <td class="px-5 py-3.5 text-sm font-black
+      font-display text-white">UGX ${t.amount}</td> <td class="px-5
+      py-3.5"><span class="text-[11px] px-2.5 py-0.5 rounded-full
+      ${statusS[t.status]} font-semibold capitalize">${t.status}</span></td> <td
+      class="px-5 py-3.5 text-xs text-gray-500">${t.date}</td> <td class="px-5
+      py-3.5"><button class="text-xs text-orange-400 hover:text-orange-300
+      font-semibold opacity-0 group-hover:opacity-100 transition-opacity"
+      onclick="showToast('Viewing ${t.id}','info')">View →</button></td> </tr>
+      `).join(''); } renderTransactions(); // ─── ANALYTICS ─── let
+      analyticsInited = false; function initAnalytics() { if (analyticsInited)
+      return; analyticsInited = true; // Bar chart const categories = [ {
+      name:'Cattle', value:4500000, color:'from-orange-500 to-red-600',
+      max:5000000 }, { name:'Goats', value:3100000, color:'from-blue-500
+      to-cyan-500', max:5000000 }, { name:'Sheep', value:2200000,
+      color:'from-purple-500 to-violet-500', max:5000000 }, { name:'Poultry',
+      value:1500000, color:'from-emerald-500 to-teal-500', max:5000000 }, {
+      name:'Pigs', value:900000, color:'from-pink-500 to-rose-500', max:5000000
+      }, ]; document.getElementById('bar-chart').innerHTML = categories.map((c,
+      i) => ` <div class="animate-slide-up" style="animation-delay:${i*0.1}s;">
+      <div class="flex items-center justify-between mb-1.5"> <div class="flex
+      items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-gradient-to-r
+      ${c.color}"></span><span class="text-sm font-semibold
+      text-white">${c.name}</span></div> <span class="text-sm font-black
+      font-display text-white">UGX ${(c.value/1000000).toFixed(1)}M</span>
+      </div> <div class="h-3 bg-gray-800 rounded-full overflow-hidden"> <div
+      class="h-full bg-gradient-to-r ${c.color} rounded-full transition-all
+      duration-1000 ease-out" style="width:0%;" id="bar-${i}"></div> </div>
+      </div> `).join(''); // Animate bars requestAnimationFrame(() => {
+      categories.forEach((c, i) => { setTimeout(() => {
+      document.getElementById('bar-' + i).style.width = (c.value / c.max * 100)
+      + '%'; }, 200 + i * 100); }); }); // Donut const circumference = 2 *
+      Math.PI * 50; // ~314 const percentages = [45, 25, 18, 12]; let offset =
+      0; const donutIds =
+      ['donut-cattle','donut-goat','donut-sheep','donut-poultry'];
+      donutIds.forEach((id, i) => { const el = document.getElementById(id);
+      const pct = percentages[i] / 100; const dashLen = circumference * pct;
+      el.style.strokeDasharray = `${dashLen} ${circumference}`;
+      el.style.strokeDashoffset = -offset; offset += dashLen; }); // Funnel
+      const funnelStages = [ { label:'Listings Created', value:284,
+      color:'from-blue-500 to-cyan-500', pct:100 }, { label:'Auctions Started',
+      value:198, color:'from-indigo-500 to-blue-500', pct:70 }, { label:'Bids
+      Received', value:156, color:'from-purple-500 to-indigo-500', pct:55 }, {
+      label:'Bids Accepted', value:112, color:'from-violet-500 to-purple-500',
+      pct:39 }, { label:'Payments Completed', value:98, color:'from-orange-500
+      to-red-500', pct:35 }, ];
+      document.getElementById('funnel-chart').innerHTML = funnelStages.map((s,
+      i) => ` <div class="animate-slide-up" style="animation-delay:${i*0.1}s;">
+      <div class="flex items-center gap-4"> <div class="w-24 text-right"><span
+      class="text-sm font-black font-display text-white">${s.value}</span></div>
+      <div class="flex-1"><div class="flex items-center justify-between
+      mb-1"><span class="text-xs text-gray-400">${s.label}</span><span
+      class="text-xs text-gray-500">${s.pct}%</span></div> <div class="h-6
+      bg-gray-800 rounded-lg overflow-hidden relative"> <div class="h-full
+      bg-gradient-to-r ${s.color} rounded-lg transition-all duration-1000"
+      style="width:${s.pct}%;"></div> <span class="absolute inset-0 flex
+      items-center pl-3 text-[11px] font-semibold
+      text-white/80">${s.label}</span> </div> </div> <div class="w-6 text-center
+      text-gray-600">→</div> </div> </div> `).join(''); } // ─── MODERATION ───
+      const moderationItems = [ { id:'MOD-102', type:'urgent', title:'Suspicious
+      Listing', desc:'Listing #1204 — price unusually low for cattle. May be
+      fraudulent.', farmer:'Moses Kigunda', time:'30 min ago',
+      actions:['Approve','Flag','Remove'] }, { id:'MOD-101', type:'urgent',
+      title:'Duplicate Account', desc:'Two accounts share the same phone number
+      +256-XXX-XXXX.', farmer:'Grace Nabiryo', time:'1 hr ago',
+      actions:['Merge','Suspend','Investigate'] }, { id:'MOD-100',
+      type:'review', title:'Buyer Complaint', desc:'Buyer reports livestock
+      quality does not match listing description.', farmer:'Brian Tumusiime',
+      time:'2 hr ago', actions:['Mediate','Escalate','Close'] }, { id:'MOD-099',
+      type:'review', title:'Price Manipulation', desc:'3 consecutive bids from
+      same IP address on auction #845.', farmer:'Peter Adewe', time:'3 hr ago',
+      actions:['Investigate','Suspend Bids','Ignore'] }, { id:'MOD-098',
+      type:'review', title:'Offensive Content', desc:'Listing description
+      contains inappropriate language.', farmer:'David Munyagwa', time:'4 hr
+      ago', actions:['Edit','Remove','Warn'] }, { id:'MOD-097', type:'docs',
+      title:'Document Verification', desc:'Farmer certificate uploaded — needs
+      manual verification.', farmer:'Linda Acholi', time:'5 hr ago',
+      actions:['Approve','Reject','Request More'] }, { id:'MOD-096',
+      type:'docs', title:'Payment Receipt Check', desc:'Receipt for TXN-8469
+      needs cross-verification with bank.', farmer:'James Ssemukaya', time:'6 hr
+      ago', actions:['Verify','Reject','Pending'] }, ]; function
+      renderModeration() { const typeStyles = { urgent:'border-red-500/40
+      bg-red-500/5', review:'border-amber-500/40 bg-amber-500/5',
+      docs:'border-sky-500/40 bg-sky-500/5' }; const typeBadge = {
+      urgent:'bg-red-500/15 text-red-400', review:'bg-amber-500/15
+      text-amber-400', docs:'bg-sky-500/15 text-sky-400' }; const typeIcon = {
+      urgent:'bi-exclamation-triangle', review:'bi-eye',
+      docs:'bi-file-earmark-text' };
+      document.getElementById('moderation-list').innerHTML =
+      moderationItems.map((m, i) => ` <div class="glass border
+      ${typeStyles[m.type]} rounded-2xl p-5 animate-slide-up
+      hover:border-orange-500/30 transition-all"
+      style="animation-delay:${i*0.06}s;"> <div class="flex items-start
+      justify-between"> <div class="flex items-center gap-3 mb-2"> <div
+      class="w-9 h-9 rounded-lg ${typeBadge[m.type].split(' ')[0]} flex
+      items-center justify-center"><i class="bi ${typeIcon[m.type]}
+      ${typeBadge[m.type].split(' ')[1]}"></i></div> <div><div class="flex
+      items-center gap-2"><h4 class="text-sm font-black font-display
+      text-white">${m.title}</h4><span class="text-[10px] px-2 py-0.5
+      rounded-full ${typeBadge[m.type]} font-semibold
+      capitalize">${m.type}</span></div><p class="text-xs text-gray-500
+      mt-0.5">${m.id} · ${m.time}</p></div> </div> <span class="text-xs
+      text-gray-600">by ${m.farmer}</span> </div> <p class="text-xs
+      text-gray-400 mb-3 ml-12">${m.desc}</p> <div class="flex items-center
+      gap-2 ml-12 flex-wrap"> ${m.actions.map((a, j) => `<button class="px-3
+      py-1 rounded-lg text-[11px] font-semibold ${j===0 ? 'bg-gradient-to-r
+      from-orange-500 to-red-600 text-white hover:shadow-md
+      hover:shadow-orange-500/25' : 'glass border border-gray-800 text-gray-400
+      hover:text-white hover:border-gray-600'} transition-all"
+      onclick="showToast('Action: ${a} on
+      ${m.id}','${j===0?'success':'info'}')">${a}</button>`).join('')} </div>
+      </div> `).join(''); } renderModeration(); // ─── SYSTEM LOGS ─── let
+      logsInited = false; const logMessages = [ { level:'info', msg:'Server
+      started on port 3000', time:'02:45:00' }, { level:'info', msg:'Database
+      connection pool ready (10 connections)', time:'02:45:01' }, {
+      level:'warn', msg:'WebSocket connection timeout — client 204.x',
+      time:'02:45:15' }, { level:'info', msg:'Auction #847 — bid received from
+      user_4821', time:'02:46:02' }, { level:'error', msg:'Payment gateway
+      timeout for TXN-8468 (retry 2/3)', time:'02:46:30' }, { level:'info',
+      msg:'Email sent: auction_alert to sarah.a@email.com', time:'02:47:11' }, {
+      level:'info', msg:'Cron: cleanup expired sessions — 14 removed',
+      time:'02:48:00' }, { level:'warn', msg:'High memory usage detected: 78%
+      threshold', time:'02:48:45' }, { level:'info', msg:'New user registered:
+      david.m (farmer)', time:'02:49:03' }, { level:'error', msg:'Rate limit
+      hit: IP 192.168.x — blocked 60s', time:'02:49:55' }, { level:'info',
+      msg:'Auction #849 started — 5 sheep listing live', time:'02:50:12' }, ];
+      function initSystemLogs() { if (logsInited) return; logsInited = true;
+      const el = document.getElementById('system-logs'); el.innerHTML =
+      logMessages.map(l => { const colors = { info:'text-gray-400',
+      warn:'text-amber-400', error:'text-red-400' }; const bg = { info:'',
+      warn:'bg-amber-500/5', error:'bg-red-500/5' }; return `<div class="flex
+      gap-2 px-2 py-0.5 rounded ${bg[l.level]} hover:bg-gray-800/40
+      transition-colors"> <span class="text-gray-600 text-[10px]
+      flex-shrink-0">${l.time}</span> <span class="text-[10px] font-semibold
+      ${l.level==='info'?'text-blue-400':l.level==='warn'?'text-amber-400':'text-red-400'}
+      flex-shrink-0 uppercase w-10 text-right">${l.level}</span> <span
+      class="text-[10px] ${colors[l.level]}">${l.msg}</span> </div>`;
+      }).join(''); // Simulate new log entries setInterval(() => { const newLog
+      = { level:'info', msg:`Heartbeat ping — ${new
+      Date().toLocaleTimeString()}`, time:new
+      Date().toLocaleTimeString().split(' ')[0] }; logMessages.push(newLog); if
+      (logMessages.length > 18) logMessages.shift(); el.innerHTML =
+      logMessages.map(l => { const colors = { info:'text-gray-400',
+      warn:'text-amber-400', error:'text-red-400' }; const bg = { info:'',
+      warn:'bg-amber-500/5', error:'bg-red-500/5' }; return `<div class="flex
+      gap-2 px-2 py-0.5 rounded ${bg[l.level]} hover:bg-gray-800/40
+      transition-colors"> <span class="text-gray-600 text-[10px]
+      flex-shrink-0">${l.time}</span> <span class="text-[10px] font-semibold
+      ${l.level==='info'?'text-blue-400':l.level==='warn'?'text-amber-400':'text-red-400'}
+      flex-shrink-0 uppercase w-10 text-right">${l.level}</span> <span
+      class="text-[10px] ${colors[l.level]}">${l.msg}</span> </div>`;
+      }).join(''); el.scrollTop = el.scrollHeight; }, 5000); } // ─── SYSTEM
+      PERF SIMULATION ─── setInterval(() => { const fluctuate = (base, range) =>
+      Math.max(5, Math.min(95, base + (Math.random()-0.5)*range)); const cpu =
+      fluctuate(34, 20); const mem = fluctuate(61, 8); const disk =
+      fluctuate(22, 6); const net = fluctuate(48, 15);
+      document.getElementById('cpu-val') &&
+      (document.getElementById('cpu-val').textContent = cpu.toFixed(0) + '%');
+      document.getElementById('cpu-bar') &&
+      (document.getElementById('cpu-bar').style.width = cpu + '%');
+      document.getElementById('mem-val') &&
+      (document.getElementById('mem-val').textContent = mem.toFixed(0) + '%');
+      document.getElementById('mem-bar') &&
+      (document.getElementById('mem-bar').style.width = mem + '%');
+      document.getElementById('disk-val') &&
+      (document.getElementById('disk-val').textContent = disk.toFixed(0) + '%');
+      document.getElementById('disk-bar') &&
+      (document.getElementById('disk-bar').style.width = disk + '%');
+      document.getElementById('net-val') &&
+      (document.getElementById('net-val').textContent = net.toFixed(0) + '%');
+      document.getElementById('net-bar') &&
+      (document.getElementById('net-bar').style.width = net + '%'); }, 3000); //
+      ─── GLOBAL SEARCH ───
+      document.getElementById('global-search').addEventListener('input',
+      function() { const q = this.value.toLowerCase(); if (q.length > 2)
+      showToast(`Searching for "${this.value}"…`, 'info'); }); // ─── INITIAL
+      TOAST ─── setTimeout(() => showToast('Welcome back, Super Admin!',
+      'success'), 800);
+    </script>
+  </body>
+</html>
