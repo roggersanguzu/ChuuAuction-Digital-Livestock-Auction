@@ -684,7 +684,7 @@ function sortListings(sortBy) {
 }
 
 function updateStats() {
-  console.log("[Frontend] 📊 Updating stats");
+  console.log("[Frontend]  Updating stats");
   document.getElementById("total-listings").textContent = allListings.length;
   document.getElementById("live-auctions").textContent = allListings.filter(
     (l) => l.vaccinated,
@@ -768,4 +768,4 @@ function loadMore() {
   console.log("[Frontend] Load more triggered - page:", currentPage);
 }
 
-console.log("[Frontend] ✅ Script loaded successfully");
+console.log("[Frontend]  Script loaded successfully");

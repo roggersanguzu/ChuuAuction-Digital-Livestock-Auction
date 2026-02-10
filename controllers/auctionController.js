@@ -157,7 +157,7 @@ export const getAllAuctions = async (req, res) => {
     }));
 
     console.log(
-      "[Controller] ✅ Transformed auctions:",
+      "[Controller]  Transformed auctions:",
       transformedAuctions.length,
     );
     console.log(
@@ -171,7 +171,7 @@ export const getAllAuctions = async (req, res) => {
       data: transformedAuctions,
     };
 
-    console.log("[Controller] 📤 Sending response with status 200");
+    console.log("[Controller]  Sending response with status 200");
     console.log("[Controller] Response structure:", {
       success: response.success,
       count: response.count,
@@ -180,7 +180,7 @@ export const getAllAuctions = async (req, res) => {
 
     return res.status(200).json(response);
   } catch (err) {
-    console.error("[Controller] ❌ ERROR in getAllAuctions:", err);
+    console.error("[Controller]  ERROR in getAllAuctions:", err);
     console.error("[Controller] Error stack:", err.stack);
     return res.status(500).json({
       success: false,
