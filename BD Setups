@@ -1,0 +1,9 @@
+MONGO_URI=mongodb+srv://anguzuroggers111_db_user:LNgVgcSmzwjkvkBj@Digital-Livestock-Auction.xpwvyva.mongodb.net/digital_livestock_auction?retryWrites=true&w=majority
+JWT_SECRET=super_secret_key
+SESSION_SECRET=supersecretkey
+PORT=3000
+
+
+CLOUDINARY_CLOUD_NAME=drymkavsb
+CLOUDINARY_API_KEY=477154657474739
+CLOUDINARY_API_SECRET=TA4cXJRcbPOK5eGkgZBIp1YQCNg
