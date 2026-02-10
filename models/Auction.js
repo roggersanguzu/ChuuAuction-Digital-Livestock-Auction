@@ -1,4 +1,3 @@
-// models/Auction.js
 import mongoose from "mongoose";
 
 const auctionSchema = new mongoose.Schema(
@@ -25,5 +24,7 @@ const auctionSchema = new mongoose.Schema(
 );
 
 const Auction = mongoose.model("Auction", auctionSchema);
+
+console.log("[Model] Auction model registered");
 
 export default Auction;

@@ -1,0 +1,759 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browse Premium Livestock - ChuuAuction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Work+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { fontFamily: {
+      display: ["Playfair Display", "serif"], body: ["Work Sans", "sans-serif"],
+      mono: ["DM Mono", "monospace"], }, animation: { gradient: "gradient 8s
+      linear infinite", float: "float 6s ease-in-out infinite", "slide-up":
+      "slideUp 0.5s ease-out", "fade-in": "fadeIn 0.6s ease-out", "scale-in":
+      "scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1)", shimmer: "shimmer 2s
+      infinite", "pulse-soft": "pulseSoft 3s ease-in-out infinite", },
+      keyframes: { gradient: { "0%, 100%": { backgroundPosition: "0% 50%" },
+      "50%": { backgroundPosition: "100% 50%" }, }, float: { "0%, 100%": {
+      transform: "translateY(0px)" }, "50%": { transform: "translateY(-20px)" },
+      }, slideUp: { "0%": { opacity: "0", transform: "translateY(30px)" },
+      "100%": { opacity: "1", transform: "translateY(0)" }, }, fadeIn: { "0%": {
+      opacity: "0" }, "100%": { opacity: "1" }, }, scaleIn: { "0%": { transform:
+      "scale(0.9)", opacity: "0" }, "100%": { transform: "scale(1)", opacity:
+      "1" }, }, shimmer: { "0%": { backgroundPosition: "-1000px 0" }, "100%": {
+      backgroundPosition: "1000px 0" }, }, pulseSoft: { "0%, 100%": { opacity:
+      "1" }, "50%": { opacity: "0.7" }, }, }, }, }, };
+    </script>
+
+    <style>
+      .font-display {
+        font-family: "Playfair Display", serif;
+      }
+      .font-body {
+        font-family: "Work Sans", sans-serif;
+      }
+      .font-mono {
+        font-family: "DM Mono", monospace;
+      }
+
+      .glass {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .glass-strong {
+        background: rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .text-gradient {
+        background: linear-gradient(135deg, #10b981, #059669, #047857);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        background-size: 200% 200%;
+      }
+
+      .card-hover {
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .card-hover:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 20px 60px rgba(16, 185, 129, 0.25);
+      }
+
+      .tag-pill {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tag-pill::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .tag-pill:hover::before {
+        left: 100%;
+      }
+
+      .search-glow:focus {
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+      }
+
+      .filter-chip {
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .filter-chip:hover {
+        transform: translateY(-2px);
+      }
+
+      .filter-chip.active {
+        background: linear-gradient(135deg, #10b981, #059669);
+        border-color: #10b981;
+        color: white;
+      }
+
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1f2937;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #10b981, #059669);
+        border-radius: 5px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #059669, #047857);
+      }
+
+      .shimmer {
+        background: linear-gradient(
+          90deg,
+          #1f2937 0%,
+          #374151 50%,
+          #1f2937 100%
+        );
+        background-size: 1000px 100%;
+        animation: shimmer 2s infinite;
+      }
+
+      .photo-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 0.5rem;
+      }
+
+      @keyframes status-pulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+        }
+        50% {
+          box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+        }
+      }
+
+      .status-live {
+        animation: status-pulse 2s infinite;
+      }
+
+      .filter-panel {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .filter-panel.expanded {
+        max-height: 1000px;
+      }
+
+      @keyframes counter {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .stat-item {
+        animation: counter 0.6s ease-out backwards;
+      }
+
+      .image-container {
+        overflow: hidden;
+        position: relative;
+      }
+
+      .image-container img {
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .image-container:hover img {
+        transform: scale(1.15);
+      }
+
+      .price-shine {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .price-shine::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          45deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        transform: rotate(45deg);
+        animation: shine 3s infinite;
+      }
+
+      @keyframes shine {
+        0% {
+          transform: translateX(-100%) translateY(-100%) rotate(45deg);
+        }
+        100% {
+          transform: translateX(100%) translateY(100%) rotate(45deg);
+        }
+      }
+
+      @keyframes float-gentle {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .empty-state {
+        animation: float-gentle 4s ease-in-out infinite;
+      }
+
+      select {
+        color: white !important;
+        background-color: rgba(17, 24, 39, 0.8) !important;
+      }
+
+      select option {
+        background-color: #111827 !important;
+        color: white !important;
+        padding: 10px !important;
+      }
+
+      select:focus {
+        color: white !important;
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        color: white !important;
+      }
+
+      input[type="text"]::placeholder,
+      input[type="number"]::placeholder {
+        color: #9ca3af !important;
+      }
+    </style>
+  </head>
+
+  <body
+    class="min-h-screen bg-gray-950 text-white font-body overflow-x-hidden relative"
+  >
+    <!-- Animated Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+      <div
+        class="absolute top-20 left-10 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px] animate-float"
+      ></div>
+      <div
+        class="absolute bottom-20 right-10 w-[600px] h-[600px] bg-green-600/10 rounded-full blur-[140px] animate-float"
+        style="animation-delay: 3s"
+      ></div>
+      <div
+        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-r from-emerald-500/5 to-green-600/5 rounded-full blur-3xl animate-pulse-soft"
+      ></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Header Section -->
+      <div class="mb-8 animate-fade-in">
+        <div
+          class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8"
+        >
+          <div>
+            <div class="flex items-center gap-4 mb-3">
+              <a
+                href="/dashboard/buyer"
+                class="w-12 h-12 rounded-xl glass border border-gray-800/50 hover:border-emerald-500/50 flex items-center justify-center transition-all group"
+              >
+                <i
+                  class="bi bi-arrow-left text-emerald-500 group-hover:-translate-x-1 transition-transform text-xl"
+                ></i>
+              </a>
+              <div>
+                <h1 class="text-5xl md:text-6xl font-black font-display">
+                  <span class="text-gradient">Premium Livestock</span>
+                </h1>
+                <p class="text-gray-400 text-lg mt-1">
+                  Discover exceptional animals from verified farmers
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="flex items-center gap-3">
+            <div
+              class="stat-item px-5 py-3 rounded-xl glass border border-gray-800/50 text-center"
+              style="animation-delay: 0.1s"
+            >
+              <p
+                class="text-3xl font-black text-emerald-500"
+                id="total-listings"
+              >
+                0
+              </p>
+              <p class="text-xs text-gray-400 font-semibold">Total Listings</p>
+            </div>
+            <div
+              class="stat-item px-5 py-3 rounded-xl glass border border-gray-800/50 text-center"
+              style="animation-delay: 0.2s"
+            >
+              <p class="text-3xl font-black text-green-500" id="live-auctions">
+                0
+              </p>
+              <p class="text-xs text-gray-400 font-semibold">Live Now</p>
+            </div>
+            <div
+              class="stat-item px-5 py-3 rounded-xl glass border border-gray-800/50 text-center"
+              style="animation-delay: 0.3s"
+            >
+              <p
+                class="text-3xl font-black text-blue-500"
+                id="verified-sellers"
+              >
+                0
+              </p>
+              <p class="text-xs text-gray-400 font-semibold">
+                Verified Sellers
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Advanced Search & Filter Bar -->
+        <div class="space-y-4">
+          <!-- Main Search Bar -->
+          <div class="relative">
+            <div
+              class="absolute left-5 top-1/2 -translate-y-1/2 text-emerald-500 text-xl"
+            >
+              <i class="bi bi-search"></i>
+            </div>
+            <input
+              type="text"
+              id="main-search"
+              placeholder="Search by breed, location, seller, or keywords..."
+              class="w-full pl-14 pr-14 py-5 rounded-2xl glass-strong border border-gray-800/50 focus:border-emerald-500/50 focus:outline-none search-glow transition-all text-lg font-medium text-white bg-gray-900/80"
+            />
+            <button
+              onclick="clearSearch()"
+              class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-emerald-500 transition-colors"
+            >
+              <i class="bi bi-x-circle text-xl"></i>
+            </button>
+          </div>
+
+          <!-- Quick Filters Row -->
+          <div class="flex flex-wrap gap-3">
+            <!-- Animal Type Filter -->
+            <div class="flex-1 min-w-[200px]">
+              <select
+                id="filter-animal-type"
+                class="w-full px-4 py-3 rounded-xl glass border border-gray-800/50 focus:border-emerald-500/50 focus:outline-none transition-all font-semibold text-white bg-gray-900/80"
+              >
+                <option value="" class="bg-gray-900 text-white">
+                  🔍 All Animals
+                </option>
+                <option value="1" class="bg-gray-900 text-white">
+                  🐄 Cattle
+                </option>
+                <option value="2" class="bg-gray-900 text-white">
+                  🐐 Goat
+                </option>
+                <option value="3" class="bg-gray-900 text-white">
+                  🐑 Sheep
+                </option>
+                <option value="4" class="bg-gray-900 text-white">
+                  🐷 Pig
+                </option>
+                <option value="5" class="bg-gray-900 text-white">
+                  🐔 Poultry
+                </option>
+                <option value="6" class="bg-gray-900 text-white">
+                  🐰 Rabbit
+                </option>
+                <option value="7" class="bg-gray-900 text-white">
+                  🦆 Duck
+                </option>
+              </select>
+            </div>
+
+            <!-- Health Status Filter -->
+            <div class="flex-1 min-w-[200px]">
+              <select
+                id="filter-health"
+                class="w-full px-4 py-3 rounded-xl glass border border-gray-800/50 focus:border-emerald-500/50 focus:outline-none transition-all font-semibold text-white bg-gray-900/80"
+              >
+                <option value="" class="bg-gray-900 text-white">
+                  💚 All Conditions
+                </option>
+                <option value="Excellent" class="bg-gray-900 text-white">
+                  💚 Excellent
+                </option>
+                <option value="Good" class="bg-gray-900 text-white">
+                  💙 Good
+                </option>
+                <option value="Fair" class="bg-gray-900 text-white">
+                  💛 Fair
+                </option>
+              </select>
+            </div>
+
+            <!-- Sex Filter -->
+            <div class="flex-1 min-w-[150px]">
+              <select
+                id="filter-sex"
+                class="w-full px-4 py-3 rounded-xl glass border border-gray-800/50 focus:border-emerald-500/50 focus:outline-none transition-all font-semibold text-white bg-gray-900/80"
+              >
+                <option value="" class="bg-gray-900 text-white">
+                  ⚥ All Sexes
+                </option>
+                <option value="Male" class="bg-gray-900 text-white">
+                  ♂ Male
+                </option>
+                <option value="Female" class="bg-gray-900 text-white">
+                  ♀ Female
+                </option>
+              </select>
+            </div>
+
+            <!-- Sort By -->
+            <div class="flex-1 min-w-[200px]">
+              <select
+                id="sort-by"
+                class="w-full px-4 py-3 rounded-xl glass border border-gray-800/50 focus:border-emerald-500/50 focus:outline-none transition-all font-semibold text-white bg-gray-900/80"
+              >
+                <option value="newest" class="bg-gray-900 text-white">
+                  🆕 Newest First
+                </option>
+                <option value="oldest" class="bg-gray-900 text-white">
+                  ⏰ Oldest First
+                </option>
+                <option value="weight-high" class="bg-gray-900 text-white">
+                  ⚖️ Highest Weight
+                </option>
+                <option value="weight-low" class="bg-gray-900 text-white">
+                  ⚖️ Lowest Weight
+                </option>
+                <option value="quantity-high" class="bg-gray-900 text-white">
+                  📊 Most Quantity
+                </option>
+                <option value="quantity-low" class="bg-gray-900 text-white">
+                  📊 Least Quantity
+                </option>
+              </select>
+            </div>
+
+            <!-- Advanced Filter Toggle -->
+            <button
+              onclick="toggleAdvancedFilters()"
+              class="px-6 py-3 rounded-xl glass border border-gray-800/50 hover:border-emerald-500/50 font-bold transition-all"
+            >
+              <i class="bi bi-sliders mr-2"></i>Advanced
+            </button>
+
+            <!-- Reset Filters -->
+            <button
+              onclick="resetFilters()"
+              class="px-6 py-3 rounded-xl glass border border-red-500/50 hover:bg-red-500/10 font-bold transition-all text-red-500"
+            >
+              <i class="bi bi-arrow-clockwise mr-2"></i>Reset
+            </button>
+          </div>
+
+          <!-- Advanced Filter Panel -->
+          <div id="advanced-filters" class="filter-panel">
+            <div
+              class="p-6 rounded-2xl glass-strong border border-gray-800/50 space-y-6"
+            >
+              <h3 class="text-xl font-bold text-emerald-500 mb-4">
+                <i class="bi bi-funnel mr-2"></i>Advanced Filters
+              </h3>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Weight Range -->
+                <div>
+                  <label
+                    class="block text-sm font-bold text-gray-300 mb-3"
+                  >Weight Range (KG)</label>
+                  <div class="flex gap-3">
+                    <input
+                      type="number"
+                      id="filter-weight-min"
+                      placeholder="Min"
+                      class="flex-1 px-4 py-2 rounded-xl glass border border-gray-800/50 focus:border-emerald-500/50 focus:outline-none transition-all text-white bg-gray-900/80"
+                    />
+                    <span class="text-gray-500 self-center">-</span>
+                    <input
+                      type="number"
+                      id="filter-weight-max"
+                      placeholder="Max"
+                      class="flex-1 px-4 py-2 rounded-xl glass border border-gray-800/50 focus:border-emerald-500/50 focus:outline-none transition-all text-white bg-gray-900/80"
+                    />
+                  </div>
+                </div>
+
+                <!-- Age Range -->
+                <div>
+                  <label class="block text-sm font-bold text-gray-300 mb-3">Age
+                    Range</label>
+                  <div class="flex gap-3">
+                    <input
+                      type="number"
+                      id="filter-age-min"
+                      placeholder="Min years"
+                      class="flex-1 px-4 py-2 rounded-xl glass border border-gray-800/50 focus:border-emerald-500/50 focus:outline-none transition-all text-white bg-gray-900/80"
+                    />
+                    <span class="text-gray-500 self-center">-</span>
+                    <input
+                      type="number"
+                      id="filter-age-max"
+                      placeholder="Max years"
+                      class="flex-1 px-4 py-2 rounded-xl glass border border-gray-800/50 focus:border-emerald-500/50 focus:outline-none transition-all text-white bg-gray-900/80"
+                    />
+                  </div>
+                </div>
+
+                <!-- Quantity Range -->
+                <div>
+                  <label
+                    class="block text-sm font-bold text-gray-300 mb-3"
+                  >Quantity Range</label>
+                  <div class="flex gap-3">
+                    <input
+                      type="number"
+                      id="filter-quantity-min"
+                      placeholder="Min"
+                      class="flex-1 px-4 py-2 rounded-xl glass border border-gray-800/50 focus:border-emerald-500/50 focus:outline-none transition-all text-white bg-gray-900/80"
+                    />
+                    <span class="text-gray-500 self-center">-</span>
+                    <input
+                      type="number"
+                      id="filter-quantity-max"
+                      placeholder="Max"
+                      class="flex-1 px-4 py-2 rounded-xl glass border border-gray-800/50 focus:border-emerald-500/50 focus:outline-none transition-all text-white bg-gray-900/80"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Vaccination Filter -->
+                <div>
+                  <label
+                    class="block text-sm font-bold text-gray-300 mb-3"
+                  >Vaccination Status</label>
+                  <div class="flex gap-3">
+                    <label
+                      class="flex-1 px-4 py-3 rounded-xl glass border border-gray-800/50 cursor-pointer hover:border-emerald-500/50 transition-all text-center"
+                    >
+                      <input
+                        type="radio"
+                        name="vaccination"
+                        value=""
+                        class="mr-2"
+                        checked
+                      />
+                      <span class="font-semibold">All</span>
+                    </label>
+                    <label
+                      class="flex-1 px-4 py-3 rounded-xl glass border border-gray-800/50 cursor-pointer hover:border-emerald-500/50 transition-all text-center"
+                    >
+                      <input
+                        type="radio"
+                        name="vaccination"
+                        value="true"
+                        class="mr-2"
+                      />
+                      <span class="font-semibold">✅ Vaccinated</span>
+                    </label>
+                    <label
+                      class="flex-1 px-4 py-3 rounded-xl glass border border-gray-800/50 cursor-pointer hover:border-emerald-500/50 transition-all text-center"
+                    >
+                      <input
+                        type="radio"
+                        name="vaccination"
+                        value="false"
+                        class="mr-2"
+                      />
+                      <span class="font-semibold">❌ Not Vaccinated</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Location Filter -->
+                <div>
+                  <label
+                    class="block text-sm font-bold text-gray-300 mb-3"
+                  >Location/District</label>
+                  <input
+                    type="text"
+                    id="filter-location"
+                    placeholder="Enter location..."
+                    class="w-full px-4 py-3 rounded-xl glass border border-gray-800/50 focus:border-emerald-500/50 focus:outline-none transition-all text-white bg-gray-900/80"
+                  />
+                </div>
+              </div>
+
+              <div class="flex justify-end gap-3">
+                <button
+                  onclick="applyAdvancedFilters()"
+                  class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 font-bold hover:shadow-xl hover:shadow-emerald-500/30 transition-all"
+                >
+                  <i class="bi bi-check-circle mr-2"></i>Apply Filters
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Filters Display -->
+          <div id="active-filters" class="flex flex-wrap gap-2"></div>
+        </div>
+      </div>
+
+      <!-- Results Header -->
+      <div class="flex items-center justify-between mb-6 animate-slide-up">
+        <div>
+          <h2 class="text-2xl font-bold">
+            <span id="results-count">0</span>
+            Listings Found
+          </h2>
+          <p class="text-sm text-gray-400 mt-1" id="filter-description">
+            Showing all available livestock
+          </p>
+        </div>
+
+        <!-- View Toggle -->
+        <div class="flex gap-2">
+          <button
+            onclick="setViewMode('grid')"
+            id="view-grid"
+            class="px-4 py-2 rounded-lg glass border border-emerald-500/50 transition-all"
+          >
+            <i class="bi bi-grid-3x3-gap"></i>
+          </button>
+          <button
+            onclick="setViewMode('list')"
+            id="view-list"
+            class="px-4 py-2 rounded-lg glass border border-gray-800/50 transition-all"
+          >
+            <i class="bi bi-list-ul"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Listings Grid -->
+      <div
+        id="listings-container"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
+        <!-- Listings will be dynamically loaded here -->
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading-state" class="text-center py-20">
+        <div class="inline-block">
+          <div
+            class="w-16 h-16 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mb-4"
+          ></div>
+          <p class="text-gray-400 font-semibold">
+            Loading premium livestock...
+          </p>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="text-center py-20 hidden">
+        <div class="empty-state inline-block">
+          <div
+            class="w-32 h-32 rounded-full bg-gray-800/30 flex items-center justify-center mx-auto mb-6"
+          >
+            <i class="bi bi-search text-6xl text-gray-600"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-400 mb-3">
+            No Listings Found
+          </h3>
+          <p class="text-gray-500 mb-6">
+            Try adjusting your filters or search criteria
+          </p>
+          <button
+            onclick="resetFilters()"
+            class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 font-bold hover:shadow-xl hover:shadow-emerald-500/30 transition-all"
+          >
+            <i class="bi bi-arrow-clockwise mr-2"></i>Reset All Filters
+          </button>
+        </div>
+      </div>
+
+      <!-- Load More Button -->
+      <div id="load-more-container" class="text-center mt-12 hidden">
+        <button
+          onclick="loadMore()"
+          class="px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 font-bold text-lg hover:shadow-2xl hover:shadow-emerald-500/30 transition-all"
+        >
+          <i class="bi bi-arrow-down-circle mr-2"></i>Load More Listings
+        </button>
+      </div>
+    </div>
+
+    <!-- Listing Detail Modal -->
+    <div
+      id="detail-modal"
+      class="fixed inset-0 bg-black/80 backdrop-blur-xl z-50 hidden items-center justify-center p-4"
+      onclick="closeDetailModal(event)"
+    >
+      <div
+        class="max-w-5xl w-full max-h-[90vh] overflow-y-auto rounded-3xl glass-strong border border-gray-800/50 animate-scale-in"
+        onclick="event.stopPropagation()"
+      >
+        <div id="modal-content">
+          <!-- Modal content will be dynamically loaded -->
+        </div>
+      </div>
+    </div>
+
+    <!-- JAVASCRIPT - Must be placed at the very end before closing body tag -->
+    <script src="/js/animalList.js"></script>
+  </body>
+</html>
