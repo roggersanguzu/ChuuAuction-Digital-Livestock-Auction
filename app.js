@@ -12,6 +12,7 @@ import authRoutes from "./routes/authRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import livestockRoutes from "./routes/livestockRoutes.js";
 import auctionRoutes from "./routes/auctionRoutes.js";
+import verificationRoutes from "./routes/verificationRoutes.js";
 
 dotenv.config();
 
@@ -82,6 +83,7 @@ app.use("/auth", authRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/livestock", livestockRoutes);
 app.use("/auctions", auctionRoutes); // standardized
+app.use("/verification", verificationRoutes);
 
 // --- 404 Handler ---
 app.use((req, res) => {

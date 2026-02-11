@@ -1,0 +1,677 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Livestock Verification - ChuuAuction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { fontFamily: {
+      display: ["Crimson Pro", "serif"], mono: ["Space Mono", "monospace"],
+      body: ["Inter", "sans-serif"], }, animation: { "slide-in": "slideIn 0.5s
+      ease-out", "fade-in": "fadeIn 0.6s ease-out", "bounce-soft": "bounceSoft
+      2s infinite", "pulse-glow": "pulseGlow 2s ease-in-out infinite", },
+      keyframes: { slideIn: { "0%": { opacity: "0", transform:
+      "translateY(20px)" }, "100%": { opacity: "1", transform: "translateY(0)"
+      }, }, fadeIn: { "0%": { opacity: "0" }, "100%": { opacity: "1" }, },
+      bounceSoft: { "0%, 100%": { transform: "translateY(0)" }, "50%": {
+      transform: "translateY(-5px)" }, }, pulseGlow: { "0%, 100%": { boxShadow:
+      "0 0 20px rgba(59, 130, 246, 0.3)" }, "50%": { boxShadow: "0 0 40px
+      rgba(59, 130, 246, 0.6)" }, }, }, }, }, };
+    </script>
+
+    <style>
+      .font-display {
+        font-family: "Crimson Pro", serif;
+      }
+      .font-mono {
+        font-family: "Space Mono", monospace;
+      }
+      .font-body {
+        font-family: "Inter", sans-serif;
+      }
+
+      .glass {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .glass-strong {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .file-upload-zone {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .file-upload-zone.drag-over {
+        background: rgba(59, 130, 246, 0.1);
+        border-color: #3b82f6;
+        transform: scale(1.02);
+      }
+
+      .file-preview {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .file-preview:hover .file-remove {
+        opacity: 1;
+      }
+
+      .file-remove {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      @keyframes progress {
+        0% {
+          width: 0%;
+        }
+        100% {
+          width: 100%;
+        }
+      }
+
+      .progress-bar {
+        animation: progress 2s ease-out;
+      }
+
+      .step-circle {
+        position: relative;
+        z-index: 1;
+      }
+
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1f2937;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #3b82f6, #2563eb);
+        border-radius: 4px;
+      }
+
+      @keyframes ai-pulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7);
+        }
+        50% {
+          box-shadow: 0 0 0 10px rgba(139, 92, 246, 0);
+        }
+      }
+
+      .ai-badge {
+        animation: ai-pulse 2s infinite;
+      }
+    </style>
+  </head>
+
+  <body class="min-h-screen bg-gray-950 text-white font-body overflow-x-hidden">
+    <!-- Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+      <div
+        class="absolute top-20 left-20 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[150px]"
+      ></div>
+      <div
+        class="absolute bottom-20 right-20 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[150px]"
+      ></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Header -->
+      <div class="mb-12 animate-fade-in text-center">
+        <div class="flex items-center justify-center gap-3 mb-4">
+          <div
+            class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center ai-badge"
+          >
+            <i class="bi bi-shield-check text-2xl"></i>
+          </div>
+          <h1 class="text-5xl md:text-6xl font-black font-display">
+            <span
+              class="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent"
+            >
+              AI-Powered Verification
+            </span>
+          </h1>
+        </div>
+        <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+          Submit ownership and health documents for instant AI verification
+          using Google Gemini
+        </p>
+        <div
+          class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-purple-500/30"
+        >
+          <i class="bi bi-stars text-purple-400"></i>
+          <span class="text-sm font-mono text-purple-300">Powered by Gemini 1.5
+            Flash</span>
+        </div>
+      </div>
+
+      <!-- Progress Steps -->
+      <div class="mb-12 relative">
+        <div class="flex items-center justify-between max-w-2xl mx-auto">
+          <div class="flex flex-col items-center step-circle">
+            <div
+              id="step1-circle"
+              class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center font-bold mb-2"
+            >
+              1
+            </div>
+            <span class="text-xs font-semibold text-blue-400">Documents</span>
+          </div>
+          <div class="flex flex-col items-center step-circle">
+            <div
+              id="step2-circle"
+              class="w-10 h-10 rounded-full glass border-2 border-gray-700 flex items-center justify-center font-bold mb-2"
+            >
+              2
+            </div>
+            <span class="text-xs font-semibold text-gray-500">Photos</span>
+          </div>
+          <div class="flex flex-col items-center step-circle">
+            <div
+              id="step3-circle"
+              class="w-10 h-10 rounded-full glass border-2 border-gray-700 flex items-center justify-center font-bold mb-2"
+            >
+              3
+            </div>
+            <span class="text-xs font-semibold text-gray-500">Details</span>
+          </div>
+          <div class="flex flex-col items-center step-circle">
+            <div
+              id="step4-circle"
+              class="w-10 h-10 rounded-full glass border-2 border-gray-700 flex items-center justify-center font-bold mb-2"
+            >
+              4
+            </div>
+            <span class="text-xs font-semibold text-gray-500">Review</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form
+        id="verification-form"
+        class="space-y-8"
+        enctype="multipart/form-data"
+      >
+        <!-- Step 1: Document Upload -->
+        <div id="step1" class="step-container animate-slide-in">
+          <div class="p-8 rounded-3xl glass-strong border border-gray-800/50">
+            <h2
+              class="text-3xl font-bold font-display mb-6 flex items-center gap-3"
+            >
+              <i class="bi bi-file-earmark-text text-blue-500"></i>
+              Verification Documents
+            </h2>
+
+            <!-- Verification Type -->
+            <div class="mb-8">
+              <label class="block text-sm font-bold text-gray-300 mb-4">What do
+                you want to verify?</label>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <label class="relative cursor-pointer">
+                  <input
+                    type="radio"
+                    name="verificationType"
+                    value="ownership"
+                    class="peer sr-only"
+                    required
+                  />
+                  <div
+                    class="p-6 rounded-2xl glass border-2 border-gray-800 peer-checked:border-blue-500 peer-checked:bg-blue-500/10 transition-all text-center"
+                  >
+                    <i
+                      class="bi bi-person-badge text-4xl mb-3 text-blue-400"
+                    ></i>
+                    <h3 class="font-bold mb-1">Ownership</h3>
+                    <p class="text-xs text-gray-400">
+                      Prove you own this animal
+                    </p>
+                  </div>
+                </label>
+                <label class="relative cursor-pointer">
+                  <input
+                    type="radio"
+                    name="verificationType"
+                    value="health"
+                    class="peer sr-only"
+                    required
+                  />
+                  <div
+                    class="p-6 rounded-2xl glass border-2 border-gray-800 peer-checked:border-green-500 peer-checked:bg-green-500/10 transition-all text-center"
+                  >
+                    <i
+                      class="bi bi-heart-pulse text-4xl mb-3 text-green-400"
+                    ></i>
+                    <h3 class="font-bold mb-1">Health Records</h3>
+                    <p class="text-xs text-gray-400">Verify health status</p>
+                  </div>
+                </label>
+                <label class="relative cursor-pointer">
+                  <input
+                    type="radio"
+                    name="verificationType"
+                    value="both"
+                    class="peer sr-only"
+                    required
+                  />
+                  <div
+                    class="p-6 rounded-2xl glass border-2 border-gray-800 peer-checked:border-purple-500 peer-checked:bg-purple-500/10 transition-all text-center"
+                  >
+                    <i
+                      class="bi bi-check-all text-4xl mb-3 text-purple-400"
+                    ></i>
+                    <h3 class="font-bold mb-1">Both</h3>
+                    <p class="text-xs text-gray-400">Complete verification</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Ownership Documents -->
+            <div id="ownership-section" class="mb-8" style="display: none">
+              <h3 class="text-xl font-bold mb-4 text-blue-400">
+                <i class="bi bi-folder2-open mr-2"></i>
+                Ownership Documents
+              </h3>
+              <div
+                class="file-upload-zone p-8 rounded-2xl border-2 border-dashed border-gray-700 hover:border-blue-500 transition-all cursor-pointer text-center"
+                id="ownership-drop-zone"
+              >
+                <i
+                  class="bi bi-cloud-upload text-6xl text-gray-600 mb-4 block"
+                ></i>
+                <p class="text-lg font-semibold mb-2">
+                  Drop ownership documents here
+                </p>
+                <p class="text-sm text-gray-400 mb-4">or click to browse</p>
+                <p class="text-xs text-gray-500">
+                  Accepted: Purchase receipts, certificates, government ID (PDF,
+                  JPG, PNG) - Max 50MB per file
+                </p>
+                <input
+                  type="file"
+                  id="ownership-input"
+                  name="ownershipDocuments"
+                  multiple
+                  accept="image/*,application/pdf"
+                  class="hidden"
+                />
+              </div>
+              <div
+                id="ownership-previews"
+                class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4"
+              ></div>
+            </div>
+
+            <!-- Health Documents -->
+            <div id="health-section" class="mb-8" style="display: none">
+              <h3 class="text-xl font-bold mb-4 text-green-400">
+                <i class="bi bi-clipboard2-pulse mr-2"></i>
+                Health Records
+              </h3>
+              <div
+                class="file-upload-zone p-8 rounded-2xl border-2 border-dashed border-gray-700 hover:border-green-500 transition-all cursor-pointer text-center"
+                id="health-drop-zone"
+              >
+                <i
+                  class="bi bi-file-medical text-6xl text-gray-600 mb-4 block"
+                ></i>
+                <p class="text-lg font-semibold mb-2">
+                  Drop health documents here
+                </p>
+                <p class="text-sm text-gray-400 mb-4">or click to browse</p>
+                <p class="text-xs text-gray-500">
+                  Accepted: Vaccination cards, vet reports, lab results (PDF,
+                  JPG, PNG) - Max 50MB per file
+                </p>
+                <input
+                  type="file"
+                  id="health-input"
+                  name="healthDocuments"
+                  multiple
+                  accept="image/*,application/pdf"
+                  class="hidden"
+                />
+              </div>
+              <div
+                id="health-previews"
+                class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4"
+              ></div>
+            </div>
+
+            <div class="flex justify-end">
+              <button
+                type="button"
+                id="next-step-2-btn"
+                class="px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 font-bold text-lg hover:shadow-2xl hover:shadow-blue-500/30 transition-all"
+              >
+                Next: Upload Photos
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Animal Photos -->
+        <div id="step2" class="step-container" style="display: none">
+          <div
+            class="p-8 rounded-3xl glass-strong border border-gray-800/50 animate-slide-in"
+          >
+            <h2
+              class="text-3xl font-bold font-display mb-6 flex items-center gap-3"
+            >
+              <i class="bi bi-camera text-purple-500"></i>
+              Animal Photos
+            </h2>
+
+            <div
+              class="mb-6 p-4 rounded-xl bg-purple-500/10 border border-purple-500/30"
+            >
+              <h4 class="font-bold text-purple-300 mb-2">
+                <i class="bi bi-info-circle mr-2"></i>
+                Photo Requirements
+              </h4>
+              <ul class="text-sm text-gray-300 space-y-1">
+                <li>✓ Clear, well-lit photos from multiple angles</li>
+                <li>✓ Show identifying features (markings, tags, etc.)</li>
+                <li>✓ Full body shots and close-ups</li>
+                <li>✓ Recent photos (taken within last 7 days)</li>
+              </ul>
+            </div>
+
+            <div
+              class="file-upload-zone p-12 rounded-2xl border-2 border-dashed border-gray-700 hover:border-purple-500 transition-all cursor-pointer text-center"
+              id="photos-drop-zone"
+            >
+              <i class="bi bi-images text-7xl text-gray-600 mb-4 block"></i>
+              <p class="text-xl font-semibold mb-2">Drop animal photos here</p>
+              <p class="text-sm text-gray-400 mb-4">or click to browse</p>
+              <p class="text-xs text-gray-500">
+                Upload 3-15 clear photos of your animal (JPG, PNG) - Max 50MB
+                per file
+              </p>
+              <input
+                type="file"
+                id="photos-input"
+                name="animalPhotos"
+                multiple
+                accept="image/*"
+                class="hidden"
+              />
+            </div>
+
+            <div
+              id="photos-previews"
+              class="grid grid-cols-2 md:grid-cols-5 gap-4 mt-6"
+            ></div>
+
+            <div class="flex justify-between mt-8">
+              <button
+                type="button"
+                id="prev-step-1-btn"
+                class="px-6 py-3 rounded-xl glass border border-gray-700 hover:border-blue-500 font-semibold transition-all"
+              >
+                <i class="bi bi-arrow-left mr-2"></i>Back
+              </button>
+              <button
+                type="button"
+                id="next-step-3-btn"
+                class="px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/30 transition-all"
+              >
+                Next: Add Details
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Additional Details -->
+        <div id="step3" class="step-container" style="display: none">
+          <div
+            class="p-8 rounded-3xl glass-strong border border-gray-800/50 animate-slide-in"
+          >
+            <h2
+              class="text-3xl font-bold font-display mb-6 flex items-center gap-3"
+            >
+              <i class="bi bi-pencil-square text-blue-500"></i>
+              Additional Information
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-6">
+              <!-- Ownership Details -->
+              <div>
+                <label
+                  class="block text-sm font-bold text-gray-300 mb-2"
+                >Ownership Details</label>
+                <textarea
+                  name="ownershipDetails"
+                  rows="4"
+                  class="w-full px-4 py-3 rounded-xl glass border border-gray-800 focus:border-blue-500 focus:outline-none transition-all text-white bg-gray-900/50"
+                  placeholder="How did you acquire this animal? Include purchase date, seller info, etc."
+                ></textarea>
+              </div>
+
+              <!-- Health Notes -->
+              <div>
+                <label class="block text-sm font-bold text-gray-300 mb-2">Health
+                  Notes</label>
+                <textarea
+                  name="healthNotes"
+                  rows="4"
+                  class="w-full px-4 py-3 rounded-xl glass border border-gray-800 focus:border-blue-500 focus:outline-none transition-all text-white bg-gray-900/50"
+                  placeholder="Any health concerns, treatments, or medical history..."
+                ></textarea>
+              </div>
+
+              <!-- Veterinarian Info -->
+              <div>
+                <label
+                  class="block text-sm font-bold text-gray-300 mb-2"
+                >Veterinarian Name</label>
+                <input
+                  type="text"
+                  name="veterinarianName"
+                  class="w-full px-4 py-3 rounded-xl glass border border-gray-800 focus:border-blue-500 focus:outline-none transition-all text-white bg-gray-900/50"
+                  placeholder="Dr. Jane Smith"
+                />
+              </div>
+
+              <!-- Vet Contact -->
+              <div>
+                <label
+                  class="block text-sm font-bold text-gray-300 mb-2"
+                >Veterinarian Contact</label>
+                <input
+                  type="text"
+                  name="veterinarianContact"
+                  class="w-full px-4 py-3 rounded-xl glass border border-gray-800 focus:border-blue-500 focus:outline-none transition-all text-white bg-gray-900/50"
+                  placeholder="+256 700 123 456"
+                />
+              </div>
+
+              <!-- Last Vaccination -->
+              <div>
+                <label class="block text-sm font-bold text-gray-300 mb-2">Last
+                  Vaccination Date</label>
+                <input
+                  type="date"
+                  name="lastVaccinationDate"
+                  class="w-full px-4 py-3 rounded-xl glass border border-gray-800 focus:border-blue-500 focus:outline-none transition-all text-white bg-gray-900/50"
+                />
+              </div>
+
+              <!-- Acquisition Date -->
+              <div>
+                <label
+                  class="block text-sm font-bold text-gray-300 mb-2"
+                >Acquisition Date</label>
+                <input
+                  type="date"
+                  name="acquisitionDate"
+                  class="w-full px-4 py-3 rounded-xl glass border border-gray-800 focus:border-blue-500 focus:outline-none transition-all text-white bg-gray-900/50"
+                />
+              </div>
+
+              <!-- Previous Owner -->
+              <div class="md:col-span-2">
+                <label
+                  class="block text-sm font-bold text-gray-300 mb-2"
+                >Previous Owner (if applicable)</label>
+                <input
+                  type="text"
+                  name="previousOwner"
+                  class="w-full px-4 py-3 rounded-xl glass border border-gray-800 focus:border-blue-500 focus:outline-none transition-all text-white bg-gray-900/50"
+                  placeholder="John Doe Farms"
+                />
+              </div>
+            </div>
+
+            <div class="flex justify-between mt-8">
+              <button
+                type="button"
+                id="prev-step-2-btn"
+                class="px-6 py-3 rounded-xl glass border border-gray-700 hover:border-blue-500 font-semibold transition-all"
+              >
+                <i class="bi bi-arrow-left mr-2"></i>Back
+              </button>
+              <button
+                type="button"
+                id="next-step-4-btn"
+                class="px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/30 transition-all"
+              >
+                Review & Submit
+                <i class="bi bi-arrow-right ml-2"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: Review & Submit -->
+        <div id="step4" class="step-container" style="display: none">
+          <div
+            class="p-8 rounded-3xl glass-strong border border-gray-800/50 animate-slide-in"
+          >
+            <h2
+              class="text-3xl font-bold font-display mb-6 flex items-center gap-3"
+            >
+              Review & Submit
+            </h2>
+
+            <div id="review-summary" class="space-y-6 mb-8">
+              <!-- Summary will be populated by JavaScript -->
+            </div>
+
+            <!-- Terms -->
+            <div class="p-6 rounded-xl glass border border-gray-800 mb-6">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  id="terms-checkbox"
+                  required
+                  class="mt-1 w-5 h-5 rounded border-gray-600 text-blue-500 focus:ring-blue-500"
+                />
+                <span class="text-sm text-gray-300">
+                  I certify that all information and documents provided are
+                  accurate and authentic. I understand that submitting false
+                  information may result in account suspension and legal action.
+                </span>
+              </label>
+            </div>
+
+            <div class="flex justify-between">
+              <button
+                type="button"
+                id="prev-step-3-btn"
+                class="px-6 py-3 rounded-xl glass border border-gray-700 hover:border-blue-500 font-semibold transition-all"
+              >
+                <i class="bi bi-arrow-left mr-2"></i>Back
+              </button>
+              <button
+                type="submit"
+                id="submit-btn"
+                class="px-10 py-4 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 font-bold text-lg hover:shadow-2xl hover:shadow-green-500/30 transition-all"
+              >
+                Submit for AI Verification
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hidden auction ID field -->
+        <input type="hidden" name="auctionId" id="auctionId" value="" />
+      </form>
+
+      <!-- Loading Modal -->
+      <div
+        id="loading-modal"
+        class="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 hidden items-center justify-center"
+      >
+        <div class="text-center">
+          <div
+            class="w-24 h-24 border-8 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-6"
+          ></div>
+          <h3 class="text-2xl font-bold mb-2">Processing Verification...</h3>
+          <p class="text-gray-400 mb-4">AI is analyzing your documents</p>
+          <div
+            class="w-64 h-2 bg-gray-800 rounded-full mx-auto overflow-hidden"
+          >
+            <div
+              class="h-full bg-gradient-to-r from-blue-500 to-purple-600 progress-bar"
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Success Modal -->
+      <div
+        id="success-modal"
+        class="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 hidden items-center justify-center"
+      >
+        <div
+          class="max-w-md w-full mx-4 p-8 rounded-3xl glass-strong border border-green-500/50 text-center animate-slide-in"
+        >
+          <div
+            class="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-6"
+          >
+            <i class="bi bi-check-circle text-5xl text-green-500"></i>
+          </div>
+          <h3 class="text-3xl font-bold mb-3">Verification Submitted!</h3>
+          <p class="text-gray-400 mb-6">
+            Your documents are being verified by our AI system. You'll receive
+            results shortly.
+          </p>
+          <!-- Inside success-modal -->
+          <button
+            id="view-verifications-btn"
+            class="w-full px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 font-bold hover:shadow-lg transition-all"
+            onclick="window.location.href='/verification/list'"
+          >
+            View My Verifications
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- External JavaScript -->
+    <script src="/js/verification.js"></script>
+  </body>
+</html>
