@@ -10,6 +10,12 @@ router.get("/register", (req, res) => {
 router.get("/login", (req, res) => {
   res.render("auth/login", { title: "Login" });
 });
+router.get("/animalList", (req, res) => {
+  res.render("auctions/animalList", { title: "Animal List" });
+});
+router.get("/farmer", (req, res) => {
+  res.render("dashboard/farmer", { title: "Farmer Dashboard" });
+});
 
 router.post("/login", loginUser);
 

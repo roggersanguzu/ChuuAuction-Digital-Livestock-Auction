@@ -1,313 +1,1322 @@
-<!-- Ultra-Advanced Buyer Dashboard for ChuuAuction -->
-<script src="https://cdn.tailwindcss.com"></script>
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-/>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChuuAuction - Advanced Buyer Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-<div
-  class="min-h-screen bg-gray-950 text-white font-body overflow-hidden relative"
->
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap");
 
-  <!-- Mobile overlay -->
-  <div
-    id="sidebar-overlay"
-    class="fixed inset-0 bg-black/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity z-40"
-  ></div>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-  <!-- Sidebar -->
-  <aside
-    id="sidebar"
-    class="fixed left-0 top-0 h-full w-72 glass border-r border-gray-800/50 z-50 transition-all duration-500 -translate-x-full lg:translate-x-0 hex-pattern"
-  >
-    <div class="flex flex-col h-full p-6 relative z-10">
+      body {
+        font-family: "Inter", sans-serif;
+        overflow-x: hidden;
+      }
 
-      <!-- Logo -->
-      <div class="mb-8 animate-fade-in">
-        <div
-          class="flex items-center gap-4 p-4 rounded-2xl glass border border-orange-500/20 hover:border-orange-500/40 transition-all duration-300 group cursor-pointer card-3d"
-        >
-          <img
-            src="/img/logo.png"
-            alt="ChuuAuction Logo"
-            class="w-11 h-11 rounded-full ring-2 ring-orange-500/40 shadow-lg"
-          />
-          <div class="flex-1">
-            <h1 class="text-xl font-black font-display leading-tight">
-              <span class="text-gradient neon-glow">Chuu</span><span
-                class="text-white"
-              >Auction</span>
-            </h1>
-            <p class="text-xs text-gray-400">Buyer Panel</p>
-          </div>
-          <button
-            id="sidebar-toggle"
-            class="w-8 h-8 rounded-lg glass flex items-center justify-center hover:bg-orange-500/20 transition-colors lg:hidden"
+      .font-display {
+        font-family: "Orbitron", sans-serif;
+      }
+
+      /* Advanced Background */
+      .bg-advanced {
+        background:
+          radial-gradient(
+            ellipse at top,
+            rgba(249, 115, 22, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at bottom,
+            rgba(59, 130, 246, 0.1) 0%,
+            transparent 50%
+          ),
+          linear-gradient(180deg, #0a0a0a 0%, #030712 100%);
+      }
+
+      /* Animated Grid */
+      .grid-pattern {
+        background-image:
+          linear-gradient(rgba(249, 115, 22, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(249, 115, 22, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: gridMove 20s linear infinite;
+      }
+
+      @keyframes gridMove {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: 50px 50px;
+        }
+      }
+
+      /* Glass Morphism */
+      .glass {
+        background: rgba(17, 24, 39, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(249, 115, 22, 0.1);
+      }
+
+      .glass-strong {
+        background: rgba(17, 24, 39, 0.9);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+      }
+
+      /* Gradient Text */
+      .text-gradient {
+        background: linear-gradient(
+          135deg,
+          #f97316 0%,
+          #fb923c 50%,
+          #fdba74 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* Glow Effects */
+      .neon-glow {
+        text-shadow:
+          0 0 10px rgba(249, 115, 22, 0.5),
+          0 0 20px rgba(249, 115, 22, 0.3),
+          0 0 30px rgba(249, 115, 22, 0.2);
+      }
+
+      .card-glow {
+        box-shadow:
+          0 0 20px rgba(249, 115, 22, 0.1),
+          0 8px 32px rgba(0, 0, 0, 0.3);
+      }
+
+      .card-glow-hover:hover {
+        box-shadow:
+          0 0 30px rgba(249, 115, 22, 0.3),
+          0 12px 48px rgba(0, 0, 0, 0.4);
+        transform: translateY(-4px);
+      }
+
+      /* 3D Card Effects */
+      .card-3d {
+        transform-style: preserve-3d;
+        transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+
+      .card-3d:hover {
+        transform: translateY(-8px) rotateX(5deg);
+      }
+
+      /* Pulse Animation */
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
+        }
+        50% {
+          box-shadow: 0 0 40px rgba(249, 115, 22, 0.6);
+        }
+      }
+
+      .pulse-glow {
+        animation: pulse-glow 2s ease-in-out infinite;
+      }
+
+      /* Floating Animation */
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .float-animation {
+        animation: float 3s ease-in-out infinite;
+      }
+
+      /* Shimmer Effect */
+      @keyframes shimmer {
+        0% {
+          background-position: -1000px 0;
+        }
+        100% {
+          background-position: 1000px 0;
+        }
+      }
+
+      .shimmer {
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(249, 115, 22, 0.1),
+          transparent
+        );
+        background-size: 1000px 100%;
+        animation: shimmer 3s infinite;
+      }
+
+      /* Sidebar Animations */
+      .nav-item {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .nav-item::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 3px;
+        background: linear-gradient(180deg, #f97316, #fb923c);
+        transform: scaleY(0);
+        transition: transform 0.3s ease;
+      }
+
+      .nav-item.active::before,
+      .nav-item:hover::before {
+        transform: scaleY(1);
+      }
+
+      .nav-item.active {
+        background: rgba(249, 115, 22, 0.1);
+      }
+
+      /* Progress Ring */
+      .progress-ring {
+        transform: rotate(-90deg);
+      }
+
+      .progress-ring-circle {
+        transition: stroke-dashoffset 0.35s;
+        transform-origin: 50% 50%;
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: rgba(17, 24, 39, 0.5);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #f97316, #fb923c);
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #fb923c, #f97316);
+      }
+
+      /* Overlay */
+      #sidebar-overlay.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      /* Number Counter Animation */
+      @keyframes countUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .count-up {
+        animation: countUp 0.6s ease-out;
+      }
+
+      /* Notification Badge */
+      .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        min-width: 20px;
+        height: 20px;
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+        animation: pulse-glow 2s infinite;
+      }
+
+      /* Chart Container */
+      .chart-container {
+        position: relative;
+        height: 300px;
+        width: 100%;
+      }
+
+      /* Activity Timeline */
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: 19px;
+        top: 40px;
+        height: calc(100% - 40px);
+        width: 2px;
+        background: linear-gradient(
+          180deg,
+          rgba(249, 115, 22, 0.5),
+          transparent
+        );
+      }
+
+      .timeline-item:last-child::before {
+        display: none;
+      }
+
+      /* Auction Card Hover */
+      .auction-card {
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .auction-card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(249, 115, 22, 0.1),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .auction-card:hover::after {
+        left: 100%;
+      }
+
+      .auction-card:hover {
+        transform: translateY(-8px) scale(1.02);
+      }
+
+      /* Badge Styles */
+      .badge-live {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+
+      /* Quick Action Buttons */
+      .quick-action {
+        transition: all 0.3s ease;
+      }
+
+      .quick-action:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 30px rgba(249, 115, 22, 0.3);
+      }
+
+      /* Responsive Grid */
+      @media (max-width: 768px) {
+        .grid-pattern {
+          background-size: 30px 30px;
+        }
+      }
+
+      /* Loading Skeleton */
+      .skeleton {
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.05) 25%,
+          rgba(255, 255, 255, 0.1) 50%,
+          rgba(255, 255, 255, 0.05) 75%
+        );
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+      }
+
+      @keyframes loading {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-advanced">
+
+    <!-- Animated Background Particles -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+      <div class="grid-pattern absolute inset-0"></div>
+    </div>
+
+    <!-- Mobile overlay -->
+    <div
+      id="sidebar-overlay"
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity z-40"
+    ></div>
+
+    <!-- Advanced Sidebar -->
+    <aside
+      id="sidebar"
+      class="fixed left-0 top-0 h-full w-80 glass-strong border-r border-orange-500/20 z-50 transition-all duration-500 -translate-x-full lg:translate-x-0"
+    >
+      <div class="flex flex-col h-full p-6 relative z-10">
+
+        <!-- Logo Section -->
+        <div class="mb-8 animate-fade-in">
+          <div
+            class="flex items-center gap-4 p-4 rounded-2xl glass border border-orange-500/30 hover:border-orange-500/60 transition-all duration-300 group cursor-pointer card-3d card-glow-hover"
           >
-            <i class="bi bi-x-lg text-white"></i>
+            <div class="relative">
+              <img
+                src="/img/logo.png"
+                alt="ChuuAuction Logo"
+                class="w-12 h-12 rounded-full ring-2 ring-orange-500/50 shadow-lg"
+              />
+              <div
+                class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-gray-900 pulse-glow"
+              ></div>
+            </div>
+            <div class="flex-1">
+              <h1 class="text-xl font-black font-display leading-tight">
+                <span class="text-gradient neon-glow">Chuu</span><span
+                  class="text-white"
+                >Auction</span>
+              </h1>
+              <p class="text-xs text-gray-400 flex items-center gap-1">
+                <i class="bi bi-shield-check text-green-500"></i>
+                Buyer Panel
+              </p>
+            </div>
+            <button
+              id="sidebar-toggle"
+              class="w-8 h-8 rounded-lg glass flex items-center justify-center hover:bg-orange-500/20 transition-colors lg:hidden"
+            >
+              <i class="bi bi-x-lg text-white"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Stats in Sidebar -->
+        <div class="mb-6 p-4 rounded-xl glass border border-gray-800/50">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-sm text-gray-400">Wallet Balance</span>
+            <i class="bi bi-wallet2 text-orange-500"></i>
+          </div>
+          <div class="text-2xl font-black text-white mb-1">UGX 2.4M</div>
+          <div class="flex items-center gap-2 text-xs">
+            <span class="text-green-500 flex items-center gap-1">
+              <i class="bi bi-arrow-up"></i>
+              +12.5%
+            </span>
+            <span class="text-gray-500">vs last month</span>
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto space-y-2 pr-2">
+          <!-- Dashboard -->
+          <a
+            href="dashboard/buyer"
+            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer active"
+          >
+            <div
+              class="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
+            >
+              <i class="bi bi-speedometer2 text-orange-500 text-xl"></i>
+            </div>
+            <span
+              class="font-semibold group-hover:text-orange-500 transition-colors flex-1"
+            >Dashboard</span>
+            <i
+              class="bi bi-chevron-right text-gray-600 group-hover:text-orange-500 transition-colors"
+            ></i>
+          </a>
+
+          <!-- Place Bid -->
+          <a
+            href="/auctions/create"
+            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer"
+          >
+            <div
+              class="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
+            >
+              <i class="bi bi-cash-stack text-blue-500 text-xl"></i>
+            </div>
+            <span
+              class="font-semibold group-hover:text-blue-500 transition-colors flex-1"
+            >Place Bid</span>
+            <i
+              class="bi bi-chevron-right text-gray-600 group-hover:text-blue-500 transition-colors"
+            ></i>
+          </a>
+
+          <!-- Animal Posts -->
+          <a
+            href="/auctions/animalList"
+            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer"
+          >
+            <div
+              class="w-11 h-11 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
+            >
+              <i class="bi bi-card-list text-green-500 text-xl"></i>
+            </div>
+            <span
+              class="font-semibold group-hover:text-green-500 transition-colors flex-1"
+            >Animal Posts</span>
+          </a>
+
+          <!-- Initiate Auction -->
+          <a
+            href="/auctions/create"
+            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer"
+          >
+            <div
+              class="w-11 h-11 rounded-xl bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
+            >
+              <i class="bi bi-hammer text-yellow-500 text-xl"></i>
+            </div>
+            <span
+              class="font-semibold group-hover:text-yellow-500 transition-colors flex-1"
+            >Initiate Auction</span>
+            <i
+              class="bi bi-chevron-right text-gray-600 group-hover:text-yellow-500 transition-colors"
+            ></i>
+          </a>
+          <!-- Transactions -->
+          <a
+            href="/buyer/transactions"
+            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer"
+          >
+            <div
+              class="w-11 h-11 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
+            >
+              <i class="bi bi-receipt text-purple-500 text-xl"></i>
+            </div>
+            <span
+              class="font-semibold group-hover:text-purple-500 transition-colors flex-1"
+            >Transactions</span>
+            <i
+              class="bi bi-chevron-right text-gray-600 group-hover:text-purple-500 transition-colors"
+            ></i>
+          </a>
+          <!-- Settings -->
+          <a
+            href="/livestock/settings"
+            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer"
+          >
+            <div
+              class="w-11 h-11 rounded-xl bg-gradient-to-br from-gray-500/20 to-gray-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
+            >
+              <i class="bi bi-gear text-gray-400 text-xl"></i>
+            </div>
+            <span
+              class="font-semibold group-hover:text-gray-300 transition-colors flex-1"
+            >Settings</span>
+            <i
+              class="bi bi-chevron-right text-gray-600 group-hover:text-gray-400 transition-colors"
+            ></i>
+          </a>
+        </nav>
+        <!-- Logout -->
+        <form action="/auth/logout" method="POST" class="w-full">
+          <button
+            type="submit"
+            class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 hover:border-red-500/50 transition-all duration-300 group cursor-pointer"
+          >
+            <div
+              class="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center group-hover:scale-110 transition-transform"
+            >
+              <i class="bi bi-box-arrow-left text-red-500 text-xl"></i>
+            </div>
+            <span class="font-semibold text-red-500">Logout</span>
+          </button>
+        </form>
+      </div>
+    </aside>
+
+    <!-- Mobile Sidebar Toggle -->
+    <button
+      id="mobile-sidebar-toggle"
+      class="fixed top-6 left-6 z-50 w-12 h-12 rounded-xl glass border border-orange-500/30 flex items-center justify-center lg:hidden hover:bg-orange-500/20 transition-all cursor-pointer"
+    >
+      <i class="bi bi-list text-2xl text-white"></i>
+    </button>
+
+    <!-- Main Content -->
+    <main
+      class="lg:ml-80 min-h-screen p-4 md:p-6 lg:p-8 relative z-10 transition-all duration-500"
+    >
+
+      <!-- Header Section -->
+      <div class="mb-8">
+        <div
+          class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6"
+        >
+          <div>
+            <h1
+              class="text-4xl md:text-5xl lg:text-6xl font-black font-display mb-2"
+            >
+              Buyer
+              <span class="text-gradient neon-glow">Dashboard</span>
+            </h1>
+            <p class="text-gray-400 text-lg">
+              Welcome back,
+              <span class="text-orange-500 font-semibold">{{user.name}}</span>!
+              <span class="text-gray-600">•</span>
+              <span class="text-sm text-gray-500">Last login: 2 hours ago</span>
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <button
+              class="px-4 py-2 rounded-xl glass border border-gray-700 hover:border-orange-500/50 transition-all flex items-center gap-2"
+            >
+              <i class="bi bi-funnel text-orange-500"></i>
+              <span class="text-sm font-semibold">Filter</span>
+            </button>
+            <button
+              class="px-4 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 transition-all flex items-center gap-2 font-semibold"
+            >
+              <i class="bi bi-plus-lg"></i>
+              <span class="text-sm">New Bid</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+          <button
+            class="quick-action p-4 rounded-xl glass border border-gray-800/50 hover:border-blue-500/50 transition-all flex items-center gap-3 group"
+          >
+            <div
+              class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center"
+            >
+              <i class="bi bi-search text-blue-500 text-lg"></i>
+            </div>
+            <div class="text-left">
+              <div class="text-xs text-gray-400">Quick</div>
+              <div class="font-semibold text-sm">Search</div>
+            </div>
+          </button>
+          <button
+            class="quick-action p-4 rounded-xl glass border border-gray-800/50 hover:border-green-500/50 transition-all flex items-center gap-3 group"
+          >
+            <div
+              class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center"
+            >
+              <i class="bi bi-clock-history text-green-500 text-lg"></i>
+            </div>
+            <div class="text-left">
+              <div class="text-xs text-gray-400">Bid</div>
+              <div class="font-semibold text-sm">History</div>
+            </div>
+          </button>
+          <button
+            class="quick-action p-4 rounded-xl glass border border-gray-800/50 hover:border-purple-500/50 transition-all flex items-center gap-3 group"
+          >
+            <div
+              class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center"
+            >
+              <i class="bi bi-graph-up text-purple-500 text-lg"></i>
+            </div>
+            <div class="text-left">
+              <div class="text-xs text-gray-400">View</div>
+              <div class="font-semibold text-sm">Analytics</div>
+            </div>
+          </button>
+          <button
+            class="quick-action p-4 rounded-xl glass border border-gray-800/50 hover:border-yellow-500/50 transition-all flex items-center gap-3 group"
+          >
+            <div
+              class="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center"
+            >
+              <i class="bi bi-star text-yellow-500 text-lg"></i>
+            </div>
+            <div class="text-left">
+              <div class="text-xs text-gray-400">My</div>
+              <div class="font-semibold text-sm">Watchlist</div>
+            </div>
           </button>
         </div>
       </div>
 
-      <!-- Navigation -->
-      <nav class="flex-1 overflow-y-auto space-y-2">
-        <!-- Dashboard -->
-        <a
-          href="dashboard/buyer"
-          class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer active"
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Pending Bids -->
+        <div
+          class="stat-card p-6 rounded-2xl glass border border-gray-800/50 hover:border-blue-500/50 transition-all duration-300 cursor-pointer card-3d card-glow-hover group relative overflow-hidden"
         >
-          <div
-            class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
-          >
-            <i class="bi bi-speedometer2 text-orange-500 text-xl"></i>
+          <div class="shimmer absolute inset-0"></div>
+          <div class="relative z-10">
+            <div class="flex items-start justify-between mb-4">
+              <div
+                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-700/20 flex items-center justify-center group-hover:scale-110 transition-transform"
+              >
+                <i class="bi bi-hourglass-split text-4xl text-blue-500"></i>
+              </div>
+              <span
+                class="text-xs px-3 py-1 rounded-full bg-blue-500/20 text-blue-500 font-semibold border border-blue-500/30"
+              >
+                Active
+              </span>
+            </div>
+            <h3
+              class="text-4xl font-black font-display text-white mb-2 count-up"
+            >8</h3>
+            <p class="text-gray-400 text-sm mb-3">Pending Bids</p>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="text-green-500 flex items-center gap-1">
+                <i class="bi bi-arrow-up"></i>
+                +2
+              </span>
+              <span class="text-gray-500">from yesterday</span>
+            </div>
           </div>
-          <span
-            class="font-semibold group-hover:text-orange-500 transition-colors"
-          >Dashboard</span>
-        </a>
+        </div>
 
-        <!-- Place Bid -->
-        <a
-          href="/buyer/place-bid"
-          class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer"
+        <!-- Total Spent -->
+        <div
+          class="stat-card p-6 rounded-2xl glass border border-gray-800/50 hover:border-green-500/50 transition-all duration-300 cursor-pointer card-3d card-glow-hover group relative overflow-hidden"
         >
-          <div
-            class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
-          >
-            <i class="bi bi-cash-stack text-orange-500 text-xl"></i>
+          <div class="shimmer absolute inset-0"></div>
+          <div class="relative z-10">
+            <div class="flex items-start justify-between mb-4">
+              <div
+                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500/20 to-green-700/20 flex items-center justify-center group-hover:scale-110 transition-transform"
+              >
+                <i class="bi bi-cash-stack text-4xl text-green-500"></i>
+              </div>
+              <span
+                class="text-xs px-3 py-1 rounded-full bg-green-500/20 text-green-500 font-semibold border border-green-500/30"
+              >
+                Completed
+              </span>
+            </div>
+            <h3
+              class="text-4xl font-black font-display text-white mb-2 count-up"
+            >UGX 1.2M</h3>
+            <p class="text-gray-400 text-sm mb-3">Total Spent</p>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="text-green-500 flex items-center gap-1">
+                <i class="bi bi-arrow-up"></i>
+                +15%
+              </span>
+              <span class="text-gray-500">this month</span>
+            </div>
           </div>
-          <span
-            class="font-semibold group-hover:text-orange-500 transition-colors"
-          >Place Bid</span>
-        </a>
-
-        <!-- Animal Posts -->
-        <a
-          href="/buyer/animal-posts"
-          class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer"
-        >
-          <div
-            class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
-          >
-            <i class="bi bi-card-list text-orange-500 text-xl"></i>
-          </div>
-          <span
-            class="font-semibold group-hover:text-orange-500 transition-colors"
-          >Animal Posts</span>
-        </a>
-
-        <!-- Transactions -->
-        <a
-          href="/buyer/transactions"
-          class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer"
-        >
-          <div
-            class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
-          >
-            <i class="bi bi-receipt text-orange-500 text-xl"></i>
-          </div>
-          <span
-            class="font-semibold group-hover:text-orange-500 transition-colors"
-          >Transactions</span>
-        </a>
-        <a
-          href="/auctions/create"
-          class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer active"
-        >
-          <div
-            class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
-          >
-            <i class="bi bi-hammer text-orange-500 text-xl"></i>
-          </div>
-          <span
-            class="font-semibold group-hover:text-orange-500 transition-colors"
-          >Initiate Auction</span>
-        </a>
+        </div>
 
         <!-- Favorites -->
-        <a
-          href="/buyer/favorites"
-          class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer"
+        <div
+          class="stat-card p-6 rounded-2xl glass border border-gray-800/50 hover:border-yellow-500/50 transition-all duration-300 cursor-pointer card-3d card-glow-hover group relative overflow-hidden"
         >
-          <div
-            class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
-          >
-            <i class="bi bi-heart text-orange-500 text-xl"></i>
+          <div class="shimmer absolute inset-0"></div>
+          <div class="relative z-10">
+            <div class="flex items-start justify-between mb-4">
+              <div
+                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500/20 to-yellow-700/20 flex items-center justify-center group-hover:scale-110 transition-transform"
+              >
+                <i class="bi bi-heart-fill text-4xl text-yellow-500"></i>
+              </div>
+              <span
+                class="text-xs px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-500 font-semibold border border-yellow-500/30"
+              >
+                Saved
+              </span>
+            </div>
+            <h3
+              class="text-4xl font-black font-display text-white mb-2 count-up"
+            >14</h3>
+            <p class="text-gray-400 text-sm mb-3">Favorites</p>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="text-yellow-500 flex items-center gap-1">
+                <i class="bi bi-star-fill"></i>
+                Trending
+              </span>
+              <span class="text-gray-500">items</span>
+            </div>
           </div>
-          <span
-            class="font-semibold group-hover:text-orange-500 transition-colors"
-          >Favorites</span>
-        </a>
-        <a
-          href="/livestock/notes"
-          class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer"
-        >
-          <div
-            class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
-          >
-            <i class="bi bi-journal-text text-orange-500 text-xl"></i>
-          </div>
-          <span
-            class="font-semibold group-hover:text-orange-500 transition-colors"
-          >Notes</span>
-        </a>
-
-        <!-- Notifications -->
-        <a
-          href="/buyer/notifications"
-          class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer"
-        >
-          <div
-            class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
-          >
-            <i class="bi bi-bell text-orange-500 text-xl"></i>
-          </div>
-          <span
-            class="font-semibold group-hover:text-orange-500 transition-colors"
-          >Notifications</span>
-        </a>
-
-        <!-- Settings -->
-        <a
-          href="/livestock/settings"
-          class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer"
-        >
-          <div
-            class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
-          >
-            <i class="bi bi-gear text-orange-500 text-xl"></i>
-          </div>
-          <span
-            class="font-semibold group-hover:text-orange-500 transition-colors"
-          >Settings</span>
-        </a>
-      </nav>
-
-      <!-- Logout -->
-      <div class="mt-4 pt-4 border-t border-gray-800/50">
-        <a
-          href="/auth/logout"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 hover:border-red-500/50 transition-all duration-300 group cursor-pointer"
-        >
-          <div
-            class="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center group-hover:scale-110 transition-transform"
-          >
-            <i class="bi bi-box-arrow-left text-red-500 text-xl"></i>
-          </div>
-          <span class="font-semibold text-red-500">Logout</span>
-        </a>
-      </div>
-    </div>
-  </aside>
-
-  <!-- Mobile Sidebar Toggle -->
-  <button
-    id="mobile-sidebar-toggle"
-    class="fixed top-6 left-6 z-50 w-12 h-12 rounded-xl glass border border-orange-500/30 flex items-center justify-center lg:hidden hover:bg-orange-500/20 transition-all cursor-pointer"
-  >
-    <i class="bi bi-list text-2xl text-white"></i>
-  </button>
-
-  <!-- Main Content -->
-  <main
-    class="lg:ml-72 min-h-screen p-6 lg:p-8 relative z-10 ml-0 transition-all duration-500"
-  >
-    <h1 class="text-4xl md:text-5xl font-black font-display mb-4">Buyer
-      <span class="text-gradient neon-glow">Dashboard</span></h1>
-    <p class="text-gray-400 mb-6">Welcome back,
-      <span class="text-orange-500 font-semibold">{{user.name}}</span>!</p>
-
-    <!-- Stats Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      <div
-        class="stat-card p-6 rounded-2xl glass border border-gray-800/50 hover:border-orange-500/50 transition-all duration-300 cursor-pointer card-3d group"
-      >
-        <div class="flex items-start justify-between mb-4">
-          <div
-            class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-700/20 flex items-center justify-center"
-          >
-            <i class="bi bi-hourglass-split text-3xl text-blue-500"></i>
-          </div>
-          <span
-            class="text-xs px-2 py-1 rounded-full bg-blue-500/20 text-blue-500 font-semibold"
-          >Pending</span>
         </div>
-        <h3 class="text-3xl font-black font-display text-white mb-1">8</h3>
-        <p class="text-gray-400 text-sm">Pending Bids</p>
-      </div>
 
-      <div
-        class="stat-card p-6 rounded-2xl glass border border-gray-800/50 hover:border-orange-500/50 transition-all duration-300 cursor-pointer card-3d group"
-      >
-        <div class="flex items-start justify-between mb-4">
-          <div
-            class="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-500/20 to-green-700/20 flex items-center justify-center"
-          >
-            <i class="bi bi-cash-stack text-3xl text-green-500"></i>
+        <!-- Active Auctions -->
+        <div
+          class="stat-card p-6 rounded-2xl glass border border-gray-800/50 hover:border-purple-500/50 transition-all duration-300 cursor-pointer card-3d card-glow-hover group relative overflow-hidden"
+        >
+          <div class="shimmer absolute inset-0"></div>
+          <div class="relative z-10">
+            <div class="flex items-start justify-between mb-4">
+              <div
+                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-purple-700/20 flex items-center justify-center group-hover:scale-110 transition-transform pulse-glow"
+              >
+                <i class="bi bi-broadcast text-4xl text-purple-500"></i>
+              </div>
+              <span
+                class="text-xs px-3 py-1 rounded-full badge-live text-white font-semibold"
+              >
+                <i class="bi bi-circle-fill text-xs mr-1"></i>
+                Live
+              </span>
+            </div>
+            <h3
+              class="text-4xl font-black font-display text-white mb-2 count-up"
+            >5</h3>
+            <p class="text-gray-400 text-sm mb-3">Active Auctions</p>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="text-purple-500 flex items-center gap-1">
+                <i class="bi bi-lightning-fill"></i>
+                Ending soon
+              </span>
+            </div>
           </div>
-          <span
-            class="text-xs px-2 py-1 rounded-full bg-green-500/20 text-green-500 font-semibold"
-          >Completed</span>
         </div>
-        <h3 class="text-3xl font-black font-display text-white mb-1">Ugx 1.2M</h3>
-        <p class="text-gray-400 text-sm">Total Spent</p>
       </div>
-
-      <div
-        class="stat-card p-6 rounded-2xl glass border border-gray-800/50 hover:border-orange-500/50 transition-all duration-300 cursor-pointer card-3d group"
-      >
-        <div class="flex items-start justify-between mb-4">
-          <div
-            class="w-14 h-14 rounded-2xl bg-gradient-to-br from-yellow-500/20 to-yellow-700/20 flex items-center justify-center"
-          >
-            <i class="bi bi-heart text-3xl text-yellow-500"></i>
+      <!-- Live Auctions Section -->
+      <div class="mb-8">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-3xl font-bold text-white mb-1">Live Auctions</h2>
+            <p class="text-gray-400">Bid now on trending livestock</p>
           </div>
-          <span
-            class="text-xs px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-500 font-semibold"
-          >Saved</span>
-        </div>
-        <h3 class="text-3xl font-black font-display text-white mb-1">14</h3>
-        <p class="text-gray-400 text-sm">Favorites</p>
-      </div>
-
-      <div
-        class="stat-card p-6 rounded-2xl glass border border-gray-800/50 hover:border-orange-500/50 transition-all duration-300 cursor-pointer card-3d group"
-      >
-        <div class="flex items-start justify-between mb-4">
-          <div
-            class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 to-purple-700/20 flex items-center justify-center"
+          <button
+            class="px-4 py-2 rounded-xl glass border border-orange-500/30 hover:border-orange-500/60 transition-all flex items-center gap-2 text-orange-500 font-semibold"
           >
-            <i class="bi bi-broadcast text-3xl text-purple-500"></i>
-          </div>
-          <span
-            class="text-xs px-2 py-1 rounded-full bg-purple-500/20 text-purple-500 font-semibold"
-          >Live</span>
+            <span>View All</span>
+            <i class="bi bi-arrow-right"></i>
+          </button>
         </div>
-        <h3 class="text-3xl font-black font-display text-white mb-1">5</h3>
-        <p class="text-gray-400 text-sm">Active Auctions</p>
-      </div>
-    </div>
-  </main>
-</div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => { const sidebar =
-  document.getElementById("sidebar"); const overlay =
-  document.getElementById("sidebar-overlay"); const openBtn =
-  document.getElementById("mobile-sidebar-toggle"); const closeBtn =
-  document.getElementById("sidebar-toggle"); const openSidebar = () => {
-  sidebar?.classList.remove("-translate-x-full");
-  sidebar?.classList.add("translate-x-0"); overlay?.classList.add("active"); };
-  const closeSidebar = () => { sidebar?.classList.add("-translate-x-full");
-  sidebar?.classList.remove("translate-x-0");
-  overlay?.classList.remove("active"); }; openBtn?.addEventListener("click",
-  openSidebar); closeBtn?.addEventListener("click", closeSidebar);
-  overlay?.addEventListener("click", closeSidebar);
-  document.querySelectorAll("#sidebar a").forEach(link => {
-  link.addEventListener("click", () => { if (window.innerWidth < 1024)
-  closeSidebar(); }); }); const syncSidebar = () => { if (window.innerWidth >=
-  1024) { sidebar?.classList.remove("-translate-x-full");
-  sidebar?.classList.add("translate-x-0"); overlay?.classList.remove("active");
-  } else closeSidebar(); }; window.addEventListener("resize", syncSidebar);
-  syncSidebar(); });
-</script>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Auction Card 1 -->
+          <div
+            class="auction-card rounded-2xl glass border border-gray-800/50 overflow-hidden card-glow-hover"
+          >
+            <div class="relative">
+              <img
+                src="/img/cow4.jpg"
+                alt="Livestock"
+                class="w-full h-48 object-cover"
+              />
+              <div class="absolute top-3 left-3">
+                <span
+                  class="px-3 py-1 rounded-full badge-live text-white text-xs font-semibold"
+                >
+                  <i class="bi bi-circle-fill text-xs mr-1"></i>
+                  Live Now
+                </span>
+              </div>
+              <div class="absolute top-3 right-3">
+                <button
+                  class="w-10 h-10 rounded-full glass border border-white/20 flex items-center justify-center hover:bg-white/10 transition-all"
+                >
+                  <i class="bi bi-heart text-white"></i>
+                </button>
+              </div>
+              <div
+                class="absolute bottom-3 left-3 right-3 flex items-center justify-between"
+              >
+                <div
+                  class="px-3 py-1 rounded-full glass border border-white/20 text-white text-xs font-semibold"
+                >
+                  <i class="bi bi-clock text-orange-500 mr-1"></i>
+                  2h 34m left
+                </div>
+                <div
+                  class="px-3 py-1 rounded-full glass border border-white/20 text-white text-xs font-semibold"
+                >
+                  <i class="bi bi-people text-blue-500 mr-1"></i>
+                  12 bids
+                </div>
+              </div>
+            </div>
+            <div class="p-5">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <h3 class="text-lg font-bold text-white mb-1">Premium Friesian
+                    Cow</h3>
+                  <p class="text-xs text-gray-400">Age: 3 years • Weight: 550kg</p>
+                </div>
+              </div>
+              <div class="mb-4">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs text-gray-400">Current Bid</span>
+                  <span class="text-xs text-green-500 font-semibold">+UGX 50K
+                    from your bid</span>
+                </div>
+                <div class="text-2xl font-black text-white mb-1">UGX 1,250,000</div>
+                <div class="text-xs text-gray-400">Starting bid: UGX 800,000</div>
+              </div>
+              <button
+                class="w-full py-3 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 transition-all font-semibold text-white flex items-center justify-center gap-2"
+              >
+                <i class="bi bi-hammer"></i>
+                Place Bid
+              </button>
+            </div>
+          </div>
+
+          <!-- Auction Card 2 -->
+          <div
+            class="auction-card rounded-2xl glass border border-gray-800/50 overflow-hidden card-glow-hover"
+          >
+            <div class="relative">
+              <img
+                src="/img/cow3.png"
+                alt="Livestock"
+                class="w-full h-48 object-cover"
+              />
+              <div class="absolute top-3 left-3">
+                <span
+                  class="px-3 py-1 rounded-full badge-live text-white text-xs font-semibold"
+                >
+                  <i class="bi bi-circle-fill text-xs mr-1"></i>
+                  Live Now
+                </span>
+              </div>
+              <div class="absolute top-3 right-3">
+                <button
+                  class="w-10 h-10 rounded-full glass border border-white/20 flex items-center justify-center hover:bg-white/10 transition-all"
+                >
+                  <i class="bi bi-heart-fill text-pink-500"></i>
+                </button>
+              </div>
+              <div
+                class="absolute bottom-3 left-3 right-3 flex items-center justify-between"
+              >
+                <div
+                  class="px-3 py-1 rounded-full glass border border-white/20 text-white text-xs font-semibold"
+                >
+                  <i class="bi bi-clock text-orange-500 mr-1"></i>
+                  45m left
+                </div>
+                <div
+                  class="px-3 py-1 rounded-full glass border border-white/20 text-white text-xs font-semibold"
+                >
+                  <i class="bi bi-people text-blue-500 mr-1"></i>
+                  8 bids
+                </div>
+              </div>
+            </div>
+            <div class="p-5">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <h3 class="text-lg font-bold text-white mb-1">Ayrshire Bull</h3>
+                  <p class="text-xs text-gray-400">Age: 2.5 years • Weight:
+                    680kg</p>
+                </div>
+              </div>
+              <div class="mb-4">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs text-gray-400">Current Bid</span>
+                  <span class="text-xs text-blue-500 font-semibold">You're
+                    winning!</span>
+                </div>
+                <div class="text-2xl font-black text-white mb-1">UGX 1,800,000</div>
+                <div class="text-xs text-gray-400">Starting bid: UGX 1,200,000</div>
+              </div>
+              <button
+                class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all font-semibold text-white flex items-center justify-center gap-2"
+              >
+                <i class="bi bi-trophy"></i>
+                You're Leading
+              </button>
+            </div>
+          </div>
+
+          <!-- Auction Card 3 -->
+          <div
+            class="auction-card rounded-2xl glass border border-gray-800/50 overflow-hidden card-glow-hover"
+          >
+            <div class="relative">
+              <img
+                src="/img/cow.png"
+                alt="Livestock"
+                class="w-full h-48 object-cover"
+              />
+              <div class="absolute top-3 left-3">
+                <span
+                  class="px-3 py-1 rounded-full badge-live text-white text-xs font-semibold"
+                >
+                  <i class="bi bi-circle-fill text-xs mr-1"></i>
+                  Live Now
+                </span>
+              </div>
+              <div class="absolute top-3 right-3">
+                <button
+                  class="w-10 h-10 rounded-full glass border border-white/20 flex items-center justify-center hover:bg-white/10 transition-all"
+                >
+                  <i class="bi bi-heart text-white"></i>
+                </button>
+              </div>
+              <div
+                class="absolute bottom-3 left-3 right-3 flex items-center justify-between"
+              >
+                <div
+                  class="px-3 py-1 rounded-full glass border border-white/20 text-white text-xs font-semibold"
+                >
+                  <i class="bi bi-clock text-orange-500 mr-1"></i>
+                  5h 12m left
+                </div>
+                <div
+                  class="px-3 py-1 rounded-full glass border border-white/20 text-white text-xs font-semibold"
+                >
+                  <i class="bi bi-people text-blue-500 mr-1"></i>
+                  15 bids
+                </div>
+              </div>
+            </div>
+            <div class="p-5">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <h3 class="text-lg font-bold text-white mb-1">Jersey Heifer</h3>
+                  <p class="text-xs text-gray-400">Age: 1.5 years • Weight:
+                    380kg</p>
+                </div>
+              </div>
+              <div class="mb-4">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs text-gray-400">Current Bid</span>
+                  <span class="text-xs text-yellow-500 font-semibold">Hot
+                    auction!</span>
+                </div>
+                <div class="text-2xl font-black text-white mb-1">UGX 950,000</div>
+                <div class="text-xs text-gray-400">Starting bid: UGX 600,000</div>
+              </div>
+              <button
+                class="w-full py-3 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 transition-all font-semibold text-white flex items-center justify-center gap-2"
+              >
+                <i class="bi bi-hammer"></i>
+                Place Bid
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Charts and Activity Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+
+        <!-- Bidding Activity Chart -->
+        <div
+          class="lg:col-span-2 p-6 rounded-2xl glass border border-gray-800/50 card-glow"
+        >
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h2 class="text-2xl font-bold text-white mb-1">Bidding Activity</h2>
+              <p class="text-sm text-gray-400">Your bidding trends over time</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                class="px-3 py-1 rounded-lg bg-orange-500/20 text-orange-500 text-xs font-semibold border border-orange-500/30"
+              >7D</button>
+              <button
+                class="px-3 py-1 rounded-lg glass text-gray-400 text-xs font-semibold hover:text-white transition-colors"
+              >30D</button>
+              <button
+                class="px-3 py-1 rounded-lg glass text-gray-400 text-xs font-semibold hover:text-white transition-colors"
+              >1Y</button>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="biddingChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="p-6 rounded-2xl glass border border-gray-800/50 card-glow">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold text-white">Recent Activity</h2>
+            <button
+              class="text-orange-500 text-sm font-semibold hover:text-orange-400 transition-colors"
+            >View All</button>
+          </div>
+          <div class="space-y-4 overflow-y-auto max-h-[300px] pr-2">
+            <!-- Activity Item 1 -->
+            <div class="timeline-item relative pl-12 pb-4">
+              <div
+                class="absolute left-0 top-0 w-10 h-10 rounded-full bg-gradient-to-br from-green-500/20 to-green-700/20 flex items-center justify-center border-2 border-green-500/50"
+              >
+                <i class="bi bi-check-lg text-green-500"></i>
+              </div>
+              <div
+                class="glass p-3 rounded-lg border border-gray-800/50 hover:border-green-500/30 transition-all"
+              >
+                <div class="flex items-start justify-between mb-1">
+                  <p class="text-sm font-semibold text-white">Bid Accepted</p>
+                  <span class="text-xs text-gray-500">2h ago</span>
+                </div>
+                <p class="text-xs text-gray-400 mb-2">Your bid on "Friesian Cow"
+                  was accepted</p>
+                <span
+                  class="text-xs px-2 py-1 rounded-full bg-green-500/20 text-green-500 font-semibold"
+                >UGX 850K</span>
+              </div>
+            </div>
+
+            <!-- Activity Item 2 -->
+            <div class="timeline-item relative pl-12 pb-4">
+              <div
+                class="absolute left-0 top-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-700/20 flex items-center justify-center border-2 border-blue-500/50"
+              >
+                <i class="bi bi-cash text-blue-500"></i>
+              </div>
+              <div
+                class="glass p-3 rounded-lg border border-gray-800/50 hover:border-blue-500/30 transition-all"
+              >
+                <div class="flex items-start justify-between mb-1">
+                  <p class="text-sm font-semibold text-white">New Bid Placed</p>
+                  <span class="text-xs text-gray-500">5h ago</span>
+                </div>
+                <p class="text-xs text-gray-400 mb-2">Placed bid on "Ayrshire
+                  Bull"</p>
+                <span
+                  class="text-xs px-2 py-1 rounded-full bg-blue-500/20 text-blue-500 font-semibold"
+                >UGX 1.2M</span>
+              </div>
+            </div>
+
+            <!-- Activity Item 3 -->
+            <div class="timeline-item relative pl-12 pb-4">
+              <div
+                class="absolute left-0 top-0 w-10 h-10 rounded-full bg-gradient-to-br from-yellow-500/20 to-yellow-700/20 flex items-center justify-center border-2 border-yellow-500/50"
+              >
+                <i class="bi bi-star text-yellow-500"></i>
+              </div>
+              <div
+                class="glass p-3 rounded-lg border border-gray-800/50 hover:border-yellow-500/30 transition-all"
+              >
+                <div class="flex items-start justify-between mb-1">
+                  <p class="text-sm font-semibold text-white">Added to Favorites</p>
+                  <span class="text-xs text-gray-500">1d ago</span>
+                </div>
+                <p class="text-xs text-gray-400 mb-2">Saved "Jersey Heifer" to
+                  favorites</p>
+                <span
+                  class="text-xs px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-500 font-semibold"
+                >Watchlist</span>
+              </div>
+            </div>
+
+            <!-- Activity Item 4 -->
+            <div class="timeline-item relative pl-12">
+              <div
+                class="absolute left-0 top-0 w-10 h-10 rounded-full bg-gradient-to-br from-red-500/20 to-red-700/20 flex items-center justify-center border-2 border-red-500/50"
+              >
+                <i class="bi bi-x-lg text-red-500"></i>
+              </div>
+              <div
+                class="glass p-3 rounded-lg border border-gray-800/50 hover:border-red-500/30 transition-all"
+              >
+                <div class="flex items-start justify-between mb-1">
+                  <p class="text-sm font-semibold text-white">Bid Outbid</p>
+                  <span class="text-xs text-gray-500">2d ago</span>
+                </div>
+                <p class="text-xs text-gray-400 mb-2">You were outbid on
+                  "Holstein Cow"</p>
+                <span
+                  class="text-xs px-2 py-1 rounded-full bg-red-500/20 text-red-500 font-semibold"
+                >UGX 950K</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Performance Analytics -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <!-- Spending Overview -->
+        <div class="p-6 rounded-2xl glass border border-gray-800/50 card-glow">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h2 class="text-2xl font-bold text-white mb-1">Spending Overview</h2>
+              <p class="text-sm text-gray-400">Your investment distribution</p>
+            </div>
+            <i class="bi bi-pie-chart text-3xl text-orange-500"></i>
+          </div>
+          <div class="chart-container h-64">
+            <canvas id="spendingChart"></canvas>
+          </div>
+          <div class="grid grid-cols-2 gap-4 mt-6">
+            <div class="p-3 rounded-lg glass border border-gray-800/50">
+              <div class="flex items-center gap-2 mb-1">
+                <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                <span class="text-xs text-gray-400">Cattle</span>
+              </div>
+              <div class="text-lg font-bold text-white">45%</div>
+            </div>
+            <div class="p-3 rounded-lg glass border border-gray-800/50">
+              <div class="flex items-center gap-2 mb-1">
+                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                <span class="text-xs text-gray-400">Goats</span>
+              </div>
+              <div class="text-lg font-bold text-white">30%</div>
+            </div>
+            <div class="p-3 rounded-lg glass border border-gray-800/50">
+              <div class="flex items-center gap-2 mb-1">
+                <div class="w-3 h-3 rounded-full bg-purple-500"></div>
+                <span class="text-xs text-gray-400">Sheep</span>
+              </div>
+              <div class="text-lg font-bold text-white">15%</div>
+            </div>
+            <div class="p-3 rounded-lg glass border border-gray-800/50">
+              <div class="flex items-center gap-2 mb-1">
+                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <span class="text-xs text-gray-400">Others</span>
+              </div>
+              <div class="text-lg font-bold text-white">10%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Success Rate -->
+        <div class="p-6 rounded-2xl glass border border-gray-800/50 card-glow">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h2 class="text-2xl font-bold text-white mb-1">Success Rate</h2>
+              <p class="text-sm text-gray-400">Winning bid statistics</p>
+            </div>
+            <i class="bi bi-graph-up-arrow text-3xl text-green-500"></i>
+          </div>
+          <div class="flex items-center justify-center mb-6">
+            <div class="relative w-48 h-48">
+              <svg class="progress-ring w-full h-full">
+                <circle
+                  class="text-gray-800"
+                  stroke-width="12"
+                  stroke="currentColor"
+                  fill="transparent"
+                  r="80"
+                  cx="96"
+                  cy="96"
+                />
+                <circle
+                  class="progress-ring-circle text-green-500"
+                  stroke-width="12"
+                  stroke-dasharray="502.4"
+                  stroke-dashoffset="125.6"
+                  stroke-linecap="round"
+                  stroke="currentColor"
+                  fill="transparent"
+                  r="80"
+                  cx="96"
+                  cy="96"
+                />
+              </svg>
+              <div
+                class="absolute inset-0 flex items-center justify-center flex-col"
+              >
+                <span class="text-5xl font-black text-white">75%</span>
+                <span class="text-sm text-gray-400 mt-1">Win Rate</span>
+              </div>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-4">
+            <div
+              class="text-center p-3 rounded-lg glass border border-gray-800/50"
+            >
+              <div class="text-2xl font-bold text-green-500 mb-1">24</div>
+              <div class="text-xs text-gray-400">Won</div>
+            </div>
+            <div
+              class="text-center p-3 rounded-lg glass border border-gray-800/50"
+            >
+              <div class="text-2xl font-bold text-red-500 mb-1">8</div>
+              <div class="text-xs text-gray-400">Lost</div>
+            </div>
+            <div
+              class="text-center p-3 rounded-lg glass border border-gray-800/50"
+            >
+              <div class="text-2xl font-bold text-yellow-500 mb-1">5</div>
+              <div class="text-xs text-gray-400">Pending</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <script>
+      // Sidebar functionality document.addEventListener('DOMContentLoaded', ()
+      => { const sidebar = document.getElementById('sidebar'); const overlay =
+      document.getElementById('sidebar-overlay'); const openBtn =
+      document.getElementById('mobile-sidebar-toggle'); const closeBtn =
+      document.getElementById('sidebar-toggle'); const openSidebar = () => {
+      sidebar?.classList.remove('-translate-x-full');
+      sidebar?.classList.add('translate-x-0'); overlay?.classList.add('active');
+      }; const closeSidebar = () => {
+      sidebar?.classList.add('-translate-x-full');
+      sidebar?.classList.remove('translate-x-0');
+      overlay?.classList.remove('active'); }; openBtn?.addEventListener('click',
+      openSidebar); closeBtn?.addEventListener('click', closeSidebar);
+      overlay?.addEventListener('click', closeSidebar);
+      document.querySelectorAll('#sidebar a').forEach(link => {
+      link.addEventListener('click', () => { if (window.innerWidth < 1024)
+      closeSidebar(); }); }); const syncSidebar = () => { if (window.innerWidth
+      >= 1024) { sidebar?.classList.remove('-translate-x-full');
+      sidebar?.classList.add('translate-x-0');
+      overlay?.classList.remove('active'); } else { closeSidebar(); } };
+      window.addEventListener('resize', syncSidebar); syncSidebar(); //
+      Initialize Charts initializeCharts(); }); function initializeCharts() { //
+      Bidding Activity Chart const biddingCtx =
+      document.getElementById('biddingChart'); if (biddingCtx) { new
+      Chart(biddingCtx, { type: 'line', data: { labels: ['Mon', 'Tue', 'Wed',
+      'Thu', 'Fri', 'Sat', 'Sun'], datasets: [{ label: 'Bids Placed', data: [3,
+      5, 2, 8, 4, 7, 6], borderColor: 'rgb(249, 115, 22)', backgroundColor:
+      'rgba(249, 115, 22, 0.1)', tension: 0.4, fill: true, pointBackgroundColor:
+      'rgb(249, 115, 22)', pointBorderColor: '#fff', pointHoverBackgroundColor:
+      '#fff', pointHoverBorderColor: 'rgb(249, 115, 22)', pointRadius: 5,
+      pointHoverRadius: 7 }] }, options: { responsive: true,
+      maintainAspectRatio: false, plugins: { legend: { display: false },
+      tooltip: { backgroundColor: 'rgba(17, 24, 39, 0.9)', titleColor: '#fff',
+      bodyColor: '#fff', borderColor: 'rgba(249, 115, 22, 0.5)', borderWidth: 1,
+      padding: 12, displayColors: false } }, scales: { y: { beginAtZero: true,
+      grid: { color: 'rgba(249, 115, 22, 0.1)', drawBorder: false }, ticks: {
+      color: '#9ca3af' } }, x: { grid: { display: false }, ticks: { color:
+      '#9ca3af' } } } } }); } // Spending Overview Chart const spendingCtx =
+      document.getElementById('spendingChart'); if (spendingCtx) { new
+      Chart(spendingCtx, { type: 'doughnut', data: { labels: ['Cattle', 'Goats',
+      'Sheep', 'Others'], datasets: [{ data: [45, 30, 15, 10], backgroundColor:
+      [ 'rgba(59, 130, 246, 0.8)', 'rgba(34, 197, 94, 0.8)', 'rgba(168, 85, 247,
+      0.8)', 'rgba(234, 179, 8, 0.8)' ], borderColor: [ 'rgb(59, 130, 246)',
+      'rgb(34, 197, 94)', 'rgb(168, 85, 247)', 'rgb(234, 179, 8)' ],
+      borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio:
+      false, plugins: { legend: { display: false }, tooltip: { backgroundColor:
+      'rgba(17, 24, 39, 0.9)', titleColor: '#fff', bodyColor: '#fff',
+      borderColor: 'rgba(249, 115, 22, 0.5)', borderWidth: 1, padding: 12 } },
+      cutout: '70%' } }); } }
+    </script>
+  </body>
+</html>
