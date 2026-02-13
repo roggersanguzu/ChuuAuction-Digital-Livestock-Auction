@@ -115,12 +115,12 @@ export const getAllAuctions = async (req, res) => {
     console.log("[Controller] Querying database for all auctions");
 
     const auctions = await Auction.find({})
-      .populate("seller", "name email rating verified")
+      .populate("seller", "name email phone rating verified")
       .sort({ createdAt: -1 })
       .lean();
 
     console.log(
-      `[Controller] ✅ Retrieved ${auctions.length} auctions from database`,
+      `[Controller] Retrieved ${auctions.length} auctions from database`,
     );
 
     // Log first auction as sample
@@ -149,9 +149,11 @@ export const getAllAuctions = async (req, res) => {
       description: auction.description || "No description provided",
       photos: auction.photos?.map((photo) => photo.url) || [],
       seller: {
-        name: auction.seller?.name || "Anonymous Seller",
+        name: auction.seller?.name || "Unknown Seller",
+        email: auction.seller?.email || "",
+        phone: auction.seller?.phone || "",
         verified: auction.seller?.verified || false,
-        rating: auction.seller?.rating || 4.5,
+        rating: auction.seller?.rating || 0,
       },
       createdAt: auction.createdAt,
     }));
@@ -189,6 +191,7 @@ export const getAllAuctions = async (req, res) => {
     });
   }
 };
+
 export const getAuctionById = async (req, res) => {
   console.log("[Controller] getAuctionById called with ID:", req.params.id);
 
@@ -198,7 +201,7 @@ export const getAuctionById = async (req, res) => {
       req.params.id,
     );
     const auction = await Auction.findById(req.params.id)
-      .populate("seller", "name email rating verified")
+      .populate("seller", "name email phone rating verified")
       .lean();
 
     if (!auction) {
@@ -229,9 +232,11 @@ export const getAuctionById = async (req, res) => {
       description: auction.description || "No description provided",
       photos: auction.photos?.map((photo) => photo.url) || [],
       seller: {
-        name: auction.seller?.name || "Anonymous Seller",
+        name: auction.seller?.name || "Unknown Seller",
+        email: auction.seller?.email || "",
+        phone: auction.seller?.phone || "",
         verified: auction.seller?.verified || false,
-        rating: auction.seller?.rating || 4.5,
+        rating: auction.seller?.rating || 0,
       },
       createdAt: auction.createdAt,
     };
@@ -338,7 +343,7 @@ export const getFilteredAuctions = async (req, res) => {
 
     const [auctions, totalCount] = await Promise.all([
       Auction.find(filter)
-        .populate("seller", "name email rating verified")
+        .populate("seller", "name email phone rating verified")
         .sort(sort)
         .skip(skip)
         .limit(Number(limit))
@@ -368,9 +373,11 @@ export const getFilteredAuctions = async (req, res) => {
       description: auction.description || "No description provided",
       photos: auction.photos?.map((photo) => photo.url) || [],
       seller: {
-        name: auction.seller?.name || "Anonymous Seller",
+        name: auction.seller?.name || "Unknown Seller",
+        email: auction.seller?.email || "",
+        phone: auction.seller?.phone || "",
         verified: auction.seller?.verified || false,
-        rating: auction.seller?.rating || 4.5,
+        rating: auction.seller?.rating || 0,
       },
       createdAt: auction.createdAt,
     }));

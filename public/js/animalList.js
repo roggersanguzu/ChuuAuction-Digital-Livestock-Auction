@@ -13,6 +13,7 @@ let currentViewMode = "grid";
 let currentPage = 1;
 const itemsPerPage = 12;
 let isLoading = false;
+let currentUser = null; // Store current user data
 
 // Animal type mapping
 const animalTypeMap = {
@@ -43,30 +44,57 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("[Frontend] Full API endpoint:", API_BASE_URL + "/all");
   console.log("=".repeat(60));
 
+  loadCurrentUser();
   loadListings();
   setupEventListeners();
 });
+
+// ============================================
+// LOAD CURRENT USER DATA
+// ============================================
+async function loadCurrentUser() {
+  try {
+    const response = await fetch("/api/user/current", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data.success) {
+        currentUser = data.user;
+        console.log("[Frontend]  Current user loaded:", currentUser);
+      }
+    }
+  } catch (error) {
+    console.error("[Frontend]  Failed to load current user:", error);
+  }
+}
 
 // ============================================
 // LOAD LISTINGS FROM API
 // ============================================
 async function loadListings() {
   if (isLoading) {
-    console.log("[Frontend] ⏸️  Load already in progress");
+    console.log("[Frontend] Load already in progress");
     return;
   }
 
   isLoading = true;
-  console.log("[Frontend] 🔄 Starting loadListings");
+  console.log("[Frontend]  Starting loadListings");
   showLoadingState();
 
   try {
     const url = `${API_BASE_URL}/all`;
-    console.log("[Frontend] 📡 Fetching from:", url);
+    console.log("[Frontend]  Fetching from:", url);
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => {
-      console.log("[Frontend] ⏰ Request timeout after 15s");
+      console.log("[Frontend]  Request timeout after 15s");
       controller.abort();
     }, 15000);
 
@@ -83,12 +111,12 @@ async function loadListings() {
 
     clearTimeout(timeoutId);
 
-    console.log("[Frontend] 📥 Response received");
+    console.log("[Frontend]  Response received");
     console.log("[Frontend] Status:", response.status, response.statusText);
 
     if (!response.ok) {
       const text = await response.text();
-      console.error("[Frontend] ❌ Non-OK response:", response.status);
+      console.error("[Frontend]  Non-OK response:", response.status);
       console.error("[Frontend] Response body:", text);
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
@@ -96,7 +124,7 @@ async function loadListings() {
     const contentType = response.headers.get("content-type");
     if (!contentType || !contentType.includes("application/json")) {
       const text = await response.text();
-      console.error("[Frontend] ❌ Response is not JSON");
+      console.error("[Frontend]  Response is not JSON");
       console.error("[Frontend] Content-Type:", contentType);
       console.error(
         "[Frontend] Response body (first 500 chars):",
@@ -106,7 +134,7 @@ async function loadListings() {
     }
 
     const result = await response.json();
-    console.log("[Frontend] ✅ Parsed JSON successfully");
+    console.log("[Frontend]  Parsed JSON successfully");
     console.log("[Frontend] Response structure:", {
       success: result.success,
       count: result.count,
@@ -119,7 +147,7 @@ async function loadListings() {
       filteredListings = [...allListings];
 
       console.log(
-        `[Frontend] ✅ Loaded ${allListings.length} auction(s) successfully`,
+        `[Frontend]  Loaded ${allListings.length} auction(s) successfully`,
       );
 
       if (allListings.length > 0) {
@@ -130,11 +158,11 @@ async function loadListings() {
       displayListings();
       hideLoadingState();
     } else {
-      console.error("[Frontend] ❌ Unexpected response format:", result);
+      console.error("[Frontend]  Unexpected response format:", result);
       throw new Error(result.message || "Invalid response format from server");
     }
   } catch (error) {
-    console.error("[Frontend] ❌ Fetch error:", error);
+    console.error("[Frontend]  Fetch error:", error);
     hideLoadingState();
 
     let errorMsg = `Failed to load listings: ${error.message}`;
@@ -150,7 +178,7 @@ async function loadListings() {
     showErrorState(errorMsg);
   } finally {
     isLoading = false;
-    console.log("[Frontend] ✅ loadListings completed");
+    console.log("[Frontend]  loadListings completed");
   }
 }
 
@@ -158,19 +186,19 @@ async function loadListings() {
 // UI STATE FUNCTIONS
 // ============================================
 function showLoadingState() {
-  console.log("[Frontend] 🔄 Showing loading state");
+  console.log("[Frontend]  Showing loading state");
   document.getElementById("loading-state").classList.remove("hidden");
   document.getElementById("listings-container").innerHTML = "";
   document.getElementById("empty-state").classList.add("hidden");
 }
 
 function hideLoadingState() {
-  console.log("[Frontend] ✅ Hiding loading state");
+  console.log("[Frontend]  Hiding loading state");
   document.getElementById("loading-state").classList.add("hidden");
 }
 
 function showErrorState(message) {
-  console.log("[Frontend] ❌ Showing error state:", message);
+  console.log("[Frontend]  Showing error state:", message);
   const container = document.getElementById("listings-container");
   container.innerHTML = `
     <div class="col-span-full text-center py-20">
@@ -203,7 +231,7 @@ function showErrorState(message) {
 // DISPLAY FUNCTIONS
 // ============================================
 function displayListings() {
-  console.log("[Frontend] 📋 Displaying listings");
+  console.log("[Frontend]  Displaying listings");
   const container = document.getElementById("listings-container");
   const resultsCount = document.getElementById("results-count");
   const emptyState = document.getElementById("empty-state");
@@ -211,13 +239,13 @@ function displayListings() {
   resultsCount.textContent = filteredListings.length;
 
   if (filteredListings.length === 0) {
-    console.log("[Frontend] ℹ️  No listings to display");
+    console.log("[Frontend]  No listings to display");
     container.innerHTML = "";
     emptyState.classList.remove("hidden");
     return;
   }
 
-  console.log("[Frontend] ✅ Displaying", filteredListings.length, "listings");
+  console.log("[Frontend]  Displaying", filteredListings.length, "listings");
   emptyState.classList.add("hidden");
   container.innerHTML = "";
 
@@ -483,7 +511,7 @@ function viewDetails(id) {
               </div>
               <div>
                 <p class="font-bold text-lg">${
-                  listing.seller?.name || "Anonymous Seller"
+                  listing.seller?.name || "Renowned Seller"
                 }</p>
                 <div class="flex items-center gap-2 text-sm">
                   ${
@@ -523,7 +551,7 @@ function viewDetails(id) {
       </div>
 
       <div class="flex gap-3 pt-6 border-t border-gray-800/50">
-        <button class="flex-1 px-6 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 font-bold text-lg hover:shadow-2xl hover:shadow-emerald-500/30 transition-all">
+        <button onclick="openBidModal('${listing._id}')" class="flex-1 px-6 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 font-bold text-lg hover:shadow-2xl hover:shadow-emerald-500/30 transition-all">
           <i class="bi bi-cart-plus mr-2"></i>Place Bid
         </button>
         <button class="px-6 py-4 rounded-xl glass border border-gray-800/50 hover:border-emerald-500/50 font-bold transition-all">
@@ -538,6 +566,198 @@ function viewDetails(id) {
 
   modal.classList.remove("hidden");
   modal.classList.add("flex");
+}
+
+// ============================================
+// BID MODAL FUNCTIONS
+// ============================================
+function openBidModal(listingId) {
+  const listing = allListings.find((l) => l._id === listingId);
+  if (!listing) {
+    console.warn("[Frontend] Listing not found for bidding");
+    return;
+  }
+
+  if (!currentUser) {
+    alert("Please log in to place a bid");
+    return;
+  }
+
+  const bidModal = document.getElementById("bid-modal");
+  const bidContent = document.getElementById("bid-modal-content");
+
+  bidContent.innerHTML = `
+    <div class="sticky top-0 bg-gray-900/95 backdrop-blur-xl border-b border-gray-800/50 p-6 flex items-center justify-between z-10">
+      <h2 class="text-3xl font-black font-display text-gradient">
+        <i class="bi bi-gavel mr-2"></i>Place Your Bid
+      </h2>
+      <button onclick="closeBidModal()" class="w-12 h-12 rounded-xl glass hover:bg-gray-800/50 flex items-center justify-center transition-all">
+        <i class="bi bi-x-lg text-xl"></i>
+      </button>
+    </div>
+
+    <div class="p-6 space-y-6">
+      <!-- Listing Info -->
+      <div class="p-4 rounded-xl bg-gradient-to-r from-emerald-500/10 to-green-600/10 border border-emerald-500/30">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 rounded-xl overflow-hidden">
+            <img src="${
+              listing.photos && listing.photos.length > 0
+                ? listing.photos[0]
+                : "https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=100&h=100&fit=crop"
+            }" alt="${listing.breed || "Animal"}" class="w-full h-full object-cover">
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-emerald-400">${
+              listing.breed || "Unknown Breed"
+            }</h3>
+            <p class="text-sm text-gray-400">
+              <i class="bi bi-geo-alt"></i> ${listing.location || "Unknown"}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bidder Information (Read-only from database) -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-bold text-emerald-500">
+          <i class="bi bi-person-fill mr-2"></i>Bidder Information
+        </h3>
+        
+        <div class="p-4 rounded-xl glass border border-gray-800/50">
+          <label class="block text-sm font-semibold text-gray-300 mb-2">Full Name</label>
+          <div class="px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700/50 text-white font-medium">
+            ${currentUser.name || "Not Available"}
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl glass border border-gray-800/50">
+          <label class="block text-sm font-semibold text-gray-300 mb-2">Phone Number</label>
+          <div class="px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700/50 text-white font-medium">
+            ${currentUser.phone || "Not Available"}
+          </div>
+        </div>
+      </div>
+
+      <!-- Bid Amount -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-bold text-emerald-500">
+          <i class="bi bi-currency-exchange mr-2"></i>Bid Amount
+        </h3>
+        
+        <div class="p-4 rounded-xl glass border border-gray-800/50">
+          <label class="block text-sm font-semibold text-gray-300 mb-2">Enter Your Bid (KES)</label>
+          <div class="relative">
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500 font-bold text-xl">KES</span>
+            <input
+              type="number"
+              id="bid-amount"
+              placeholder="0.00"
+              min="1"
+              step="0.01"
+              class="w-full pl-20 pr-4 py-4 rounded-xl bg-gray-900/80 border-2 border-gray-700/50 focus:border-emerald-500/50 focus:outline-none transition-all text-white text-xl font-bold"
+            />
+          </div>
+          <p class="text-xs text-gray-500 mt-2">
+            <i class="bi bi-info-circle mr-1"></i>Enter your maximum bid amount
+          </p>
+        </div>
+      </div>
+
+      <!-- Additional Notes (Optional) -->
+      <div class="p-4 rounded-xl glass border border-gray-800/50">
+        <label class="block text-sm font-semibold text-gray-300 mb-2">
+          Additional Notes (Optional)
+        </label>
+        <textarea
+          id="bid-notes"
+          rows="3"
+          placeholder="Any special requests or comments..."
+          class="w-full px-4 py-3 rounded-lg bg-gray-900/80 border border-gray-700/50 focus:border-emerald-500/50 focus:outline-none transition-all text-white resize-none"
+        ></textarea>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-3 pt-4">
+        <button onclick="submitBid('${listingId}')" class="flex-1 px-6 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 font-bold text-lg hover:shadow-2xl hover:shadow-emerald-500/30 transition-all">
+          <i class="bi bi-check-circle mr-2"></i>Submit Bid
+        </button>
+        <button onclick="closeBidModal()" class="px-6 py-4 rounded-xl glass border border-gray-800/50 hover:border-red-500/50 font-bold transition-all text-red-400">
+          <i class="bi bi-x-circle mr-2"></i>Cancel
+        </button>
+      </div>
+
+      <!-- Info Notice -->
+      <div class="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30">
+        <p class="text-sm text-blue-300">
+          <i class="bi bi-shield-check mr-2"></i>
+          Your bid will be submitted to the seller. You'll be notified if your bid is accepted.
+        </p>
+      </div>
+    </div>
+  `;
+
+  bidModal.classList.remove("hidden");
+  bidModal.classList.add("flex");
+}
+
+function closeBidModal(event) {
+  if (event && event.target !== event.currentTarget) return;
+  const modal = document.getElementById("bid-modal");
+  modal.classList.add("hidden");
+  modal.classList.remove("flex");
+}
+
+async function submitBid(listingId) {
+  const bidAmount = document.getElementById("bid-amount").value;
+  const bidNotes = document.getElementById("bid-notes").value;
+
+  if (!bidAmount || parseFloat(bidAmount) <= 0) {
+    alert("Please enter a valid bid amount");
+    return;
+  }
+
+  if (!currentUser) {
+    alert("User information not available. Please log in again.");
+    return;
+  }
+
+  const bidData = {
+    listingId: listingId,
+    bidderId: currentUser._id,
+    bidderName: currentUser.name,
+    bidderPhone: currentUser.phone,
+    amount: parseFloat(bidAmount),
+    notes: bidNotes || "",
+    timestamp: new Date().toISOString(),
+  };
+
+  console.log("[Frontend] Submitting bid:", bidData);
+
+  try {
+    const response = await fetch("/api/bids/create", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(bidData),
+    });
+
+    const result = await response.json();
+
+    if (response.ok && result.success) {
+      alert(" Bid has been placed successfully!");
+      closeBidModal();
+      closeDetailModal();
+    } else {
+      alert(` Failed to place bid: ${result.message || "Unknown error"}`);
+    }
+  } catch (error) {
+    console.error("[Frontend] Error submitting bid:", error);
+    alert("Network error. Please try again.");
+  }
 }
 
 function closeDetailModal(event) {
@@ -563,7 +783,10 @@ function setupEventListeners() {
   document.getElementById("sort-by").addEventListener("change", applyFilters);
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeDetailModal();
+    if (e.key === "Escape") {
+      closeDetailModal();
+      closeBidModal();
+    }
   });
 }
 

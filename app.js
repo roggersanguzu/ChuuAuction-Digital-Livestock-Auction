@@ -15,6 +15,11 @@ import dashboardRoutes from "./routes/dashboardRoutes.js";
 import livestockRoutes from "./routes/livestockRoutes.js";
 import auctionRoutes from "./routes/auctionRoutes.js";
 import verificationRoutes from "./routes/verificationRoutes.js";
+// ============================================
+// NEW IMPORTS - Bid and User Routes
+// ============================================
+import bidRoutes from "./routes/bidRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 
@@ -75,18 +80,41 @@ app.use((req, res, next) => {
   next();
 });
 
+// ============================================
+// ROUTES REGISTRATION
+// ============================================
+
+// Home route
 app.get("/", (req, res) => res.render("index", { title: "Home" }));
+
+// ============================================
+// API ROUTES - Must come BEFORE page routes
+// ============================================
+console.log("[App] Registering API routes");
+app.use("/api/bids", bidRoutes);
+app.use("/api/user", userRoutes);
+
+// ============================================
+// PAGE ROUTES - Come AFTER API routes
+// ============================================
+console.log("[App] Registering page routes");
 app.use("/auth", authRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/livestock", livestockRoutes);
 app.use("/auctions", auctionRoutes);
 app.use("/verification", verificationRoutes);
 
+// ============================================
+// ERROR HANDLING
+// ============================================
+
+// 404 Handler
 app.use((req, res) => {
   console.log("404 - Not Found:", req.url);
   res.status(404).render("error", { title: "Page Not Found" });
 });
 
+// 500 Error Handler
 app.use((err, req, res, next) => {
   console.error("Server Error:", err.stack);
   res.status(500).render("error", {
@@ -94,5 +122,7 @@ app.use((err, req, res, next) => {
     message: "Something went wrong",
   });
 });
+
+console.log("[App] All the routes registered successfully");
 
 export default app;
