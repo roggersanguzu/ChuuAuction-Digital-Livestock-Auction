@@ -369,33 +369,7 @@
             Price Estimator
           </span>
         </a>
-        <a
-          href="/auctions/create"
-          class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer active"
-        >
-          <div
-            class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
-          >
-            <i class="bi bi-hammer text-orange-500 text-xl"></i>
-          </div>
-          <span
-            class="font-semibold group-hover:text-orange-500 transition-colors"
-          >Initiate Auction</span>
-        </a>
-        <a
-          href="/auctions/animalList"
-          class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer active"
-        >
-          <div
-            class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
-          >
-            <i class="bi bi-hand-thumbs-up text-orange-500 text-xl"></i>
-          </div>
-          <span
-            class="font-semibold group-hover:text-orange-500 transition-colors"
-          >View Lists</span>
-        </a>
-        <a
+         <a
           href="/verification/submit"
           class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 cursor-pointer"
         >
@@ -408,21 +382,9 @@
             class="font-semibold group-hover:text-yellow-500 transition-colors"
           >Verification</span>
         </a>
-        <a
-          href="/verification/my-verifications"
-          class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer"
-        >
-          <div
-            class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
-          >
-            <i class="bi bi-gear text-orange-500 text-xl"></i>
-          </div>
-          <span
-            class="font-semibold group-hover:text-orange-500 transition-colors"
-          >Verification List</span>
-        </a>
-        <a
-          href="/auctions/bids"
+        
+          <a
+          href="/verification/status"
           class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer active"
         >
           <div
@@ -432,11 +394,62 @@
           </div>
           <span
             class="font-semibold group-hover:text-orange-500 transition-colors"
-          >Received bids</span>
+          >Verification Status</span>
         </a>
-      </nav>
 
-      <!-- Logout Button -->
+        <a
+          href="/auctions/create"
+          class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer"
+        >
+          <span class="w-10 h-10 rounded-xl bg-orange-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <i class="bi bi-plus-lg text-orange-500"></i>
+          </span>
+          <span class="font-medium">Initiate Auction</span>
+        </a>
+        <a
+          href="/auctions/animalList"
+          class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer active"
+        >
+          <div
+            class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
+          >
+            <i class="bi bi-hand-thumbs-up text-orange-500 text-xl"></i>
+          </div>
+          <span
+            class="font-semibold group-hover:text-orange-500 transition-colors"
+          >Action List</span>
+        </a>
+       
+      </nav>
+      <a
+          href="/dashboard/my-bids"
+          class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer"
+        >
+          <div
+            class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-700/20 flex items-center justify-center group-hover:scale-110 transition-transform"
+          >
+            <i class="bi bi-hand-thumbs-up text-blue-500 text-xl"></i>
+          </div>
+          <span
+            class="font-semibold group-hover:text-blue-500 transition-colors"
+          >My Bids</span>
+        </a>
+         <a
+          href="/dashboard/auction-bids"
+          class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group cursor-pointer"
+        >
+          <div
+            class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500/20 to-green-700/20 flex items-center justify-center group-hover:scale-110 transition-transform"
+          >
+            <i class="bi bi-trophy text-green-500 text-xl"></i>
+          </div>
+          <span
+            class="font-semibold group-hover:text-green-500 transition-colors"
+          >Manage Bids</span>
+        </a>
+
+        
+      </nav>
       <!-- In sidebar Logout section – replace <a> with form for POST -->
       <form action="/auth/logout" method="POST" class="w-full">
         <button

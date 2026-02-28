@@ -1,0 +1,477 @@
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Auction Bids - ChuuAuction</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: {
+      'display': ['Bricolage Grotesque', 'system-ui', 'sans-serif'], 'body':
+      ['Outfit', 'system-ui', 'sans-serif'], } } } }
+    </script>
+
+    <style>
+      :root {
+        --orange-core: #f97316;
+        --orange-bright: #fb923c;
+        --orange-dim: #ea580c;
+        --red-core: #dc2626;
+        --green-core: #22c55e;
+        --surface-0: #050608;
+        --surface-1: #0d0f12;
+        --surface-2: #141720;
+        --surface-3: #1c2030;
+        --border-subtle: rgba(255, 255, 255, 0.04);
+        --border-mid: rgba(255, 255, 255, 0.08);
+        --border-accent: rgba(249, 115, 22, 0.25);
+        --text-primary: #f1f2f5;
+        --text-secondary: #8892a4;
+        --text-muted: #4d5566;
+      }
+
+      body {
+        font-family: "Outfit", system-ui, sans-serif;
+        background: var(--surface-0);
+        color: var(--text-primary);
+      }
+
+      .glass {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .glass-strong {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(30px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .text-gradient {
+        background: linear-gradient(135deg, #f97316, #dc2626);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .status-pending {
+        background: rgba(234, 179, 8, 0.15);
+        color: #facc15;
+        border-color: rgba(234, 179, 8, 0.3);
+      }
+      .status-accepted {
+        background: rgba(34, 197, 94, 0.15);
+        color: #4ade80;
+        border-color: rgba(34, 197, 94, 0.3);
+      }
+      .status-rejected {
+        background: rgba(239, 68, 68, 0.15);
+        color: #f87171;
+        border-color: rgba(239, 68, 68, 0.3);
+      }
+
+      .winner-card {
+        animation: winnerGlow 2s ease-in-out infinite;
+      }
+
+      @keyframes winnerGlow {
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+        }
+        50% {
+          box-shadow:
+            0 0 40px rgba(34, 197, 94, 0.6),
+            0 0 60px rgba(34, 197, 94, 0.3);
+        }
+      }
+
+      .bid-card:hover {
+        transform: translateY(-2px);
+      }
+
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--surface-1);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(
+          180deg,
+          var(--orange-core),
+          var(--red-core)
+        );
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-gray-950 text-white">
+
+    <!-- Navigation -->
+    <nav class="glass border-b border-gray-800 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center gap-4">
+            <a href="/" class="flex items-center gap-2">
+              <div
+                class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center font-bold"
+              >C</div>
+              <span class="font-display font-bold text-xl">ChuuAuction</span>
+            </a>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-sm text-gray-400">Welcome,
+              <span
+                class="text-orange-400 font-semibold"
+              >{{user.name}}</span></span>
+            <a
+              href="/auth/logout"
+              class="px-4 py-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition"
+            >
+              <i class="bi bi-box-arrow-left mr-2"></i>Logout
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <!-- Header -->
+      <div class="mb-8">
+        <div class="flex items-center gap-3 mb-2">
+          <a
+            href="/dashboard/farmer"
+            class="w-10 h-10 rounded-xl glass border border-gray-800 hover:border-orange-500 flex items-center justify-center transition"
+          >
+            <i class="bi bi-arrow-left text-orange-500"></i>
+          </a>
+          <h1 class="text-4xl font-black font-display">
+            <span class="text-gradient">Manage Auction Bids</span>
+          </h1>
+        </div>
+        <p class="text-gray-400 ml-14">
+          {{#if isAdmin}}
+            View and manage all bids across all auctions in the system.
+          {{else}}
+            View and manage bids on your auctions. Only you can declare winners.
+          {{/if}}
+        </p>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div class="glass-strong border border-gray-800 rounded-2xl p-6">
+          <div class="flex items-center gap-3 mb-2">
+            <div
+              class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center"
+            >
+              <i class="bi bi-collection text-blue-500"></i>
+            </div>
+            <span class="text-gray-400 text-sm">Total Auctions</span>
+          </div>
+          <p class="text-3xl font-black" id="stat-auctions">0</p>
+        </div>
+        <div class="glass-strong border border-gray-800 rounded-2xl p-6">
+          <div class="flex items-center gap-3 mb-2">
+            <div
+              class="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center"
+            >
+              <i class="bi bi-hand-thumbs-up text-yellow-500"></i>
+            </div>
+            <span class="text-gray-400 text-sm">Total Bids</span>
+          </div>
+          <p class="text-3xl font-black text-yellow-500" id="stat-total">0</p>
+        </div>
+        <div class="glass-strong border border-gray-800 rounded-2xl p-6">
+          <div class="flex items-center gap-3 mb-2">
+            <div
+              class="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center"
+            >
+              <i class="bi bi-trophy-fill text-green-500"></i>
+            </div>
+            <span class="text-gray-400 text-sm">Winners Declared</span>
+          </div>
+          <p class="text-3xl font-black text-green-500" id="stat-winners">0</p>
+        </div>
+        <div class="glass-strong border border-gray-800 rounded-2xl p-6">
+          <div class="flex items-center gap-3 mb-2">
+            <div
+              class="w-10 h-10 rounded-xl bg-orange-500/20 flex items-center justify-center"
+            >
+              <i class="bi bi-cash-stack text-orange-500"></i>
+            </div>
+            <span class="text-gray-400 text-sm">Highest Bid</span>
+          </div>
+          <p class="text-3xl font-black text-orange-500" id="stat-highest">UGX 0</p>
+        </div>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
+        <button
+          onclick="filterBids('all')"
+          class="filter-btn active px-4 py-2 rounded-xl glass border border-orange-500/50 font-semibold transition-all hover:bg-orange-500/10 whitespace-nowrap"
+          data-filter="all"
+        >
+          <i class="bi bi-grid mr-2"></i>All Bids
+        </button>
+        <button
+          onclick="filterBids('pending')"
+          class="filter-btn px-4 py-2 rounded-xl glass border border-gray-700 font-semibold transition-all hover:bg-gray-800/50 whitespace-nowrap"
+          data-filter="pending"
+        >
+          <i class="bi bi-hourglass-split mr-2"></i>Pending
+        </button>
+        <button
+          onclick="filterBids('accepted')"
+          class="filter-btn px-4 py-2 rounded-xl glass border border-gray-700 font-semibold transition-all hover:bg-gray-800/50 whitespace-nowrap"
+          data-filter="accepted"
+        >
+          <i class="bi bi-trophy-fill mr-2"></i>Winners
+        </button>
+        <button
+          onclick="filterBids('rejected')"
+          class="filter-btn px-4 py-2 rounded-xl glass border border-gray-700 font-semibold transition-all hover:bg-gray-800/50 whitespace-nowrap"
+          data-filter="rejected"
+        >
+          <i class="bi bi-x-circle-fill mr-2"></i>Rejected
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading" class="text-center py-12">
+        <div
+          class="w-16 h-16 rounded-full border-4 border-orange-500/30 border-t-orange-500 animate-spin mx-auto mb-4"
+        ></div>
+        <p class="text-gray-400">Loading auction bids...</p>
+      </div>
+
+      <!-- No Bids State -->
+      <div
+        id="no-bids"
+        class="hidden text-center py-12 glass-strong border border-gray-800 rounded-2xl"
+      >
+        <div
+          class="w-20 h-20 rounded-full bg-gray-800/50 flex items-center justify-center mx-auto mb-4"
+        >
+          <i class="bi bi-inbox text-4xl text-gray-600"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-2">No Bids Found</h3>
+        <p class="text-gray-400 mb-6">{{#if isAdmin}}No bids in the system yet.{{else}}You
+            haven't received any bids on your auctions yet.{{/if}}</p>
+        <a
+          href="/auctions/create"
+          class="px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 font-semibold hover:shadow-lg hover:shadow-orange-500/30 transition"
+        >
+          <i class="bi bi-plus-lg mr-2"></i>Create Auction
+        </a>
+      </div>
+
+      <!-- Bids Container -->
+      <div id="bids-container" class="space-y-8 hidden">
+        <!-- Auction groups will be inserted here -->
+      </div>
+
+    </div>
+
+    <!-- Toast Notification -->
+    <div
+      id="toast"
+      class="fixed bottom-4 right-4 transform translate-y-20 opacity-0 transition-all duration-300 z-50"
+    >
+      <div
+        class="glass-strong border border-green-500/50 rounded-xl p-4 flex items-center gap-3"
+      >
+        <div
+          class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center"
+        >
+          <i class="bi bi-check-lg text-green-500"></i>
+        </div>
+        <div>
+          <p class="font-bold" id="toast-title">Success!</p>
+          <p class="text-sm text-gray-400" id="toast-message">Bid marked as
+            winner</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // User ID from server - properly cast from template const userId = "{{userId}}";
+      // isAdmin is passed as a boolean from the server (true/false) const
+      isAdmin =
+      {{isAdmin}}; console.log('User ID:', userId); console.log('Is Admin:',
+      isAdmin); console.log('isAdmin type:', typeof isAdmin); let allGroupedBids
+      = {}; let currentFilter = 'all'; // Format currency function
+      formatCurrency(amount) { return 'UGX ' + new
+      Intl.NumberFormat('en-UG').format(amount || 0); } // Format date function
+      formatDate(dateStr) { const date = new Date(dateStr); return
+      date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year:
+      'numeric', hour: '2-digit', minute: '2-digit' }); } // Get status badge
+      function getStatusBadge(status) { const statusMap = { 'pending': { class:
+      'status-pending', icon: 'bi-hourglass-split', text: 'Pending' },
+      'accepted': { class: 'status-accepted', icon: 'bi-trophy-fill', text:
+      'Winner' }, 'rejected': { class: 'status-rejected', icon:
+      'bi-x-circle-fill', text: 'Rejected' } }; const s = statusMap[status] ||
+      statusMap['pending']; return `<span class="px-3 py-1 rounded-full text-xs
+      font-bold border ${s.class}"><i class="bi ${s.icon}
+      mr-1"></i>${s.text}</span>`; } // Get animal image function
+      getAnimalImage(photos) { if (photos && photos.length > 0) { return
+      photos[0].url; } return '/img/cow.png'; } // Show toast notification
+      function showToast(title, message, isError = false) { const toast =
+      document.getElementById('toast'); const toastTitle =
+      document.getElementById('toast-title'); const toastMessage =
+      document.getElementById('toast-message'); toastTitle.textContent = title;
+      toastMessage.textContent = message; if (isError) {
+      toast.querySelector('div').classList.remove('border-green-500/50');
+      toast.querySelector('div').classList.add('border-red-500/50'); } else {
+      toast.querySelector('div').classList.add('border-green-500/50');
+      toast.querySelector('div').classList.remove('border-red-500/50'); }
+      toast.classList.remove('translate-y-20', 'opacity-0'); setTimeout(() => {
+      toast.classList.add('translate-y-20', 'opacity-0'); }, 3000); } // Mark
+      bid as winner async function markAsWinner(bidId, bidderName) { if
+      (!confirm(`Are you sure you want to declare ${bidderName} as the winner?
+      This will reject all other bids.`)) { return; } try { const response =
+      await fetch(`/api/bids/${bidId}/mark-winner`, { method: 'POST', headers: {
+      'Content-Type': 'application/json' }, body: JSON.stringify({ sellerId:
+      userId }) }); const result = await response.json(); if (result.success) {
+      showToast('Success!', `${bidderName} has been declared as the winner!`);
+      loadBids(); // Reload bids } else { showToast('Error', result.message ||
+      'Failed to mark bid as winner', true); } } catch (error) {
+      console.error('Error marking bid as winner:', error); showToast('Error',
+      'An error occurred. Please try again.', true); } } // Render single bid
+      card function renderBidCard(bid) { const isWinner = bid.status ===
+      'accepted'; const isPending = bid.status === 'pending'; const canControl =
+      bid.canControl && isPending; return ` <div class="bid-card p-4 rounded-xl
+      ${isWinner ? 'winner-card bg-gradient-to-r from-green-500/20
+      to-emerald-500/20 border-2 border-green-500/50' : 'glass border
+      border-gray-800 hover:border-orange-500/50'} transition-all"> <div
+      class="flex items-start gap-4"> <!-- Bidder Avatar --> <div
+      class="relative flex-shrink-0"> <div class="w-12 h-12 rounded-full
+      bg-gradient-to-br ${isWinner ? 'from-green-500 to-emerald-600' :
+      'from-orange-500 to-red-600'} flex items-center justify-center font-bold
+      text-lg"> ${bid.bidderName ? bid.bidderName.split(' ').map(n =>
+      n[0]).join('').substring(0,2).toUpperCase() : '??'} </div> ${isWinner ?
+      `<div class="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full
+      flex items-center justify-center border-2 border-gray-900"><i class="bi
+      bi-check text-xs"></i></div>` : ''} </div> <!-- Bidder Info --> <div
+      class="flex-1 min-w-0"> <div class="flex items-start justify-between
+      mb-2"> <div> <h5 class="font-bold flex items-center gap-2">
+      ${bid.bidderName || 'Anonymous'} <span class="px-2 py-0.5 rounded-full
+      bg-blue-500/20 border border-blue-500/30 text-blue-400 text-xs"> <i
+      class="bi bi-telephone mr-1"></i>${bid.bidderPhone || 'N/A'} </span> </h5>
+      <p class="text-xs text-gray-500 mt-1"><i class="bi bi-clock
+      mr-1"></i>${formatDate(bid.createdAt)}</p> </div> <div class="text-right">
+      <p class="text-xl font-black ${isWinner ? 'text-green-500' :
+      'text-orange-500'}">${formatCurrency(bid.amount)}</p>
+      ${getStatusBadge(bid.status)} </div> </div> ${bid.notes ? `<div class="p-2
+      rounded-lg bg-gray-800/30 border border-gray-700/50 mb-3"><p
+      class="text-sm text-gray-300">${bid.notes}</p></div>` : ''} ${canControl ?
+      `<div class="flex gap-2 mt-2"><button onclick="markAsWinner('${bid._id}',
+      '${bid.bidderName}')" class="px-4 py-2 rounded-lg bg-gradient-to-r
+      from-green-500 to-emerald-600 font-semibold hover:shadow-lg
+      hover:shadow-green-500/30 transition text-sm"><i class="bi bi-trophy-fill
+      mr-1"></i>Declare Winner</button></div>` : ''} </div> </div> </div> `; }
+      // Render auction group function renderAuctionGroup(auctionId, group) {
+      const auction = group.auction || {}; const photoUrl =
+      getAnimalImage(auction.photos); const animalType = auction.animalType ||
+      'Livestock'; // Filter bids based on current filter let filteredBids =
+      group.bids; if (currentFilter !== 'all') { filteredBids =
+      group.bids.filter(b => b.status === currentFilter); } if
+      (filteredBids.length === 0 && currentFilter !== 'all') { return ''; } //
+      Calculate stats const highestBid = Math.max(...group.bids.map(b =>
+      b.amount), 0); const winnerCount = group.bids.filter(b => b.status ===
+      'accepted').length; return ` <div class="auction-group"> <!-- Auction
+      Header --> <div class="glass-strong border border-gray-800 rounded-2xl p-6
+      mb-4"> <div class="flex flex-col lg:flex-row gap-6"> <!-- Animal Image -->
+      <div class="lg:w-48 h-36 rounded-xl overflow-hidden relative
+      flex-shrink-0"> <img src="${photoUrl}" alt="${animalType}" class="w-full
+      h-full object-cover" onerror="this.src='/img/cow.png'"> <div
+      class="absolute top-3 right-3"> <span class="px-3 py-1 rounded-full
+      bg-green-500/90 backdrop-blur-sm text-xs font-bold flex items-center
+      gap-1"> <span class="w-2 h-2 bg-white rounded-full
+      animate-pulse"></span>LIVE </span> </div> </div> <!-- Auction Info -->
+      <div class="flex-1"> <h3 class="text-xl font-bold font-display
+      mb-2">${animalType} ${auction.breed ? '- ' + auction.breed : ''}</h3> <div
+      class="flex flex-wrap gap-2 mb-3"> ${auction.sex ? `<span class="px-2 py-1
+      rounded-lg bg-gray-800/50 text-xs"><i class="bi
+      bi-gender-${auction.sex.toLowerCase()} mr-1"></i>${auction.sex}</span>` :
+      ''} ${auction.weight ? `<span class="px-2 py-1 rounded-lg bg-gray-800/50
+      text-xs"><i class="bi bi-speedometer mr-1"></i>${auction.weight}kg</span>`
+      : ''} ${auction.location ? `<span class="px-2 py-1 rounded-lg
+      bg-gray-800/50 text-xs"><i class="bi bi-geo-alt
+      mr-1"></i>${auction.location}</span>` : ''} ${auction.healthStatus ?
+      `<span class="px-2 py-1 rounded-lg bg-green-500/20 text-green-400
+      text-xs"><i class="bi bi-heart-pulse
+      mr-1"></i>${auction.healthStatus}</span>` : ''} </div> <p class="text-sm
+      text-gray-400 mb-4">${auction.description || ''}</p> <div class="grid
+      grid-cols-3 gap-4"> <div class="p-3 rounded-xl bg-gray-800/30"> <p
+      class="text-xs text-gray-400 mb-1">Total Bids</p> <p class="text-lg
+      font-black">${group.bids.length}</p> </div> <div class="p-3 rounded-xl
+      bg-green-500/10 border border-green-500/30"> <p class="text-xs
+      text-gray-400 mb-1">Highest Bid</p> <p class="text-lg font-black
+      text-green-500">${formatCurrency(highestBid)}</p> </div> <div class="p-3
+      rounded-xl bg-orange-500/10 border border-orange-500/30"> <p
+      class="text-xs text-gray-400 mb-1">Winner</p> <p class="text-lg font-black
+      ${winnerCount > 0 ? 'text-green-500' : 'text-gray-500'}">${winnerCount > 0
+      ? 'Declared' : 'Pending'}</p> </div> </div> </div> </div> </div> <!-- Bids
+      List --> <div class="space-y-3 pl-4"> <h4 class="text-sm font-bold
+      text-gray-400 mb-3"><i class="bi bi-hand-thumbs-up mr-2"></i>Bids
+      (${filteredBids.length})</h4> ${filteredBids.map(renderBidCard).join('')}
+      ${filteredBids.length === 0 ? '<p class="text-gray-500 text-sm">No bids in
+      this category</p>' : ''} </div> </div> `; } // Filter bids function
+      filterBids(filter) { currentFilter = filter; // Update button styles
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.classList.remove('active', 'border-orange-500/50');
+      btn.classList.add('border-gray-700'); if (btn.dataset.filter === filter) {
+      btn.classList.add('active', 'border-orange-500/50');
+      btn.classList.remove('border-gray-700'); } }); // Re-render renderBids();
+      } // Render all bids function renderBids() { const container =
+      document.getElementById('bids-container'); const groups =
+      Object.entries(allGroupedBids); if (groups.length === 0) {
+      document.getElementById('no-bids').classList.remove('hidden');
+      container.classList.add('hidden'); return; }
+      document.getElementById('no-bids').classList.add('hidden');
+      container.classList.remove('hidden'); // Update stats const allBids =
+      groups.flatMap(([_, g]) => g.bids); const auctions = groups.length; const
+      totalBids = allBids.length; const winners = allBids.filter(b => b.status
+      === 'accepted').length; const highest = Math.max(...allBids.map(b =>
+      b.amount), 0); document.getElementById('stat-auctions').textContent =
+      auctions; document.getElementById('stat-total').textContent = totalBids;
+      document.getElementById('stat-winners').textContent = winners;
+      document.getElementById('stat-highest').textContent =
+      formatCurrency(highest); // Render groups container.innerHTML =
+      groups.map(([auctionId, group]) => renderAuctionGroup(auctionId,
+      group)).join(''); } // Fetch and render bids async function loadBids() {
+      try { // Determine which API to call based on admin status let apiUrl; if
+      (isAdmin === true) { apiUrl = '/api/bids/admin/all'; } else { apiUrl =
+      `/api/bids/seller/${userId}`; } console.log('Fetching bids from:',
+      apiUrl); const response = await fetch(apiUrl); const result = await
+      response.json();
+      document.getElementById('loading').classList.add('hidden'); if
+      (!result.success) { document.getElementById('loading').innerHTML = ` <div
+      class="text-red-500"> <i class="bi bi-exclamation-triangle text-2xl
+      mb-2"></i> <p>Error loading bids. Please try again.</p> </div> `; return;
+      } console.log('Bids loaded:', result.count); console.log('Grouped:',
+      result.groupedByAuction); // Store grouped bids allGroupedBids =
+      result.groupedByAuction || {}; renderBids(); } catch (error) {
+      console.error('Error loading bids:', error);
+      document.getElementById('loading').innerHTML = ` <div
+      class="text-red-500"> <i class="bi bi-exclamation-triangle text-2xl
+      mb-2"></i> <p>Error loading bids. Please try again.</p> </div> `; } } //
+      Initialize document.addEventListener('DOMContentLoaded', loadBids);
+    </script>
+  </body>
+</html>

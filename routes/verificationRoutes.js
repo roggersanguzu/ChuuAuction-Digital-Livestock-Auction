@@ -7,6 +7,10 @@ import {
   getVerificationStatus,
   getFarmerVerifications,
   getVerificationByAuction,
+  getAllVerifications,
+  getMyVerifications,
+  updateVerificationStatus,
+  getCurrentUser,
 } from "../controllers/verificationController.js";
 
 const router = express.Router();
@@ -54,10 +58,9 @@ router.get("/submit", (req, res) => {
 });
 
 // GET: Show verification status page
-router.get("/status/:verificationId", (req, res) => {
+router.get("/status", (req, res) => {
   res.render("verification/status", {
-    title: "Verification Status",
-    verificationId: req.params.verificationId,
+    title: "My Verifications",
   });
 });
 
@@ -86,5 +89,21 @@ router.get("/api/farmer/:farmerId", getFarmerVerifications);
 
 // GET: Get verification by auction ID
 router.get("/api/auction/:auctionId", getVerificationByAuction);
+
+// ============================================
+// NEW API ROUTES - For status.hbs page
+// ============================================
+
+// GET: Get all verifications (Admin only)
+router.get("/api/admin/all", getAllVerifications);
+
+// GET: Get current user's verifications (Farmer/Seller/Buyer)
+router.get("/api/my-verifications", getMyVerifications);
+
+// PATCH: Update verification status (Admin only)
+router.patch("/api/admin/:verificationId/status", updateVerificationStatus);
+
+// GET: Get current user info
+router.get("/api/current-user", getCurrentUser);
 
 export default router;

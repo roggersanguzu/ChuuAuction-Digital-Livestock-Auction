@@ -79,4 +79,64 @@ router.get(
   },
 );
 
+// ============================================
+// NEW BID DASHBOARD ROUTES
+// ============================================
+
+// My Bids - User's personal bid dashboard (View only)
+router.get("/my-bids", requireLogin, (req, res) => {
+  console.log(
+    "ROUTE HIT: /dashboard/my-bids - Rendering dashboard/my-bids.hbs",
+  );
+  res.render("dashboard/my-bids", {
+    title: "My Bids",
+    user: req.session.user,
+    userId: req.session.user.id,
+  });
+});
+
+// Auction Bids - Seller's bid management dashboard
+router.get(
+  "/auction-bids",
+  requireLogin,
+  requireRole(["seller", "farmer", "administrator", "admin"]),
+  (req, res) => {
+    console.log(
+      "ROUTE HIT: /dashboard/auction-bids - Rendering dashboard/auction-bids.hbs",
+    );
+    // For admin, we pass a flag to show all bids
+    const isAdmin =
+      req.session.user.role === "Administrator" ||
+      req.session.user.role === "admin";
+    res.render("dashboard/auction-bids", {
+      title: "Manage Auction Bids",
+      user: req.session.user,
+      userId: req.session.user.id,
+      isAdmin: isAdmin,
+    });
+  },
+);
+
+// Auction Bids for specific auction
+router.get(
+  "/auction-bids/:auctionId",
+  requireLogin,
+  requireRole(["seller", "farmer", "administrator", "admin"]),
+  (req, res) => {
+    console.log(
+      "ROUTE HIT: /dashboard/auction-bids/:auctionId - Rendering dashboard/auction-bids.hbs",
+    );
+    const isAdmin =
+      req.session.user.role === "Administrator" ||
+      req.session.user.role === "admin";
+    res.render("dashboard/auction-bids", {
+      title: "Manage Auction Bids",
+      user: req.session.user,
+      userId: req.session.user.id,
+      auctionId: req.params.auctionId,
+      isAdmin: isAdmin,
+    });
+  },
+);
+
 export default router;

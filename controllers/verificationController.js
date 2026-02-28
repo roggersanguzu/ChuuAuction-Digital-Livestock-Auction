@@ -37,7 +37,8 @@ export const submitVerification = async (req, res) => {
     }
 
     // Farmer is optional (null for guests)
-    const farmerId = req.user?._id || null;
+    // Use req.session.user.id from session (not req.user)
+    const farmerId = req.session?.user?.id || null;
 
     // Optional auction handling
     let auction = null;
@@ -452,10 +453,204 @@ export const getVerificationByAuction = async (req, res) => {
   }
 };
 
+/**
+ * Get ALL verifications (Admin only)
+ */
+export const getAllVerifications = async (req, res) => {
+  console.log("[Controller] getAllVerifications called");
+  console.log("[Controller] User session:", req.session?.user);
+
+  try {
+    const verifications = await Verification.find()
+      .populate("auction", "breed animalType location photos")
+      .populate("farmer", "name email phone")
+      .sort({ createdAt: -1 });
+
+    console.log("[Controller] Found", verifications.length, "verifications");
+
+    // Build stats
+    const stats = {
+      total: verifications.length,
+      pending: verifications.filter((v) => v.status === "pending").length,
+      processing: verifications.filter((v) => v.status === "processing").length,
+      verified: verifications.filter((v) => v.status === "verified").length,
+      rejected: verifications.filter((v) => v.status === "rejected").length,
+      needs_review: verifications.filter((v) => v.status === "needs_review")
+        .length,
+      incomplete: verifications.filter((v) => v.status === "incomplete").length,
+    };
+
+    return res.status(200).json({
+      success: true,
+      data: verifications,
+      stats: stats,
+    });
+  } catch (error) {
+    console.error("Get all verifications error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to get verifications",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * Get current user's verifications (Farmer/Seller/Buyer)
+ */
+export const getMyVerifications = async (req, res) => {
+  try {
+    const userId = req.session?.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication required",
+      });
+    }
+
+    const verifications = await Verification.find({ farmer: userId })
+      .populate("auction", "breed animalType location photos")
+      .populate("farmer", "name email phone")
+      .sort({ createdAt: -1 });
+
+    // Build stats
+    const stats = {
+      total: verifications.length,
+      pending: verifications.filter((v) => v.status === "pending").length,
+      processing: verifications.filter((v) => v.status === "processing").length,
+      verified: verifications.filter((v) => v.status === "verified").length,
+      rejected: verifications.filter((v) => v.status === "rejected").length,
+      needs_review: verifications.filter((v) => v.status === "needs_review")
+        .length,
+      incomplete: verifications.filter((v) => v.status === "incomplete").length,
+    };
+
+    return res.status(200).json({
+      success: true,
+      data: verifications,
+      stats: stats,
+    });
+  } catch (error) {
+    console.error("Get my verifications error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to get verifications",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * Update verification status (Admin only)
+ */
+export const updateVerificationStatus = async (req, res) => {
+  try {
+    const { verificationId } = req.params;
+    const { status, notes } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(verificationId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Verification ID format",
+      });
+    }
+
+    const validStatuses = [
+      "pending",
+      "processing",
+      "verified",
+      "rejected",
+      "needs_review",
+      "incomplete",
+    ];
+    if (!status || !validStatuses.includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid status value",
+      });
+    }
+
+    const verification = await Verification.findById(verificationId);
+
+    if (!verification) {
+      return res.status(404).json({
+        success: false,
+        message: "Verification not found",
+      });
+    }
+
+    verification.status = status;
+    if (notes) {
+      verification.notes = notes;
+    }
+
+    // Update manual review if needed
+    if (status === "verified" || status === "rejected") {
+      verification.manualReview.completed = true;
+      verification.manualReview.reviewDate = new Date();
+      verification.manualReview.approved = status === "verified";
+    }
+
+    await verification.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Status updated successfully",
+      data: verification,
+    });
+  } catch (error) {
+    console.error("Update verification status error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update status",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * Get current user info for frontend
+ */
+export const getCurrentUser = async (req, res) => {
+  console.log("[Controller] getCurrentUser called");
+  console.log("[Controller] Session:", req.session);
+  console.log("[Controller] Session user:", req.session?.user);
+
+  try {
+    const user = req.session?.user;
+
+    if (!user) {
+      console.log("[Controller] No user in session, returning null");
+      return res.status(200).json({
+        success: true,
+        user: null,
+      });
+    }
+
+    console.log("[Controller] Returning user:", user.name, user.role);
+    return res.status(200).json({
+      success: true,
+      user: user,
+    });
+  } catch (error) {
+    console.error("[Controller] Get current user error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to get user info",
+      error: error.message,
+    });
+  }
+};
+
 export default {
   submitVerification,
   processAIVerification,
   getVerificationStatus,
   getFarmerVerifications,
   getVerificationByAuction,
+  getAllVerifications,
+  getMyVerifications,
+  updateVerificationStatus,
+  getCurrentUser,
 };

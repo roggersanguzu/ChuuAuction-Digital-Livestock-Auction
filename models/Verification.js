@@ -114,7 +114,7 @@ const verificationSchema = new mongoose.Schema(
       photoFlags: [String],
 
       verificationDate: Date,
-      aiModel: { type: String, default: "gemini-1.5-flash" },
+      aiModel: { type: String, default: "gemini-2.5-flash" },
       processingTime: Number,
     },
 

@@ -14,7 +14,7 @@ export const getCurrentUser = async (req, res) => {
       });
     }
 
-    const userId = req.session.user._id || req.session.user.id;
+    const userId = req.session.user.id || req.session.user._id;
 
     const user = await User.findById(userId).select("-password");
 
