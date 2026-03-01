@@ -1,676 +1,1340 @@
-<!-- Ultra-Advanced Livestock Auction Creation System - World-Class Final Year Project -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Auction — AgriVault</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
 
-<style>
-  /* Advanced Custom Styles */
-  .font-display {
-    font-family: "Bricolage Grotesque", system-ui, sans-serif;
-  }
-  .font-body {
-    font-family: "Outfit", system-ui, sans-serif;
-  }
+    <style>
+      /* ── RESET & BASE ─────────────────────────────────────────────────────────── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
 
-  .text-gradient {
-    background: linear-gradient(135deg, #f97316, #dc2626, #ea580c);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: gradient 3s ease infinite;
-    background-size: 200% 200%;
-  }
+      :root {
+        --bg: #04080f;
+        --bg2: #080e1a;
+        --surface: rgba(255, 255, 255, 0.03);
+        --surface2: rgba(255, 255, 255, 0.06);
+        --border: rgba(255, 255, 255, 0.08);
+        --border2: rgba(255, 255, 255, 0.14);
+        --text: #f0f4ff;
+        --text2: #94a3b8;
+        --text3: #475569;
+        --accent: #4ade80;
+        --accent2: #22d3ee;
+        --accent3: #facc15;
+        --accent4: #f87171;
+        --accent5: #a78bfa;
+        --blue: #60a5fa;
+        --orange: #fb923c;
+        --r2: 8px;
+        --r3: 12px;
+        --r4: 16px;
+      }
 
-  @keyframes gradient {
-    0%,
-    100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-  }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
 
-  .glass {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-  }
+      /* ── BACKGROUND MESH ──────────────────────────────────────────────────────── */
+      .bg-mesh {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+      .bg-mesh::before {
+        content: "";
+        position: absolute;
+        top: -30%;
+        left: -20%;
+        width: 70vw;
+        height: 70vw;
+        background: radial-gradient(
+          circle,
+          rgba(74, 222, 128, 0.04) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+      }
+      .bg-mesh::after {
+        content: "";
+        position: absolute;
+        bottom: -20%;
+        right: -15%;
+        width: 60vw;
+        height: 60vw;
+        background: radial-gradient(
+          circle,
+          rgba(96, 165, 250, 0.04) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+      }
+      .mesh-dot {
+        position: absolute;
+        top: 40%;
+        left: 60%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(167, 139, 250, 0.03) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+      }
 
-  .glass-strong {
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
+      /* ── LAYOUT ───────────────────────────────────────────────────────────────── */
+      .wrapper {
+        position: relative;
+        z-index: 1;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px 20px 100px;
+      }
 
-  .neon-glow {
-    text-shadow:
-      0 0 10px rgba(249, 115, 22, 0.8),
-      0 0 20px rgba(249, 115, 22, 0.6),
-      0 0 30px rgba(249, 115, 22, 0.4);
-  }
+      /* ── PAGE HEADER ──────────────────────────────────────────────────────────── */
+      .page-header {
+        margin-bottom: 40px;
+      }
+      .page-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent);
+        background: rgba(74, 222, 128, 0.08);
+        border: 1px solid rgba(74, 222, 128, 0.2);
+        padding: 5px 14px;
+        border-radius: 100px;
+        margin-bottom: 14px;
+      }
+      .page-title {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(28px, 5vw, 42px);
+        font-weight: 800;
+        line-height: 1.1;
+        color: var(--text);
+        margin-bottom: 10px;
+      }
+      .page-title span {
+        color: var(--accent);
+      }
+      .page-sub {
+        font-size: 15px;
+        color: var(--text2);
+        max-width: 480px;
+      }
 
-  .card-3d {
-    transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-  }
+      /* ── PROGRESS STEPPER ─────────────────────────────────────────────────────── */
+      .stepper {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r4);
+        padding: 20px 28px;
+        margin-bottom: 32px;
+        position: relative;
+        overflow: hidden;
+      }
+      .stepper::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          var(--accent) 0%,
+          var(--accent2) 50%,
+          var(--accent5) 100%
+        );
+      }
 
-  .card-3d:hover {
-    transform: perspective(1000px) rotateY(2deg) rotateX(1deg) scale(1.01);
-  }
+      .step-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+      }
+      .step-item:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        top: 18px;
+        right: -50%;
+        left: 50%;
+        height: 1px;
+        background: var(--border);
+        z-index: 0;
+      }
 
-  .particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: rgba(249, 115, 22, 0.4);
-    border-radius: 50%;
-    pointer-events: none;
-    animation: particleFloat 5s ease-in-out infinite;
-  }
+      .step-dot {
+        position: relative;
+        z-index: 1;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+        background: var(--bg2);
+        border: 2px solid var(--border2);
+        color: var(--text3);
+        transition: all 0.35s ease;
+      }
+      .step-dot.active {
+        background: linear-gradient(135deg, #4ade80, #22c55e);
+        border-color: transparent;
+        color: #04080f;
+        box-shadow:
+          0 0 0 4px rgba(74, 222, 128, 0.12),
+          0 0 20px rgba(74, 222, 128, 0.25);
+      }
+      .step-dot.completed {
+        background: linear-gradient(135deg, #22d3ee, #06b6d4);
+        border-color: transparent;
+        color: #04080f;
+        box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.12);
+      }
+      .step-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text3);
+        transition: color 0.3s;
+        text-align: center;
+        letter-spacing: 0.04em;
+      }
+      .step-item.active .step-label {
+        color: var(--accent);
+      }
+      .step-item.completed .step-label {
+        color: var(--accent2);
+      }
 
-  @keyframes particleFloat {
-    0%,
-    100% {
-      transform: translateY(0) translateX(0);
-      opacity: 0;
-    }
-    10% {
-      opacity: 1;
-    }
-    90% {
-      opacity: 1;
-    }
-    100% {
-      transform: translateY(-100px) translateX(30px);
-      opacity: 0;
-    }
-  }
+      /* ── FORM CARDS ───────────────────────────────────────────────────────────── */
+      .form-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 32px;
+        margin-bottom: 24px;
+        position: relative;
+        overflow: hidden;
+        transition: border-color 0.3s;
+      }
+      .form-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.08),
+          transparent
+        );
+      }
+      .form-card:hover {
+        border-color: var(--border2);
+      }
 
-  .custom-input,
-  .custom-select {
-    background: rgba(17, 24, 39, 0.8);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-    color: white;
-  }
+      /* ── SECTION HEADER ───────────────────────────────────────────────────────── */
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 28px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border);
+      }
+      .section-badge {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text3);
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        padding: 4px 10px;
+        border-radius: 6px;
+      }
+      .section-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+      .section-icon.blue {
+        background: rgba(59, 130, 246, 0.12);
+        color: var(--blue);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+      }
+      .section-icon.purple {
+        background: rgba(167, 139, 250, 0.12);
+        color: var(--accent5);
+        border: 1px solid rgba(167, 139, 250, 0.2);
+      }
+      .section-icon.green {
+        background: rgba(74, 222, 128, 0.12);
+        color: var(--accent);
+        border: 1px solid rgba(74, 222, 128, 0.2);
+      }
+      .section-icon.orange {
+        background: rgba(251, 146, 60, 0.12);
+        color: var(--orange);
+        border: 1px solid rgba(251, 146, 60, 0.2);
+      }
 
-  .custom-input:focus,
-  .custom-select:focus {
-    background: rgba(17, 24, 39, 0.95);
-    border-color: #f97316;
-    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
-    outline: none;
-  }
+      .section-header-text h2 {
+        font-family: "Syne", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 3px;
+      }
+      .section-header-text p {
+        font-size: 13px;
+        color: var(--text3);
+      }
 
-  .custom-input:hover,
-  .custom-select:hover {
-    border-color: rgba(249, 115, 22, 0.3);
-  }
+      /* ── GRID ─────────────────────────────────────────────────────────────────── */
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px;
+      }
+      .col-span-2 {
+        grid-column: span 2;
+      }
+      @media (max-width: 640px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+        .col-span-2 {
+          grid-column: span 1;
+        }
+      }
 
-  /* Dropdown option styling */
-  .custom-select option {
-    background: #1f2937;
-    color: white;
-    padding: 12px;
-  }
+      /* ── FORM LABELS & INPUTS ─────────────────────────────────────────────────── */
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .form-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text2);
+        letter-spacing: 0.04em;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .form-label i {
+        color: var(--accent);
+        font-size: 11px;
+      }
+      .form-label .req {
+        color: var(--accent4);
+      }
 
-  .custom-select option:hover {
-    background: #374151;
-  }
+      .clean-input,
+      .clean-select,
+      .clean-textarea {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border);
+        border-radius: var(--r3);
+        padding: 12px 16px;
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        outline: none;
+      }
+      .clean-input:hover,
+      .clean-select:hover,
+      .clean-textarea:hover {
+        border-color: rgba(74, 222, 128, 0.25);
+      }
+      .clean-input:focus,
+      .clean-select:focus,
+      .clean-textarea:focus {
+        border-color: rgba(74, 222, 128, 0.45);
+        background: rgba(0, 0, 0, 0.4);
+        box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.07);
+      }
+      .clean-input::placeholder,
+      .clean-textarea::placeholder {
+        color: var(--text3);
+      }
+      .clean-select option {
+        background: #0a0f1e;
+        color: var(--text);
+      }
+      .clean-textarea {
+        resize: vertical;
+        min-height: 120px;
+        line-height: 1.7;
+      }
 
-  /* Date and Time picker styling */
-  input[type="date"]::-webkit-calendar-picker-indicator,
-  input[type="time"]::-webkit-calendar-picker-indicator {
-    filter: invert(1);
-    cursor: pointer;
-    font-size: 1.2rem;
-    padding: 4px;
-  }
+      .input-icon-wrap {
+        position: relative;
+      }
+      .input-icon-wrap .clean-input {
+        padding-right: 52px;
+      }
+      .input-suffix {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text3);
+        pointer-events: none;
+        font-family: "DM Mono", monospace;
+      }
 
-  input[type="date"],
-  input[type="time"] {
-    position: relative;
-  }
+      input[type="date"],
+      input[type="time"] {
+        color-scheme: dark;
+      }
+      input[type="date"]::-webkit-calendar-picker-indicator,
+      input[type="time"]::-webkit-calendar-picker-indicator {
+        filter: invert(0.5) sepia(1) hue-rotate(80deg) saturate(3);
+        cursor: pointer;
+        opacity: 0.6;
+      }
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        opacity: 0;
+      }
+      input[type="checkbox"] {
+        accent-color: var(--accent);
+      }
 
-  /* Price input UGX label handling */
-  .price-input-wrapper {
-    position: relative;
-  }
+      /* ── INFO TEXT ────────────────────────────────────────────────────────────── */
+      .info-text {
+        font-size: 11.5px;
+        color: var(--text3);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .info-text i {
+        font-size: 10px;
+      }
+      .info-text.accent {
+        color: var(--accent);
+      }
+      .info-text.warn {
+        color: var(--accent3);
+      }
 
-  .price-input-wrapper .ugx-label {
-    position: absolute;
-    left: 1.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: rgba(156, 163, 175, 0.5);
-    font-weight: bold;
-    font-size: 1.125rem;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
+      /* ── RADIO SEX CARDS ──────────────────────────────────────────────────────── */
+      .sex-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .sex-card {
+        position: relative;
+      }
+      .sex-card input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .sex-card label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 16px;
+        border-radius: var(--r3);
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text2);
+      }
+      .sex-card label:hover {
+        border-color: rgba(74, 222, 128, 0.3);
+        background: rgba(74, 222, 128, 0.04);
+      }
+      .sex-card input:checked + label {
+        border-color: var(--accent);
+        background: rgba(74, 222, 128, 0.1);
+        color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.07);
+      }
+      .sex-card label i {
+        font-size: 24px;
+        margin-bottom: 2px;
+      }
+      .sex-card:nth-child(1) label i {
+        color: #60a5fa;
+      }
+      .sex-card:nth-child(2) label i {
+        color: #f9a8d4;
+      }
 
-  .price-input-wrapper input:focus ~ .ugx-label,
-  .price-input-wrapper input:not(:placeholder-shown) ~ .ugx-label {
-    opacity: 0;
-  }
+      /* ── VACCINATED TOGGLE ────────────────────────────────────────────────────── */
+      .toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 20px;
+        border-radius: var(--r3);
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--border);
+      }
+      .toggle-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .toggle-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(74, 222, 128, 0.1);
+        border: 1px solid rgba(74, 222, 128, 0.2);
+        color: var(--accent);
+        font-size: 18px;
+      }
+      .toggle-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .toggle-switch-wrap input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .toggle-switch {
+        display: block;
+        position: relative;
+        width: 48px;
+        height: 26px;
+        background: var(--surface2);
+        border-radius: 100px;
+        cursor: pointer;
+        border: 1px solid var(--border);
+        transition: all 0.25s ease;
+      }
+      .toggle-switch::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 18px;
+        height: 18px;
+        background: var(--text3);
+        border-radius: 50%;
+        transition: all 0.25s ease;
+      }
+      .toggle-switch-wrap input:checked + .toggle-switch {
+        background: linear-gradient(135deg, #4ade80, #22c55e);
+        border-color: var(--accent);
+      }
+      .toggle-switch-wrap input:checked + .toggle-switch::after {
+        left: calc(100% - 21px);
+        background: #fff;
+      }
+      #vaccinatedLabel {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text3);
+        transition: color 0.2s;
+      }
 
-  /* Advanced Radio Cards */
-  .radio-card-advanced {
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    position: relative;
-    overflow: hidden;
-  }
+      /* ── PREVIEW BAR ──────────────────────────────────────────────────────────── */
+      .preview-bar {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid var(--border);
+        border-radius: var(--r3);
+        padding: 16px;
+      }
+      .preview-item {
+        text-align: center;
+        padding: 10px 8px;
+        border-radius: var(--r2);
+        background: rgba(0, 0, 0, 0.3);
+      }
+      .preview-item i {
+        font-size: 18px;
+        display: block;
+        margin-bottom: 6px;
+      }
+      .preview-label {
+        font-size: 10px;
+        color: var(--text3);
+        margin-bottom: 4px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .preview-value {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text);
+        font-family: "DM Mono", monospace;
+      }
 
-  .radio-card-advanced::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(249, 115, 22, 0.1);
-    transform: translate(-50%, -50%);
-    transition:
-      width 0.6s,
-      height 0.6s;
-  }
+      /* ── PHOTO UPLOAD ZONE ────────────────────────────────────────────────────── */
+      .photo-zone {
+        border: 2px dashed rgba(167, 139, 250, 0.3);
+        border-radius: 18px;
+        padding: 40px 24px;
+        text-align: center;
+        cursor: pointer;
+        background: rgba(0, 0, 0, 0.15);
+        transition: all 0.25s ease;
+        position: relative;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .photo-zone:hover {
+        border-color: rgba(167, 139, 250, 0.6);
+        background: rgba(167, 139, 250, 0.04);
+      }
+      .photo-zone.drag-active {
+        border-color: var(--accent5);
+        background: rgba(167, 139, 250, 0.08);
+        box-shadow: inset 0 0 0 3px rgba(167, 139, 250, 0.1);
+      }
+      .photo-zone .upload-icon {
+        font-size: 44px;
+        color: var(--accent5);
+        opacity: 0.5;
+        display: block;
+        margin-bottom: 12px;
+        transition: all 0.2s;
+      }
+      .photo-zone:hover .upload-icon {
+        opacity: 0.75;
+        transform: translateY(-3px);
+      }
+      .photo-zone h3 {
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 6px;
+      }
+      .photo-zone p {
+        font-size: 13px;
+        color: var(--text3);
+        margin-bottom: 20px;
+      }
+      .upload-badges {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .upload-badge {
+        font-size: 11px;
+        padding: 4px 12px;
+        border-radius: 100px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--text2);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .upload-badge i {
+        color: var(--accent);
+      }
 
-  .radio-card-advanced:hover::before {
-    width: 300px;
-    height: 300px;
-  }
+      /* ── PHOTO PREVIEW GRID ───────────────────────────────────────────────────── */
+      #photoPreviewGrid {
+        display: none;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 12px;
+        margin-top: 20px;
+        width: 100%;
+      }
+      #photoPreviewGrid.show {
+        display: grid;
+      }
+      .photo-thumb {
+        position: relative;
+        aspect-ratio: 1;
+        border-radius: var(--r3);
+        overflow: hidden;
+        border: 2px solid var(--border2);
+        transition: all 0.2s;
+      }
+      .photo-thumb:hover {
+        border-color: var(--accent);
+      }
+      .photo-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .photo-thumb .thumb-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.8) 0%,
+          transparent 60%
+        );
+        opacity: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: space-between;
+        padding: 8px;
+        transition: opacity 0.2s;
+      }
+      .photo-thumb:hover .thumb-overlay {
+        opacity: 1;
+      }
+      .thumb-remove {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--accent4);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 12px;
+        transition: all 0.15s;
+      }
+      .thumb-remove:hover {
+        background: #ef4444;
+        transform: scale(1.1);
+      }
+      .photo-thumb .thumb-num {
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 6px;
+        padding: 3px 8px;
+        font-size: 11px;
+        font-weight: 700;
+        color: white;
+        font-family: "DM Mono", monospace;
+        align-self: flex-start;
+      }
+      .photo-thumb .thumb-name {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.7);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+      }
+      .photo-count-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 100px;
+        font-size: 12px;
+        font-weight: 600;
+        background: rgba(74, 222, 128, 0.12);
+        border: 1px solid rgba(74, 222, 128, 0.25);
+        color: var(--accent);
+        margin-top: 12px;
+      }
 
-  .radio-card-advanced input[type="radio"]:checked + label {
-    background: rgba(249, 115, 22, 0.15);
-    border-color: #f97316;
-    box-shadow: 0 0 30px rgba(249, 115, 22, 0.3);
-  }
+      /* ── PRICING ──────────────────────────────────────────────────────────────── */
+      .price-input-wrap {
+        position: relative;
+      }
+      .price-input-wrap .clean-input {
+        padding-left: 64px;
+        font-family: "DM Mono", monospace;
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .price-prefix {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(74, 222, 128, 0.08);
+        border-right: 1px solid var(--border);
+        border-radius: var(--r3) 0 0 var(--r3);
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--accent);
+        letter-spacing: 0.04em;
+        font-family: "DM Mono", monospace;
+      }
+      .price-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      @media (max-width: 640px) {
+        .price-row {
+          grid-template-columns: 1fr;
+        }
+      }
 
-  /* Image Upload Gallery */
-  .image-upload-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-  }
+      /* ── TIPS BOX ─────────────────────────────────────────────────────────────── */
+      .tips-box {
+        padding: 18px 20px;
+        border-radius: var(--r3);
+      }
+      .tips-box.blue {
+        background: rgba(59, 130, 246, 0.06);
+        border: 1px solid rgba(59, 130, 246, 0.15);
+      }
+      .tips-box.orange {
+        background: rgba(251, 146, 60, 0.06);
+        border: 1px solid rgba(251, 146, 60, 0.15);
+      }
+      .tips-box h4 {
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .tips-box.blue h4 {
+        color: var(--blue);
+      }
+      .tips-box.orange h4 {
+        color: var(--orange);
+      }
+      .tips-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .tip-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        font-size: 12.5px;
+        color: var(--text2);
+        line-height: 1.5;
+      }
+      .tip-item i {
+        color: var(--accent);
+        margin-top: 3px;
+        font-size: 11px;
+        flex-shrink: 0;
+      }
 
-  .image-upload-grid.hidden {
-    display: none;
-  }
+      /* ── TIMER BOX ────────────────────────────────────────────────────────────── */
+      .timer-display {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .timer-unit {
+        text-align: center;
+      }
+      .timer-box {
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(251, 146, 60, 0.25);
+        border-radius: var(--r3);
+        padding: 10px 18px;
+        font-family: "DM Mono", monospace;
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--orange);
+        min-width: 68px;
+        text-align: center;
+        box-shadow: 0 0 20px rgba(251, 146, 60, 0.08);
+      }
+      .timer-unit p {
+        font-size: 10px;
+        color: var(--text3);
+        margin-top: 6px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
 
-  .image-preview-card {
-    position: relative;
-    aspect-ratio: 1;
-    border-radius: 1rem;
-    overflow: hidden;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-  }
+      /* ── CHECKLIST ────────────────────────────────────────────────────────────── */
+      .checklist {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 24px;
+      }
+      .checklist-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 13px 16px;
+        border-radius: var(--r2);
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--border);
+        font-size: 13px;
+        color: var(--text2);
+      }
+      .checklist-item i {
+        color: var(--accent);
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+      @media (max-width: 640px) {
+        .checklist {
+          grid-template-columns: 1fr;
+        }
+      }
 
-  .image-preview-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 40px rgba(249, 115, 22, 0.3);
-    border-color: #f97316;
-  }
+      /* ── TERMS BOX ────────────────────────────────────────────────────────────── */
+      .terms-box {
+        background: rgba(248, 113, 113, 0.05);
+        border: 1px solid rgba(248, 113, 113, 0.15);
+        border-radius: var(--r3);
+        padding: 18px 20px;
+        margin-bottom: 24px;
+      }
+      .terms-label {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        cursor: pointer;
+        font-size: 13px;
+        color: var(--text2);
+        line-height: 1.6;
+      }
+      .terms-label input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        margin-top: 2px;
+        cursor: pointer;
+      }
 
-  .image-preview-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+      /* ── CHAR COUNTER ─────────────────────────────────────────────────────────── */
+      .desc-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 8px;
+      }
+      .char-count {
+        font-size: 12px;
+        font-family: "DM Mono", monospace;
+        color: var(--text3);
+      }
+      .char-count span {
+        color: var(--accent4);
+        font-weight: 700;
+      }
+      .char-count span.ok {
+        color: var(--accent);
+      }
 
-  /* Progress Steps */
-  .step-indicator {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
+      /* ── BUTTONS ──────────────────────────────────────────────────────────────── */
+      .btn-row {
+        display: flex;
+        gap: 12px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 13px 26px;
+        border-radius: var(--r2);
+        font-size: 14px;
+        font-weight: 600;
+        font-family: "DM Sans", sans-serif;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: none;
+        text-decoration: none;
+      }
+      .btn-primary {
+        background: var(--accent);
+        color: #04080f;
+        flex: 2;
+        box-shadow: 0 0 24px rgba(74, 222, 128, 0.2);
+      }
+      .btn-primary:hover {
+        background: #86efac;
+        box-shadow: 0 0 36px rgba(74, 222, 128, 0.35);
+        transform: translateY(-1px);
+      }
+      .btn-secondary {
+        background: var(--surface2);
+        color: var(--text2);
+        border: 1px solid var(--border);
+        flex: 1;
+      }
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+      }
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
 
-  .step-indicator::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.1);
-    z-index: -1;
-  }
+      .btn-select-photo {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 22px;
+        border-radius: var(--r2);
+        font-size: 13px;
+        font-weight: 600;
+        background: rgba(167, 139, 250, 0.12);
+        border: 1px solid rgba(167, 139, 250, 0.3);
+        color: var(--accent5);
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: "DM Sans", sans-serif;
+      }
+      .btn-select-photo:hover {
+        background: rgba(167, 139, 250, 0.2);
+        box-shadow: 0 0 20px rgba(167, 139, 250, 0.15);
+      }
 
-  .step-number {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-  }
+      /* ── FOOTER NOTE ──────────────────────────────────────────────────────────── */
+      .footer-note {
+        text-align: center;
+        font-size: 12px;
+        color: var(--text3);
+        margin-top: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
 
-  .step-number.active {
-    background: linear-gradient(135deg, #f97316, #dc2626);
-    border-color: #f97316;
-    box-shadow: 0 0 30px rgba(249, 115, 22, 0.5);
-    animation: pulse 2s infinite;
-  }
+      /* ── HIDDEN ───────────────────────────────────────────────────────────────── */
+      .hidden {
+        display: none !important;
+      }
 
-  .step-number.completed {
-    background: linear-gradient(135deg, #10b981, #059669);
-    border-color: #10b981;
-  }
+      /* ── SUCCESS MODAL ────────────────────────────────────────────────────────── */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(16px);
+        z-index: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      .modal-box {
+        background: var(--bg2);
+        border: 1px solid var(--border2);
+        border-radius: 24px;
+        max-width: 480px;
+        width: 100%;
+        padding: 40px 36px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .modal-box::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+      }
+      .modal-glow {
+        width: 88px;
+        height: 88px;
+        border-radius: 50%;
+        background: rgba(74, 222, 128, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 22px;
+        font-size: 38px;
+        color: var(--accent);
+        box-shadow: 0 0 40px rgba(74, 222, 128, 0.2);
+      }
+      .modal-title {
+        font-family: "Syne", sans-serif;
+        font-size: 26px;
+        font-weight: 800;
+        margin-bottom: 10px;
+      }
+      .modal-title span {
+        color: var(--accent);
+      }
+      .modal-text {
+        font-size: 14px;
+        color: var(--text2);
+        margin-bottom: 20px;
+        line-height: 1.6;
+      }
+      .modal-id-box {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border);
+        border-radius: var(--r2);
+        padding: 14px;
+        margin-bottom: 28px;
+      }
+      .modal-id-label {
+        font-size: 10px;
+        color: var(--text3);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      .modal-id-value {
+        font-family: "DM Mono", monospace;
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      .modal-btns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .modal-btn {
+        padding: 13px 20px;
+        border-radius: var(--r2);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-family: "DM Sans", sans-serif;
+      }
+      .modal-btn-p {
+        background: var(--accent);
+        color: #04080f;
+        border: none;
+      }
+      .modal-btn-p:hover {
+        background: #86efac;
+      }
+      .modal-btn-s {
+        background: transparent;
+        color: var(--text2);
+        border: 1px solid var(--border);
+      }
+      .modal-btn-s:hover {
+        background: var(--surface2);
+        color: var(--text);
+      }
 
-  /* Floating Labels */
-  .floating-label-group {
-    position: relative;
-  }
+      /* ── ANIMATIONS ───────────────────────────────────────────────────────────── */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade-up-1 {
+        animation: fadeUp 0.5s ease-out 0.05s both;
+      }
+      .fade-up-2 {
+        animation: fadeUp 0.5s ease-out 0.12s both;
+      }
+      .fade-up-3 {
+        animation: fadeUp 0.5s ease-out 0.2s both;
+      }
+      .fade-up-4 {
+        animation: fadeUp 0.5s ease-out 0.28s both;
+      }
+      .fade-up-5 {
+        animation: fadeUp 0.5s ease-out 0.36s both;
+      }
+      .fade-up-6 {
+        animation: fadeUp 0.5s ease-out 0.44s both;
+      }
 
-  .floating-label {
-    position: absolute;
-    left: 1.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: all 0.3s ease;
-    pointer-events: none;
-    color: rgba(156, 163, 175, 0.7);
-  }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .spin {
+        animation: spin 0.9s linear infinite;
+      }
 
-  .custom-input:focus ~ .floating-label,
-  .custom-input:not(:placeholder-shown) ~ .floating-label {
-    top: -0.5rem;
-    left: 1rem;
-    font-size: 0.75rem;
-    background: #030712;
-    padding: 0 0.5rem;
-    color: #f97316;
-  }
+      /* ── CONDITIONAL SECTION ──────────────────────────────────────────────────── */
+      #vaccinationLicenseSection {
+        overflow: hidden;
+        max-height: 0;
+        transition:
+          max-height 0.35s ease,
+          opacity 0.3s ease;
+        opacity: 0;
+      }
+      #vaccinationLicenseSection.show {
+        max-height: 120px;
+        opacity: 1;
+      }
 
-  /* Checkbox Toggle Switch */
-  .toggle-switch {
-    position: relative;
-    width: 3.5rem;
-    height: 2rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 9999px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
+      /* ── FIELD VALIDATION HINT ────────────────────────────────────────────────── */
+      .clean-input.error {
+        border-color: rgba(248, 113, 113, 0.5);
+      }
+      .clean-input.ok {
+        border-color: rgba(74, 222, 128, 0.35);
+      }
+    </style>
+  </head>
 
-  .toggle-switch::after {
-    content: "";
-    position: absolute;
-    top: 0.25rem;
-    left: 0.25rem;
-    width: 1.5rem;
-    height: 1.5rem;
-    background: white;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  }
+  <body>
+    <div class="bg-mesh"><div class="mesh-dot"></div></div>
 
-  input:checked + .toggle-switch {
-    background: linear-gradient(135deg, #f97316, #dc2626);
-  }
+    <div class="wrapper">
 
-  input:checked + .toggle-switch::after {
-    left: calc(100% - 1.75rem);
-  }
+      <!-- ── PAGE HEADER ─────────────────────────────────────────────────────── -->
+      <div class="page-header fade-up-1">
+        <div class="page-eyebrow"><i class="fas fa-gavel"></i>Livestock Auction</div>
+        <div class="page-title">Create <span>Auction</span></div>
+        <div class="page-sub">List your premium livestock and let verified
+          buyers compete in real-time bidding on the AgriVault marketplace.</div>
+      </div>
 
-  /* Auction Timer Preview */
-  .auction-timer-preview {
-    background: linear-gradient(
-      135deg,
-      rgba(249, 115, 22, 0.1),
-      rgba(220, 38, 38, 0.1)
-    );
-    border: 2px solid rgba(249, 115, 22, 0.3);
-    border-radius: 1rem;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .timer-digit {
-    background: rgba(0, 0, 0, 0.5);
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    font-family: "Courier New", monospace;
-  }
-
-  /* Glow Effects */
-  @keyframes glow {
-    0%,
-    100% {
-      box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
-    }
-    50% {
-      box-shadow:
-        0 0 40px rgba(249, 115, 22, 0.6),
-        0 0 60px rgba(249, 115, 22, 0.3);
-    }
-  }
-
-  .glow-effect {
-    animation: glow 2s ease-in-out infinite;
-  }
-
-  /* Animations */
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @keyframes slideUp {
-    0% {
-      transform: translateY(20px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-  @keyframes scaleIn {
-    0% {
-      transform: scale(0.9);
-      opacity: 0;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-  @keyframes slideInRight {
-    0% {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-    100% {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-  @keyframes shimmer {
-    0% {
-      background-position: -200% 0;
-    }
-    100% {
-      background-position: 200% 0;
-    }
-  }
-
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-  .animate-fade-in {
-    animation: fadeIn 0.6s ease-out;
-  }
-  .animate-slide-up {
-    animation: slideUp 0.5s ease-out;
-  }
-  .animate-scale-in {
-    animation: scaleIn 0.4s ease-out;
-  }
-  .animate-slide-in-right {
-    animation: slideInRight 0.5s ease-out;
-  }
-
-  /* Price Calculator */
-  .price-calculator {
-    background: linear-gradient(
-      135deg,
-      rgba(16, 185, 129, 0.1),
-      rgba(5, 150, 105, 0.1)
-    );
-    border: 2px solid rgba(16, 185, 129, 0.3);
-    border-radius: 1rem;
-    padding: 1.5rem;
-  }
-
-  .price-display {
-    font-size: 2.5rem;
-    font-weight: 900;
-    background: linear-gradient(135deg, #10b981, #059669);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  /* Custom Select Dropdown */
-  .custom-select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23f97316'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1.5rem;
-    padding-right: 3rem;
-  }
-
-  /* Tooltip */
-  .tooltip {
-    position: relative;
-    cursor: help;
-  }
-
-  .tooltip:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.9);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
-    white-space: nowrap;
-    z-index: 100;
-    margin-bottom: 0.5rem;
-  }
-
-  /* Photo Upload Zone */
-  .photo-upload-zone {
-    border: 2px dashed rgba(249, 115, 22, 0.3);
-    transition: all 0.3s ease;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .photo-upload-zone::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(249, 115, 22, 0.1),
-      transparent
-    );
-    transition: left 0.5s ease;
-  }
-
-  .photo-upload-zone:hover::before {
-    left: 100%;
-  }
-
-  .photo-upload-zone:hover {
-    border-color: #f97316;
-    background: rgba(249, 115, 22, 0.05);
-  }
-
-  .photo-upload-zone.active {
-    border-color: #f97316;
-    background: rgba(249, 115, 22, 0.1);
-  }
-</style>
-
-<div
-  class="min-h-screen bg-gray-950 text-white font-body overflow-x-hidden pb-20"
->
-
-  <!-- Animated Background -->
-  <div class="fixed inset-0 overflow-hidden pointer-events-none">
-    <div
-      class="absolute top-20 left-20 w-[600px] h-[600px] bg-orange-500/10 rounded-full blur-[150px] animate-float"
-    ></div>
-    <div
-      class="absolute bottom-20 right-20 w-[500px] h-[500px] bg-red-600/10 rounded-full blur-[150px] animate-float"
-      style="animation-delay: 2s;"
-    ></div>
-    <div
-      class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-orange-500/5 to-red-600/5 rounded-full blur-3xl"
-    ></div>
-
-    <!-- Particles -->
-    <div
-      class="particle"
-      style="left: 10%; top: 20%; animation-delay: 0s;"
-    ></div>
-    <div
-      class="particle"
-      style="left: 80%; top: 30%; animation-delay: 1s;"
-    ></div>
-    <div
-      class="particle"
-      style="left: 50%; top: 60%; animation-delay: 2s;"
-    ></div>
-    <div
-      class="particle"
-      style="left: 30%; top: 80%; animation-delay: 1.5s;"
-    ></div>
-    <div
-      class="particle"
-      style="left: 70%; top: 15%; animation-delay: 0.5s;"
-    ></div>
-  </div>
-
-  <!-- Main Container -->
-  <div class="relative z-10 container mx-auto px-4 py-8 md:py-12 max-w-6xl">
-
-    <!-- Header Section -->
-    <div class="mb-12 text-center animate-fade-in">
-      <div class="flex items-center justify-center gap-4 mb-6">
-        <div
-          class="w-20 h-20 rounded-3xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center border-2 border-orange-500/30 shadow-2xl shadow-orange-500/20 card-3d"
-        >
-          <i class="bi bi-hammer text-5xl text-orange-500"></i>
+      <!-- ── PROGRESS STEPPER ────────────────────────────────────────────────── -->
+      <div class="stepper fade-up-2">
+        <div class="step-item active" id="stepItem1">
+          <div class="step-dot active" id="step1"><i
+              class="fas fa-clipboard-list"
+            ></i></div>
+          <span class="step-label">Details</span>
+        </div>
+        <div class="step-item" id="stepItem2">
+          <div class="step-dot" id="step2"><i class="fas fa-images"></i></div>
+          <span class="step-label">Photos</span>
+        </div>
+        <div class="step-item" id="stepItem3">
+          <div class="step-dot" id="step3"><i class="fas fa-tags"></i></div>
+          <span class="step-label">Pricing</span>
+        </div>
+        <div class="step-item" id="stepItem4">
+          <div class="step-dot" id="step4"><i class="fas fa-clock"></i></div>
+          <span class="step-label">Timing</span>
         </div>
       </div>
 
-      <h1 class="text-5xl md:text-7xl font-black font-display mb-4">
-        Create
-        <span class="text-gradient neon-glow">Live Auction</span>
-      </h1>
-      <p class="text-gray-400 text-lg md:text-xl max-w-3xl mx-auto">
-        List your premium livestock and let buyers compete in real-time bidding
-      </p>
-
-      <!-- Progress Steps -->
-      <div class="mt-10 max-w-4xl mx-auto">
-        <div class="flex items-center justify-between">
-          <div class="flex flex-col items-center gap-2">
-            <div class="step-number active" id="step1">
-              <i class="bi bi-clipboard-data text-xl"></i>
-            </div>
-            <span class="text-xs font-semibold text-orange-500">Details</span>
-          </div>
-          <div class="flex-1 h-0.5 bg-gray-800 mx-4"></div>
-          <div class="flex flex-col items-center gap-2">
-            <div class="step-number" id="step2">
-              <i class="bi bi-images text-xl"></i>
-            </div>
-            <span class="text-xs font-semibold text-gray-400">Photos</span>
-          </div>
-          <div class="flex-1 h-0.5 bg-gray-800 mx-4"></div>
-          <div class="flex flex-col items-center gap-2">
-            <div class="step-number" id="step3">
-              <i class="bi bi-cash-stack text-xl"></i>
-            </div>
-            <span class="text-xs font-semibold text-gray-400">Pricing</span>
-          </div>
-          <div class="flex-1 h-0.5 bg-gray-800 mx-4"></div>
-          <div class="flex flex-col items-center gap-2">
-            <div class="step-number" id="step4">
-              <i class="bi bi-graph-up-arrow text-xl"></i>
-            </div>
-            <span class="text-xs font-semibold text-gray-400">Launch</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Main Auction Form -->
-    <form
-      action="/auctions"
-      method="POST"
-      enctype="multipart/form-data"
-      id="auctionForm"
-      class="space-y-8"
-    >
-
-      <!-- STEP 1: Animal Details -->
-      <div
-        class="form-section glass-strong rounded-3xl p-8 md:p-12 relative overflow-hidden card-3d animate-scale-in"
-        id="section1"
+      <!-- ── FORM ────────────────────────────────────────────────────────────── -->
+      <form
+        action="/auctions"
+        method="POST"
+        enctype="multipart/form-data"
+        id="auctionForm"
       >
 
-        <div class="relative z-10">
-          <!-- Section Header -->
-          <div
-            class="flex items-center gap-4 mb-8 pb-6 border-b-2 border-gray-800/50"
-          >
-            <div
-              class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-indigo-600/20 flex items-center justify-center"
-            >
-              <i class="bi bi-clipboard-data text-blue-500 text-3xl"></i>
-            </div>
-            <div class="flex-1">
-              <h2 class="text-3xl font-black font-display">Step 1: Animal
-                Information</h2>
-              <p class="text-sm text-gray-400">Provide detailed specifications
-                of your livestock</p>
+        <!-- STEP 1 — Animal Details -->
+        <div class="form-card fade-up-3" id="section1">
+          <div class="section-header">
+            <div class="section-icon blue"><i
+                class="fas fa-clipboard-list"
+              ></i></div>
+            <div class="section-header-text">
+              <div
+                style="display:flex;align-items:center;gap:10px;margin-bottom:4px;"
+              >
+                <h2>Step 1: Animal Information</h2>
+                <div class="section-badge"><i
+                    class="fas fa-circle"
+                    style="font-size:6px;color:var(--blue)"
+                  ></i>Required</div>
+              </div>
+              <p>Provide detailed specifications of your livestock for potential
+                buyers</p>
             </div>
           </div>
 
-          <div class="grid md:grid-cols-2 gap-6">
+          <div class="grid-2">
 
             <!-- Animal Type -->
-            <div>
-              <label class="block text-sm font-semibold text-gray-300 mb-3">
-                <i class="bi bi-filter-circle text-orange-500 mr-2"></i>Animal
-                Type
-                <span class="text-red-500">*</span>
-              </label>
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-filter"></i>Animal Type
+                <span class="req">*</span></label>
               <select
                 name="animalType"
                 required
-                class="w-full px-6 py-4 rounded-xl custom-select text-white font-medium"
+                class="clean-select"
+                id="animalTypeSelect"
               >
                 <option value="" disabled selected>Select animal category</option>
                 <option value="1">🐄 Cattle</option>
@@ -684,33 +1348,24 @@
             </div>
 
             <!-- Breed -->
-            <div>
-              <label class="block text-sm font-semibold text-gray-300 mb-3">
-                <i class="bi bi-award text-orange-500 mr-2"></i>Breed
-                <span class="text-red-500">*</span>
-                <span
-                  class="tooltip ml-1"
-                  data-tooltip="Breed heavily affects bidding behavior"
-                >
-                  <i class="bi bi-info-circle text-gray-500 text-xs"></i>
-                </span>
-              </label>
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-award"></i>Breed
+                <span class="req">*</span></label>
               <input
                 type="text"
                 name="breed"
+                id="breedInput"
                 required
-                placeholder="e.g., Boer Goat, Ankole Cattle, Local Crossbreed"
-                class="w-full px-6 py-4 rounded-xl custom-input text-white placeholder-gray-500 font-medium"
+                placeholder="e.g., Boer Goat, Ankole Cattle"
+                class="clean-input"
               />
             </div>
 
             <!-- Age -->
-            <div>
-              <label class="block text-sm font-semibold text-gray-300 mb-3">
-                <i class="bi bi-calendar-event text-orange-500 mr-2"></i>Age
-                <span class="text-red-500">*</span>
-              </label>
-              <div class="grid grid-cols-2 gap-3">
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-calendar-alt"></i>Age
+                <span class="req">*</span></label>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                 <input
                   type="number"
                   name="ageYears"
@@ -718,7 +1373,7 @@
                   min="0"
                   max="20"
                   placeholder="Years"
-                  class="w-full px-6 py-4 rounded-xl custom-input text-white placeholder-gray-500 font-medium"
+                  class="clean-input"
                 />
                 <input
                   type="number"
@@ -727,112 +1382,84 @@
                   min="0"
                   max="11"
                   placeholder="Months"
-                  class="w-full px-6 py-4 rounded-xl custom-input text-white placeholder-gray-500 font-medium"
+                  class="clean-input"
                 />
               </div>
-              <p class="text-xs text-gray-500 mt-2"><i
-                  class="bi bi-lightbulb mr-1"
-                ></i>Age = productivity + resale value</p>
+              <div class="info-text warn"><i class="fas fa-lightbulb"></i>Age
+                affects productivity and resale value</div>
             </div>
 
             <!-- Sex -->
-            <div>
-              <label class="block text-sm font-semibold text-gray-300 mb-3">
-                <i class="bi bi-gender-ambiguous text-orange-500 mr-2"></i>Sex
-                <span class="text-red-500">*</span>
-              </label>
-              <div class="grid grid-cols-2 gap-4">
-                <div class="radio-card-advanced">
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-venus-mars"></i>Sex
+                <span class="req">*</span></label>
+              <div class="sex-cards">
+                <div class="sex-card">
                   <input
                     type="radio"
                     name="sex"
                     value="Male"
                     id="sexMale"
-                    class="hidden"
                     required
                   />
-                  <label
-                    for="sexMale"
-                    class="block px-6 py-5 rounded-xl glass border border-gray-800/50 text-center font-semibold cursor-pointer transition-all relative z-10"
-                  >
-                    <i
-                      class="bi bi-gender-male text-blue-500 text-3xl mb-2 block"
-                    ></i>
-                    <span class="block">Male</span>
-                  </label>
+                  <label for="sexMale"><i class="fas fa-mars"></i>Male</label>
                 </div>
-                <div class="radio-card-advanced">
+                <div class="sex-card">
                   <input
                     type="radio"
                     name="sex"
                     value="Female"
                     id="sexFemale"
-                    class="hidden"
                   />
-                  <label
-                    for="sexFemale"
-                    class="block px-6 py-5 rounded-xl glass border border-gray-800/50 text-center font-semibold cursor-pointer transition-all relative z-10"
-                  >
-                    <i
-                      class="bi bi-gender-female text-pink-500 text-3xl mb-2 block"
-                    ></i>
-                    <span class="block">Female</span>
-                  </label>
+                  <label for="sexFemale"><i
+                      class="fas fa-venus"
+                    ></i>Female</label>
                 </div>
               </div>
             </div>
 
             <!-- Weight -->
-            <div>
-              <label class="block text-sm font-semibold text-gray-300 mb-3">
-                <i class="bi bi-speedometer text-orange-500 mr-2"></i>Estimated
-                Weight (KG)
-                <span class="text-red-500">*</span>
-              </label>
-              <div class="relative">
+            <div class="form-group">
+              <label class="form-label"><i
+                  class="fas fa-weight-hanging"
+                ></i>Estimated Weight
+                <span class="req">*</span></label>
+              <div class="input-icon-wrap">
                 <input
                   type="number"
                   name="weight"
+                  id="weightInput"
                   required
                   min="1"
                   step="0.1"
                   placeholder="Enter weight in kilograms"
-                  class="w-full px-6 py-4 rounded-xl custom-input text-white placeholder-gray-500 font-medium"
+                  class="clean-input"
                 />
-                <span
-                  class="absolute right-6 top-1/2 -translate-y-1/2 text-gray-500 font-bold"
-                >KG</span>
+                <span class="input-suffix">KG</span>
               </div>
-              <p class="text-xs text-gray-500 mt-2"><i
-                  class="bi bi-info-circle mr-1"
-                ></i>Weight = meat value + productivity</p>
+              <div class="info-text"><i
+                  class="fas fa-info-circle"
+                  style="color:var(--accent2)"
+                ></i>Weight determines meat value per unit</div>
             </div>
 
             <!-- Health Status -->
-            <div>
-              <label class="block text-sm font-semibold text-gray-300 mb-3">
-                <i class="bi bi-heart-pulse text-orange-500 mr-2"></i>Health /
-                Condition
-                <span class="text-red-500">*</span>
-              </label>
-              <select
-                name="healthStatus"
-                required
-                class="w-full px-6 py-4 rounded-xl custom-select text-white font-medium"
-              >
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-heart-pulse"></i>Health
+                / Condition
+                <span class="req">*</span></label>
+              <select name="healthStatus" required class="clean-select">
                 <option value="" disabled selected>Select health condition</option>
-                <option value="Excellent">💚 Excellent - Perfect condition</option>
-                <option value="Good">💙 Good - Minor wear, healthy</option>
-                <option value="Fair">💛 Fair - Acceptable condition</option>
+                <option value="Excellent">💚 Excellent — Perfect condition</option>
+                <option value="Good">💙 Good — Minor wear, healthy</option>
+                <option value="Fair">💛 Fair — Acceptable condition</option>
               </select>
             </div>
 
             <!-- Quantity -->
-            <div>
-              <label class="block text-sm font-semibold text-gray-300 mb-3">
-                <i class="bi bi-123 text-orange-500 mr-2"></i>Quantity
-                <span class="text-red-500">*</span>
-              </label>
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-hashtag"></i>Quantity
+                <span class="req">*</span></label>
               <input
                 type="number"
                 name="quantity"
@@ -841,209 +1468,168 @@
                 max="100"
                 value="1"
                 placeholder="Number of animals"
-                class="w-full px-6 py-4 rounded-xl custom-input text-white placeholder-gray-500 font-medium"
+                class="clean-input"
               />
-              <p class="text-xs text-gray-500 mt-2"><i
-                  class="bi bi-lightbulb mr-1"
-                ></i>Selling multiple animals? Set quantity here</p>
             </div>
 
             <!-- Location -->
-            <div>
-              <label class="block text-sm font-semibold text-gray-300 mb-3">
-                <i class="bi bi-geo-alt text-orange-500 mr-2"></i>Location
-                (District/Town)
-                <span class="text-red-500">*</span>
-              </label>
+            <div class="form-group">
+              <label class="form-label"><i
+                  class="fas fa-map-marker-alt"
+                ></i>Location
+                <span class="req">*</span></label>
               <input
                 type="text"
                 name="location"
+                id="locationInput"
                 required
                 placeholder="e.g., Kampala, Mbarara, Gulu"
-                class="w-full px-6 py-4 rounded-xl custom-input text-white placeholder-gray-500 font-medium"
+                class="clean-input"
               />
-              <p class="text-xs text-gray-500 mt-2"><i
-                  class="bi bi-truck mr-1"
-                ></i>Transport cost kills deals - be specific</p>
             </div>
 
-            <!-- Vaccinated Toggle -->
-            <div class="md:col-span-2">
-              <div
-                class="flex items-center justify-between p-6 rounded-xl glass border border-gray-800/50"
-              >
-                <div class="flex items-center gap-4">
-                  <div
-                    class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-600/20 flex items-center justify-center"
-                  >
-                    <i class="bi bi-shield-check text-green-500 text-2xl"></i>
-                  </div>
+            <!-- Vaccination Toggle -->
+            <div class="form-group col-span-2">
+              <div class="toggle-row">
+                <div class="toggle-left">
+                  <div class="toggle-icon"><i
+                      class="fas fa-shield-check"
+                    ></i></div>
                   <div>
-                    <label
-                      class="block font-semibold text-white mb-1"
-                    >Vaccination Status</label>
-                    <p class="text-sm text-gray-400">Has this animal been
-                      vaccinated?</p>
+                    <div
+                      style="font-weight:600;color:var(--text);font-size:14px;"
+                    >Vaccination Status</div>
+                    <div style="font-size:12px;color:var(--text3);">Has this
+                      animal received full vaccination?</div>
                   </div>
                 </div>
-                <div class="flex items-center gap-3">
-                  <input
-                    type="checkbox"
-                    name="vaccinated"
-                    id="vaccinatedToggle"
-                    class="hidden"
-                  />
-                  <label for="vaccinatedToggle" class="toggle-switch"></label>
-                  <span
-                    class="text-sm font-semibold text-gray-400"
-                    id="vaccinatedLabel"
-                  >No</span>
+                <div class="toggle-right">
+                  <div class="toggle-switch-wrap">
+                    <input
+                      type="checkbox"
+                      name="vaccinated"
+                      id="vaccinatedToggle"
+                    />
+                    <label for="vaccinatedToggle" class="toggle-switch"></label>
+                  </div>
+                  <span id="vaccinatedLabel">No</span>
                 </div>
               </div>
             </div>
 
             <!-- Vaccination License (Conditional) -->
-            <div id="vaccinationLicenseSection" class="md:col-span-2 hidden">
-              <label class="block text-sm font-semibold text-gray-300 mb-3">
-                <i
-                  class="bi bi-file-earmark-medical text-orange-500 mr-2"
-                ></i>Vaccination License Number
-              </label>
+            <div class="form-group col-span-2" id="vaccinationLicenseSection">
+              <label class="form-label"><i
+                  class="fas fa-file-medical"
+                ></i>Vaccination Certificate Number</label>
               <input
                 type="text"
                 name="vaccinationLicense"
                 id="vaccinationLicense"
-                placeholder="Enter vaccination certificate number"
-                class="w-full px-6 py-4 rounded-xl custom-input text-white placeholder-gray-500 font-medium font-mono uppercase"
+                placeholder="Enter vaccination certificate / license number"
+                class="clean-input"
+                style="font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;"
               />
-              <p class="text-xs text-green-500 mt-2"><i
-                  class="bi bi-check-circle mr-1"
-                ></i>Huge trust signal for buyers</p>
+              <div class="info-text accent"><i
+                  class="fas fa-check-circle"
+                ></i>Verified certification is a major trust signal for buyers</div>
             </div>
 
             <!-- Description -->
-            <div class="md:col-span-2">
-              <label class="block text-sm font-semibold text-gray-300 mb-3">
-                <i class="bi bi-pencil-square text-orange-500 mr-2"></i>Detailed
-                Description
-                <span class="text-red-500">*</span>
-              </label>
+            <div class="form-group col-span-2">
+              <label class="form-label"><i
+                  class="fas fa-pencil-alt"
+                ></i>Detailed Description
+                <span class="req">*</span></label>
               <textarea
                 name="description"
                 required
                 rows="5"
                 minlength="50"
                 maxlength="1000"
-                placeholder="Provide comprehensive details:
-• Behavior and temperament
-• Visible defects or unique features
-• Special notes for buyers
-• Feeding habits
-• Any other relevant information
-
-Quality descriptions build buyer confidence!"
-                class="w-full px-6 py-4 rounded-xl custom-input text-white placeholder-gray-500 font-medium resize-none"
+                placeholder="Provide a comprehensive overview of your livestock — include feeding habits, history, unique characteristics, and anything that adds value..."
+                class="clean-textarea"
+                id="descTextarea"
               ></textarea>
-              <div class="flex items-center justify-between mt-2">
-                <p class="text-xs text-gray-500"><i
-                    class="bi bi-info-circle mr-1"
-                  ></i>Minimum 50 characters</p>
-                <span class="text-xs font-semibold" id="descCharCountWrapper">
-                  <span id="descCharCount" class="text-red-500">0</span><span
-                    class="text-gray-500"
-                  >/1000</span>
-                </span>
+              <div class="desc-footer">
+                <div class="info-text"><i
+                    class="fas fa-info-circle"
+                    style="color:var(--accent2)"
+                  ></i>Minimum 50 characters required</div>
+                <div class="char-count"><span
+                    id="descCharCount"
+                    class=""
+                  >0</span>/1000</div>
               </div>
             </div>
 
-            <!-- Quick Stats Preview Card -->
-            <div class="md:col-span-2 mt-4">
+            <!-- Live Preview -->
+            <div class="col-span-2">
               <div
-                class="bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-500/20 rounded-xl p-6"
+                style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:8px;"
               >
-                <h4
-                  class="font-bold text-orange-400 mb-4 flex items-center gap-2"
-                >
-                  <i class="bi bi-speedometer"></i>
-                  Listing Preview
-                </h4>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div class="text-center p-3 rounded-lg bg-black/30">
-                    <i
-                      class="bi bi-filter-circle text-orange-500 text-2xl mb-1 block"
-                    ></i>
-                    <p class="text-xs text-gray-400">Category</p>
-                    <p
-                      class="text-sm font-bold text-white"
-                      id="previewCategory"
-                    >-</p>
-                  </div>
-                  <div class="text-center p-3 rounded-lg bg-black/30">
-                    <i
-                      class="bi bi-award text-blue-500 text-2xl mb-1 block"
-                    ></i>
-                    <p class="text-xs text-gray-400">Breed</p>
-                    <p
-                      class="text-sm font-bold text-white"
-                      id="previewBreed"
-                    >-</p>
-                  </div>
-                  <div class="text-center p-3 rounded-lg bg-black/30">
-                    <i
-                      class="bi bi-speedometer text-green-500 text-2xl mb-1 block"
-                    ></i>
-                    <p class="text-xs text-gray-400">Weight</p>
-                    <p
-                      class="text-sm font-bold text-white"
-                      id="previewWeight"
-                    >-</p>
-                  </div>
-                  <div class="text-center p-3 rounded-lg bg-black/30">
-                    <i
-                      class="bi bi-geo-alt text-purple-500 text-2xl mb-1 block"
-                    ></i>
-                    <p class="text-xs text-gray-400">Location</p>
-                    <p
-                      class="text-sm font-bold text-white"
-                      id="previewLocation"
-                    >-</p>
-                  </div>
+                <i
+                  class="fas fa-chart-line"
+                  style="color:var(--accent)"
+                ></i>Live Listing Preview
+              </div>
+              <div class="preview-bar">
+                <div class="preview-item">
+                  <i class="fas fa-filter" style="color:var(--orange)"></i>
+                  <div class="preview-label">Category</div>
+                  <div class="preview-value" id="previewCategory">—</div>
+                </div>
+                <div class="preview-item">
+                  <i class="fas fa-award" style="color:var(--blue)"></i>
+                  <div class="preview-label">Breed</div>
+                  <div class="preview-value" id="previewBreed">—</div>
+                </div>
+                <div class="preview-item">
+                  <i
+                    class="fas fa-weight-hanging"
+                    style="color:var(--accent)"
+                  ></i>
+                  <div class="preview-label">Weight</div>
+                  <div class="preview-value" id="previewWeight">—</div>
+                </div>
+                <div class="preview-item">
+                  <i
+                    class="fas fa-map-marker-alt"
+                    style="color:var(--accent5)"
+                  ></i>
+                  <div class="preview-label">Location</div>
+                  <div class="preview-value" id="previewLocation">—</div>
                 </div>
               </div>
             </div>
 
           </div>
         </div>
-      </div>
 
-      <!-- STEP 2: Photo Gallery -->
-      <div
-        class="form-section glass-strong rounded-3xl p-8 md:p-12 relative overflow-hidden card-3d animate-slide-up"
-        style="animation-delay: 0.1s;"
-        id="section2"
-      >
-
-        <div class="relative z-10">
-          <!-- Section Header -->
-          <div
-            class="flex items-center gap-4 mb-8 pb-6 border-b-2 border-gray-800/50"
-          >
-            <div
-              class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-600/20 flex items-center justify-center"
-            >
-              <i class="bi bi-images text-purple-500 text-3xl"></i>
-            </div>
-            <div class="flex-1">
-              <h2 class="text-3xl font-black font-display">Step 2: Photo Gallery</h2>
-              <p class="text-sm text-gray-400">Upload 2-4 high-quality images
-                (No photo = No serious buyer)</p>
+        <!-- STEP 2 — Photo Gallery -->
+        <div class="form-card fade-up-4" id="section2">
+          <div class="section-header">
+            <div class="section-icon purple"><i class="fas fa-images"></i></div>
+            <div class="section-header-text">
+              <div
+                style="display:flex;align-items:center;gap:10px;margin-bottom:4px;"
+              >
+                <h2>Step 2: Photo Gallery</h2>
+                <div class="section-badge"><i
+                    class="fas fa-circle"
+                    style="font-size:6px;color:var(--accent5)"
+                  ></i>2–4 Photos</div>
+              </div>
+              <p>High-quality images drive 3× more bids — no photo means no
+                serious buyer</p>
             </div>
           </div>
 
-          <!-- Upload Zone -->
+          <!-- Drop Zone -->
           <div
-            class="photo-upload-zone rounded-2xl p-12 text-center relative overflow-hidden mb-6"
-            onclick="if(event.target === this || event.target.closest('#uploadPrompt')) document.getElementById('animalPhotosInput').click()"
+            class="photo-zone"
+            id="photoZone"
+            onclick="if(event.target===this||event.target.closest('#uploadPrompt'))document.getElementById('animalPhotosInput').click()"
           >
             <input
               type="file"
@@ -1054,83 +1640,61 @@ Quality descriptions build buyer confidence!"
               required
               class="hidden"
             />
-            <div id="uploadPrompt">
-              <div class="mb-6">
-                <i
-                  class="bi bi-cloud-arrow-up text-8xl text-purple-500/50 block mb-4"
-                ></i>
-                <h3 class="text-2xl font-bold mb-2">Drag & Drop Images Here</h3>
-                <p class="text-gray-400 mb-6">or click anywhere to browse from
-                  your device</p>
-              </div>
 
+            <div id="uploadPrompt">
+              <i class="fas fa-cloud-upload-alt upload-icon"></i>
+              <h3>Drag & Drop Images Here</h3>
+              <p>Showcase your livestock with clear, well-lit photos from
+                multiple angles</p>
               <button
                 type="button"
-                onclick="event.stopPropagation(); document.getElementById('animalPhotosInput').click()"
-                class="px-8 py-4 rounded-xl bg-gradient-to-r from-purple-500 to-pink-600 text-white font-bold text-lg shadow-xl shadow-purple-500/30 hover:shadow-purple-500/50 transition-all inline-flex items-center gap-3 group"
+                class="btn-select-photo"
+                onclick="event.stopPropagation();document.getElementById('animalPhotosInput').click()"
               >
-                <i class="bi bi-camera-fill text-2xl"></i>
-                <span>Select Photos</span>
+                <i class="fas fa-camera"></i>Browse Photos
               </button>
-
-              <div
-                class="mt-6 flex items-center justify-center gap-6 text-sm text-gray-500"
-              >
-                <span><i class="bi bi-check-circle text-green-500 mr-1"></i>JPG,
-                  PNG supported</span>
-                <span><i class="bi bi-check-circle text-green-500 mr-1"></i>Max
-                  5MB per image</span>
-                <span><i class="bi bi-check-circle text-green-500 mr-1"></i>2-4
-                  photos recommended</span>
+              <div class="upload-badges" style="margin-top:18px;">
+                <div class="upload-badge"><i class="fas fa-check"></i>JPG / PNG
+                  / WEBP</div>
+                <div class="upload-badge"><i class="fas fa-check"></i>Max 5 MB
+                  each</div>
+                <div class="upload-badge"><i class="fas fa-check"></i>2 to 4
+                  photos</div>
               </div>
             </div>
 
-            <!-- Preview Grid Inside Upload Zone -->
-            <div
-              id="photoPreviewGrid"
-              class="image-upload-grid hidden mt-6"
-            ></div>
-          </div>
+            <!-- Preview Grid (shown after upload) -->
+            <div id="photoPreviewGrid"></div>
 
+            <!-- Photo count badge -->
+            <div id="photoCountBadge" class="photo-count-badge hidden">
+              <i class="fas fa-check-circle"></i>
+              <span id="photoCountText">0 photos selected</span>
+              <span
+                style="margin-left:4px;cursor:pointer;color:var(--accent4);font-weight:700;"
+                onclick="event.stopPropagation();removeAllPhotos()"
+              >✕ Remove all</span>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <!-- STEP 3: Pricing Strategy -->
-      <div
-        class="form-section glass-strong rounded-3xl p-8 md:p-12 relative overflow-hidden card-3d animate-slide-up"
-        style="animation-delay: 0.2s;"
-        id="section3"
-      >
-
-        <div class="relative z-10">
-          <!-- Section Header -->
-          <div
-            class="flex items-center gap-4 mb-8 pb-6 border-b-2 border-gray-800/50"
-          >
-            <div
-              class="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-500/20 to-emerald-600/20 flex items-center justify-center"
-            >
-              <i class="bi bi-cash-stack text-green-500 text-3xl"></i>
-            </div>
-            <div class="flex-1">
-              <h2 class="text-3xl font-black font-display">Step 3: Pricing &
-                Strategy</h2>
-              <p class="text-sm text-gray-400">Set competitive prices to attract
-                serious buyers</p>
+        <!-- STEP 3 — Pricing -->
+        <div class="form-card fade-up-5" id="section3">
+          <div class="section-header">
+            <div class="section-icon green"><i class="fas fa-tag"></i></div>
+            <div class="section-header-text">
+              <h2>Step 3: Pricing &amp; Strategy</h2>
+              <p>Set competitive prices to attract serious, high-value bidders</p>
             </div>
           </div>
 
-          <div class="grid md:grid-cols-2 gap-8">
-
-            <!-- Starting Bid Price -->
-            <div>
-              <label class="block text-sm font-semibold text-gray-300 mb-3">
-                <i
-                  class="bi bi-currency-dollar text-orange-500 mr-2"
-                ></i>Starting Bid Price (UGX)
-                <span class="text-red-500">*</span>
-              </label>
-              <div class="price-input-wrapper">
+          <div class="price-row" style="margin-bottom:20px;">
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-gavel"></i>Starting Bid
+                Price
+                <span class="req">*</span></label>
+              <div class="price-input-wrap">
+                <div class="price-prefix">UGX</div>
                 <input
                   type="number"
                   name="startingPrice"
@@ -1138,513 +1702,375 @@ Quality descriptions build buyer confidence!"
                   required
                   min="10000"
                   step="1000"
-                  placeholder="Enter starting price"
-                  class="w-full px-6 py-5 rounded-xl custom-input text-white placeholder-gray-500 font-bold text-2xl"
+                  placeholder="0"
+                  class="clean-input"
                 />
-                <span class="ugx-label">UGX</span>
               </div>
-              <p class="text-xs text-gray-500 mt-2"><i
-                  class="bi bi-lightbulb mr-1"
-                ></i>Lower starting price = more bidders</p>
+              <div class="info-text warn"><i class="fas fa-lightbulb"></i>Lower
+                starting price attracts more bidders</div>
             </div>
-
-            <!-- Reserve Price -->
-            <div>
-              <label class="block text-sm font-semibold text-gray-300 mb-3">
-                <i class="bi bi-shield-lock text-orange-500 mr-2"></i>Reserve
-                Price (UGX)
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-lock"></i>Reserve Price
                 <span
-                  class="tooltip ml-1"
-                  data-tooltip="Hidden minimum price you'll accept"
-                >
-                  <i class="bi bi-info-circle text-gray-500 text-xs"></i>
-                </span>
-              </label>
-              <div class="price-input-wrapper">
+                  style="color:var(--text3);font-weight:400"
+                >(Optional)</span></label>
+              <div class="price-input-wrap">
+                <div class="price-prefix">UGX</div>
                 <input
                   type="number"
                   name="reservePrice"
                   id="reservePrice"
                   min="10000"
                   step="1000"
-                  placeholder="Optional - minimum acceptable"
-                  class="w-full px-6 py-5 rounded-xl custom-input text-white placeholder-gray-500 font-bold text-2xl"
+                  placeholder="0"
+                  class="clean-input"
                 />
-                <span class="ugx-label">UGX</span>
               </div>
-              <p class="text-xs text-yellow-500 mt-2"><i
-                  class="bi bi-eye-slash mr-1"
-                ></i>Hidden from buyers - protects you from low bids</p>
+              <div class="info-text" style="color:var(--accent3)"><i
+                  class="fas fa-eye-slash"
+                ></i>Hidden from buyers — protects your minimum value</div>
             </div>
+          </div>
 
-            <!-- Pricing Tips -->
-            <div class="md:col-span-2">
-              <div
-                class="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-xl p-6"
-              >
-                <h4
-                  class="font-bold text-blue-400 mb-3 flex items-center gap-2"
-                >
-                  <i class="bi bi-lightbulb-fill"></i>
-                  Pro Pricing Tips
-                </h4>
-                <div class="grid md:grid-cols-3 gap-4 text-sm text-gray-300">
-                  <div class="flex items-start gap-2">
-                    <i class="bi bi-check-circle text-green-500 mt-0.5"></i>
-                    <span>Research similar livestock prices in your area</span>
-                  </div>
-                  <div class="flex items-start gap-2">
-                    <i class="bi bi-check-circle text-green-500 mt-0.5"></i>
-                    <span>Set reserve 20-30% above starting price</span>
-                  </div>
-                  <div class="flex items-start gap-2">
-                    <i class="bi bi-check-circle text-green-500 mt-0.5"></i>
-                    <span>Consider weight, age, and breed value</span>
-                  </div>
-                </div>
-              </div>
+          <div class="tips-box blue">
+            <h4><i class="fas fa-lightbulb"></i>Pro Pricing Strategy Tips</h4>
+            <div class="tips-list">
+              <div class="tip-item"><i class="fas fa-check-circle"></i>Research
+                similar livestock prices in your local market area</div>
+              <div class="tip-item"><i class="fas fa-check-circle"></i>Set your
+                reserve 20–30% above starting bid to allow competitive
+                escalation</div>
+              <div class="tip-item"><i class="fas fa-check-circle"></i>Factor in
+                weight, age, breed rarity, and vaccination history for accurate
+                valuation</div>
             </div>
-
           </div>
         </div>
-      </div>
 
-      <!-- STEP 4: Auction Timing -->
-      <div
-        class="form-section glass-strong rounded-3xl p-8 md:p-12 relative overflow-hidden card-3d animate-slide-up"
-        style="animation-delay: 0.3s;"
-        id="section4"
-      >
-
-        <div class="relative z-10">
-          <!-- Section Header -->
-          <div
-            class="flex items-center gap-4 mb-8 pb-6 border-b-2 border-gray-800/50"
-          >
-            <div
-              class="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center"
-            >
-              <i class="bi bi-clock-history text-orange-500 text-3xl"></i>
-            </div>
-            <div class="flex-1">
-              <h2 class="text-3xl font-black font-display">Step 4: Auction
-                Duration</h2>
-              <p class="text-sm text-gray-400">Set when your auction starts and
-                ends</p>
+        <!-- STEP 4 — Timing -->
+        <div class="form-card fade-up-6" id="section4">
+          <div class="section-header">
+            <div class="section-icon orange"><i class="fas fa-clock"></i></div>
+            <div class="section-header-text">
+              <h2>Step 4: Auction Duration</h2>
+              <p>Configure when your auction closes — minimum 1 day from now</p>
             </div>
           </div>
 
-          <div class="grid md:grid-cols-2 gap-8">
-
-            <!-- Auction End Date -->
-            <div>
-              <label class="block text-sm font-semibold text-gray-300 mb-3">
-                <i class="bi bi-calendar-event text-orange-500 mr-2"></i>Auction
+          <div class="grid-2" style="margin-bottom:20px;">
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-calendar"></i>Auction
                 End Date
-                <span class="text-red-500">*</span>
-              </label>
+                <span class="req">*</span></label>
               <input
                 type="date"
                 name="endDate"
                 id="endDate"
                 required
-                class="w-full px-6 py-4 rounded-xl custom-input text-white font-medium"
-                style="color-scheme: dark;"
+                class="clean-input"
               />
             </div>
-
-            <!-- Auction End Time -->
-            <div>
-              <label class="block text-sm font-semibold text-gray-300 mb-3">
-                <i class="bi bi-clock text-orange-500 mr-2"></i>Auction End Time
-                <span class="text-red-500">*</span>
-              </label>
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-clock"></i>Auction End
+                Time
+                <span class="req">*</span></label>
               <input
                 type="time"
                 name="endTime"
                 id="endTime"
                 required
-                class="w-full px-6 py-4 rounded-xl custom-input text-white font-medium"
-                style="color-scheme: dark;"
+                class="clean-input"
               />
             </div>
-
-            <!-- Timezone -->
-            <div class="md:col-span-2">
-              <label class="block text-sm font-semibold text-gray-300 mb-3">
-                <i class="bi bi-globe text-orange-500 mr-2"></i>Timezone
-              </label>
-              <select
-                name="timezone"
-                class="w-full px-6 py-4 rounded-xl custom-select text-white font-medium"
-              >
-                <option value="EAT" selected>🌍 East Africa Time (EAT - UTC+3)</option>
-                <option value="UTC">🌐 Universal Time (UTC)</option>
+            <div class="form-group col-span-2">
+              <label class="form-label"><i
+                  class="fas fa-globe"
+                ></i>Timezone</label>
+              <select name="timezone" class="clean-select">
+                <option value="EAT" selected>🌍 East Africa Time (EAT — UTC+3)</option>
+                <option value="UTC">🌐 Universal Time (UTC+0)</option>
               </select>
             </div>
+          </div>
 
-            <!-- Auction Timer Preview -->
-            <div class="md:col-span-2">
-              <div class="auction-timer-preview">
-                <div class="flex-1">
-                  <h4 class="font-bold text-white mb-2 flex items-center gap-2">
-                    <i class="bi bi-stopwatch"></i>
-                    Auction Duration Preview
-                  </h4>
-                  <p class="text-sm text-gray-400" id="durationPreview">Select
-                    end date and time to see duration</p>
-                </div>
-                <div class="flex gap-2" id="timerDisplay">
-                  <div class="text-center">
-                    <div class="timer-digit" id="daysLeft">00</div>
-                    <p class="text-xs text-gray-400 mt-1">Days</p>
-                  </div>
-                  <div class="text-center">
-                    <div class="timer-digit" id="hoursLeft">00</div>
-                    <p class="text-xs text-gray-400 mt-1">Hours</p>
-                  </div>
-                  <div class="text-center">
-                    <div class="timer-digit" id="minsLeft">00</div>
-                    <p class="text-xs text-gray-400 mt-1">Mins</p>
-                  </div>
-                </div>
+          <!-- Timer Preview -->
+          <div class="tips-box orange">
+            <h4><i class="fas fa-stopwatch"></i>Auction Duration Preview</h4>
+            <p
+              style="font-size:12.5px;color:var(--text2);margin-bottom:18px;"
+              id="durationPreview"
+            >Select end date and time above to preview the auction countdown</p>
+            <div class="timer-display">
+              <div class="timer-unit">
+                <div class="timer-box" id="daysLeft">00</div>
+                <p>Days</p>
+              </div>
+              <div class="timer-unit">
+                <div class="timer-box" id="hoursLeft">00</div>
+                <p>Hours</p>
+              </div>
+              <div class="timer-unit">
+                <div class="timer-box" id="minsLeft">00</div>
+                <p>Mins</p>
               </div>
             </div>
-
           </div>
         </div>
-      </div>
 
-      <!-- Final Review & Submit -->
-      <div
-        class="glass-strong rounded-3xl p-8 md:p-12 relative overflow-hidden card-3d animate-slide-up glow-effect"
-        style="animation-delay: 0.4s;"
-      >
+        <!-- FINAL — Review & Submit -->
+        <div
+          class="form-card"
+          style="animation:fadeUp 0.5s ease-out 0.52s both;"
+        >
+          <h3
+            style="font-size:15px;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:8px;color:var(--text);"
+          >
+            <i
+              class="fas fa-check-square"
+              style="color:var(--accent)"
+            ></i>Pre-Launch Checklist
+          </h3>
 
-        <div class="relative z-10">
-          <!-- Final Checklist -->
-          <div class="mb-8">
-            <h3
-              class="text-2xl font-black font-display mb-6 flex items-center gap-3"
-            >
-              <i class="bi bi-check2-square text-green-500 text-3xl"></i>
-              Pre-Launch Checklist
-            </h3>
-
-            <div class="space-y-3">
-              <div
-                class="flex items-center gap-3 p-4 rounded-xl bg-gray-800/30"
-              >
-                <i class="bi bi-check-circle text-green-500 text-xl"></i>
-                <span class="text-gray-300">All animal details provided
-                  accurately</span>
-              </div>
-              <div
-                class="flex items-center gap-3 p-4 rounded-xl bg-gray-800/30"
-              >
-                <i class="bi bi-check-circle text-green-500 text-xl"></i>
-                <span class="text-gray-300">At least 2 clear photos uploaded</span>
-              </div>
-              <div
-                class="flex items-center gap-3 p-4 rounded-xl bg-gray-800/30"
-              >
-                <i class="bi bi-check-circle text-green-500 text-xl"></i>
-                <span class="text-gray-300">Competitive pricing strategy set</span>
-              </div>
-              <div
-                class="flex items-center gap-3 p-4 rounded-xl bg-gray-800/30"
-              >
-                <i class="bi bi-check-circle text-green-500 text-xl"></i>
-                <span class="text-gray-300">Auction timing configured with
-                  timezone</span>
-              </div>
-            </div>
+          <div class="checklist">
+            <div class="checklist-item"><i class="fas fa-check-circle"></i>All
+              animal details provided accurately</div>
+            <div class="checklist-item"><i class="fas fa-check-circle"></i>At
+              least 2 clear, high-quality photos</div>
+            <div class="checklist-item"><i
+                class="fas fa-check-circle"
+              ></i>Competitive and realistic pricing set</div>
+            <div class="checklist-item"><i
+                class="fas fa-check-circle"
+              ></i>Auction timing and timezone confirmed</div>
           </div>
 
-          <!-- Terms Agreement -->
-          <div
-            class="bg-yellow-500/5 border border-yellow-500/20 rounded-xl p-6 mb-8"
-          >
-            <label class="flex items-start gap-4 cursor-pointer group">
-              <input
-                type="checkbox"
-                name="terms"
-                id="termsCheckbox"
-                required
-                class="mt-1 w-6 h-6 rounded border-2 border-gray-600 bg-transparent checked:bg-orange-500 checked:border-orange-500 transition-all cursor-pointer flex-shrink-0"
-              />
-              <span
-                class="text-sm font-medium text-gray-300 group-hover:text-white transition-colors"
-              >
-                I confirm that all information provided is accurate and I
-                understand the
-                <strong class="text-orange-500">auction terms and conditions</strong>.
-                I agree to honor the highest bid if it meets or exceeds my
-                reserve price.
-              </span>
+          <div class="terms-box">
+            <label class="terms-label">
+              <input type="checkbox" name="terms" id="termsCheckbox" required />
+              <span>I confirm that all information provided is truthful and
+                accurate. I understand the
+                <strong style="color:var(--orange)">auction terms &amp;
+                  conditions</strong>
+                and agree to honor the highest bid if it meets or exceeds my
+                reserve price. False information may result in account
+                suspension.</span>
             </label>
           </div>
 
-          <!-- Submit Button -->
-          <div class="flex gap-4">
-            <button
-              type="button"
-              id="saveDraftBtn"
-              class="px-8 py-5 rounded-xl glass border-2 border-gray-700 text-white font-bold text-lg hover:border-orange-500/50 hover:bg-orange-500/10 transition-all duration-300 flex items-center justify-center gap-3 group"
-            >
-              <i
-                class="bi bi-folder-plus text-xl group-hover:scale-110 transition-transform"
-              ></i>
-              <span>Save Draft</span>
+          <div class="btn-row">
+            <button type="button" id="saveDraftBtn" class="btn btn-secondary">
+              <i class="fas fa-folder-plus"></i>Save Draft
             </button>
-
-            <button
-              type="submit"
-              id="submitBtn"
-              class="flex-1 py-5 rounded-xl bg-gradient-to-r from-orange-500 via-red-600 to-orange-500 text-white font-bold text-xl shadow-2xl shadow-orange-500/50 hover:shadow-orange-500/70 transition-all duration-500 flex items-center justify-center gap-3 group disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
-              style="background-size: 200% auto;"
-            >
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
-              ></div>
-              <i
-                class="bi bi-gavel text-2xl group-hover:rotate-12 transition-transform relative z-10"
-              ></i>
-              <span class="relative z-10">Launch Auction Now</span>
+            <button type="submit" id="submitBtn" class="btn btn-primary">
+              <i class="fas fa-gavel"></i>Launch Auction Now
             </button>
           </div>
 
-          <p class="text-center text-sm text-gray-500 mt-6">
-            <i class="bi bi-shield-check text-green-500 mr-2"></i>
-            Your auction will go live immediately and start accepting bids
-          </p>
+          <div class="footer-note">
+            <i class="fas fa-shield-check" style="color:var(--accent)"></i>
+            Your auction will go live immediately upon submission
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Success Modal -->
+    {{#if successMessage}}
+      <div class="modal-overlay">
+        <div class="modal-box">
+          <div class="modal-glow"><i class="fas fa-check"></i></div>
+          <div class="modal-title"><span>Auction Live!</span></div>
+          <p class="modal-text">{{successMessage}}</p>
+          <div class="modal-id-box">
+            <div class="modal-id-label">Your Auction ID</div>
+            <div class="modal-id-value">{{auctionId}}</div>
+          </div>
+          <div class="modal-btns">
+            <a href="/auctions/animalList" class="modal-btn modal-btn-p"><i
+                class="fas fa-eye"
+              ></i>View Auction</a>
+            <a href="/dashboard/farmer" class="modal-btn modal-btn-s"><i
+                class="fas fa-home"
+              ></i>Dashboard</a>
+          </div>
         </div>
       </div>
+    {{/if}}
 
-    </form>
-
-  </div>
-
-</div>
-
-<!-- Success Modal -->
-{{#if successMessage}}
-  <div
-    class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade-in"
-  >
-    <div
-      class="glass-strong rounded-3xl p-8 md:p-12 max-w-2xl w-full text-center animate-scale-in border-2 border-green-500/30"
-    >
-      <div
-        class="w-28 h-28 mx-auto mb-6 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center animate-scale-in shadow-2xl shadow-green-500/50"
-      >
-        <i class="bi bi-check-lg text-6xl text-white"></i>
-      </div>
-
-      <h2 class="text-5xl font-black font-display mb-4">
-        <span class="text-gradient">Auction Live!</span>
-      </h2>
-
-      <p class="text-gray-300 text-xl mb-8">
-        {{successMessage}}
-      </p>
-
-      <div class="bg-gray-800/50 rounded-2xl p-8 mb-8">
-        <p class="text-sm text-gray-400 mb-3">Your Auction ID</p>
-        <p
-          class="text-4xl font-bold text-orange-500 font-mono"
-        >{{auctionId}}</p>
-      </div>
-
-      <div class="grid grid-cols-2 gap-4 mb-8">
-        <a
-          href="/auctions/animalList"
-          class="px-6 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold hover:shadow-xl hover:shadow-orange-500/30 transition-all"
-        >
-          <i class="bi bi-eye mr-2"></i>View Auction
-        </a>
-        <a
-          href="/dashboard/farmer"
-          class="px-6 py-4 rounded-xl glass border border-gray-700 text-white font-bold hover:bg-gray-800/50 transition-all"
-        >
-          <i class="bi bi-house-door mr-2"></i>Dashboard
-        </a>
-      </div>
-    </div>
-  </div>
-{{/if}}
-
-<script>
-  // Character counter for description const descTextarea =
-  document.querySelector('textarea[name="description"]'); const descCharCount =
-  document.getElementById('descCharCount'); const descCharCountWrapper =
-  document.getElementById('descCharCountWrapper'); if (descTextarea &&
-  descCharCount) { descTextarea.addEventListener('input', (e) => { const count =
-  e.target.value.length; descCharCount.textContent = count; if (count >= 50) {
-  descCharCount.classList.add('text-green-500');
-  descCharCount.classList.remove('text-red-500'); } else {
-  descCharCount.classList.add('text-red-500');
-  descCharCount.classList.remove('text-green-500'); } }); } // Live Preview
-  Updates const animalTypeSelect =
-  document.querySelector('select[name="animalType"]'); const breedInput =
-  document.querySelector('input[name="breed"]'); const weightInput =
-  document.querySelector('input[name="weight"]'); const locationInput =
-  document.querySelector('input[name="location"]'); const updatePreview = () =>
-  { const categoryMap = { '1': 'Cattle', '2': 'Goat', '3': 'Sheep', '4': 'Pig',
-  '5': 'Poultry', '6': 'Rabbit', '7': 'Duck' }; if (animalTypeSelect?.value) {
-  document.getElementById('previewCategory').textContent =
-  categoryMap[animalTypeSelect.value] || '-'; } if (breedInput?.value) {
-  document.getElementById('previewBreed').textContent = breedInput.value || '-';
-  } if (weightInput?.value) {
-  document.getElementById('previewWeight').textContent = weightInput.value + '
-  KG' || '-'; } if (locationInput?.value) {
-  document.getElementById('previewLocation').textContent = locationInput.value
-  || '-'; } }; animalTypeSelect?.addEventListener('change', updatePreview);
-  breedInput?.addEventListener('input', updatePreview);
-  weightInput?.addEventListener('input', updatePreview);
-  locationInput?.addEventListener('input', updatePreview); // Vaccination toggle
-  const vaccinatedToggle = document.getElementById('vaccinatedToggle'); const
-  vaccinatedLabel = document.getElementById('vaccinatedLabel'); const
-  vaccinationLicenseSection =
-  document.getElementById('vaccinationLicenseSection'); const vaccinationLicense
-  = document.getElementById('vaccinationLicense');
-  vaccinatedToggle?.addEventListener('change', (e) => { if (e.target.checked) {
-  vaccinatedLabel.textContent = 'Yes';
-  vaccinatedLabel.classList.add('text-green-500');
-  vaccinatedLabel.classList.remove('text-gray-400');
-  vaccinationLicenseSection.classList.remove('hidden');
-  vaccinationLicenseSection.classList.add('animate-slide-up');
-  vaccinationLicense.required = true; } else { vaccinatedLabel.textContent =
-  'No'; vaccinatedLabel.classList.remove('text-green-500');
-  vaccinatedLabel.classList.add('text-gray-400');
-  vaccinationLicenseSection.classList.add('hidden'); vaccinationLicense.required
-  = false; } }); // Photo upload handler const photoInput =
-  document.getElementById('animalPhotosInput'); const photoPreviewGrid =
-  document.getElementById('photoPreviewGrid'); const uploadPrompt =
-  document.getElementById('uploadPrompt');
-  photoInput?.addEventListener('change', (e) => { const files = e.target.files;
-  console.log('Files selected:', files.length); if (files.length > 0) {
-  photoPreviewGrid.innerHTML = ''; photoPreviewGrid.classList.remove('hidden');
-  uploadPrompt.classList.add('hidden'); Array.from(files).forEach((file, index)
-  => { if (file.size > 5 * 1024 * 1024) { alert(`${file.name} is too large. Max
-  size is 5MB`); return; } const reader = new FileReader(); reader.onload =
-  (event) => { const div = document.createElement('div'); div.className =
-  'image-preview-card group'; div.innerHTML = ` <img
-  src="${event.target.result}" alt="Animal ${index + 1}" /> <div class="absolute
-  inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex
-  flex-col items-center justify-center gap-2"> <button type="button"
-  onclick="removeAllPhotos()" class="px-4 py-2 bg-red-500 rounded-lg text-white
-  text-sm font-bold hover:bg-red-600 transition-colors"> <i class="bi
-  bi-trash"></i> Remove </button> <span class="text-xs text-white">${(file.size
-  / 1024).toFixed(0)}KB</span> </div> <div class="absolute top-2 left-2 px-2
-  py-1 bg-orange-500 rounded-full text-xs font-bold text-white"> ${index + 1}
-  </div> `; photoPreviewGrid.appendChild(div); }; reader.readAsDataURL(file);
-  }); // Update step 2 progress
-  document.getElementById('step2')?.classList.add('completed');
-  if(document.getElementById('step2')) {
-  document.getElementById('step2').innerHTML = '<i class="bi bi-check-lg
-  text-xl"></i>'; } } }); window.removeAllPhotos = function() { if(photoInput)
-  photoInput.value = ''; if(uploadPrompt)
-  uploadPrompt.classList.remove('hidden'); if(photoPreviewGrid) {
-  photoPreviewGrid.classList.add('hidden'); photoPreviewGrid.innerHTML = ''; }
-  document.getElementById('step2')?.classList.remove('completed');
-  if(document.getElementById('step2')) {
-  document.getElementById('step2').innerHTML = '<i class="bi bi-images
-  text-xl"></i>'; } }; // Drag and drop const uploadZone =
-  document.querySelector('.photo-upload-zone');
-  uploadZone?.addEventListener('dragover', (e) => { e.preventDefault();
-  uploadZone.classList.add('active'); });
-  uploadZone?.addEventListener('dragleave', () => {
-  uploadZone.classList.remove('active'); });
-  uploadZone?.addEventListener('drop', (e) => { e.preventDefault();
-  uploadZone.classList.remove('active'); photoInput.files =
-  e.dataTransfer.files; photoInput.dispatchEvent(new Event('change', { bubbles:
-  true })); }); // Price calculator
-  document.getElementById('calculatePrice')?.addEventListener('click', () => {
-  const animalType = document.querySelector('select[name="animalType"]').value;
-  const weight =
-  parseFloat(document.querySelector('input[name="weight"]').value) || 0; const
-  age = parseFloat(document.querySelector('input[name="ageYears"]').value) || 0;
-  if (animalType && weight > 0) { // Simple calculation logic (adjust based on
-  your market data) const basePrice = { '1': 1500000, // Cattle '2': 400000, //
-  Goat '3': 350000, // Sheep '4': 300000, // Pig '5': 50000, // Poultry }; const
-  base = basePrice[animalType] || 100000; const weightFactor = weight * 2000;
-  const ageFactor = age * 50000; const estimated = base + weightFactor +
-  ageFactor; const recommendedStart = Math.floor(estimated * 0.7); const
-  expectedHigh = Math.floor(estimated * 1.3);
-  document.getElementById('marketAvg').textContent = `UGX
-  ${estimated.toLocaleString()}`;
-  document.getElementById('recommendedStart').textContent = `UGX
-  ${recommendedStart.toLocaleString()}`;
-  document.getElementById('expectedRange').textContent =
-  `${recommendedStart.toLocaleString()}-${expectedHigh.toLocaleString()}`; //
-  Auto-fill starting price document.getElementById('startingPrice').value =
-  recommendedStart; // Update step 3
-  document.getElementById('step3').classList.add('completed');
-  document.getElementById('step3').innerHTML = '<i class="bi bi-check-lg
-  text-xl"></i>'; } else { alert('Please fill in animal type and weight first');
-  } }); // Auction duration calculator function updateDurationPreview() { const
-  endDate = document.getElementById('endDate').value; const endTime =
-  document.getElementById('endTime').value; if (endDate && endTime) { const
-  endDateTime = new Date(`${endDate}T${endTime}`); const now = new Date(); const
-  diff = endDateTime - now; if (diff > 0) { const days = Math.floor(diff / (1000
-  * 60 * 60 * 24)); const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) /
-  (1000 * 60 * 60)); const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 *
-  60)); document.getElementById('daysLeft').textContent =
-  String(days).padStart(2, '0');
-  document.getElementById('hoursLeft').textContent = String(hours).padStart(2,
-  '0'); document.getElementById('minsLeft').textContent =
-  String(mins).padStart(2, '0');
-  document.getElementById('durationPreview').textContent = `Auction will run for
-  ${days} days, ${hours} hours, and ${mins} minutes`; // Update step 4
-  document.getElementById('step4').classList.add('completed');
-  document.getElementById('step4').innerHTML = '<i class="bi bi-check-lg
-  text-xl"></i>'; } else {
-  document.getElementById('durationPreview').textContent = 'End time must be in
-  the future'; } } }
-  document.getElementById('endDate')?.addEventListener('change',
-  updateDurationPreview);
-  document.getElementById('endTime')?.addEventListener('change',
-  updateDurationPreview); // Set minimum date to tomorrow const tomorrow = new
-  Date(); tomorrow.setDate(tomorrow.getDate() + 1);
-  document.getElementById('endDate').min = tomorrow.toISOString().split('T')[0];
-  // Form submission
-  document.getElementById('auctionForm')?.addEventListener('submit', (e) => {
-  const terms = document.getElementById('termsCheckbox'); if (!terms.checked) {
-  e.preventDefault(); alert('You must agree to the terms and conditions');
-  terms.focus(); return; } const submitBtn =
-  document.getElementById('submitBtn'); submitBtn.disabled = true;
-  submitBtn.innerHTML = ` <i class="bi bi-hourglass-split animate-spin
-  text-2xl"></i> <span>Creating Your Auction...</span> `; }); // Save Draft
-  functionality
-  document.getElementById('saveDraftBtn')?.addEventListener('click', () => {
-  const formData = new FormData(document.getElementById('auctionForm')); const
-  draftData = {}; for (let [key, value] of formData.entries()) { if (key !==
-  'animalPhotos' && key !== 'lc1Document') { draftData[key] = value; } }
-  localStorage.setItem('auctionDraft', JSON.stringify(draftData)); // Show
-  success message const btn = document.getElementById('saveDraftBtn'); const
-  originalHTML = btn.innerHTML; btn.innerHTML = '<i class="bi bi-check-circle
-  text-green-500 text-xl"></i><span>Draft Saved!</span>';
-  btn.classList.add('border-green-500', 'bg-green-500/10'); setTimeout(() => {
-  btn.innerHTML = originalHTML; btn.classList.remove('border-green-500',
-  'bg-green-500/10'); }, 2000); }); // Load draft on page load
-  window.addEventListener('DOMContentLoaded', () => { const savedDraft =
-  localStorage.getItem('auctionDraft'); if (savedDraft) { try { const draftData
-  = JSON.parse(savedDraft); Object.keys(draftData).forEach(key => { const input
-  = document.querySelector(`[name="${key}"]`); if (input) { if (input.type ===
-  'radio') { const radio =
-  document.querySelector(`[name="${key}"][value="${draftData[key]}"]`); if
-  (radio) radio.checked = true; } else if (input.type === 'checkbox') {
-  input.checked = draftData[key] === 'on'; } else { input.value =
-  draftData[key]; } } }); } catch (e) { console.error('Error loading draft:',
-  e); } } }); // Progress tracking const form =
-  document.getElementById('auctionForm'); const sections =
-  document.querySelectorAll('.form-section'); // Update steps based on form
-  completion form?.addEventListener('input', () => { // Step 1 check const
-  animalType = document.querySelector('select[name="animalType"]').value; const
-  breed = document.querySelector('input[name="breed"]').value; const weight =
-  document.querySelector('input[name="weight"]').value; if (animalType && breed
-  && weight) { document.getElementById('step1').classList.add('completed');
-  document.getElementById('step1').innerHTML = '<i class="bi bi-check-lg
-  text-xl"></i>'; } });
-</script>
+    <script>
+      /* ── CHARACTER COUNTER ──────────────────────────────────────────────────
+      */ const descTextarea = document.getElementById('descTextarea'); const
+      descCharCount = document.getElementById('descCharCount');
+      descTextarea?.addEventListener('input', () => { const count =
+      descTextarea.value.length; descCharCount.textContent = count;
+      descCharCount.className = count >= 50 ? 'ok' : ''; }); /* ── LIVE PREVIEW
+      ─────────────────────────────────────────────────────── */ const
+      categoryMap =
+      {'1':'Cattle','2':'Goat','3':'Sheep','4':'Pig','5':'Poultry','6':'Rabbit','7':'Duck'};
+      const updatePreview = () => { const sel =
+      document.querySelector('select[name="animalType"]')?.value; const breed =
+      document.getElementById('breedInput')?.value; const weight =
+      document.getElementById('weightInput')?.value; const loc =
+      document.getElementById('locationInput')?.value;
+      document.getElementById('previewCategory').textContent = sel ?
+      categoryMap[sel] : '—';
+      document.getElementById('previewBreed').textContent = breed || '—';
+      document.getElementById('previewWeight').textContent = weight ? weight + '
+      KG' : '—'; document.getElementById('previewLocation').textContent = loc ||
+      '—'; };
+      document.querySelector('select[name="animalType"]')?.addEventListener('change',
+      updatePreview);
+      document.getElementById('breedInput')?.addEventListener('input',
+      updatePreview);
+      document.getElementById('weightInput')?.addEventListener('input',
+      updatePreview);
+      document.getElementById('locationInput')?.addEventListener('input',
+      updatePreview); /* ── VACCINATION TOGGLE
+      ───────────────────────────────────────────────── */ const
+      vaccinatedToggle = document.getElementById('vaccinatedToggle'); const
+      vaccinatedLabel = document.getElementById('vaccinatedLabel'); const
+      vaccinationLicenseSection =
+      document.getElementById('vaccinationLicenseSection'); const
+      vaccinationLicense = document.getElementById('vaccinationLicense');
+      vaccinatedToggle?.addEventListener('change', (e) => { if
+      (e.target.checked) { vaccinatedLabel.textContent = 'Yes';
+      vaccinatedLabel.style.color = 'var(--accent)';
+      vaccinationLicenseSection.classList.add('show');
+      vaccinationLicense.required = true; } else { vaccinatedLabel.textContent =
+      'No'; vaccinatedLabel.style.color = 'var(--text3)';
+      vaccinationLicenseSection.classList.remove('show');
+      vaccinationLicense.required = false; } }); /* ── PHOTO UPLOAD + PREVIEW
+      ───────────────────────────────────────────── */ const photoInput =
+      document.getElementById('animalPhotosInput'); const photoPreviewGrid =
+      document.getElementById('photoPreviewGrid'); const uploadPrompt =
+      document.getElementById('uploadPrompt'); const photoCountBadge =
+      document.getElementById('photoCountBadge'); const photoCountText =
+      document.getElementById('photoCountText'); let currentFiles = []; function
+      renderPreviews(files) { photoPreviewGrid.innerHTML = ''; if (files.length
+      === 0) { photoPreviewGrid.classList.remove('show');
+      uploadPrompt.classList.remove('hidden');
+      photoCountBadge.classList.add('hidden');
+      document.getElementById('step2').innerHTML = '<i class="fas
+      fa-images"></i>';
+      document.getElementById('step2').classList.remove('completed');
+      document.getElementById('stepItem2').classList.remove('completed');
+      return; } photoPreviewGrid.classList.add('show');
+      uploadPrompt.classList.add('hidden'); photoCountText.textContent =
+      files.length + ' photo' + (files.length > 1 ? 's' : '') + ' selected';
+      photoCountBadge.classList.remove('hidden'); files.forEach((file, i) => {
+      const reader = new FileReader(); reader.onload = (ev) => { const div =
+      document.createElement('div'); div.className = 'photo-thumb';
+      div.innerHTML = ` <img src="${ev.target.result}" alt="Photo ${i+1}" />
+      <div class="thumb-overlay"> <button type="button" class="thumb-remove"
+      onclick="removeSinglePhoto(${i})" title="Remove this photo"> <i class="fas
+      fa-times"></i> </button> <div> <div class="thumb-num">#${i+1}</div> <div
+      class="thumb-name">${file.name}</div> </div> </div>`;
+      photoPreviewGrid.appendChild(div); }; reader.readAsDataURL(file); }); //
+      Mark step 2 completed const s2 = document.getElementById('step2');
+      s2.classList.add('completed'); s2.innerHTML = '<i class="fas
+      fa-check"></i>';
+      document.getElementById('stepItem2').classList.add('completed'); }
+      function removeSinglePhoto(index) { currentFiles.splice(index, 1);
+      syncFilesInput(); renderPreviews(currentFiles); } window.removeAllPhotos =
+      function() { currentFiles = []; syncFilesInput();
+      renderPreviews(currentFiles); }; function syncFilesInput() { const dt =
+      new DataTransfer(); currentFiles.forEach(f => dt.items.add(f));
+      photoInput.files = dt.files; } photoInput?.addEventListener('change', (e)
+      => { const newFiles = Array.from(e.target.files); const errors =
+      newFiles.filter(f => f.size > 5 * 1024 * 1024); if (errors.length) {
+      alert(`${errors.map(f=>f.name).join(', ')} exceed the 5MB limit and were
+      skipped.`); } const valid = newFiles.filter(f => f.size <= 5 * 1024 *
+      1024); currentFiles = [...currentFiles, ...valid].slice(0, 4); // cap at 4
+      syncFilesInput(); renderPreviews(currentFiles); }); // Drag & Drop const
+      photoZone = document.getElementById('photoZone');
+      photoZone?.addEventListener('dragover', (e) => { e.preventDefault();
+      photoZone.classList.add('drag-active'); });
+      photoZone?.addEventListener('dragleave', () => {
+      photoZone.classList.remove('drag-active'); });
+      photoZone?.addEventListener('drop', (e) => { e.preventDefault();
+      photoZone.classList.remove('drag-active'); const dropped =
+      Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+      const dt = new DataTransfer(); dropped.forEach(f => dt.items.add(f));
+      photoInput.files = dt.files; photoInput.dispatchEvent(new Event('change',
+      { bubbles: true })); }); /* ── AUCTION TIMER PREVIEW
+      ────────────────────────────────────────────── */ function
+      updateDurationPreview() { const endDate =
+      document.getElementById('endDate').value; const endTime =
+      document.getElementById('endTime').value; if (!endDate || !endTime)
+      return; const end = new Date(`${endDate}T${endTime}`); const now = new
+      Date(); const diff = end - now; if (diff > 0) { const days =
+      Math.floor(diff / 86400000); const hours = Math.floor((diff % 86400000) /
+      3600000); const mins = Math.floor((diff % 3600000) / 60000);
+      document.getElementById('daysLeft').textContent =
+      String(days).padStart(2,'0');
+      document.getElementById('hoursLeft').textContent =
+      String(hours).padStart(2,'0');
+      document.getElementById('minsLeft').textContent =
+      String(mins).padStart(2,'0');
+      document.getElementById('durationPreview').textContent = `Auction will run
+      for ${days} day${days!==1?'s':''}, ${hours} hour${hours!==1?'s':''} and
+      ${mins} minute${mins!==1?'s':''}`; const s4 =
+      document.getElementById('step4'); s4.classList.add('completed');
+      s4.innerHTML = '<i class="fas fa-check"></i>';
+      document.getElementById('stepItem4').classList.add('completed'); } else {
+      document.getElementById('durationPreview').textContent = '⚠️ End time must
+      be in the future'; } }
+      document.getElementById('endDate')?.addEventListener('change',
+      updateDurationPreview);
+      document.getElementById('endTime')?.addEventListener('change',
+      updateDurationPreview); // Set min date to tomorrow const tomorrow = new
+      Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+      document.getElementById('endDate').min =
+      tomorrow.toISOString().split('T')[0]; /* ── FORM SUBMIT
+      ──────────────────────────────────────────────────────── */
+      document.getElementById('auctionForm')?.addEventListener('submit', (e) =>
+      { if (!document.getElementById('termsCheckbox').checked) {
+      e.preventDefault(); alert('Please agree to the terms and conditions before
+      launching.'); return; } const submitBtn =
+      document.getElementById('submitBtn'); submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-hourglass-split
+      spin"></i><span>Creating Auction…</span>'; }); /* ── STEP 1 PROGRESS
+      ──────────────────────────────────────────────────── */
+      document.getElementById('auctionForm')?.addEventListener('input', () => {
+      const animalType =
+      document.querySelector('select[name="animalType"]')?.value; const breed =
+      document.getElementById('breedInput')?.value; const weight =
+      document.getElementById('weightInput')?.value; if (animalType && breed &&
+      weight) { const s1 = document.getElementById('step1');
+      s1.classList.add('completed'); s1.classList.remove('active'); s1.innerHTML
+      = '<i class="fas fa-check"></i>';
+      document.getElementById('stepItem1').classList.add('completed');
+      document.getElementById('stepItem1').classList.remove('active'); } const
+      startPrice = document.getElementById('startingPrice')?.value; if
+      (startPrice) { const s3 = document.getElementById('step3');
+      s3.classList.add('completed'); s3.innerHTML = '<i class="fas
+      fa-check"></i>';
+      document.getElementById('stepItem3').classList.add('completed'); } }); /*
+      ── SAVE DRAFT ───────────────────────────────────────────────────────── */
+      document.getElementById('saveDraftBtn')?.addEventListener('click', () => {
+      const formData = new FormData(document.getElementById('auctionForm'));
+      const draftData = {}; for (let [key, value] of formData.entries()) { if
+      (key !== 'animalPhotos') draftData[key] = value; }
+      localStorage.setItem('auctionDraft', JSON.stringify(draftData)); const btn
+      = document.getElementById('saveDraftBtn'); const orig = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-check-circle"
+      style="color:var(--accent)"></i><span>Draft Saved!</span>';
+      btn.style.borderColor = 'var(--accent)'; btn.style.background =
+      'rgba(74,222,128,0.08)'; btn.style.color = 'var(--accent)'; setTimeout(()
+      => { btn.innerHTML = orig; btn.style.borderColor = '';
+      btn.style.background = ''; btn.style.color = ''; }, 2200); }); /* ── LOAD
+      DRAFT ───────────────────────────────────────────────────────── */
+      window.addEventListener('DOMContentLoaded', () => { const saved =
+      localStorage.getItem('auctionDraft'); if (!saved) return; try { const data
+      = JSON.parse(saved); Object.keys(data).forEach(key => { const el =
+      document.querySelector(`[name="${key}"]`); if (!el) return; if (el.type
+      === 'radio') { const r =
+      document.querySelector(`[name="${key}"][value="${data[key]}"]`); if (r)
+      r.checked = true; } else if (el.type === 'checkbox') { el.checked =
+      data[key] === 'on'; el.dispatchEvent(new Event('change')); } else {
+      el.value = data[key]; } }); updatePreview(); } catch(e) { /* ignore */ }
+      });
+    </script>
+  </body>
+</html>

@@ -213,29 +213,29 @@ function displayVerifications() {
 
 function createCard(v, idx) {
   const statusCfg = {
-    pending: { icon: "⏳", label: "Pending", badge: "badge-pending" },
-    processing: { icon: "⚙️", label: "Processing", badge: "badge-processing" },
-    verified: { icon: "✅", label: "Verified", badge: "badge-verified" },
-    rejected: { icon: "❌", label: "Rejected", badge: "badge-rejected" },
+    pending: { icon: "", label: "Pending", badge: "badge-pending" },
+    processing: { icon: "", label: "Processing", badge: "badge-processing" },
+    verified: { icon: "", label: "Verified", badge: "badge-verified" },
+    rejected: { icon: "", label: "Rejected", badge: "badge-rejected" },
     needs_review: {
       icon: "🔍",
       label: "Needs Review",
       badge: "badge-needs_review",
     },
-    incomplete: { icon: "📋", label: "Incomplete", badge: "badge-incomplete" },
+    incomplete: { icon: "", label: "Incomplete", badge: "badge-incomplete" },
   };
   const typeCfg = {
-    ownership: { icon: "📜", label: "Ownership" },
-    health: { icon: "💊", label: "Health" },
-    both: { icon: "📦", label: "Both" },
+    ownership: { icon: "", label: "Ownership" },
+    health: { icon: "", label: "Health" },
+    both: { icon: "", label: "Both" },
   };
   const sc = statusCfg[v.status] || {
-    icon: "📋",
+    icon: "",
     label: v.status,
     badge: "badge-incomplete",
   };
   const tc = typeCfg[v.verificationType] || {
-    icon: "📋",
+    icon: "",
     label: v.verificationType,
   };
 
@@ -314,7 +314,7 @@ function createCard(v, idx) {
     '<span class="doc-tag">📜 ' +
     (v.ownershipDocuments?.length || 0) +
     "</span>" +
-    '<span class="doc-tag">💊 ' +
+    '<span class="doc-tag">Health ' +
     (v.healthDocuments?.length || 0) +
     "</span>" +
     '<span class="doc-tag">📷 ' +

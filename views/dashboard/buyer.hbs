@@ -149,8 +149,17 @@
         display: none;
       }
 
+      /* ── SIDEBAR HEADER (logo + close button row) ── */
+      .sidebar-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 24px;
+      }
+
       /* Logo */
       .logo-block {
+        flex: 1;
         display: flex;
         align-items: center;
         gap: 14px;
@@ -162,7 +171,6 @@
           rgba(220, 38, 38, 0.06)
         );
         border: 1px solid var(--border-accent);
-        margin-bottom: 24px;
         cursor: pointer;
         transition: all 0.3s ease;
         position: relative;
@@ -238,6 +246,28 @@
         50% {
           box-shadow: 0 0 0 4px rgba(34, 197, 94, 0);
         }
+      }
+
+      /* Close button — sits beside the logo, NOT inside it */
+      .sidebar-close-btn {
+        display: none;
+        flex-shrink: 0;
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: var(--surface-2);
+        border: 1px solid var(--border-mid);
+        color: var(--text-muted);
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .sidebar-close-btn:hover {
+        background: rgba(239, 68, 68, 0.12);
+        border-color: rgba(239, 68, 68, 0.3);
+        color: #f87171;
       }
 
       /* Wallet mini card */
@@ -574,72 +604,6 @@
       .icon-btn:hover {
         border-color: var(--border-accent);
         color: var(--orange-bright);
-      }
-
-      /* Header Logo */
-      .header-logo {
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-      }
-      .header-logo-block {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 8px 14px;
-        border-radius: 12px;
-        background: linear-gradient(
-          135deg,
-          rgba(249, 115, 22, 0.08),
-          rgba(220, 38, 38, 0.06)
-        );
-        border: 1px solid var(--border-accent);
-        transition: all 0.3s ease;
-      }
-      .header-logo-block:hover {
-        background: linear-gradient(
-          135deg,
-          rgba(249, 115, 22, 0.15),
-          rgba(220, 38, 38, 0.1)
-        );
-        transform: translateY(-1px);
-      }
-      .header-logo-img {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        background: linear-gradient(
-          135deg,
-          var(--orange-core),
-          var(--red-core)
-        );
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 16px;
-        font-weight: 800;
-        color: white;
-        flex-shrink: 0;
-      }
-      .header-logo-text {
-        display: flex;
-        flex-direction: column;
-      }
-      .header-logo-name {
-        font-family: var(--ff-display);
-        font-size: 15px;
-        font-weight: 700;
-        color: var(--text-primary);
-        line-height: 1;
-      }
-      .header-logo-name .accent {
-        color: var(--orange-core);
-      }
-      .header-divider {
-        width: 1px;
-        height: 32px;
-        background: var(--border-mid);
-        margin: 0 8px;
       }
 
       .notif-dot {
@@ -1017,7 +981,6 @@
       .auction-body {
         padding: 18px 20px 20px;
       }
-
       .auction-name {
         font-family: var(--ff-display);
         font-size: 17px;
@@ -1203,7 +1166,6 @@
         flex-direction: column;
         gap: 0;
       }
-
       .activity-item {
         display: flex;
         align-items: flex-start;
@@ -1304,7 +1266,6 @@
         margin-bottom: 40px;
       }
 
-      /* Donut chart */
       .donut-wrap {
         display: flex;
         align-items: center;
@@ -1364,7 +1325,6 @@
         font-weight: 700;
       }
 
-      /* Win rate */
       .win-ring-area {
         display: flex;
         flex-direction: column;
@@ -1548,6 +1508,10 @@
         .bottom-row {
           grid-template-columns: 1fr;
         }
+        /* Show close button only on mobile */
+        .sidebar-close-btn {
+          display: flex;
+        }
       }
       @media (max-width: 640px) {
         .auctions-grid {
@@ -1583,17 +1547,23 @@
       <aside class="sidebar" id="sidebar">
         <div class="sidebar-inner">
 
-          <!-- Logo -->
-          <div class="logo-block">
-            <div class="logo-img">C</div>
-            <div class="logo-text">
-              <h1><span class="accent">Chuu</span>Auction</h1>
-              <p><span class="status-dot"></span> Buyer Panel · Online</p>
+          <!-- Logo row: logo block + close button side by side -->
+          <div class="sidebar-header">
+            <div class="logo-block">
+              <div class="logo-img">C</div>
+              <div class="logo-text">
+                <h1><span class="accent">Chuu</span>Auction</h1>
+                <p><span class="status-dot"></span> Buyer Panel · Online</p>
+              </div>
             </div>
+            <!-- Close button is now OUTSIDE the logo block -->
             <button
+              class="sidebar-close-btn"
               id="sidebarClose"
-              style="display:none;margin-left:auto;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;"
-            ><i class="bi bi-x-lg"></i></button>
+              aria-label="Close sidebar"
+            >
+              <i class="bi bi-x-lg"></i>
+            </button>
           </div>
 
           <!-- Wallet -->
@@ -1710,8 +1680,8 @@
             </h1>
             <p class="page-subtitle">
               Welcome back,
-              <strong>{{user.name}}</strong>
-              , you have 3 active bids expiring today.
+              <strong>{{user.name}}</strong>, you have 3 active bids expiring
+              today.
               <span style="color:var(--text-muted)">Last login: 2 hours ago.</span>
             </p>
           </div>
@@ -1722,8 +1692,10 @@
             </div>
             <button class="btn btn-ghost"><i class="bi bi-funnel"></i>
               Filter</button>
-            <button class="btn btn-primary"><i class="bi bi-plus-lg"></i>
-              New Bid</button>
+            <a href="/auctions/create" class="btn btn-primary"><i
+                class="bi bi-plus-lg"
+              ></i>
+              New Auction</a>
           </div>
         </header>
 
@@ -2180,14 +2152,13 @@
       document.getElementById('sidebarOverlay'); const mobileToggle =
       document.getElementById('mobileToggle'); const closeBtn =
       document.getElementById('sidebarClose'); function openSidebar() {
-      sidebar.classList.add('open'); overlay.classList.add('active');
-      if(closeBtn) closeBtn.style.display='block'; } function closeSidebar() {
-      sidebar.classList.remove('open'); overlay.classList.remove('active');
-      if(closeBtn) closeBtn.style.display='none'; }
+      sidebar.classList.add('open'); overlay.classList.add('active'); } function
+      closeSidebar() { sidebar.classList.remove('open');
+      overlay.classList.remove('active'); }
       mobileToggle?.addEventListener('click', openSidebar);
       closeBtn?.addEventListener('click', closeSidebar);
       overlay?.addEventListener('click', closeSidebar); function syncSidebar() {
-      if(window.innerWidth >= 1024) closeSidebar(); }
+      if (window.innerWidth >= 1024) closeSidebar(); }
       window.addEventListener('resize', syncSidebar); syncSidebar(); // ─── Tab
       switching ─── document.querySelectorAll('.tab-group').forEach(group => {
       group.querySelectorAll('.tab').forEach(tab => {
@@ -2197,8 +2168,8 @@
       darkTooltip = { backgroundColor: 'rgba(13,15,18,0.95)', titleColor:
       '#f1f2f5', bodyColor: '#8892a4', borderColor: 'rgba(249,115,22,0.3)',
       borderWidth: 1, padding: 12, cornerRadius: 10, displayColors: false }; //
-      Bidding Chart const bCtx = document.getElementById('biddingChart');
-      if(bCtx) { new Chart(bCtx, { type: 'line', data: { labels:
+      Bidding Chart const bCtx = document.getElementById('biddingChart'); if
+      (bCtx) { new Chart(bCtx, { type: 'line', data: { labels:
       ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], datasets: [{ label: 'Bids
       Placed', data: [3,5,2,8,4,7,6], borderColor: '#f97316', backgroundColor:
       'rgba(249,115,22,0.07)', tension: 0.45, fill: true, pointBackgroundColor:
@@ -2209,15 +2180,15 @@
       'rgba(249,115,22,0.05)', drawBorder: false }, ticks: { color: '#4d5566',
       font: { family: 'Outfit' } } }, x: { grid: { display: false }, ticks: {
       color: '#4d5566', font: { family: 'Outfit' } } } } } }); } // Spending
-      Donut const sCtx = document.getElementById('spendingChart'); if(sCtx) {
+      Donut const sCtx = document.getElementById('spendingChart'); if (sCtx) {
       new Chart(sCtx, { type: 'doughnut', data: { labels:
       ['Cattle','Goats','Sheep','Others'], datasets: [{ data: [45,30,15,10],
-      backgroundColor: [ 'rgba(59,130,246,0.75)', 'rgba(34,197,94,0.75)',
-      'rgba(168,85,247,0.75)', 'rgba(234,179,8,0.75)' ], borderColor:
-      ['#0d0f12','#0d0f12','#0d0f12','#0d0f12'], borderWidth: 3, hoverOffset: 8
-      }] }, options: { responsive: true, maintainAspectRatio: false, plugins: {
-      legend: { display: false }, tooltip: darkTooltip }, cutout: '72%' } }); }
-      // ─── Heart toggle ───
+      backgroundColor:
+      ['rgba(59,130,246,0.75)','rgba(34,197,94,0.75)','rgba(168,85,247,0.75)','rgba(234,179,8,0.75)'],
+      borderColor: ['#0d0f12','#0d0f12','#0d0f12','#0d0f12'], borderWidth: 3,
+      hoverOffset: 8 }] }, options: { responsive: true, maintainAspectRatio:
+      false, plugins: { legend: { display: false }, tooltip: darkTooltip },
+      cutout: '72%' } }); } // ─── Heart toggle ───
       document.querySelectorAll('.btn-heart').forEach(btn => {
       btn.addEventListener('click', () => { btn.classList.toggle('active');
       const icon = btn.querySelector('i'); icon.classList.toggle('bi-heart');

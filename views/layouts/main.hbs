@@ -8,8 +8,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap"
       rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <link
       rel="stylesheet"
@@ -17,157 +21,521 @@
     />
 
     <style>
-      /* === Animations & Effects (grain, float, fade, shimmer, etc.) === */
-      @keyframes grain {
-        0%,
-        100% {
-          transform: translate(0, 0);
-        }
-        10% {
-          transform: translate(-5%, -10%);
-        }
-        20% {
-          transform: translate(-15%, 5%);
-        }
-        30% {
-          transform: translate(7%, -25%);
-        }
-        40% {
-          transform: translate(-5%, 25%);
-        }
-        50% {
-          transform: translate(-15%, 10%);
-        }
-        60% {
-          transform: translate(15%, 0%);
-        }
-        70% {
-          transform: translate(0%, 15%);
-        }
-        80% {
-          transform: translate(3%, 25%);
-        }
-        90% {
-          transform: translate(-10%, 10%);
-        }
+      :root {
+        --bg: #050810;
+        --bg2: #080c18;
+        --surface: rgba(255, 255, 255, 0.035);
+        --surface2: rgba(255, 255, 255, 0.06);
+        --border: rgba(255, 255, 255, 0.07);
+        --border2: rgba(255, 255, 255, 0.12);
+        --accent: #4ade80;
+        --accent2: #22d3ee;
+        --accent3: #f59e0b;
+        --accent4: #f87171;
+        --accent5: #a78bfa;
+        --text: #f0f4ff;
+        --text2: #8892aa;
+        --text3: #404862;
+        --blue: #3b82f6;
+        --glow-green: rgba(74, 222, 128, 0.15);
+        --glow-cyan: rgba(34, 211, 238, 0.12);
+        --r: 6px;
+        --r2: 10px;
+        --r3: 14px;
+        --r4: 20px;
       }
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0px);
-        }
-        50% {
-          transform: translateY(-20px);
-        }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
-      @keyframes slideInUp {
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+      }
+
+      /* Grain Texture Overlay */
+      .grain-overlay {
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.6;
+      }
+
+      /* Ambient Glow */
+      .ambient-glow {
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 70% 55% at 15% 60%,
+            rgba(74, 222, 128, 0.07) 0%,
+            transparent 65%
+          ),
+          radial-gradient(
+            ellipse 60% 50% at 85% 20%,
+            rgba(34, 211, 238, 0.06) 0%,
+            transparent 65%
+          ),
+          radial-gradient(
+            ellipse 40% 40% at 50% 90%,
+            rgba(167, 139, 250, 0.05) 0%,
+            transparent 65%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 99px;
+      }
+
+      /* Header Styles */
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 300;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 32px;
+        height: 62px;
+        background: rgba(5, 8, 16, 0.85);
+        backdrop-filter: blur(24px);
+        border-bottom: 1px solid var(--border);
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+      }
+      .logo-icon {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, #16a34a, #0891b2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 17px;
+        box-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+      }
+      .logo-name {
+        font-family: "Syne", sans-serif;
+        font-size: 17px;
+        font-weight: 800;
+        letter-spacing: -0.3px;
+      }
+      .logo-name em {
+        color: var(--accent);
+        font-style: normal;
+      }
+      .logo-version {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        color: var(--text3);
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        padding: 2px 7px;
+        border-radius: 4px;
+        margin-left: 4px;
+      }
+
+      .header-center {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        color: var(--text3);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        padding: 6px 14px;
+        border-radius: 99px;
+      }
+      .header-center .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 8px var(--accent);
+        animation: pulse-dot 2s ease-in-out infinite;
+      }
+      @keyframes pulse-dot {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(0.8); }
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .hdr-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 16px;
+        border-radius: var(--r2);
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        border: 1px solid var(--border2);
+        background: var(--surface2);
+        color: var(--text2);
+        transition: all 0.2s;
+        font-family: "DM Sans", sans-serif;
+        text-decoration: none;
+      }
+      .hdr-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text);
+        transform: translateY(-1px);
+      }
+      .hdr-btn-primary {
+        background: var(--accent);
+        color: #000;
+        border-color: var(--accent);
+        font-weight: 600;
+        box-shadow: 0 0 20px rgba(74, 222, 128, 0.25);
+      }
+      .hdr-btn-primary:hover {
+        background: #86efac;
+        box-shadow: 0 0 28px rgba(74, 222, 128, 0.4);
+      }
+
+      .avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #4ade80, #22d3ee);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: #000;
+        cursor: pointer;
+        border: 2px solid rgba(74, 222, 128, 0.4);
+      }
+
+      /* Sidebar Styles */
+      .layout {
+        display: flex;
+        flex: 1;
+        position: relative;
+        z-index: 1;
+      }
+
+      .sidebar {
+        width: 220px;
+        min-width: 220px;
+        background: rgba(5, 8, 16, 0.6);
+        backdrop-filter: blur(20px);
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        padding: 20px 10px;
+        position: sticky;
+        top: 62px;
+        height: calc(100vh - 62px);
+        overflow-y: auto;
+      }
+      .sb-section {
+        margin-bottom: 8px;
+      }
+      .sb-label {
+        font-family: "DM Mono", monospace;
+        font-size: 9px;
+        font-weight: 500;
+        color: var(--text3);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        padding: 12px 14px 6px;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 14px;
+        border-radius: var(--r2);
+        cursor: pointer;
+        border: 1px solid transparent;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text2);
+        transition: all 0.15s;
+        position: relative;
+        text-decoration: none;
+      }
+      .nav-item i {
+        width: 14px;
+        font-size: 12px;
+        opacity: 0.7;
+      }
+      .nav-item:hover {
+        background: var(--surface2);
+        color: var(--text);
+      }
+      .nav-item.active {
+        background: rgba(74, 222, 128, 0.08);
+        border-color: rgba(74, 222, 128, 0.2);
+        color: var(--accent);
+      }
+      .nav-item.active i {
+        opacity: 1;
+      }
+      .nav-item.active::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 2px;
+        height: 60%;
+        background: var(--accent);
+        border-radius: 0 2px 2px 0;
+        box-shadow: 0 0 8px var(--accent);
+      }
+
+      .sb-divider {
+        height: 1px;
+        background: var(--border);
+        margin: 10px 10px;
+      }
+
+      .sb-info {
+        margin-top: auto;
+        padding: 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r3);
+        margin: auto 4px 0;
+      }
+      .sb-info-label {
+        font-size: 10px;
+        color: var(--text3);
+        margin-bottom: 4px;
+      }
+      .sb-info-val {
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        color: var(--accent);
+      }
+
+      /* Main Content */
+      .main {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .main-inner {
+        flex: 1;
+        padding: 28px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      /* Page Header */
+      .page-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+      }
+      .page-title-block {
+      }
+      .page-eyebrow {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        color: var(--accent2);
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      .page-title {
+        font-family: "Syne", sans-serif;
+        font-size: 26px;
+        font-weight: 800;
+        color: var(--text);
+        letter-spacing: -0.5px;
+        line-height: 1.1;
+      }
+      .page-title span {
+        color: var(--accent);
+      }
+      .page-sub {
+        font-size: 13px;
+        color: var(--text3);
+        margin-top: 6px;
+      }
+
+      /* Card Styles */
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r4);
+        padding: 22px 24px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.25s;
+      }
+      .card:hover {
+        border-color: var(--border2);
+        transform: translateY(-3px);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+      }
+
+      /* Button Styles */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border-radius: var(--r2);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s;
+        font-family: "DM Sans", sans-serif;
+        text-decoration: none;
+      }
+      .btn-primary {
+        background: var(--accent);
+        color: #000;
+        box-shadow: 0 0 20px rgba(74, 222, 128, 0.25);
+      }
+      .btn-primary:hover {
+        background: #86efac;
+        box-shadow: 0 0 28px rgba(74, 222, 128, 0.4);
+      }
+      .btn-secondary {
+        background: var(--surface2);
+        color: var(--text2);
+        border: 1px solid var(--border);
+      }
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text);
+      }
+
+      /* Form Styles */
+      .form-input {
+        width: 100%;
+        padding: 10px 14px;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border);
+        border-radius: var(--r2);
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        outline: none;
+        transition: all 0.2s;
+      }
+      .form-input:focus {
+        border-color: rgba(74, 222, 128, 0.4);
+        background: rgba(0, 0, 0, 0.4);
+        box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.06);
+      }
+      .form-input::placeholder {
+        color: var(--text3);
+      }
+
+      .form-select {
+        padding: 10px 14px;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border);
+        border-radius: var(--r2);
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        outline: none;
+        cursor: pointer;
+        min-width: 138px;
+        transition: border-color 0.2s;
+      }
+      .form-select:focus {
+        border-color: rgba(74, 222, 128, 0.4);
+      }
+      .form-select option {
+        background: #080c18;
+      }
+
+      /* Toast Styles */
+      .toast-wrap {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        z-index: 900;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        pointer-events: none;
+      }
+      .toast {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 18px;
+        border-radius: var(--r2);
+        background: #0f1729;
+        border: 1px solid var(--border2);
+        font-size: 13px;
+        color: var(--text);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+        pointer-events: all;
+      }
+      .toast.success {
+        border-left: 3px solid var(--accent);
+      }
+      .toast.error {
+        border-left: 3px solid var(--accent4);
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
         from {
           opacity: 0;
-          transform: translateY(30px);
+          transform: translateY(15px);
         }
         to {
           opacity: 1;
           transform: translateY(0);
         }
       }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-      @keyframes shimmer {
-        0% {
-          background-position: -1000px 0;
-        }
-        100% {
-          background-position: 1000px 0;
-        }
-      }
 
-      .grain-overlay {
-        animation: grain 8s steps(10) infinite;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        opacity: 0.03;
-        pointer-events: none;
-      }
-
-      .animate-in {
-        animation: slideInUp 0.8s ease-out forwards;
-      }
-      .animate-float {
-        animation: float 6s ease-in-out infinite;
-      }
-      .animate-fade {
-        animation: fadeIn 1s ease-out forwards;
-      }
-      .shimmer-effect {
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.3),
-          transparent
-        );
-        background-size: 200% 100%;
-        animation: shimmer 3s infinite;
-      }
-      .text-gradient {
-        background: linear-gradient(
-          135deg,
-          #f97316 0%,
-          #dc2626 50%,
-          #7c2d12 100%
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-      .bg-mesh {
-        background:
-          radial-gradient(
-            at 0% 0%,
-            rgba(251, 146, 60, 0.15) 0px,
-            transparent 50%
-          ),
-          radial-gradient(
-            at 100% 0%,
-            rgba(220, 38, 38, 0.1) 0px,
-            transparent 50%
-          ),
-          radial-gradient(
-            at 100% 100%,
-            rgba(234, 88, 12, 0.12) 0px,
-            transparent 50%
-          ),
-          radial-gradient(
-            at 0% 100%,
-            rgba(185, 28, 28, 0.08) 0px,
-            transparent 50%
-          );
-      }
-
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 10px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #1f2937;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, #f97316, #dc2626);
-        border-radius: 5px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(180deg, #ea580c, #b91c1c);
+      .animate-fade-in-up {
+        animation: fadeInUp 0.4s ease-out forwards;
       }
 
       /* Flash message styles */
       .flash-container {
         position: fixed;
-        top: 1rem;
-        right: 1rem;
+        top: 80px;
+        right: 20px;
         z-index: 60;
         display: flex;
         flex-direction: column;
@@ -175,88 +543,212 @@
       }
       .flash {
         padding: 0.75rem 1.5rem;
-        border-radius: 0.5rem;
+        border-radius: var(--r2);
         font-weight: 500;
-        animation: fadeIn 0.5s ease-out;
+        animation: fadeInUp 0.3s ease-out;
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
       .flash-success {
-        background-color: #16a34a;
-        color: white;
+        background: rgba(74, 222, 128, 0.15);
+        border: 1px solid rgba(74, 222, 128, 0.3);
+        color: var(--accent);
       }
       .flash-error {
-        background-color: #dc2626;
-        color: white;
+        background: rgba(248, 113, 113, 0.15);
+        border: 1px solid rgba(248, 113, 113, 0.3);
+        color: var(--accent4);
+      }
+      .flash-info {
+        background: rgba(34, 211, 238, 0.15);
+        border: 1px solid rgba(34, 211, 238, 0.3);
+        color: var(--accent2);
+      }
+
+      /* Responsive */
+      @media (max-width: 900px) {
+        .sidebar {
+          display: none;
+        }
+        .header-center {
+          display: none;
+        }
+      }
+      @media (max-width: 600px) {
+        .main-inner {
+          padding: 16px;
+        }
+        .header {
+          padding: 0 16px;
+        }
       }
     </style>
   </head>
 
-  <body class="bg-gray-950 font-sans text-gray-100 overflow-x-hidden">
+  <body>
     <!-- Grain Texture Overlay -->
-    <div class="grain-overlay fixed inset-0 z-50 pointer-events-none"></div>
-
-    <!-- Mesh Gradient Background -->
-    <div class="bg-mesh fixed inset-0 z-0"></div>
+    <div class="grain-overlay"></div>
+    
+    <!-- Ambient Glow -->
+    <div class="ambient-glow"></div>
 
     <!-- Flash Messages -->
     <div class="flash-container">
       {{#if success_msg}}
-        <div class="flash flash-success">{{success_msg}}</div>
+        <div class="flash flash-success">
+          <i class="fas fa-check-circle"></i>
+          {{success_msg}}
+        </div>
       {{/if}}
       {{#if error_msg}}
-        <div class="flash flash-error">{{error_msg}}</div>
+        <div class="flash flash-error">
+          <i class="fas fa-exclamation-circle"></i>
+          {{error_msg}}
+        </div>
       {{/if}}
     </div>
 
-    <main class="relative z-10">
+    {{#if loggedIn}}
+    <!-- Header for Authenticated Pages -->
+    <header class="header">
+      <a class="logo" href="/">
+        <div class="logo-icon">🐄</div>
+        <span class="logo-name">Live<em>Stock</em></span>
+        <span class="logo-version">v2.4</span>
+      </a>
+      <div class="header-center">
+        <span class="dot"></span>
+        SYSTEM ONLINE
+      </div>
+      <div class="header-right">
+        <a href="/" class="hdr-btn"><i class="fas fa-home"></i> Home</a>
+        {{#ifEquals user.role 'farmer'}}
+          <a href="/dashboard/farmer" class="hdr-btn"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        {{/ifEquals}}
+        {{#ifEquals user.role 'buyer'}}
+          <a href="/dashboard/buyer" class="hdr-btn"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        {{/ifEquals}}
+        {{#ifEquals user.role 'admin'}}
+          <a href="/dashboard/admin" class="hdr-btn"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        {{/ifEquals}}
+        <div class="avatar" title="{{user.name}}">
+          {{#if user.avatar}}
+            <img src="{{user.avatar}}" alt="{{user.name}}" class="w-full h-full rounded-full object-cover">
+          {{else}}
+            {{#if user.name}}{{user.name.[0]}}{{else}}?{{/if}}
+          {{/if}}
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sb-section">
+          <div class="sb-label">Menu</div>
+          {{#ifEquals user.role 'farmer'}}
+            <a href="/dashboard/farmer" class="nav-item {{#ifEquals activePage 'dashboard'}}active{{/ifEquals}}">
+              <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="/auctions/create" class="nav-item {{#ifEquals activePage 'create'}}active{{/ifEquals}}">
+              <i class="fas fa-plus-circle"></i> Create Auction
+            </a>
+            <a href="/auctions/animalList" class="nav-item">
+              <i class="fas fa-list"></i> My Listings
+            </a>
+            <a href="/verification/submit" class="nav-item">
+              <i class="fas fa-file-check"></i> Verification
+            </a>
+            <a href="/verification/status" class="nav-item">
+              <i class="fas fa-clipboard-check"></i> Verification Status
+            </a>
+          {{/ifEquals}}
+          {{#ifEquals user.role 'buyer'}}
+            <a href="/dashboard/buyer" class="nav-item {{#ifEquals activePage 'dashboard'}}active{{/ifEquals}}">
+              <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="/auctions/animalList" class="nav-item">
+              <i class="fas fa-search"></i> Browse Auctions
+            </a>
+            <a href="/dashboard/my-bids" class="nav-item">
+              <i class="fas fa-gavel"></i> My Bids
+            </a>
+          {{/ifEquals}}
+          {{#ifEquals user.role 'admin'}}
+            <a href="/dashboard/admin" class="nav-item {{#ifEquals activePage 'dashboard'}}active{{/ifEquals}}">
+              <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="/verification/status" class="nav-item">
+              <i class="fas fa-clipboard-check"></i> Verifications
+            </a>
+            <a href="/verification/list" class="nav-item">
+              <i class="fas fa-users"></i> All Users
+            </a>
+          {{/ifEquals}}
+        </div>
+
+        <div class="sb-divider"></div>
+
+        <div class="sb-section">
+          <div class="sb-label">Account</div>
+          <a href="/dashboard/my-bids" class="nav-item">
+            <i class="fas fa-history"></i> Activity
+          </a>
+        </div>
+
+        <div class="sb-divider"></div>
+
+        <form action="/auth/logout" method="POST" class="w-full">
+          <button type="submit" class="nav-item w-full text-left" style="color: var(--accent4);">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </form>
+
+        <div class="sb-info">
+          <div class="sb-info-label">Logged in as</div>
+          <div class="sb-info-val">{{user.name}}</div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main">
+        {{{body}}}
+      </main>
+    </div>
+    {{else}}
+    <!-- Main content for non-authenticated pages -->
+    <main class="relative z-10" style="min-height: 100vh;">
       {{{body}}}
     </main>
+    {{/if}}
 
-    <footer
-      class="relative z-10 border-t border-gray-800 bg-gray-950/80 backdrop-blur-sm"
-    >
+    <!-- Footer (only for public pages) -->
+    {{#unless loggedIn}}
+    <footer class="relative z-10 border-t border-gray-800 bg-gray-950/80 backdrop-blur-sm">
       <div class="container mx-auto px-4 py-12">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <!-- Brand Section -->
           <div class="md:col-span-2">
-            <h3
-              class="text-2xl font-bold mb-4"
-              style="font-family: 'Syne', sans-serif;"
-            >
-              <span class="text-gradient">Chuu</span><span
-                class="text-white"
-              >Auction</span>
+            <h3 class="text-2xl font-bold mb-4" style="font-family: 'Syne', sans-serif;">
+              <span style="background: linear-gradient(135deg, #f97316, #dc2626); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Chuu</span><span class="text-white">Auction</span>
             </h3>
-            <p
-              class="text-gray-400 mb-4 max-w-md"
-              style="font-family: 'DM Sans', sans-serif;"
-            >
+            <p class="text-gray-400 mb-4 max-w-md" style="font-family: 'DM Sans', sans-serif;">
               Transforming Uganda's livestock trade through transparency,
               technology, and trust. Empowering farmers, connecting buyers,
               building futures.
             </p>
             <div class="flex gap-4">
-              <a
-                href="#"
-                class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:scale-110 transition-transform"
-              >
+              <a href="#" class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:scale-110 transition-transform">
                 <i class="bi bi-facebook text-white"></i>
               </a>
-              <a
-                href="#"
-                class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:scale-110 transition-transform"
-              >
+              <a href="#" class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:scale-110 transition-transform">
                 <i class="bi bi-twitter text-white"></i>
               </a>
-              <a
-                href="#"
-                class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:scale-110 transition-transform"
-              >
+              <a href="#" class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:scale-110 transition-transform">
                 <i class="bi bi-instagram text-white"></i>
               </a>
-              <a
-                href="#"
-                class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:scale-110 transition-transform"
-              >
+              <a href="#" class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:scale-110 transition-transform">
                 <i class="bi bi-linkedin text-white"></i>
               </a>
             </div>
@@ -264,69 +756,32 @@
 
           <!-- Quick Links -->
           <div>
-            <h4
-              class="font-semibold mb-4 text-orange-500"
-              style="font-family: 'Syne', sans-serif;"
-            >Quick Links</h4>
-            <ul
-              class="space-y-2 text-gray-400"
-              style="font-family: 'DM Sans', sans-serif;"
-            >
-              <li><a
-                  href="#features"
-                  class="hover:text-orange-500 transition-colors"
-                >Features</a></li>
-              <li><a
-                  href="#how-it-works"
-                  class="hover:text-orange-500 transition-colors"
-                >How It Works</a></li>
-              <li><a
-                  href="#impact"
-                  class="hover:text-orange-500 transition-colors"
-                >Our Impact</a></li>
-              <li><a
-                  href="#faq"
-                  class="hover:text-orange-500 transition-colors"
-                >FAQ</a></li>
+            <h4 class="font-semibold mb-4 text-orange-500" style="font-family: 'Syne', sans-serif;">Quick Links</h4>
+            <ul class="space-y-2 text-gray-400" style="font-family: 'DM Sans', sans-serif;">
+              <li><a href="#features" class="hover:text-orange-500 transition-colors">Features</a></li>
+              <li><a href="#how-it-works" class="hover:text-orange-500 transition-colors">How It Works</a></li>
+              <li><a href="#impact" class="hover:text-orange-500 transition-colors">Our Impact</a></li>
+              <li><a href="#faq" class="hover:text-orange-500 transition-colors">FAQ</a></li>
             </ul>
           </div>
 
           <!-- Contact -->
           <div>
-            <h4
-              class="font-semibold mb-4 text-orange-500"
-              style="font-family: 'Syne', sans-serif;"
-            >Contact</h4>
-            <ul
-              class="space-y-2 text-gray-400"
-              style="font-family: 'DM Sans', sans-serif;"
-            >
-              <li class="flex items-center gap-2"><i
-                  class="bi bi-envelope text-orange-500"
-                ></i>
-                info@chuuauction.ug</li>
-              <li class="flex items-center gap-2"><i
-                  class="bi bi-phone text-orange-500"
-                ></i>
-                +256 700 000 000</li>
-              <li class="flex items-center gap-2"><i
-                  class="bi bi-geo-alt text-orange-500"
-                ></i>
-                Kampala, Uganda</li>
+            <h4 class="font-semibold mb-4 text-orange-500" style="font-family: 'Syne', sans-serif;">Contact</h4>
+            <ul class="space-y-2 text-gray-400" style="font-family: 'DM Sans', sans-serif;">
+              <li class="flex items-center gap-2"><i class="bi bi-envelope text-orange-500"></i> info@chuuauction.ug</li>
+              <li class="flex items-center gap-2"><i class="bi bi-phone text-orange-500"></i> +256 700 000 000</li>
+              <li class="flex items-center gap-2"><i class="bi bi-geo-alt text-orange-500"></i> Kampala, Uganda</li>
             </ul>
           </div>
         </div>
 
-        <div
-          class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm"
-          style="font-family: 'DM Sans', sans-serif;"
-        >
-          <p>&copy; 2026 ChuuAuction. All rights reserved. | Empowering Uganda's
-            Livestock Future</p>
-          <p class="mt-2">Contributing to SDG 1, 2, 8 & 9 | Building Transparent
-            Markets</p>
+        <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm" style="font-family: 'DM Sans', sans-serif;">
+          <p>&copy; 2026 ChuuAuction. All rights reserved. | Empowering Uganda's Livestock Future</p>
+          <p class="mt-2">Contributing to SDG 1, 2, 8 & 9 | Building Transparent Markets</p>
         </div>
       </div>
     </footer>
+    {{/unless}}
   </body>
 </html>
