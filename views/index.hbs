@@ -1,1207 +1,2006 @@
-<!-- Advanced Navigation Bar -->
-<nav
-  class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-gray-950"
-  id="navbar"
->
-  <div class="container mx-auto px-4">
-    <div class="flex items-center justify-between h-20 md:h-24">
-      <!-- Logo -->
-      <a href="/" class="flex items-center gap-3 group cursor-pointer">
-        <div class="relative perspective-container">
-          <div
-            class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br from-orange-500 via-red-600 to-orange-700 flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-lg shadow-orange-500/50 card-3d"
-          >
-            <i class="bi bi-grid-3x3-gap-fill text-white text-2xl"></i>
-          </div>
-          <div
-            class="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-gray-950 dark:border-white animate-pulse"
-          ></div>
-        </div>
-        <div>
-          <h1 class="text-2xl md:text-3xl font-bold font-display leading-none">
-            <span class="text-gradient neon-glow">Chuu</span><span
-              class="text-white dark:text-gray-900"
-            >Auction🐐</span>
-          </h1>
-          <p
-            class="text-xs text-gray-400 dark:text-gray-600 -mt-1 font-body"
-          >Digital Livestock Market</p>
-        </div>
-      </a>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChuuAuction 🐐 , Digital Livestock Market Uganda</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <style>
+      /* ─── DESIGN TOKENS ─── */
+      :root {
+        --primary: #ff6b1a;
+        --primary-deep: #e84e0a;
+        --primary-glow: rgba(255, 107, 26, 0.35);
+        --accent: #ffb347;
+        --danger: #dc2626;
+        --bg: #0a0a0f;
+        --bg-2: #0f0f18;
+        --bg-3: #141421;
+        --surface: rgba(255, 255, 255, 0.04);
+        --surface-hover: rgba(255, 107, 26, 0.08);
+        --border: rgba(255, 255, 255, 0.07);
+        --border-hot: rgba(255, 107, 26, 0.4);
+        --text: #f0eee9;
+        --text-muted: #7a7888;
+        --text-dim: #3e3d4a;
+        --radius: 16px;
+        --radius-lg: 24px;
+        --radius-xl: 32px;
+        --font-display: "Syne", sans-serif;
+        --font-body: "DM Sans", sans-serif;
+        --font-mono: "Space Mono", monospace;
+        --nav-h: 72px;
+        --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        --shadow-glow: 0 0 40px var(--primary-glow);
+      }
 
-      <!-- Desktop Navigation -->
-      <div class="hidden lg:flex items-center gap-6">
-        <a
-          href="#features"
-          class="nav-link px-4 py-2 text-gray-300 dark:text-gray-700 hover:text-orange-500 transition-all font-medium relative group cursor-pointer"
-        >
+      [data-theme="light"] {
+        --bg: #faf8f4;
+        --bg-2: #f2efe8;
+        --bg-3: #e9e5dc;
+        --surface: rgba(0, 0, 0, 0.03);
+        --surface-hover: rgba(255, 107, 26, 0.06);
+        --border: rgba(0, 0, 0, 0.08);
+        --border-hot: rgba(255, 107, 26, 0.5);
+        --text: #1a1a22;
+        --text-muted: #6b6879;
+        --text-dim: #b8b5c4;
+      }
+
+      /* ─── RESET & BASE ─── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+        font-size: 16px;
+      }
+      body {
+        font-family: var(--font-body);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        overflow-x: hidden;
+        transition:
+          background 0.4s,
+          color 0.4s;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      /* ─── SCROLLBAR ─── */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 99px;
+      }
+
+      /* ─── UTILITIES ─── */
+      .container {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      .gradient-text {
+        background: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--accent) 60%,
+          var(--primary-deep) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        background-size: 200%;
+        animation: gradShift 4s ease infinite;
+      }
+      @keyframes gradShift {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 16px;
+        border-radius: 99px;
+        background: rgba(255, 107, 26, 0.1);
+        border: 1px solid var(--border-hot);
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--primary);
+      }
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 28px;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-deep)
+        );
+        color: #fff;
+        border: none;
+        border-radius: var(--radius);
+        font-family: var(--font-display);
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+        white-space: nowrap;
+        text-align: center;
+        justify-content: center;
+      }
+      .btn-primary::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px var(--primary-glow);
+      }
+      .btn-primary:hover::before {
+        opacity: 1;
+      }
+      .btn-primary:active {
+        transform: translateY(0);
+      }
+      .btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 28px;
+        background: var(--surface);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        font-family: var(--font-display);
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        white-space: nowrap;
+        justify-content: center;
+        text-align: center;
+        backdrop-filter: blur(12px);
+      }
+      .btn-ghost:hover {
+        border-color: var(--border-hot);
+        background: var(--surface-hover);
+        transform: translateY(-2px);
+      }
+      .btn-ghost:active {
+        transform: translateY(0);
+      }
+
+      /* ─── CARD ─── */
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        transition: var(--transition);
+        backdrop-filter: blur(16px);
+      }
+      .card:hover {
+        border-color: var(--border-hot);
+        background: var(--surface-hover);
+        transform: translateY(-4px);
+        box-shadow:
+          0 24px 60px rgba(0, 0, 0, 0.3),
+          0 0 0 1px var(--border-hot);
+      }
+
+      /* ─── NAVBAR ─── */
+      #navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 8000;
+        height: var(--nav-h);
+        background: rgba(10, 10, 15, 0.85);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-bottom: 1px solid var(--border);
+        transition: all 0.4s;
+      }
+      [data-theme="light"] #navbar {
+        background: rgba(250, 248, 244, 0.88);
+      }
+      #navbar.scrolled {
+        height: 64px;
+        border-bottom-color: var(--border-hot);
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+      }
+      .nav-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .nav-logo-icon {
+        width: 42px;
+        height: 42px;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-deep)
+        );
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        box-shadow: 0 4px 20px var(--primary-glow);
+        transition: transform 0.3s;
+        flex-shrink: 0;
+      }
+      .nav-logo:hover .nav-logo-icon {
+        transform: rotate(10deg) scale(1.1);
+      }
+      .nav-logo-text {
+        font-family: var(--font-display);
+        font-size: 22px;
+        font-weight: 800;
+        line-height: 1;
+      }
+      .nav-logo-sub {
+        font-size: 11px;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+        letter-spacing: 0.05em;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .nav-link {
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-muted);
+        border-radius: var(--radius);
+        transition: var(--transition);
+        cursor: pointer;
+        position: relative;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: 4px;
+        left: 50%;
+        right: 50%;
+        height: 2px;
+        background: var(--primary);
+        border-radius: 99px;
+        transition: all 0.3s;
+      }
+      .nav-link:hover {
+        color: var(--text);
+        background: var(--surface);
+      }
+      .nav-link:hover::after {
+        left: 16px;
+        right: 16px;
+      }
+      .nav-divider {
+        width: 1px;
+        height: 24px;
+        background: var(--border);
+        margin: 0 8px;
+      }
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .icon-btn {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        transition: var(--transition);
+        color: var(--text-muted);
+        font-size: 16px;
+      }
+      .icon-btn:hover {
+        border-color: var(--border-hot);
+        color: var(--primary);
+        background: var(--surface-hover);
+      }
+
+      /* ─── HAMBURGER ─── */
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 42px;
+        height: 42px;
+        gap: 6px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        cursor: pointer;
+        transition: var(--transition);
+        padding: 0;
+        flex-shrink: 0;
+      }
+      .hamburger:hover {
+        border-color: var(--border-hot);
+        background: var(--surface-hover);
+      }
+      .ham-line {
+        width: 20px;
+        height: 2px;
+        background: var(--text);
+        border-radius: 99px;
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-origin: center;
+      }
+      .hamburger.open .ham-line:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+      }
+      .hamburger.open .ham-line:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      .hamburger.open .ham-line:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+      }
+
+      /* ─── MOBILE DRAWER ─── */
+      .drawer-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9000;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s;
+      }
+      .drawer-overlay.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 9100;
+        width: min(340px, 85vw);
+        background: var(--bg-2);
+        border-left: 1px solid var(--border);
+        transform: translateX(100%);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .drawer.open {
+        transform: translateX(0);
+      }
+      .drawer-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+      }
+      .drawer-title {
+        font-family: var(--font-display);
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .drawer-close {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        cursor: pointer;
+        color: var(--text-muted);
+        transition: var(--transition);
+        font-size: 16px;
+      }
+      .drawer-close:hover {
+        color: var(--primary);
+        border-color: var(--border-hot);
+      }
+      .drawer-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .drawer-link {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 18px;
+        border-radius: var(--radius);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition);
+        font-size: 15px;
+      }
+      .drawer-link:hover {
+        background: var(--surface-hover);
+        border-color: var(--border-hot);
+        transform: translateX(4px);
+      }
+      .drawer-link-icon {
+        width: 38px;
+        height: 38px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 107, 26, 0.12);
+        border-radius: 10px;
+        color: var(--primary);
+        font-size: 16px;
+      }
+      .drawer-footer {
+        padding: 16px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+
+      /* ─── HERO ─── */
+      #hero {
+        min-height: 100svh;
+        display: flex;
+        align-items: center;
+        padding: calc(var(--nav-h) + 60px) 0 80px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 107, 26, 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 107, 26, 0.06) 1px, transparent 1px);
+        background-size: 60px 60px;
+        animation: gridDrift 30s linear infinite;
+        mask-image: radial-gradient(
+          ellipse 80% 60% at 50% 50%,
+          black 30%,
+          transparent 100%
+        );
+      }
+      @keyframes gridDrift {
+        to {
+          background-position: 60px 60px;
+        }
+      }
+      .hero-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        pointer-events: none;
+      }
+      .orb-1 {
+        width: 500px;
+        height: 500px;
+        background: rgba(255, 107, 26, 0.12);
+        top: -100px;
+        right: -100px;
+        animation: orbFloat 8s ease-in-out infinite;
+      }
+      .orb-2 {
+        width: 300px;
+        height: 300px;
+        background: rgba(220, 38, 38, 0.1);
+        bottom: 0;
+        left: -50px;
+        animation: orbFloat 10s ease-in-out infinite reverse;
+      }
+      .orb-3 {
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 179, 71, 0.08);
+        top: 50%;
+        left: 40%;
+        animation: orbFloat 6s ease-in-out infinite 2s;
+      }
+      @keyframes orbFloat {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        50% {
+          transform: translate(20px, -30px) scale(1.05);
+        }
+      }
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 28px;
+        animation: fadeUp 0.8s ease both;
+      }
+      .live-dot {
+        width: 8px;
+        height: 8px;
+        background: #22c55e;
+        border-radius: 50%;
+        position: relative;
+        flex-shrink: 0;
+      }
+      .live-dot::after {
+        content: "";
+        position: absolute;
+        inset: -4px;
+        background: rgba(34, 197, 94, 0.3);
+        border-radius: 50%;
+        animation: ping 1.5s ease infinite;
+      }
+      @keyframes ping {
+        0% {
+          transform: scale(0.8);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+      .hero-h1 {
+        font-family: var(--font-display);
+        font-size: clamp(28px, 5vw, 58px);
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        margin-bottom: 28px;
+        animation: fadeUp 0.8s ease 0.1s both;
+      }
+      .hero-sub {
+        font-size: clamp(16px, 2vw, 20px);
+        color: var(--text-muted);
+        max-width: 560px;
+        margin: 0 auto 40px;
+        line-height: 1.7;
+        animation: fadeUp 0.8s ease 0.2s both;
+      }
+      .hero-sub strong {
+        color: var(--primary);
+        font-weight: 500;
+      }
+      .hero-ctas {
+        display: flex;
+        gap: 14px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 64px;
+        animation: fadeUp 0.8s ease 0.3s both;
+      }
+      .hero-ctas .btn-primary {
+        padding: 16px 36px;
+        font-size: 16px;
+      }
+      .hero-ctas .btn-ghost {
+        padding: 16px 28px;
+        font-size: 16px;
+      }
+      .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        animation: fadeUp 0.8s ease 0.4s both;
+      }
+      .stat-card {
+        padding: 24px 16px;
+        border-radius: var(--radius-lg);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        backdrop-filter: blur(16px);
+        text-align: center;
+        transition: var(--transition);
+        cursor: default;
+      }
+      .stat-card:hover {
+        border-color: var(--border-hot);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+      }
+      .stat-num {
+        font-family: var(--font-display);
+        font-size: clamp(22px, 4vw, 36px);
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        display: block;
+        margin-bottom: 6px;
+      }
+      .stat-label {
+        font-size: 12px;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+      }
+
+      /* ─── SECTIONS ─── */
+      section {
+        padding: 100px 0;
+        position: relative;
+      }
+      .section-tag {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 18px;
+      }
+      .section-title {
+        font-family: var(--font-display);
+        font-size: clamp(32px, 5vw, 60px);
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        text-align: center;
+        margin-bottom: 18px;
+      }
+      .section-sub {
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 18px;
+        max-width: 520px;
+        margin: 0 auto 64px;
+      }
+
+      /* ─── FEATURES ─── */
+      #features {
+        background: var(--bg-2);
+      }
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+      .feature-card {
+        padding: 36px 32px;
+        border-radius: var(--radius-xl);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        transition: var(--transition);
+        cursor: default;
+        position: relative;
+        overflow: hidden;
+      }
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--primary),
+          transparent
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .feature-card:hover {
+        border-color: var(--border-hot);
+        background: var(--surface-hover);
+        transform: translateY(-6px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      }
+      .feature-card:hover::before {
+        opacity: 1;
+      }
+      .feature-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 107, 26, 0.2),
+          rgba(220, 38, 38, 0.1)
+        );
+        border: 1px solid rgba(255, 107, 26, 0.25);
+        border-radius: var(--radius);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: var(--primary);
+        margin-bottom: 24px;
+        transition: var(--transition);
+      }
+      .feature-card:hover .feature-icon {
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-deep)
+        );
+        color: white;
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 8px 24px var(--primary-glow);
+      }
+      .feature-title {
+        font-family: var(--font-display);
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+      .feature-desc {
+        color: var(--text-muted);
+        font-size: 15px;
+        line-height: 1.65;
+      }
+
+      /* ─── HOW IT WORKS ─── */
+      .steps-wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .step {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0 32px;
+        position: relative;
+      }
+      .step:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        left: 24px;
+        top: 64px;
+        bottom: -32px;
+        width: 2px;
+        background: linear-gradient(to bottom, var(--primary), transparent);
+      }
+      .step-left {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+      }
+      .step-num {
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-deep)
+        );
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-mono);
+        font-size: 14px;
+        font-weight: 700;
+        color: white;
+        box-shadow: 0 4px 20px var(--primary-glow);
+        position: relative;
+        z-index: 1;
+      }
+      .step-right {
+        padding: 4px 0 56px;
+      }
+      .step-card {
+        padding: 32px;
+        border-radius: var(--radius-xl);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 24px;
+        align-items: center;
+        transition: var(--transition);
+      }
+      .step-card:hover {
+        border-color: var(--border-hot);
+        transform: translateX(6px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+      }
+      .step-info {
+      }
+      .step-title {
+        font-family: var(--font-display);
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+      .step-desc {
+        color: var(--text-muted);
+        font-size: 15px;
+        line-height: 1.6;
+      }
+      .step-visual {
+        width: 100px;
+        height: 100px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 107, 26, 0.08);
+        border-radius: var(--radius-lg);
+        font-size: 48px;
+      }
+
+      /* ─── IMPACT ─── */
+      #impact {
+        background: var(--bg-2);
+      }
+      .sdg-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 48px;
+      }
+      .sdg-card {
+        padding: 28px 24px;
+        border-radius: var(--radius-lg);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        transition: var(--transition);
+        cursor: default;
+      }
+      .sdg-card:hover {
+        border-color: var(--border-hot);
+        transform: translateY(-4px);
+      }
+      .sdg-emoji {
+        font-size: 36px;
+        margin-bottom: 12px;
+        display: block;
+      }
+      .sdg-num {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--primary);
+        letter-spacing: 0.05em;
+        margin-bottom: 4px;
+      }
+      .sdg-name {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+      .sdg-desc {
+        color: var(--text-muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .impact-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+      .impact-stat {
+        padding: 40px 32px;
+        border-radius: var(--radius-xl);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        text-align: center;
+        transition: var(--transition);
+        cursor: default;
+      }
+      .impact-stat:hover {
+        border-color: var(--border-hot);
+        transform: translateY(-4px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      }
+      .impact-num {
+        font-family: var(--font-display);
+        font-size: clamp(40px, 6vw, 64px);
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 12px;
+        line-height: 1;
+      }
+      .impact-label {
+        color: var(--text-muted);
+        font-size: 15px;
+        line-height: 1.5;
+      }
+
+      /* ─── TESTIMONIALS ─── */
+      .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+      .testi-card {
+        padding: 32px;
+        border-radius: var(--radius-xl);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        transition: var(--transition);
+        cursor: default;
+        position: relative;
+      }
+      .testi-card::before {
+        content: '"';
+        position: absolute;
+        top: 20px;
+        right: 28px;
+        font-family: var(--font-display);
+        font-size: 80px;
+        color: var(--border-hot);
+        line-height: 1;
+        pointer-events: none;
+      }
+      .testi-card:hover {
+        border-color: var(--border-hot);
+        transform: translateY(-4px);
+      }
+      .stars {
+        display: flex;
+        gap: 4px;
+        color: #fbbf24;
+        font-size: 14px;
+        margin-bottom: 20px;
+      }
+      .testi-quote {
+        color: var(--text-muted);
+        font-size: 15px;
+        line-height: 1.7;
+        margin-bottom: 24px;
+        font-style: italic;
+      }
+      .testi-author {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .testi-avatar {
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-deep)
+        );
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-display);
+        font-size: 14px;
+        font-weight: 700;
+        color: white;
+        box-shadow: 0 4px 12px var(--primary-glow);
+      }
+      .testi-name {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 15px;
+      }
+      .testi-role {
+        font-size: 12px;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+      }
+
+      /* ─── CTA SECTION ─── */
+      #cta-section {
+        background: var(--bg-2);
+        position: relative;
+        overflow: hidden;
+      }
+      .cta-bg {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 70% 80% at 50% 50%,
+          rgba(255, 107, 26, 0.08),
+          transparent
+        );
+        pointer-events: none;
+      }
+      .cta-inner {
+        max-width: 700px;
+        margin: 0 auto;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+      }
+      .cta-title {
+        font-family: var(--font-display);
+        font-size: clamp(32px, 5vw, 56px);
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 20px;
+        letter-spacing: -0.02em;
+      }
+      .cta-sub {
+        color: var(--text-muted);
+        font-size: 18px;
+        margin-bottom: 40px;
+        line-height: 1.6;
+      }
+      .cta-btns {
+        display: flex;
+        gap: 14px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .cta-btns .btn-primary,
+      .cta-btns .btn-ghost {
+        padding: 18px 40px;
+        font-size: 16px;
+      }
+
+      /* ─── FOOTER ─── */
+      footer {
+        padding: 48px 0;
+        border-top: 1px solid var(--border);
+        background: var(--bg);
+      }
+      .footer-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 24px;
+      }
+      .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .footer-logo-icon {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-deep)
+        );
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+      }
+      .footer-logo-text {
+        font-family: var(--font-display);
+        font-size: 18px;
+        font-weight: 800;
+      }
+      .footer-copy {
+        font-size: 13px;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+      }
+      .footer-socials {
+        display: flex;
+        gap: 8px;
+      }
+      .social-btn {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text-muted);
+        font-size: 15px;
+        transition: var(--transition);
+        cursor: pointer;
+      }
+      .social-btn:hover {
+        color: var(--primary);
+        border-color: var(--border-hot);
+        transform: translateY(-2px);
+      }
+
+      /* ─── ANIMATIONS ─── */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .js-loaded .reveal {
+        opacity: 0;
+        transform: translateY(32px);
+        transition:
+          opacity 0.7s ease,
+          transform 0.7s ease;
+      }
+      .js-loaded .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ─── PARTICLES (original animations restored) ─── */
+      .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: rgba(255, 107, 26, 0.7);
+        border-radius: 50%;
+        pointer-events: none;
+        animation: particleFloat 4s ease-in-out infinite;
+      }
+      @keyframes particleFloat {
+        0%,
+        100% {
+          transform: translateY(0) translateX(0);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-120px) translateX(20px);
+          opacity: 0;
+        }
+      }
+      .animate-float {
+        animation: floatBob 6s ease-in-out infinite;
+      }
+      @keyframes floatBob {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(5deg);
+        }
+      }
+      .animate-glow {
+        animation: glowPulse 2s ease-in-out infinite;
+      }
+      @keyframes glowPulse {
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(255, 107, 26, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 40px rgba(255, 107, 26, 0.8);
+        }
+      }
+      .animate-pulse-slow {
+        animation: pulseSlow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      @keyframes pulseSlow {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.6;
+        }
+      }
+      .animate-bounce-slow {
+        animation: bounceSlow 3s infinite;
+      }
+      @keyframes bounceSlow {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+      .shimmer-effect {
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.08),
+          transparent
+        );
+        background-size: 200% 100%;
+        animation: shimmer 2.5s infinite;
+      }
+      @keyframes shimmer {
+        0% {
+          background-position: -200% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
+      }
+
+      .scroll-hint {
+        position: absolute;
+        bottom: 32px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        z-index: 5;
+      }
+      .scroll-mouse {
+        width: 24px;
+        height: 38px;
+        border: 2px solid var(--border-hot);
+        border-radius: 12px;
+        display: flex;
+        justify-content: center;
+        padding-top: 6px;
+      }
+      .scroll-dot {
+        width: 4px;
+        height: 8px;
+        background: var(--primary);
+        border-radius: 99px;
+        animation: scrollBounce 1.8s ease-in-out infinite;
+      }
+      @keyframes scrollBounce {
+        0%,
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        80% {
+          transform: translateY(10px);
+          opacity: 0;
+        }
+      }
+      .scroll-hint-text {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        color: var(--text-muted);
+        letter-spacing: 0.08em;
+      }
+
+      /* ─── RESPONSIVE ─── */
+      @media (max-width: 1024px) {
+        .features-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .sdg-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 768px) {
+        :root {
+          --nav-h: 64px;
+        }
+        .nav-links,
+        .nav-divider {
+          display: none !important;
+        }
+        .nav-actions .btn-primary,
+        .nav-actions .btn-ghost {
+          display: none !important;
+        }
+        .hamburger {
+          display: flex !important;
+        }
+        .hero-stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+        .sdg-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .impact-stats {
+          grid-template-columns: 1fr;
+        }
+        .testimonials-grid {
+          grid-template-columns: 1fr;
+        }
+        section {
+          padding: 72px 0;
+        }
+        .step-card {
+          grid-template-columns: 1fr;
+        }
+        .step-visual {
+          display: none;
+        }
+        .footer-inner {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+      @media (max-width: 480px) {
+        .hero-stats {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px;
+        }
+        .stat-card {
+          padding: 18px 12px;
+        }
+        .hero-ctas {
+          flex-direction: column;
+          align-items: center;
+        }
+        .hero-ctas .btn-primary,
+        .hero-ctas .btn-ghost {
+          width: 100%;
+          max-width: 320px;
+        }
+        .sdg-grid {
+          grid-template-columns: 1fr;
+        }
+        .cta-btns {
+          flex-direction: column;
+          align-items: center;
+        }
+        .cta-btns .btn-primary,
+        .cta-btns .btn-ghost {
+          width: 100%;
+          max-width: 320px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- ══════════════════════════════
+     NAVBAR
+══════════════════════════════ -->
+    <nav id="navbar">
+      <div class="container nav-inner">
+        <a href="#hero" class="nav-logo">
+          <div class="nav-logo-icon">🐐</div>
+          <div>
+            <div class="nav-logo-text"><span
+                class="gradient-text"
+              >Chuu</span>Auction</div>
+            <div class="nav-logo-sub">Digital Livestock Market</div>
+          </div>
+        </a>
+
+        <div class="nav-links">
+          <a href="#features" class="nav-link">Features</a>
+          <a href="#how-it-works" class="nav-link">How It Works</a>
+          <a href="#impact" class="nav-link">Impact</a>
+          <a href="#testimonials" class="nav-link">Stories</a>
+        </div>
+
+        <div class="nav-actions">
+          <button class="icon-btn" id="theme-toggle" title="Toggle theme">
+            <i class="bi bi-moon-stars" id="theme-icon"></i>
+          </button>
+          <div class="nav-divider"></div>
+          <a
+            href="/auth/login"
+            class="btn-ghost"
+            style="padding:10px 20px;font-size:14px;"
+          >Login</a>
+          <a
+            href="/auth/register"
+            class="btn-primary"
+            style="padding:10px 22px;font-size:14px;"
+          >Get Started</a>
+          <button class="hamburger" id="hamburger" aria-label="Open menu">
+            <span class="ham-line"></span>
+            <span class="ham-line"></span>
+            <span class="ham-line"></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Drawer Overlay -->
+    <div class="drawer-overlay" id="drawer-overlay"></div>
+
+    <!-- Mobile Drawer -->
+    <div class="drawer" id="drawer">
+      <div class="drawer-header">
+        <span class="drawer-title">Menu</span>
+        <button class="drawer-close" id="drawer-close"><i
+            class="bi bi-x-lg"
+          ></i></button>
+      </div>
+      <div class="drawer-body">
+        <a href="#features" class="drawer-link">
+          <div class="drawer-link-icon"><i class="bi bi-stars"></i></div>
           Features
-          <span
-            class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-red-600 group-hover:w-full transition-all duration-300"
-          ></span>
         </a>
-        <a
-          href="#how-it-works"
-          class="nav-link px-4 py-2 text-gray-300 dark:text-gray-700 hover:text-orange-500 transition-all font-medium relative group cursor-pointer"
-        >
+        <a href="#how-it-works" class="drawer-link">
+          <div class="drawer-link-icon"><i class="bi bi-gear"></i></div>
           How It Works
-          <span
-            class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-red-600 group-hover:w-full transition-all duration-300"
-          ></span>
         </a>
-        <a
-          href="#impact"
-          class="nav-link px-4 py-2 text-gray-300 dark:text-gray-700 hover:text-orange-500 transition-all font-medium relative group cursor-pointer"
-        >
+        <a href="#impact" class="drawer-link">
+          <div class="drawer-link-icon"><i class="bi bi-graph-up"></i></div>
           Impact
-          <span
-            class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-red-600 group-hover:w-full transition-all duration-300"
-          ></span>
         </a>
-        <a
-          href="#testimonials"
-          class="nav-link px-4 py-2 text-gray-300 dark:text-gray-700 hover:text-orange-500 transition-all font-medium relative group cursor-pointer"
-        >
+        <a href="#testimonials" class="drawer-link">
+          <div class="drawer-link-icon"><i class="bi bi-chat-quote"></i></div>
           Stories
-          <span
-            class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-red-600 group-hover:w-full transition-all duration-300"
-          ></span>
         </a>
-
-        <div class="w-px h-6 bg-gray-700 dark:bg-gray-300 mx-2"></div>
-
-        <!-- Dark/Light Mode Toggle -->
-        <button
-          id="theme-toggle"
-          class="w-10 h-10 rounded-xl bg-gray-800/50 dark:bg-gray-100 flex items-center justify-center hover:scale-110 transition-transform duration-300 cursor-pointer"
-          title="Toggle theme"
-        >
-          <i class="bi bi-moon-stars text-orange-500 dark:hidden"></i>
-          <i class="bi bi-sun-fill text-orange-500 hidden dark:block"></i>
-        </button>
-
-        <a
-          href="/auth/login"
-          class="nav-link px-4 py-2 text-gray-300 dark:text-gray-700 hover:text-orange-500 transition-all font-medium relative group cursor-pointer"
-        >
-          <i class="bi bi-box-arrow-in-right mr-2"></i>Login
-          <span
-            class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-red-600 group-hover:w-full transition-all duration-300"
-          ></span>
-        </a>
-        <a
-          href="/auth/register"
-          class="px-6 py-2.5 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-orange-500/50 transform hover:scale-105 transition-all duration-300 animate-glow cursor-pointer"
-        >
-          Get Started
-        </a>
-
       </div>
-
-      <!-- Mobile Menu Button -->
-      <div class="lg:hidden flex items-center gap-2">
-        <button
-          id="mobile-theme-toggle"
-          class="w-10 h-10 rounded-xl bg-gray-800/50 dark:bg-gray-100 flex items-center justify-center hover:scale-110 transition-transform duration-300 cursor-pointer"
-        >
-          <i class="bi bi-moon-stars text-orange-500 dark:hidden"></i>
-          <i class="bi bi-sun-fill text-orange-500 hidden dark:block"></i>
-        </button>
-        <button
-          class="w-12 h-12 rounded-xl bg-gray-800/50 dark:bg-gray-100 backdrop-blur-sm flex items-center justify-center hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors cursor-pointer"
-          id="mobile-menu-btn"
-        >
-          <i class="bi bi-list text-2xl text-white dark:text-gray-900"></i>
-        </button>
+      <div class="drawer-footer">
+        <a href="/auth/login" class="btn-ghost" style="width:100%;">
+          <i class="bi bi-box-arrow-in-right"></i>
+          Login
+        </a>
+        <a href="/auth/register" class="btn-primary" style="width:100%;">
+          <i class="bi bi-rocket-takeoff"></i>
+          Get Started Free
+        </a>
       </div>
     </div>
-  </div>
 
-  <!-- Mobile Menu -->
-  <div
-    class="lg:hidden fixed inset-0 bg-gray-950/98 dark:bg-white/98 backdrop-blur-xl z-40 hidden"
-    id="mobile-menu"
-  >
-    <div class="container mx-auto px-4 py-6 h-full flex flex-col">
-      <div class="flex items-center justify-between mb-8">
-        <h2 class="text-xl font-bold font-display">Menu</h2>
-        <button
-          class="w-10 h-10 rounded-lg bg-gray-800 dark:bg-gray-200 flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"
-          id="close-menu-btn"
-        >
-          <i class="bi bi-x-lg text-white dark:text-gray-900"></i>
-        </button>
-      </div>
+    <!-- ══════════════════════════════
+     HERO
+══════════════════════════════ -->
+    <section id="hero">
+      <div class="hero-grid"></div>
+      <div class="hero-orb orb-1"></div>
+      <div class="hero-orb orb-2"></div>
+      <div class="hero-orb orb-3"></div>
 
-      <div class="space-y-4 flex-1 overflow-y-auto">
-        <a
-          href="#features"
-          class="block px-6 py-4 bg-gray-800/30 dark:bg-gray-100 rounded-xl text-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all mobile-menu-link transform hover:scale-105 cursor-pointer"
-        >
-          <i class="bi bi-stars mr-3 text-orange-500"></i>Features
-        </a>
-        <a
-          href="#how-it-works"
-          class="block px-6 py-4 bg-gray-800/30 dark:bg-gray-100 rounded-xl text-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all mobile-menu-link transform hover:scale-105 cursor-pointer"
-        >
-          <i class="bi bi-gear mr-3 text-orange-500"></i>How It Works
-        </a>
-        <a
-          href="#impact"
-          class="block px-6 py-4 bg-gray-800/30 dark:bg-gray-100 rounded-xl text-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all mobile-menu-link transform hover:scale-105 cursor-pointer"
-        >
-          <i class="bi bi-graph-up mr-3 text-orange-500"></i>Impact
-        </a>
-        <a
-          href="#testimonials"
-          class="block px-6 py-4 bg-gray-800/30 dark:bg-gray-100 rounded-xl text-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all mobile-menu-link transform hover:scale-105 cursor-pointer"
-        >
-          <i class="bi bi-chat-quote mr-3 text-orange-500"></i>Stories
-        </a>
-        <div class="border-t border-gray-800 dark:border-gray-300 my-4"></div>
-        <a
-          href="/auth/login"
-          class="w-full px-6 py-4 bg-gray-800/30 dark:bg-gray-100 rounded-xl text-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all text-left transform hover:scale-105 block cursor-pointer"
-        >
-          <i class="bi bi-box-arrow-in-right mr-3 text-orange-500"></i>Login
-        </a>
-
-        <a
-          href="/auth/register"
-          class="px-6 py-2.5 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-orange-500/50 transform hover:scale-105 transition-all duration-300 animate-glow cursor-pointer"
-        >
-          Get Started
-        </a>
-
-      </div>
-    </div>
-  </div>
-</nav>
-
-<!-- Hero Section -->
-<section
-  class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 animated-grid"
->
-  <!-- Animated Background Elements -->
-  <div class="absolute inset-0 overflow-hidden">
-    <div
-      class="absolute top-20 left-10 w-72 h-72 bg-orange-500/10 dark:bg-orange-500/20 rounded-full blur-3xl animate-float"
-    ></div>
-    <div
-      class="absolute bottom-20 right-10 w-96 h-96 bg-red-600/10 dark:bg-red-600/20 rounded-full blur-3xl animate-float"
-      style="animation-delay: 1s;"
-    ></div>
-    <div
-      class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-orange-500/5 to-red-600/5 rounded-full blur-3xl animate-pulse-slow"
-    ></div>
-
-    <!-- Floating particles -->
-    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
-    <div class="particle" style="left: 30%; animation-delay: 1s;"></div>
-    <div class="particle" style="left: 50%; animation-delay: 2s;"></div>
-    <div class="particle" style="left: 70%; animation-delay: 1.5s;"></div>
-    <div class="particle" style="left: 90%; animation-delay: 0.5s;"></div>
-  </div>
-
-  <div class="container mx-auto px-4 relative z-10">
-    <div class="max-w-6xl mx-auto text-center">
-      <!-- Badge -->
+      <!-- Floating particles (original) -->
       <div
-        class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full glass border border-orange-500/30 mb-8 md:mb-10 animate-fade-in shimmer-effect"
-      >
-        <div
-          class="w-2 h-2 bg-green-500 rounded-full animate-pulse flex-shrink-0"
-        ></div>
-        <span
-          class="text-sm font-medium text-orange-400 dark:text-orange-600 whitespace-nowrap"
-        >Revolutionizing Livestock Trade in Uganda</span>
-      </div>
-
-      <!-- Main Heading -->
-      <h1
-        class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-6 md:mb-8 leading-tight font-display animate-fade-in perspective-container"
-        style="animation-delay: 0.2s;"
-      >
-        Auction Livestock🐄
-        <br class="hidden sm:block" />
-        <span class="text-gradient block mt-2 neon-glow">Transparently.</span>
-      </h1>
-
-      <!-- Subheading -->
-      <p
-        class="text-lg sm:text-xl md:text-2xl text-gray-300 dark:text-gray-600 mb-8 md:mb-10 max-w-2xl md:max-w-3xl mx-auto leading-relaxed animate-fade-in"
-        style="animation-delay: 0.3s;"
-      >
-        Connecting farmers directly with buyers through verified listings,
-        remote auctions, and fair pricing.
-        <span class="text-orange-500 font-semibold block mt-2">
-          Empowering rural Uganda, one auction at a time.
-        </span>
-      </p>
-
-      <!-- CTA Buttons -->
-      <div
-        class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-12 md:mb-16 animate-scale-in"
-        style="animation-delay: 0.4s;"
-      >
-        <a
-          href="/auth/register"
-          class="px-6 py-2.5 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-orange-500/50 transform hover:scale-105 transition-all duration-300 animate-glow cursor-pointer"
-        >
-          Start Selling Now
-        </a>
-
-        <a
-          href="/auth/register"
-          class="px-6 sm:px-8 py-3.5 sm:py-4 glass border border-gray-700 dark:border-gray-300 text-white dark:text-gray-900 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg hover:bg-gray-800 dark:hover:bg-gray-200 hover:border-orange-500 transform hover:scale-105 transition-all duration-300 flex items-center gap-2 sm:gap-3 card-3d cursor-pointer"
-        >
-          <i
-            class="bi bi-play-circle text-orange-500 text-lg sm:text-2xl animate-pulse"
-          ></i>
-          Watch Demo
-        </a>
-      </div>
-
-      <!-- Stats -->
-      <div
-        class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto animate-fade-in"
-        style="animation-delay: 0.5s;"
-      >
-        <div
-          class="p-6 rounded-2xl glass border border-gray-700/50 dark:border-gray-300/50 hover:border-orange-500/50 transition-all duration-300 group card-3d cursor-pointer"
-        >
-          <div
-            class="text-4xl font-black text-gradient mb-2 font-display group-hover:scale-110 transition-transform"
-          >1,200+</div>
-          <div class="text-sm text-gray-400 dark:text-gray-600">Active Farmers</div>
-        </div>
-        <div
-          class="p-6 rounded-2xl glass border border-gray-700/50 dark:border-gray-300/50 hover:border-orange-500/50 transition-all duration-300 group card-3d cursor-pointer"
-        >
-          <div
-            class="text-4xl font-black text-gradient mb-2 font-display group-hover:scale-110 transition-transform"
-          >5,400+</div>
-          <div class="text-sm text-gray-400 dark:text-gray-600">Livestock Sold</div>
-        </div>
-        <div
-          class="p-6 rounded-2xl glass border border-gray-700/50 dark:border-gray-300/50 hover:border-orange-500/50 transition-all duration-300 group card-3d cursor-pointer"
-        >
-          <div
-            class="text-4xl font-black text-gradient mb-2 font-display group-hover:scale-110 transition-transform"
-          >2.3B /=</div>
-          <div class="text-sm text-gray-400 dark:text-gray-600">Total Value
-            Traded</div>
-        </div>
-        <div
-          class="p-6 rounded-2xl glass border border-gray-700/50 dark:border-gray-300/50 hover:border-orange-500/50 transition-all duration-300 group card-3d cursor-pointer"
-        >
-          <div
-            class="text-4xl font-black text-gradient mb-2 font-display group-hover:scale-110 transition-transform"
-          >98%</div>
-          <div class="text-sm text-gray-400 dark:text-gray-600">Trust Rating</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Scroll Indicator -->
-  <div
-    class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce-slow cursor-pointer"
-    onclick="document.querySelector('#features').scrollIntoView({behavior: 'smooth'})"
-  >
-    <div
-      class="w-6 h-10 border-2 border-gray-600 dark:border-gray-400 rounded-full flex justify-center pt-2"
-    >
-      <div
-        class="w-1 h-3 bg-gradient-to-b from-orange-500 to-transparent rounded-full animate-pulse"
+        class="particle"
+        style="left:10%;bottom:10%;animation-delay:0s;"
       ></div>
-    </div>
-  </div>
-</section>
-
-<!-- Features Section -->
-<section id="features" class="py-24 relative">
-  <div class="container mx-auto px-4">
-    <!-- Section Header -->
-    <div class="text-center mb-16 animate-fade-in">
       <div
-        class="inline-block px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 mb-4"
-      >
-        <span class="text-sm font-semibold text-orange-500">PLATFORM FEATURES</span>
-      </div>
-      <h2 class="text-4xl md:text-6xl font-black mb-6 font-display">
-        Everything You Need to
-        <span class="text-gradient">Trade Smart</span>
-      </h2>
-      <p class="text-xl text-gray-400 dark:text-gray-600 max-w-2xl mx-auto">
-        Built for farmers, designed for transparency, optimized for success
-      </p>
-    </div>
-
-    <!-- Features Grid -->
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-      <!-- Feature 1 -->
+        class="particle"
+        style="left:25%;bottom:5%;animation-delay:1s;"
+      ></div>
       <div
-        class="group p-8 rounded-3xl glass border border-gray-700/50 dark:border-gray-300/50 hover:border-orange-500/50 transition-all duration-500 hover:transform hover:scale-105 card-3d animate-fade-in cursor-pointer"
-        style="animation-delay: 0.1s;"
-      >
-        <div
-          class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-lg shadow-orange-500/50"
-        >
-          <i class="bi bi-shield-check text-3xl text-white"></i>
-        </div>
-        <h3 class="text-2xl font-bold mb-4 font-display">Verified Listings</h3>
-        <p class="text-gray-400 dark:text-gray-600 leading-relaxed">
-          Every animal comes with authenticated health certificates and
-          ownership documentation, ensuring complete transparency and buyer
-          confidence.
-        </p>
-      </div>
-
-      <!-- Feature 2 -->
+        class="particle"
+        style="left:50%;bottom:8%;animation-delay:2s;"
+      ></div>
       <div
-        class="group p-8 rounded-3xl glass border border-gray-700/50 dark:border-gray-300/50 hover:border-orange-500/50 transition-all duration-500 hover:transform hover:scale-105 card-3d animate-fade-in cursor-pointer"
-        style="animation-delay: 0.2s;"
-      >
-        <div
-          class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-lg shadow-orange-500/50"
-        >
-          <i class="bi bi-broadcast text-3xl text-white"></i>
-        </div>
-        <h3 class="text-2xl font-bold mb-4 font-display">Remote Auctions</h3>
-        <p class="text-gray-400 dark:text-gray-600 leading-relaxed">
-          Participate in real-time bidding from anywhere. No travel needed is
-          needed to connect with buyers across Uganda, from the comfort of your
-          farm.
-        </p>
-      </div>
-
-      <!-- Feature 3 -->
+        class="particle"
+        style="left:70%;bottom:12%;animation-delay:1.5s;"
+      ></div>
       <div
-        class="group p-8 rounded-3xl glass border border-gray-700/50 dark:border-gray-300/50 hover:border-orange-500/50 transition-all duration-500 hover:transform hover:scale-105 card-3d animate-fade-in cursor-pointer"
-        style="animation-delay: 0.3s;"
-      >
-        <div
-          class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-lg shadow-orange-500/50"
-        >
-          <i class="bi bi-graph-up-arrow text-3xl text-white"></i>
-        </div>
-        <h3 class="text-2xl font-bold mb-4 font-display">Fair Pricing</h3>
-        <p class="text-gray-400 dark:text-gray-600 leading-relaxed">
-          AI powered price recommendations based on market trends help you get
-          the best value for your livestock and no more exploitation.
-        </p>
-      </div>
-
-      <!-- Feature 4 -->
-      <div
-        class="group p-8 rounded-3xl glass border border-gray-700/50 dark:border-gray-300/50 hover:border-orange-500/50 transition-all duration-500 hover:transform hover:scale-105 card-3d animate-fade-in cursor-pointer"
-        style="animation-delay: 0.4s;"
-      >
-        <div
-          class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-lg shadow-orange-500/50"
-        >
-          <i class="bi bi-credit-card text-3xl text-white"></i>
-        </div>
-        <h3 class="text-2xl font-bold mb-4 font-display">Secure Payments</h3>
-        <p class="text-gray-400 dark:text-gray-600 leading-relaxed">
-          Escrow payment system protects both buyers and sellers, ensuring safe
-          and reliable transactions every time.
-        </p>
-      </div>
-
-      <!-- Feature 5 -->
-      <div
-        class="group p-8 rounded-3xl glass border border-gray-700/50 dark:border-gray-300/50 hover:border-orange-500/50 transition-all duration-500 hover:transform hover:scale-105 card-3d animate-fade-in cursor-pointer"
-        style="animation-delay: 0.5s;"
-      >
-        <div
-          class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-lg shadow-orange-500/50"
-        >
-          <i class="bi bi-phone text-3xl text-white"></i>
-        </div>
-        <h3 class="text-2xl font-bold mb-4 font-display">Mobile-First</h3>
-        <p class="text-gray-400 dark:text-gray-600 leading-relaxed">
-          Optimized for network areas and basic smartphones, bringing digital
-          markets to every farmer in rural Uganda.
-        </p>
-      </div>
-
-      <!-- Feature 6 -->
-      <div
-        class="group p-8 rounded-3xl glass border border-gray-700/50 dark:border-gray-300/50 hover:border-orange-500/50 transition-all duration-500 hover:transform hover:scale-105 card-3d animate-fade-in cursor-pointer"
-        style="animation-delay: 0.6s;"
-      >
-        <div
-          class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-lg shadow-orange-500/50"
-        >
-          <i class="bi bi-chat-dots text-3xl text-white"></i>
-        </div>
-        <h3 class="text-2xl font-bold mb-4 font-display">Direct Messaging</h3>
-        <p class="text-gray-400 dark:text-gray-600 leading-relaxed">
-          Built in communication tools let farmers and buyers negotiate
-          directly, building trust and facilitating smooth transactions.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- How It Works Section -->
-<section
-  id="how-it-works"
-  class="py-24 bg-gradient-to-b from-gray-900/50 to-gray-950/50 dark:from-gray-50 dark:to-white relative"
->
-  <div class="container mx-auto px-4">
-    <div class="text-center mb-16 animate-fade-in">
-      <div
-        class="inline-block px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 mb-4"
-      >
-        <span class="text-sm font-semibold text-orange-500">SIMPLE PROCESS</span>
-      </div>
-      <h2 class="text-4xl md:text-6xl font-black mb-6 font-display">
-        How
-        <span class="text-gradient">ChuuAuction</span>
-        Works
-      </h2>
-      <p class="text-xl text-gray-400 dark:text-gray-600 max-w-2xl mx-auto">
-        From listing to selling in four simple steps
-      </p>
-    </div>
-
-    <div class="max-w-5xl mx-auto relative">
-      <!-- Connecting Line -->
-      <div
-        class="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-500 via-red-600 to-orange-700 transform -translate-x-1/2 animate-pulse-slow"
+        class="particle"
+        style="left:88%;bottom:6%;animation-delay:0.5s;"
       ></div>
 
-      <!-- Steps -->
-      <div class="space-y-16">
-        <!-- Step 1 -->
-        <div
-          class="md:grid md:grid-cols-2 gap-8 items-center animate-fade-in"
-          style="animation-delay: 0.1s;"
-        >
-          <div class="md:text-right mb-8 md:mb-0">
-            <div class="inline-block md:block">
-              <div class="flex items-center gap-4 mb-4 md:justify-end">
-                <a
-                  href="/auth/register"
-                  class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center font-black text-2xl font-display shadow-lg shadow-orange-500/50 animate-glow cursor-pointer inline-flex"
-                >
-                  1
-                </a>
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-eyebrow">
+            <div class="tag">
+              <span class="live-dot"></span>
+              Revolutionizing Livestock Trade in Uganda
+            </div>
+          </div>
 
-                <h3 class="text-2xl md:text-3xl font-bold font-display">Create
-                  Account</h3>
+          <h1 class="hero-h1">
+            Auction Livestock🐄<br />
+            <span class="gradient-text">Transparently.</span>
+          </h1>
+
+          <p class="hero-sub">
+            Connecting farmers directly with buyers through verified listings,
+            remote auctions, and fair pricing.
+            <strong>Empowering rural Uganda, one auction at a time.</strong>
+          </p>
+
+          <div class="hero-ctas">
+            <a href="/auth/register" class="btn-primary">
+              Start Selling Now
+            </a>
+            <a href="/auth/register" class="btn-ghost">
+              <i
+                class="bi bi-play-circle"
+                style="color:var(--primary);font-size:18px;"
+              ></i>
+              Watch Demo
+            </a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat-card reveal">
+              <span class="stat-num">1,200+</span>
+              <span class="stat-label">Active Farmers</span>
+            </div>
+            <div class="stat-card reveal">
+              <span class="stat-num">5,400+</span>
+              <span class="stat-label">Livestock Sold</span>
+            </div>
+            <div class="stat-card reveal">
+              <span class="stat-num">2.3B/=</span>
+              <span class="stat-label">Total Value Traded</span>
+            </div>
+            <div class="stat-card reveal">
+              <span class="stat-num">98%</span>
+              <span class="stat-label">Trust Rating</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="scroll-hint"
+        onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})"
+      >
+        <div class="scroll-mouse"><div class="scroll-dot"></div></div>
+        <span class="scroll-hint-text">Scroll down</span>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════
+     FEATURES
+══════════════════════════════ -->
+    <section id="features">
+      <div class="container">
+        <div class="section-tag"><span class="tag">Platform Features</span></div>
+        <h2 class="section-title reveal">Everything You Need to<br /><span
+            class="gradient-text"
+          >Trade Smart</span></h2>
+        <p class="section-sub reveal">Built for farmers, designed for
+          transparency, optimized for success</p>
+
+        <div class="features-grid">
+          <div class="feature-card reveal">
+            <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+            <div class="feature-title">Verified Listings</div>
+            <p class="feature-desc">Every animal comes with authenticated health
+              certificates and ownership documentation, ensuring complete
+              transparency and buyer confidence.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-icon"><i class="bi bi-broadcast"></i></div>
+            <div class="feature-title">Remote Auctions</div>
+            <p class="feature-desc">Participate in real-time bidding from
+              anywhere. No travel needed , connect with buyers across Uganda
+              from the comfort of your farm.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-icon"><i class="bi bi-graph-up-arrow"></i></div>
+            <div class="feature-title">AI Fair Pricing</div>
+            <p class="feature-desc">AI-powered price recommendations based on
+              market trends help you get the best value for your livestock , no
+              more exploitation.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-icon"><i class="bi bi-credit-card"></i></div>
+            <div class="feature-title">Secure Payments</div>
+            <p class="feature-desc">Escrow payment system protects both buyers
+              and sellers, ensuring safe and reliable transactions every single
+              time.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-icon"><i class="bi bi-phone"></i></div>
+            <div class="feature-title">Mobile-First</div>
+            <p class="feature-desc">Optimized for low-bandwidth areas and basic
+              smartphones, bringing digital markets to every farmer in rural
+              Uganda.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-icon"><i class="bi bi-chat-dots"></i></div>
+            <div class="feature-title">Direct Messaging</div>
+            <p class="feature-desc">Built-in communication tools let farmers and
+              buyers negotiate directly, building trust and facilitating smooth
+              transactions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════
+     HOW IT WORKS
+══════════════════════════════ -->
+    <section id="how-it-works">
+      <div class="container">
+        <div class="section-tag"><span class="tag">Simple Process</span></div>
+        <h2 class="section-title reveal">How
+          <span class="gradient-text">ChuuAuction</span>
+          Works</h2>
+        <p class="section-sub reveal">From listing to payment in four seamless
+          steps</p>
+
+        <div class="steps-wrapper">
+          <div class="step">
+            <div class="step-left"><div class="step-num">01</div></div>
+            <div class="step-right">
+              <div class="step-card reveal">
+                <div class="step-info">
+                  <div class="step-title">Create Your Account</div>
+                  <p class="step-desc">Sign up as a farmer or buyer in minutes.
+                    Verify your identity with LC1 documentation for complete
+                    transparency and trustworthy trading.</p>
+                </div>
+                <div class="step-visual">👤</div>
               </div>
-              <p class="text-gray-400 dark:text-gray-600 text-lg">
-                Sign up as a farmer or buyer in minutes. Verify your identity
-                with LC1 documentation for complete transparency.
-              </p>
             </div>
           </div>
-          <div
-            class="flex justify-center md:justify-start perspective-container"
-          >
-            <div
-              class="w-64 h-64 rounded-3xl glass border border-orange-500/30 flex items-center justify-center card-3d cursor-pointer"
-            >
-              <i
-                class="bi bi-person-plus text-8xl text-orange-500 animate-pulse-slow"
-              ></i>
-            </div>
-          </div>
-        </div>
 
-        <!-- Step 2 -->
-        <div
-          class="md:grid md:grid-cols-2 gap-8 items-center animate-fade-in"
-          style="animation-delay: 0.2s;"
-        >
-          <div
-            class="flex justify-center md:justify-end order-2 md:order-1 perspective-container"
-          >
-            <div
-              class="w-64 h-64 rounded-3xl glass border border-orange-500/30 flex items-center justify-center card-3d cursor-pointer"
-            >
-              <i
-                class="bi bi-card-checklist text-8xl text-orange-500 animate-pulse-slow"
-              ></i>
-            </div>
-          </div>
-          <div class="mb-8 md:mb-0 order-1 md:order-2">
-            <div class="flex items-center gap-4 mb-4">
-              <a
-                href="/auth/register"
-                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center font-black text-2xl font-display shadow-lg shadow-orange-500/50 animate-glow cursor-pointer inline-flex"
-              >
-                2
-              </a>
-
-              <h3 class="text-2xl md:text-3xl font-bold font-display">List Your
-                Livestock</h3>
-            </div>
-            <p class="text-gray-400 dark:text-gray-600 text-lg">
-              Upload photos, health certificates, and details. Our AI suggests
-              fair prices based on market data and animal specifications.
-            </p>
-          </div>
-        </div>
-
-        <!-- Step 3 -->
-        <div
-          class="md:grid md:grid-cols-2 gap-8 items-center animate-fade-in"
-          style="animation-delay: 0.3s;"
-        >
-          <div class="md:text-right mb-8 md:mb-0">
-            <div class="inline-block md:block">
-              <div class="flex items-center gap-4 mb-4 md:justify-end">
-                <a
-                  href="/auth/register"
-                  class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center font-black text-2xl font-display shadow-lg shadow-orange-500/50 animate-glow cursor-pointer inline-flex"
-                >
-                  3
-                </a>
-
-                <h3 class="text-2xl md:text-3xl font-bold font-display">Auction
-                  Live</h3>
+          <div class="step">
+            <div class="step-left"><div class="step-num">02</div></div>
+            <div class="step-right">
+              <div class="step-card reveal">
+                <div class="step-info">
+                  <div class="step-title">List Your Livestock</div>
+                  <p class="step-desc">Upload photos, health certificates, and
+                    details. Our AI suggests fair prices based on real market
+                    data and animal specifications.</p>
+                </div>
+                <div class="step-visual">📋</div>
               </div>
-              <p class="text-gray-400 dark:text-gray-600 text-lg">
-                Participate in real-time auctions. Watch bids come in from
-                verified buyers across Uganda, ensuring competitive pricing.
-              </p>
             </div>
           </div>
-          <div
-            class="flex justify-center md:justify-start perspective-container"
-          >
-            <div
-              class="w-64 h-64 rounded-3xl glass border border-orange-500/30 flex items-center justify-center card-3d cursor-pointer"
-            >
-              <i
-                class="bi bi-hammer text-8xl text-orange-500 animate-pulse-slow"
+
+          <div class="step">
+            <div class="step-left"><div class="step-num">03</div></div>
+            <div class="step-right">
+              <div class="step-card reveal">
+                <div class="step-info">
+                  <div class="step-title">Auction Live</div>
+                  <p class="step-desc">Participate in real-time auctions. Watch
+                    bids come in from verified buyers across Uganda, ensuring
+                    truly competitive pricing.</p>
+                </div>
+                <div class="step-visual">🔨</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-left"><div class="step-num">04</div></div>
+            <div class="step-right">
+              <div class="step-card reveal">
+                <div class="step-info">
+                  <div class="step-title">Receive Secure Payment</div>
+                  <p class="step-desc">Funds held in escrow are released when
+                    both parties confirm transaction completion , safe,
+                    transparent, guaranteed.</p>
+                </div>
+                <div class="step-visual">🏆</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════
+     IMPACT
+══════════════════════════════ -->
+    <section id="impact">
+      <div class="container">
+        <div class="section-tag"><span class="tag">Making A Difference</span></div>
+        <h2 class="section-title reveal">Our
+          <span class="gradient-text">Impact</span>
+          on Uganda</h2>
+        <p class="section-sub reveal">Contributing to Sustainable Development
+          Goals and transforming rural livelihoods</p>
+
+        <div class="sdg-grid">
+          <div class="sdg-card reveal">
+            <span class="sdg-emoji">🎯</span>
+            <div class="sdg-num">SDG 1</div>
+            <div class="sdg-name">No Poverty</div>
+            <p class="sdg-desc">Increasing farmer incomes by 45% through fair
+              and direct market access</p>
+          </div>
+          <div class="sdg-card reveal">
+            <span class="sdg-emoji">🌾</span>
+            <div class="sdg-num">SDG 2</div>
+            <div class="sdg-name">Zero Hunger</div>
+            <p class="sdg-desc">Supporting sustainable agriculture and improved
+              food security nationwide</p>
+          </div>
+          <div class="sdg-card reveal">
+            <span class="sdg-emoji">💼</span>
+            <div class="sdg-num">SDG 8</div>
+            <div class="sdg-name">Decent Work</div>
+            <p class="sdg-desc">Creating economic opportunities for over 10,000
+              farmers across Uganda</p>
+          </div>
+          <div class="sdg-card reveal">
+            <span class="sdg-emoji">🏗️</span>
+            <div class="sdg-num">SDG 9</div>
+            <div class="sdg-name">Innovation</div>
+            <p class="sdg-desc">Modernizing agricultural infrastructure through
+              cutting-edge digital solutions</p>
+          </div>
+        </div>
+
+        <div class="impact-stats">
+          <div class="impact-stat reveal">
+            <div class="impact-num">45%</div>
+            <div class="impact-label">Average Income Increase for Farmers</div>
+          </div>
+          <div class="impact-stat reveal">
+            <div class="impact-num">72%</div>
+            <div class="impact-label">Reduction in Middleman Dependence</div>
+          </div>
+          <div class="impact-stat reveal">
+            <div class="impact-num">4</div>
+            <div class="impact-label">Regions Served: Arua, Karamoja, Mbarara &
+              Kigezi</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════
+     TESTIMONIALS
+══════════════════════════════ -->
+    <section id="testimonials">
+      <div class="container">
+        <div class="section-tag"><span class="tag">Success Stories</span></div>
+        <h2 class="section-title reveal">Hear From Our
+          <span class="gradient-text">Community</span></h2>
+        <p class="section-sub reveal" style="margin-bottom:48px;">Real farmers.
+          Real results. Real impact.</p>
+
+        <div class="testimonials-grid">
+          <div class="testi-card reveal">
+            <div class="stars">
+              <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                class="bi bi-star-fill"
+              ></i><i class="bi bi-star-fill"></i><i
+                class="bi bi-star-fill"
               ></i>
             </div>
+            <p class="testi-quote">"ChuuAuction changed my life! I sold 15
+              cattle at fair prices without traveling to Kampala. Now I can
+              support my family and invest more in my farm."</p>
+            <div class="testi-author">
+              <div class="testi-avatar">AM</div>
+              <div>
+                <div class="testi-name">Agnes Mutoni</div>
+                <div class="testi-role">Farmer · Mbarara</div>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <!-- Step 4 -->
-        <div
-          class="md:grid md:grid-cols-2 gap-8 items-center animate-fade-in"
-          style="animation-delay: 0.4s;"
-        >
-          <div
-            class="flex justify-center md:justify-end order-2 md:order-1 perspective-container"
-          >
-            <div
-              class="w-64 h-64 rounded-3xl glass border border-orange-500/30 flex items-center justify-center card-3d cursor-pointer"
-            >
-              <i
-                class="bi bi-trophy text-8xl text-orange-500 animate-pulse-slow"
+          <div class="testi-card reveal">
+            <div class="stars">
+              <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                class="bi bi-star-fill"
+              ></i><i class="bi bi-star-fill"></i><i
+                class="bi bi-star-fill"
               ></i>
             </div>
-          </div>
-          <div class="mb-8 md:mb-0 order-1 md:order-2">
-            <div class="flex items-center gap-4 mb-4">
-              <a
-                href="/auth/register"
-                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center font-black text-2xl font-display shadow-lg shadow-orange-500/50 animate-glow cursor-pointer inline-flex"
-              >
-                4
-              </a>
-
-              <h3 class="text-2xl md:text-3xl font-bold font-display">Secure
-                Payment</h3>
+            <p class="testi-quote">"As a buyer, I trust ChuuAuction completely.
+              Verified health certificates give me peace of mind, and the
+              platform is incredibly easy to use!"</p>
+            <div class="testi-author">
+              <div class="testi-avatar">JK</div>
+              <div>
+                <div class="testi-name">James Okello</div>
+                <div class="testi-role">Institutional Buyer · Kampala</div>
+              </div>
             </div>
-            <p class="text-gray-400 dark:text-gray-600 text-lg">
-              Receive payment through our escrow system. Funds are released when
-              both parties confirm transaction completion.
-            </p>
+          </div>
+          <div class="testi-card reveal">
+            <div class="stars">
+              <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                class="bi bi-star-fill"
+              ></i><i class="bi bi-star-fill"></i><i
+                class="bi bi-star-fill"
+              ></i>
+            </div>
+            <p class="testi-quote">"The price recommendation feature is
+              incredible. I used to get exploited by middlemen, but now I know
+              exactly what my goats are worth!"</p>
+            <div class="testi-author">
+              <div class="testi-avatar">SN</div>
+              <div>
+                <div class="testi-name">Sarah Nalwoga</div>
+                <div class="testi-role">Farmer · Arua</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- Impact Section -->
-<section id="impact" class="py-24 relative">
-  <div class="container mx-auto px-4">
-    <div class="text-center mb-16 animate-fade-in">
-      <div
-        class="inline-block px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 mb-4"
-      >
-        <span class="text-sm font-semibold text-orange-500">MAKING A DIFFERENCE</span>
-      </div>
-      <h2 class="text-4xl md:text-6xl font-black mb-6 font-display">
-        Our
-        <span class="text-gradient">Impact</span>
-        on Uganda
-      </h2>
-      <p class="text-xl text-gray-400 dark:text-gray-600 max-w-2xl mx-auto">
-        Contributing to Sustainable Development Goals and transforming rural
-        livelihoods
-      </p>
-    </div>
-
-    <!-- SDG Cards -->
-    <div
-      class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto mb-16"
-    >
-      <div
-        class="p-8 rounded-3xl glass border border-red-500/30 hover:border-red-500/50 transition-all duration-500 card-3d animate-fade-in cursor-pointer"
-        style="animation-delay: 0.1s;"
-      >
-        <div class="text-5xl mb-4 animate-bounce-slow">🎯</div>
-        <h3 class="text-xl font-bold mb-2 font-display">SDG 1</h3>
-        <p class="text-sm text-gray-400 dark:text-gray-600">No Poverty</p>
-        <p class="text-gray-300 dark:text-gray-700 mt-4">Increasing farmer
-          incomes by 45% through fair market access</p>
-      </div>
-
-      <div
-        class="p-8 rounded-3xl glass border border-amber-500/30 hover:border-amber-500/50 transition-all duration-500 card-3d animate-fade-in cursor-pointer"
-        style="animation-delay: 0.2s;"
-      >
-        <div
-          class="text-5xl mb-4 animate-bounce-slow"
-          style="animation-delay: 0.5s;"
-        >🌾</div>
-        <h3 class="text-xl font-bold mb-2 font-display">SDG 2</h3>
-        <p class="text-sm text-gray-400 dark:text-gray-600">Zero Hunger</p>
-        <p class="text-gray-300 dark:text-gray-700 mt-4">Supporting sustainable
-          agriculture and food security</p>
-      </div>
-
-      <div
-        class="p-8 rounded-3xl glass border border-purple-500/30 hover:border-purple-500/50 transition-all duration-500 card-3d animate-fade-in cursor-pointer"
-        style="animation-delay: 0.3s;"
-      >
-        <div
-          class="text-5xl mb-4 animate-bounce-slow"
-          style="animation-delay: 1s;"
-        >💼</div>
-        <h3 class="text-xl font-bold mb-2 font-display">SDG 8</h3>
-        <p class="text-sm text-gray-400 dark:text-gray-600">Decent Work</p>
-        <p class="text-gray-300 dark:text-gray-700 mt-4">Creating economic
-          opportunities for 10,000+ farmers</p>
-      </div>
-
-      <div
-        class="p-8 rounded-3xl glass border border-orange-500/30 hover:border-orange-500/50 transition-all duration-500 card-3d animate-fade-in cursor-pointer"
-        style="animation-delay: 0.4s;"
-      >
-        <div
-          class="text-5xl mb-4 animate-bounce-slow"
-          style="animation-delay: 1.5s;"
-        >🏗️</div>
-        <h3 class="text-xl font-bold mb-2 font-display">SDG 9</h3>
-        <p class="text-sm text-gray-400 dark:text-gray-600">Innovation</p>
-        <p class="text-gray-300 dark:text-gray-700 mt-4">Modernizing
-          infrastructure through digital solutions</p>
-      </div>
-    </div>
-
-    <!-- Impact Stats -->
-    <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-      <div
-        class="text-center p-8 rounded-3xl glass border border-gray-700/50 dark:border-gray-300/50 card-3d animate-scale-in cursor-pointer"
-        style="animation-delay: 0.5s;"
-      >
-        <div
-          class="text-6xl font-black text-gradient mb-4 font-display neon-glow"
-        >45%</div>
-        <p class="text-gray-300 dark:text-gray-700 text-lg">Average Income
-          Increase for Farmers</p>
-      </div>
-
-      <div
-        class="text-center p-8 rounded-3xl glass border border-gray-700/50 dark:border-gray-300/50 card-3d animate-scale-in cursor-pointer"
-        style="animation-delay: 0.6s;"
-      >
-        <div
-          class="text-6xl font-black text-gradient mb-4 font-display neon-glow"
-        >72%</div>
-        <p class="text-gray-300 dark:text-gray-700 text-lg">Reduction in
-          Middleman Dependence</p>
-      </div>
-
-      <div
-        class="text-center p-8 rounded-3xl glass border border-gray-700/50 dark:border-gray-300/50 card-3d animate-scale-in cursor-pointer"
-        style="animation-delay: 0.7s;"
-      >
-        <div
-          class="text-6xl font-black text-gradient mb-4 font-display neon-glow"
-        >4</div>
-        <p class="text-gray-300 dark:text-gray-700 text-lg">Regions Served:
-          Arua, Karamoja, Mbarara, Kigezi</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Testimonials Section -->
-<section
-  id="testimonials"
-  class="py-24 bg-gradient-to-b from-gray-900/50 to-gray-950/50 dark:from-gray-50 dark:to-white"
->
-  <div class="container mx-auto px-4">
-    <div class="text-center mb-16 animate-fade-in">
-      <div
-        class="inline-block px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 mb-4"
-      >
-        <span class="text-sm font-semibold text-orange-500">SUCCESS STORIES</span>
-      </div>
-      <h2 class="text-4xl md:text-6xl font-black mb-6 font-display">
-        Hear From Our
-        <span class="text-gradient">Community</span>
-      </h2>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-      <!-- Testimonial 1 -->
-      <div
-        class="p-8 rounded-3xl glass border border-gray-700/50 dark:border-gray-300/50 hover:border-orange-500/50 transition-all duration-500 card-3d animate-fade-in cursor-pointer"
-        style="animation-delay: 0.1s;"
-      >
-        <div class="flex items-center gap-1 mb-4">
-          <i class="bi bi-star-fill text-yellow-500"></i>
-          <i class="bi bi-star-fill text-yellow-500"></i>
-          <i class="bi bi-star-fill text-yellow-500"></i>
-          <i class="bi bi-star-fill text-yellow-500"></i>
-          <i class="bi bi-star-fill text-yellow-500"></i>
-        </div>
-        <p class="text-gray-300 dark:text-gray-700 mb-6 italic leading-relaxed">
-          "ChuuAuction changed my life! I sold 15 cattle at fair prices without
-          traveling to Kampala. Now I can support my family and invest in my
-          farm."
-        </p>
-        <div class="flex items-center gap-4">
-          <div
-            class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center font-bold text-white font-display shadow-lg shadow-orange-500/50"
-          >AM</div>
-          <div>
-            <div class="font-semibold font-display">Agnes Mutoni</div>
-            <div class="text-sm text-gray-400 dark:text-gray-600">Farmer,
-              Mbarara</div>
+    <!-- ══════════════════════════════
+     CTA
+══════════════════════════════ -->
+    <section id="cta-section">
+      <div class="cta-bg"></div>
+      <div class="container">
+        <div class="cta-inner">
+          <h2 class="cta-title reveal">Ready to Transform Your
+            <span class="gradient-text">Livestock Trade?</span></h2>
+          <p class="cta-sub reveal">Join thousands of farmers and buyers already
+            benefiting from transparent, fair, and efficient livestock trading
+            across Uganda.</p>
+          <div class="cta-btns reveal">
+            <a href="/auth/register" class="btn-primary">
+              Get Started Today
+            </a>
+            <a href="/auth/login" class="btn-ghost">
+              <i class="bi bi-envelope"></i>
+              Contact Us
+            </a>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- Testimonial 2 -->
-      <div
-        class="p-8 rounded-3xl glass border border-gray-700/50 dark:border-gray-300/50 hover:border-orange-500/50 transition-all duration-500 card-3d animate-fade-in cursor-pointer"
-        style="animation-delay: 0.2s;"
-      >
-        <div class="flex items-center gap-1 mb-4">
-          <i class="bi bi-star-fill text-yellow-500"></i>
-          <i class="bi bi-star-fill text-yellow-500"></i>
-          <i class="bi bi-star-fill text-yellow-500"></i>
-          <i class="bi bi-star-fill text-yellow-500"></i>
-          <i class="bi bi-star-fill text-yellow-500"></i>
+    <!-- ══════════════════════════════
+     FOOTER
+══════════════════════════════ -->
+    <footer>
+      <div class="container footer-inner">
+        <div class="footer-logo">
+          <div class="footer-logo-icon">🐐</div>
+          <div class="footer-logo-text"><span
+              class="gradient-text"
+            >Chuu</span>Auction</div>
         </div>
-        <p class="text-gray-300 dark:text-gray-700 mb-6 italic leading-relaxed">
-          "As a buyer, I trust ChuuAuction completely. Verified health
-          certificates give me peace of mind, and the platform is so easy to
-          use!"
-        </p>
-        <div class="flex items-center gap-4">
-          <div
-            class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center font-bold text-white font-display shadow-lg shadow-orange-500/50"
-          >JK</div>
-          <div>
-            <div class="font-semibold font-display">James Okello</div>
-            <div class="text-sm text-gray-400 dark:text-gray-600">Institutional
-              Buyer, Kampala</div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Testimonial 3 -->
-      <div
-        class="p-8 rounded-3xl glass border border-gray-700/50 dark:border-gray-300/50 hover:border-orange-500/50 transition-all duration-500 card-3d animate-fade-in cursor-pointer"
-        style="animation-delay: 0.3s;"
-      >
-        <div class="flex items-center gap-1 mb-4">
-          <i class="bi bi-star-fill text-yellow-500"></i>
-          <i class="bi bi-star-fill text-yellow-500"></i>
-          <i class="bi bi-star-fill text-yellow-500"></i>
-          <i class="bi bi-star-fill text-yellow-500"></i>
-          <i class="bi bi-star-fill text-yellow-500"></i>
-        </div>
-        <p class="text-gray-300 dark:text-gray-700 mb-6 italic leading-relaxed">
-          "The price recommendation feature is incredible. I used to get
-          exploited by middlemen, but now I know exactly what my goats are
-          worth!"
-        </p>
-        <div class="flex items-center gap-4">
-          <div
-            class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center font-bold text-white font-display shadow-lg shadow-orange-500/50"
-          >SM</div>
-          <div>
-            <div class="font-semibold font-display">Sarah Nalwoga</div>
-            <div class="text-sm text-gray-400 dark:text-gray-600">Farmer, Arua</div>
-          </div>
+        <div class="footer-copy">© 2026 ChuuAuction · All rights reserved ·
+          Empowering Uganda's farmers</div>
+
+        <div class="footer-socials">
+          <a
+            href="https://www.facebook.com/itsanguzur"
+            class="social-btn"
+            target="_blank"
+            rel="noopener"
+          ><i class="bi bi-facebook"></i></a>
+          <a
+            href="https://x.com/itsranguzu"
+            class="social-btn"
+            target="_blank"
+            rel="noopener"
+          ><i class="bi bi-twitter-x"></i></a>
+          <a
+            href="https://www.instagram.com/itsranguzu_/"
+            class="social-btn"
+            target="_blank"
+            rel="noopener"
+          ><i class="bi bi-instagram"></i></a>
+          <a
+            href="https://www.linkedin.com/in/roggersanguzu/"
+            class="social-btn"
+            target="_blank"
+            rel="noopener"
+          ><i class="bi bi-linkedin"></i></a>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </footer>
 
-<!-- CTA Section -->
-<section class="py-24 relative overflow-hidden">
-  <div class="absolute inset-0">
-    <div
-      class="absolute inset-0 bg-gradient-to-r from-orange-600/20 via-red-600/20 to-orange-600/20 animate-pulse-slow"
-    ></div>
-  </div>
-
-  <div class="container mx-auto px-4 relative z-10">
-    <div class="max-w-4xl mx-auto text-center animate-fade-in">
-      <h2 class="text-4xl md:text-6xl font-black mb-6 font-display">
-        Ready to Transform Your
-        <span class="text-gradient neon-glow">Livestock Trade?</span>
-      </h2>
-      <p class="text-xl text-gray-300 dark:text-gray-600 mb-8">
-        Join thousands of farmers and buyers who are already benefiting from
-        transparent, fair, and efficient livestock trading.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a
-          href="/auth/register"
-          class="px-10 py-5 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-orange-500/50 transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 card-3d cursor-pointer inline-block text-center"
-        >
-          Get Started Today
-        </a>
-
-        <a
-          href="/auth/login"
-          class="px-10 py-5 glass border-2 border-gray-700 dark:border-gray-300 text-white dark:text-gray-900 rounded-2xl font-bold text-lg hover:bg-gray-800 dark:hover:bg-gray-200 hover:border-orange-500 transition-all duration-300 card-3d cursor-pointer"
-        >
-          Contact Us
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer class="py-12 border-t border-gray-800 dark:border-gray-300">
-  <div class="container mx-auto px-4">
-    <div class="text-center">
-      <div class="flex items-center justify-center gap-3 mb-4">
-        <div
-          class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center shadow-lg shadow-orange-500/50"
-        >
-          <i class="bi bi-grid-3x3-gap-fill text-white text-xl"></i>
-        </div>
-        <h3 class="text-2xl font-bold font-display">
-          <span class="text-gradient">Chuu</span><span>Auction</span>
-        </h3>
-      </div>
-      <p class="text-gray-400 dark:text-gray-600 mb-6">Empowering Uganda's
-        farmers, one auction at a time.</p>
-      <div class="flex justify-center gap-6 mb-6">
-        <a
-          href="https://www.facebook.com/itsanguzur"
-          class="w-10 h-10 rounded-lg glass flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"
-        >
-          <i class="bi bi-facebook text-orange-500"></i>
-        </a>
-        <a
-          href="https://x.com/itsranguzu"
-          class="w-10 h-10 rounded-lg glass flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"
-        >
-          <i class="bi bi-twitter text-orange-500"></i>
-        </a>
-        <a
-          href="https://www.instagram.com/itsranguzu_/"
-          class="w-10 h-10 rounded-lg glass flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"
-        >
-          <i class="bi bi-instagram text-orange-500"></i>
-        </a>
-        <a
-          href="https://www.linkedin.com/in/roggersanguzu/"
-          class="w-10 h-10 rounded-lg glass flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"
-        >
-          <i class="bi bi-linkedin text-orange-500"></i>
-        </a>
-      </div>
-      <p class="text-sm text-gray-500 dark:text-gray-600">© 2026 ChuuAuction.
-        All rights reserved.</p>
-    </div>
-  </div>
-</footer>
-
-<style>
-  .text-gradient {
-    background: linear-gradient(135deg, #f97316, #dc2626, #ea580c);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: gradient 3s ease infinite;
-    background-size: 200% 200%;
-  }
-
-  @keyframes gradient {
-    0%,
-    100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-  }
-
-  .glass {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .dark .glass {
-    background: rgba(0, 0, 0, 0.2);
-  }
-
-  .card-3d {
-    transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  .card-3d:hover {
-    transform: rotateY(10deg) rotateX(5deg) scale(1.05);
-  }
-
-  .shimmer-effect {
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.1),
-      transparent
-    );
-    background-size: 200% 100%;
-    animation: shimmer 2s infinite;
-  }
-
-  @keyframes shimmer {
-    0% {
-      background-position: -200% 0;
-    }
-    100% {
-      background-position: 200% 0;
-    }
-  }
-
-  .particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: rgba(249, 115, 22, 0.6);
-    border-radius: 50%;
-    pointer-events: none;
-    animation: particleFloat 4s ease-in-out infinite;
-  }
-
-  @keyframes particleFloat {
-    0%,
-    100% {
-      transform: translateY(0) translateX(0);
-      opacity: 0;
-    }
-    10% {
-      opacity: 1;
-    }
-    90% {
-      opacity: 1;
-    }
-    100% {
-      transform: translateY(-100px) translateX(20px);
-      opacity: 0;
-    }
-  }
-
-  .neon-glow {
-    text-shadow:
-      0 0 10px rgba(249, 115, 22, 0.8),
-      0 0 20px rgba(249, 115, 22, 0.6),
-      0 0 30px rgba(249, 115, 22, 0.4);
-  }
-
-  .animated-grid {
-    background-image:
-      linear-gradient(rgba(249, 115, 22, 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(249, 115, 22, 0.1) 1px, transparent 1px);
-    background-size: 50px 50px;
-    animation: gridMove 20s linear infinite;
-  }
-
-  @keyframes gridMove {
-    0% {
-      background-position: 0 0;
-    }
-    100% {
-      background-position: 50px 50px;
-    }
-  }
-
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0px) rotate(0deg);
-    }
-    50% {
-      transform: translateY(-20px) rotate(5deg);
-    }
-  }
-
-  .animate-fade-in {
-    animation: fadeIn 0.6s ease-out;
-  }
-
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .animate-scale-in {
-    animation: scaleIn 0.4s ease-out;
-  }
-
-  @keyframes scaleIn {
-    0% {
-      transform: scale(0.9);
-      opacity: 0;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-
-  .animate-pulse-slow {
-    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  .animate-bounce-slow {
-    animation: bounce 3s infinite;
-  }
-
-  .animate-glow {
-    animation: glow 2s ease-in-out infinite;
-  }
-
-  @keyframes glow {
-    0%,
-    100% {
-      box-shadow: 0 0 20px rgba(249, 115, 22, 0.4);
-    }
-    50% {
-      box-shadow: 0 0 40px rgba(249, 115, 22, 0.8);
-    }
-  }
-
-  .perspective-container {
-    perspective: 1000px;
-  }
-
-  /* Custom scrollbar */
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: #1f2937;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #f97316, #dc2626);
-    border-radius: 5px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #ea580c, #b91c1c);
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
-</style>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() { // Theme Toggle
-  Functionality - DEFAULT DARK const themeToggle =
-  document.getElementById('theme-toggle'); const mobileThemeToggle =
-  document.getElementById('mobile-theme-toggle'); const html =
-  document.documentElement; // Set default to dark mode (no 'dark' class needed
-  for dark mode) const currentTheme = localStorage.getItem('theme') || 'dark';
-  if (currentTheme === 'light') { html.classList.add('dark'); } function
-  toggleTheme() { html.classList.toggle('dark'); const newTheme =
-  html.classList.contains('dark') ? 'light' : 'dark';
-  localStorage.setItem('theme', newTheme); }
-  themeToggle?.addEventListener('click', toggleTheme);
-  mobileThemeToggle?.addEventListener('click', toggleTheme); // Mobile Menu
-  Functionality - FIXED const mobileMenuBtn =
-  document.getElementById('mobile-menu-btn'); const mobileMenu =
-  document.getElementById('mobile-menu'); const closeMenuBtn =
-  document.getElementById('close-menu-btn'); const mobileMenuLinks =
-  document.querySelectorAll('.mobile-menu-link'); function openMobileMenu() {
-  mobileMenu.classList.remove('hidden'); document.body.style.overflow =
-  'hidden'; } function closeMobileMenu() { mobileMenu.classList.add('hidden');
-  document.body.style.overflow = ''; } mobileMenuBtn?.addEventListener('click',
-  openMobileMenu); closeMenuBtn?.addEventListener('click', closeMobileMenu); //
-  Close menu when clicking on a link with SMOOTH SCROLL
-  mobileMenuLinks.forEach(link => { link.addEventListener('click', (e) => {
-  e.preventDefault(); const targetId = link.getAttribute('href');
-  closeMobileMenu(); setTimeout(() => { const targetElement =
-  document.querySelector(targetId); if (targetElement) { const navbar =
-  document.getElementById('navbar'); const navbarHeight = navbar.offsetHeight;
-  const targetPosition = targetElement.getBoundingClientRect().top +
-  window.pageYOffset; const offsetPosition = targetPosition - navbarHeight - 20;
-  window.scrollTo({ top: offsetPosition, behavior: 'smooth' }); } }, 300); });
-  }); // Navbar Scroll Effect const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => { if (window.scrollY > 50) {
-  navbar.classList.add('bg-gray-950/95', 'dark:bg-white/95', 'backdrop-blur-lg',
-  'border-b', 'border-gray-800/50', 'dark:border-gray-300/50', 'shadow-xl'); }
-  else { navbar.classList.remove('bg-gray-950/95', 'dark:bg-white/95',
-  'backdrop-blur-lg', 'border-b', 'border-gray-800/50',
-  'dark:border-gray-300/50', 'shadow-xl'); } }); // SMOOTH SCROLLING for all
-  anchor links document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) { const href =
-  this.getAttribute('href'); if (href === '#' || href === '/') return;
-  e.preventDefault(); const targetElement = document.querySelector(href); if
-  (targetElement) { const navbarHeight = navbar.offsetHeight; const
-  targetPosition = targetElement.getBoundingClientRect().top +
-  window.pageYOffset; const offsetPosition = targetPosition - navbarHeight - 20;
-  window.scrollTo({ top: offsetPosition, behavior: 'smooth' }); } }); }); //
-  Intersection Observer for scroll animations const observerOptions = {
-  threshold: 0.1, rootMargin: '0px 0px -100px 0px' }; const observer = new
-  IntersectionObserver((entries) => { entries.forEach(entry => { if
-  (entry.isIntersecting) { entry.target.style.opacity = '1';
-  entry.target.style.transform = 'translateY(0)'; } }); }, observerOptions); //
-  Observe all animated elements document.querySelectorAll('.animate-fade-in,
-  .animate-scale-in').forEach(el => { el.style.opacity = '0'; el.style.transform
-  = 'translateY(20px)'; observer.observe(el); }); // Add 3D tilt effect on cards
-  document.querySelectorAll('.card-3d').forEach(card => {
-  card.addEventListener('mousemove', (e) => { const rect =
-  card.getBoundingClientRect(); const x = e.clientX - rect.left; const y =
-  e.clientY - rect.top; const centerX = rect.width / 2; const centerY =
-  rect.height / 2; const rotateX = (y - centerY) / 10; const rotateY = (centerX
-  - x) / 10; card.style.transform = `perspective(1000px) rotateX(${rotateX}deg)
-  rotateY(${rotateY}deg) scale(1.05)`; }); card.addEventListener('mouseleave',
-  () => { card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)
-  scale(1)'; }); }); console.log('ChuuAuction Loaded Successfully!');
-  console.log(' Features: Mobile Menu Fixed, Smooth Scroll, Dark Mode Default,
-  Pointer Cursors'); });
-</script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() { /* ─── THEME
+      ─── */ const html = document.documentElement; const themeToggle =
+      document.getElementById('theme-toggle'); const themeIcon =
+      document.getElementById('theme-icon'); const savedTheme =
+      localStorage.getItem('chuu-theme') || 'dark';
+      html.setAttribute('data-theme', savedTheme); updateThemeIcon(savedTheme);
+      function updateThemeIcon(t) { themeIcon.className = t === 'dark' ? 'bi
+      bi-moon-stars' : 'bi bi-sun-fill'; } themeToggle.addEventListener('click',
+      () => { const cur = html.getAttribute('data-theme'); const next = cur ===
+      'dark' ? 'light' : 'dark'; html.setAttribute('data-theme', next);
+      localStorage.setItem('chuu-theme', next); updateThemeIcon(next); }); /*
+      ─── NAVBAR SCROLL ─── */ const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40); }, { passive:
+      true }); /* ─── MOBILE DRAWER ─── */ const hamburger =
+      document.getElementById('hamburger'); const drawer =
+      document.getElementById('drawer'); const drawerOverlay =
+      document.getElementById('drawer-overlay'); const drawerClose =
+      document.getElementById('drawer-close'); function openDrawer() {
+      drawer.classList.add('open'); drawerOverlay.classList.add('open');
+      hamburger.classList.add('open'); document.body.style.overflow = 'hidden';
+      } function closeDrawer() { drawer.classList.remove('open');
+      drawerOverlay.classList.remove('open');
+      hamburger.classList.remove('open'); document.body.style.overflow = ''; }
+      hamburger.addEventListener('click', openDrawer);
+      drawerClose.addEventListener('click', closeDrawer);
+      drawerOverlay.addEventListener('click', closeDrawer);
+      document.addEventListener('keydown', e => { if (e.key === 'Escape')
+      closeDrawer(); }); // Close drawer on nav link click + smooth scroll
+      document.querySelectorAll('.drawer-link').forEach(link => {
+      link.addEventListener('click', e => { const href =
+      link.getAttribute('href'); if (href && href.startsWith('#')) {
+      e.preventDefault(); closeDrawer(); setTimeout(() => { const target =
+      document.querySelector(href); if (target) { const offset =
+      navbar.offsetHeight + 16; window.scrollTo({ top:
+      target.getBoundingClientRect().top + window.scrollY - offset, behavior:
+      'smooth' }); } }, 350); } }); }); // Touch swipe right to close let
+      touchStartX = 0; drawer.addEventListener('touchstart', e => { touchStartX
+      = e.changedTouches[0].screenX; }, { passive: true });
+      drawer.addEventListener('touchend', e => { if (e.changedTouches[0].screenX
+      - touchStartX > 60) closeDrawer(); }, { passive: true }); /* ─── SMOOTH
+      SCROLL desktop nav links ─── */
+      document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', function(e) { const href =
+      this.getAttribute('href'); if (!href || href === '#') return; const target
+      = document.querySelector(href); if (!target) return; e.preventDefault();
+      const offset = navbar.offsetHeight + 16; window.scrollTo({ top:
+      target.getBoundingClientRect().top + window.scrollY - offset, behavior:
+      'smooth' }); }); }); /* ─── REVEAL ON SCROLL ─── */
+      document.body.classList.add('js-loaded'); const revealEls =
+      document.querySelectorAll('.reveal'); const observer = new
+      IntersectionObserver((entries) => { entries.forEach((entry) => { if
+      (entry.isIntersecting) { entry.target.classList.add('visible');
+      observer.unobserve(entry.target); } }); }, { threshold: 0.08, rootMargin:
+      '0px 0px -30px 0px' }); revealEls.forEach((el, i) => {
+      el.style.transitionDelay = (i % 4) * 80 + 'ms'; observer.observe(el); });
+      console.log('🐐 ChuuAuction Loaded!'); }); // end DOMContentLoaded
+    </script>
+  </body>
+</html>

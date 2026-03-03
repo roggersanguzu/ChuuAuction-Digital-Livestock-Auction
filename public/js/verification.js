@@ -530,7 +530,7 @@ function initializeFormSubmission() {
         document
           .getElementById("view-verifications-btn")
           .addEventListener("click", function () {
-            window.location.href = "/verification/my-verifications";
+            window.location.href = "/verification/status";
           });
       } else {
         console.error(`Submission failed: ${result.message}`);
