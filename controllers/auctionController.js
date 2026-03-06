@@ -66,7 +66,13 @@ export const createAuction = async (req, res) => {
       publicId: img.public_id,
     }));
 
-    const sellerId = req.user?._id || "64ab1234abcd5678ef901234";
+    const sellerId = req.session?.user?.id || req.user?._id;
+    if (!sellerId) {
+      console.warn("[Controller] Missing authenticated seller ID in session");
+      return res.status(401).render("auctions/create", {
+        errorMessage: "Please log in again before creating an auction.",
+      });
+    }
     console.log("[Controller] Using seller ID:", sellerId);
 
     console.log("[Controller] Creating auction document in database");

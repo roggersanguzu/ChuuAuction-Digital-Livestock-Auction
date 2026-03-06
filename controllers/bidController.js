@@ -3,6 +3,15 @@ import Bid from "../models/Bid.js";
 import Auction from "../models/Auction.js";
 import mongoose from "mongoose";
 
+const normalizeObjectIdString = (value) => {
+  if (!value) return null;
+  try {
+    return new mongoose.Types.ObjectId(value).toString();
+  } catch {
+    return null;
+  }
+};
+
 // Create a new bid
 export const createBid = async (req, res) => {
   try {
@@ -130,7 +139,11 @@ export const getBidsByUser = async (req, res) => {
 export const updateBidStatus = async (req, res) => {
   try {
     const { bidId } = req.params;
-    const { status } = req.body;
+    const { status, sellerId } = req.body;
+    const sessionUser = req.session?.user;
+    const sessionRole = sessionUser?.role?.trim().toLowerCase();
+    const isAdmin = sessionRole === "administrator" || sessionRole === "admin";
+    const effectiveSellerId = sellerId || sessionUser?.id || sessionUser?._id;
 
     if (!["accepted", "rejected", "pending"].includes(status)) {
       return res.status(400).json({
@@ -139,7 +152,17 @@ export const updateBidStatus = async (req, res) => {
       });
     }
 
-    const bid = await Bid.findByIdAndUpdate(bidId, { status }, { new: true });
+    if (!effectiveSellerId && !isAdmin) {
+      return res.status(400).json({
+        success: false,
+        message: "Seller ID is required",
+      });
+    }
+
+    const bid = await Bid.findById(bidId).populate({
+      path: "listingId",
+      select: "seller",
+    });
 
     if (!bid) {
       return res.status(404).json({
@@ -148,10 +171,52 @@ export const updateBidStatus = async (req, res) => {
       });
     }
 
+    if (!bid.listingId || !bid.listingId.seller) {
+      return res.status(400).json({
+        success: false,
+        message: "Auction not found or has no seller",
+      });
+    }
+
+    const auctionSellerId = normalizeObjectIdString(bid.listingId.seller);
+    const requestSellerId = normalizeObjectIdString(effectiveSellerId);
+    if (
+      !isAdmin &&
+      (!auctionSellerId || !requestSellerId || auctionSellerId !== requestSellerId)
+    ) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "You are not authorized to update this bid. Only the auction creator can do this.",
+      });
+    }
+
+    let updatedBid;
+    if (status === "accepted") {
+      await Bid.updateMany(
+        {
+          listingId: bid.listingId._id,
+          _id: { $ne: bidId },
+        },
+        { status: "rejected" },
+      );
+      updatedBid = await Bid.findByIdAndUpdate(
+        bidId,
+        { status: "accepted" },
+        { new: true },
+      );
+    } else {
+      updatedBid = await Bid.findByIdAndUpdate(
+        bidId,
+        { status },
+        { new: true },
+      );
+    }
+
     return res.status(200).json({
       success: true,
       message: `Bid ${status} successfully`,
-      data: bid,
+      data: updatedBid,
     });
   } catch (error) {
     console.error("[BidController] ❌ Error updating bid status:", error);
@@ -362,16 +427,18 @@ export const getUserBidsWithAuctionDetails = async (req, res) => {
 export const markBidAsWinner = async (req, res) => {
   try {
     const { bidId } = req.params;
-    const { sellerId } = req.body; // The seller's ID from the session
+    const { sellerId } = req.body; // Optional explicit seller ID from client
+    const effectiveSellerId =
+      sellerId || req.session?.user?.id || req.session?.user?._id;
 
     console.log(
       "[BidController] Marking bid as winner:",
       bidId,
       "by seller:",
-      sellerId,
+      effectiveSellerId,
     );
 
-    if (!sellerId) {
+    if (!effectiveSellerId) {
       return res.status(400).json({
         success: false,
         message: "Seller ID is required",
@@ -399,12 +466,12 @@ export const markBidAsWinner = async (req, res) => {
       });
     }
 
-    const auctionSellerId = bid.listingId.seller.toString();
-    const requestSellerId = new mongoose.Types.ObjectId(sellerId).toString();
+    const auctionSellerId = normalizeObjectIdString(bid.listingId.seller);
+    const requestSellerId = normalizeObjectIdString(effectiveSellerId);
 
-    if (auctionSellerId !== requestSellerId) {
+    if (!auctionSellerId || !requestSellerId || auctionSellerId !== requestSellerId) {
       console.log(
-        "[BidController] ❌ Unauthorized - Auction seller:",
+        "[BidController] Unauthorized - Auction seller:",
         auctionSellerId,
         "Request from:",
         requestSellerId,
@@ -432,7 +499,7 @@ export const markBidAsWinner = async (req, res) => {
       { new: true },
     );
 
-    console.log("[BidController] ✅ Bid marked as winner:", winningBid._id);
+    console.log("[BidController] Bid marked as winner:", winningBid._id);
 
     return res.status(200).json({
       success: true,
@@ -440,7 +507,7 @@ export const markBidAsWinner = async (req, res) => {
       data: winningBid,
     });
   } catch (error) {
-    console.error("[BidController] ❌ Error marking bid as winner:", error);
+    console.error("[BidController] Error marking bid as winner:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to mark bid as winner",
@@ -598,3 +665,4 @@ export default {
   getBidsForAuction,
   getAllBidsAdmin,
 };
+
