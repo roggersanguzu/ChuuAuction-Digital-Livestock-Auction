@@ -321,6 +321,11 @@ function renderBidCard(bid) {
   var photoUrl = getAnimalImage(auction.photos);
   var animalType = auction.animalType || "Livestock";
   var isWinner = bid.status === "accepted";
+  var paymentButtonHtml = isWinner
+    ? '<a href="/dashboard/payment?bidId=' +
+      bid._id +
+      '" class="px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 hover:shadow-lg hover:shadow-green-500/30 transition text-sm font-semibold"><i class="bi bi-credit-card mr-2"></i>Proceed to Payment</a>'
+    : "";
 
   return (
     '<div class="bid-card glass-strong border border-gray-800 rounded-2xl p-6 transition-all duration-300 ' +
@@ -356,7 +361,7 @@ function renderBidCard(bid) {
         "</span>"
       : "") +
     (auction.weight
-      ? '<span class="px-2 py-1 rounded-lg bg-gray-800/50 text-xs"><i class="bi bi-speedometer mr-1"></i>' +
+      ? '<span class="px-2 py-1 rounded-lg bg-gray-800/50 text-xs"><i class="bi bi-activity mr-1"></i>' +
         auction.weight +
         "kg</span>"
       : "") +
@@ -385,7 +390,10 @@ function renderBidCard(bid) {
     '<div class="text-sm text-gray-500"><i class="bi bi-clock mr-1"></i> Bid placed: ' +
     formatDate(bid.createdAt) +
     "</div>" +
+    '<div class="flex items-center gap-2">' +
+    paymentButtonHtml +
     '<a href="/auctions/animalList" class="px-4 py-2 rounded-lg glass border border-gray-700 hover:border-orange-500 transition text-sm"><i class="bi bi-eye mr-2"></i>View Auction</a>' +
+    "</div>" +
     "</div>" +
     "</div>" +
     "</div>" +
@@ -513,3 +521,4 @@ function showError(message) {
       "</p></div>";
   }
 }
+

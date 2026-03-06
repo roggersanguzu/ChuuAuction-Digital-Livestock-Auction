@@ -34,6 +34,39 @@ app.engine("hbs", exphbs.engine({ extname: ".hbs", defaultLayout: "main" }));
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "views"));
 
+const FULL_DOCUMENT_VIEWS = new Set([
+  "index",
+  "dashboard/admin",
+  "dashboard/auction-bids",
+  "dashboard/buyer",
+  "dashboard/my-bids",
+  "auctions/animalList",
+  "auctions/create",
+  "livestock/priceCalculator",
+  "verification/list",
+  "verification/status",
+  "verification/submit",
+]);
+
+// Some templates are full HTML documents and should not be wrapped by main.hbs.
+app.use((req, res, next) => {
+  const originalRender = res.render.bind(res);
+  res.render = (view, options, callback) => {
+    if (typeof options === "function") {
+      callback = options;
+      options = {};
+    }
+
+    const renderOptions = options ? { ...options } : {};
+    if (FULL_DOCUMENT_VIEWS.has(view) && typeof renderOptions.layout === "undefined") {
+      renderOptions.layout = false;
+    }
+
+    return originalRender(view, renderOptions, callback);
+  };
+  next();
+});
+
 app.use(favicon(path.join(__dirname, "public", "img", "favicon.png")));
 
 app.use(express.static(path.join(__dirname, "public")));

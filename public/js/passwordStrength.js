@@ -2,17 +2,16 @@ document.addEventListener("DOMContentLoaded", function () {
   // Theme Toggle
   var themeToggle = document.getElementById("theme-toggle");
   var html = document.documentElement;
-  var currentTheme = localStorage.getItem("theme") || "dark";
+  var currentTheme = localStorage.getItem("chuu-theme") || localStorage.getItem("theme") || "dark";
   if (currentTheme === "dark") {
     html.classList.add("dark");
   }
   if (themeToggle) {
     themeToggle.addEventListener("click", function () {
       html.classList.toggle("dark");
-      localStorage.setItem(
-        "theme",
-        html.classList.contains("dark") ? "dark" : "light",
-      );
+      var nextTheme = html.classList.contains("dark") ? "dark" : "light";
+      localStorage.setItem("theme", nextTheme);
+      localStorage.setItem("chuu-theme", nextTheme);
     });
   }
 

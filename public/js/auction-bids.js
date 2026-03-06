@@ -5,6 +5,8 @@
   var userId = page.dataset.userId || "";
   var auctionId = page.dataset.auctionId || "";
   var isAdmin = (page.dataset.isAdmin || "").toLowerCase() === "true";
+  var canManageBids =
+    (page.dataset.canManageBids || "").toLowerCase() === "true";
 
   var allGroupedBids = {};
   var currentFilter = "all";
@@ -198,6 +200,12 @@
         escapeHtml(bid.notes) +
         "</p></div>"
       : "";
+    var paymentButtonHtml =
+      !canManageBids && bid.status === "accepted"
+        ? '<a href="/dashboard/payment?bidId=' +
+          bid._id +
+          '" class="inline-flex items-center px-3 py-1.5 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs font-semibold hover:shadow-lg hover:shadow-green-500/30 transition"><i class="bi bi-credit-card mr-1"></i>Proceed to Payment</a>'
+        : "";
 
     return (
       '<div class="' +
@@ -225,6 +233,9 @@
       formatCurrency(bid.amount) +
       "</p>" +
       getStatusBadge(bid.status) +
+      (paymentButtonHtml
+        ? '<div class="mt-2 flex justify-end">' + paymentButtonHtml + "</div>"
+        : "") +
       "</div></div>" +
       notesHtml +
       renderStatusActions(bid) +
@@ -253,8 +264,15 @@
       },
       { amount: 0, bidderName: "-" },
     );
-    var highestBid = highestBidEntry.amount || 0;
-    var highestBidderName = escapeHtml(highestBidEntry.bidderName || "-");
+    var trackedHighest = group.auctionTracking || null;
+    var highestBid = trackedHighest
+      ? trackedHighest.highestBidAmount || 0
+      : highestBidEntry.amount || 0;
+    var highestBidderName = escapeHtml(
+      trackedHighest
+        ? trackedHighest.highestBidderName || "-"
+        : highestBidEntry.bidderName || "-",
+    );
 
     var winnerCount = group.bids.filter(function (b) {
       return b.status === "accepted";
@@ -272,7 +290,7 @@
       : "";
 
     var weightHtml = auction.weight
-      ? '<span class="px-2 py-1 rounded-lg bg-gray-800/50 text-xs"><i class="bi bi-speedometer mr-1"></i>' +
+      ? '<span class="px-2 py-1 rounded-lg bg-gray-800/50 text-xs"><i class="bi bi-activity mr-1"></i>' +
         escapeHtml(auction.weight) +
         "kg</span>"
       : "";
@@ -316,6 +334,13 @@
       '<p class="text-sm font-black text-emerald-400"><i class="bi bi-cash-stack mr-1"></i>' +
       formatCurrency(highestBid) +
       "</p></div></div>" +
+      (!canManageBids && trackedHighest
+        ? '<div class="p-3 rounded-xl bg-blue-500/10 border border-blue-500/30 mb-3"><p class="text-xs text-gray-300">' +
+          (trackedHighest.isUserLeading
+            ? "You are currently leading on this auction."
+            : "You are currently outbid on this auction.") +
+          "</p></div>"
+        : "") +
       '<div class="flex flex-wrap gap-2 mb-3">' +
       sexHtml +
       weightHtml +
@@ -338,7 +363,7 @@
       winnerText +
       "</p></div>" +
       "</div></div></div></div>" +
-      '<div class="space-y-3 pl-4"><h4 class="text-sm font-bold text-gray-400 mb-3"><i class="bi bi-hand-thumbs-up mr-2"></i>Bids (' +
+      '<div class="space-y-3 pl-4"><h4 class="text-sm font-bold text-gray-400 mb-3"><i class="bi bi-cash-coin mr-2"></i>Bids (' +
       filteredBids.length +
       ")</h4>" +
       filteredBids.map(renderBidCard).join("") +
@@ -411,9 +436,14 @@
         return;
       }
 
-      var apiUrl = isAdmin
-        ? "/api/bids/admin/all"
-        : "/api/bids/seller/" + encodeURIComponent(userId);
+      var apiUrl;
+      if (isAdmin) {
+        apiUrl = "/api/bids/admin/all";
+      } else if (canManageBids) {
+        apiUrl = "/api/bids/seller/" + encodeURIComponent(userId);
+      } else {
+        apiUrl = "/api/bids/user/" + encodeURIComponent(userId) + "/details";
+      }
 
       var response = await fetch(apiUrl);
       var result = await response.json();
@@ -422,7 +452,28 @@
         throw new Error(result.message || "Failed to fetch bids");
       }
 
-      allGroupedBids = result.groupedByAuction || {};
+      if (canManageBids || isAdmin) {
+        allGroupedBids = result.groupedByAuction || {};
+      } else {
+        var grouped = {};
+        (result.data || []).forEach(function (bid) {
+          var bidCopy = Object.assign({}, bid, { canControl: false });
+          var id = bidCopy.listingId ? String(bidCopy.listingId) : "unknown";
+          if (!grouped[id]) {
+            grouped[id] = {
+              auction: bidCopy.auction || {},
+              auctionTracking: bidCopy.tracking || null,
+              bids: [],
+              canControl: false,
+            };
+          }
+          if (!grouped[id].auctionTracking && bidCopy.tracking) {
+            grouped[id].auctionTracking = bidCopy.tracking;
+          }
+          grouped[id].bids.push(bidCopy);
+        });
+        allGroupedBids = grouped;
+      }
       if (auctionId) {
         allGroupedBids = allGroupedBids[auctionId]
           ? { [auctionId]: allGroupedBids[auctionId] }
@@ -442,3 +493,4 @@
 
   document.addEventListener("DOMContentLoaded", loadBids);
 })();
+

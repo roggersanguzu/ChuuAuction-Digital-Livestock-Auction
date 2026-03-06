@@ -102,6 +102,24 @@ export const getBidsForListing = async (req, res) => {
 export const getBidsByUser = async (req, res) => {
   try {
     const { userId } = req.params;
+    const sessionUser = req.session?.user;
+    const sessionUserId = sessionUser?.id || sessionUser?._id;
+    const sessionRole = sessionUser?.role?.trim().toLowerCase();
+    const isAdmin = sessionRole === "administrator" || sessionRole === "admin";
+
+    if (!sessionUserId && !isAdmin) {
+      return res.status(401).json({
+        success: false,
+        message: "Please log in to view bids",
+      });
+    }
+
+    if (!isAdmin && String(sessionUserId) !== String(userId)) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not allowed to view another user's bids",
+      });
+    }
 
     console.log(
       "[BidController] getBidsByUser - Looking for bidderId:",
@@ -232,6 +250,24 @@ export const updateBidStatus = async (req, res) => {
 export const getBidsForSeller = async (req, res) => {
   try {
     const { sellerId } = req.params;
+    const sessionUser = req.session?.user;
+    const sessionUserId = sessionUser?.id || sessionUser?._id;
+    const sessionRole = sessionUser?.role?.trim().toLowerCase();
+    const isAdmin = sessionRole === "administrator" || sessionRole === "admin";
+
+    if (!sessionUserId && !isAdmin) {
+      return res.status(401).json({
+        success: false,
+        message: "Please log in to view auction bids",
+      });
+    }
+
+    if (!isAdmin && String(sessionUserId) !== String(sellerId)) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not allowed to view another seller's bids",
+      });
+    }
 
     console.log("[BidController] Fetching bids for seller:", sellerId);
 
@@ -337,6 +373,24 @@ export const getBidsForSeller = async (req, res) => {
 export const getUserBidsWithAuctionDetails = async (req, res) => {
   try {
     const { userId } = req.params;
+    const sessionUser = req.session?.user;
+    const sessionUserId = sessionUser?.id || sessionUser?._id;
+    const sessionRole = sessionUser?.role?.trim().toLowerCase();
+    const isAdmin = sessionRole === "administrator" || sessionRole === "admin";
+
+    if (!sessionUserId && !isAdmin) {
+      return res.status(401).json({
+        success: false,
+        message: "Please log in to view your bids",
+      });
+    }
+
+    if (!isAdmin && String(sessionUserId) !== String(userId)) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not allowed to view another user's bids",
+      });
+    }
 
     console.log(
       "[BidController] getUserBidsWithAuctionDetails - Looking for bidderId:",
@@ -372,8 +426,60 @@ export const getUserBidsWithAuctionDetails = async (req, res) => {
 
     console.log("[BidController] Found user bids:", bids.length);
 
+    const auctionIds = [
+      ...new Set(
+        bids
+          .map((bid) => bid.listingId?._id?.toString())
+          .filter(Boolean),
+      ),
+    ];
+
+    let highestBidByAuction = {};
+    let totalBidsByAuction = {};
+    let userHighestBidByAuction = {};
+
+    if (auctionIds.length > 0) {
+      const allAuctionBids = await Bid.find(
+        { listingId: { $in: auctionIds } },
+        "listingId bidderName amount createdAt",
+      ).sort({ amount: -1, createdAt: 1 });
+
+      allAuctionBids.forEach((bid) => {
+        const auctionKey = bid.listingId?.toString();
+        if (!auctionKey) return;
+
+        totalBidsByAuction[auctionKey] = (totalBidsByAuction[auctionKey] || 0) + 1;
+
+        if (
+          !highestBidByAuction[auctionKey] ||
+          bid.amount > highestBidByAuction[auctionKey].amount
+        ) {
+          highestBidByAuction[auctionKey] = {
+            amount: bid.amount,
+            bidderName: bid.bidderName || "Anonymous",
+          };
+        }
+      });
+
+      bids.forEach((bid) => {
+        const auctionKey = bid.listingId?._id?.toString();
+        if (!auctionKey) return;
+        userHighestBidByAuction[auctionKey] = Math.max(
+          userHighestBidByAuction[auctionKey] || 0,
+          bid.amount || 0,
+        );
+      });
+    }
+
     const transformedBids = bids.map((bid) => {
       const auction = bid.listingId;
+      const auctionKey = bid.listingId?._id?.toString();
+      const highest = highestBidByAuction[auctionKey] || {
+        amount: 0,
+        bidderName: "-",
+      };
+      const userHighestBid = userHighestBidByAuction[auctionKey] || 0;
+
       return {
         _id: bid._id,
         listingId: bid.listingId?._id,
@@ -385,6 +491,14 @@ export const getUserBidsWithAuctionDetails = async (req, res) => {
         status: bid.status,
         createdAt: bid.createdAt,
         updatedAt: bid.updatedAt,
+        tracking: {
+          highestBidAmount: highest.amount,
+          highestBidderName: highest.bidderName,
+          totalBidsInAuction: totalBidsByAuction[auctionKey] || 0,
+          userHighestBid,
+          isUserLeading:
+            userHighestBid > 0 && userHighestBid >= (highest.amount || 0),
+        },
         // Auction details
         auction: auction
           ? {
@@ -580,6 +694,15 @@ export const getBidsForAuction = async (req, res) => {
 // Get ALL bids in the system (Admin only)
 export const getAllBidsAdmin = async (req, res) => {
   try {
+    const sessionRole = req.session?.user?.role?.trim().toLowerCase();
+    const isAdmin = sessionRole === "administrator" || sessionRole === "admin";
+    if (!isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: "Admin access required",
+      });
+    }
+
     console.log("[BidController] Fetching all bids for admin");
 
     const bids = await Bid.find()

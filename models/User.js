@@ -12,6 +12,12 @@ const userSchema = new mongoose.Schema(
       enum: ["Seller", "Buyer", "Administrator"],
       default: "Buyer",
     },
+    accountStatus: {
+      type: String,
+      enum: ["active", "inactive", "suspended"],
+      default: "active",
+      index: true,
+    },
   },
   { timestamps: true },
 );

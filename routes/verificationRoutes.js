@@ -4,6 +4,9 @@ import multer from "multer";
 import {
   submitVerification,
   processAIVerification,
+  getAdminAIVerificationSubmissions,
+  getAdminAIVerificationSubmission,
+  analyzeVerificationForAdmin,
   getVerificationStatus,
   getFarmerVerifications,
   getVerificationByAuction,
@@ -14,6 +17,35 @@ import {
 } from "../controllers/verificationController.js";
 
 const router = express.Router();
+
+const requireLogin = (req, res, next) => {
+  if (!req.session?.user) {
+    if (req.path.startsWith("/api/")) {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication required",
+      });
+    }
+    return res.redirect("/auth/login");
+  }
+  return next();
+};
+
+const requireAdmin = (req, res, next) => {
+  const role = String(req.session?.user?.role || "")
+    .trim()
+    .toLowerCase();
+  if (role !== "admin" && role !== "administrator") {
+    if (req.path.startsWith("/api/")) {
+      return res.status(403).json({
+        success: false,
+        message: "Admin access required",
+      });
+    }
+    return res.redirect("/auth/login");
+  }
+  return next();
+};
 
 // Configure multer for file uploads
 const storage = multer.memoryStorage();
@@ -71,6 +103,15 @@ router.get("/my-verifications", (req, res) => {
   });
 });
 
+// GET: Admin AI verification status module
+router.get("/ai-status", requireLogin, requireAdmin, (req, res) => {
+  res.render("verification/ai-status", {
+    title: "AI Verification Status",
+    user: req.session.user,
+    layout: false,
+  });
+});
+
 // ============================================
 // API ROUTES
 // ============================================
@@ -79,7 +120,12 @@ router.get("/my-verifications", (req, res) => {
 router.post("/api/submit", uploadFields, submitVerification);
 
 // POST: Process AI verification
-router.post("/api/process/:verificationId", processAIVerification);
+router.post(
+  "/api/process/:verificationId",
+  requireLogin,
+  requireAdmin,
+  processAIVerification,
+);
 
 // GET: Get verification status
 router.get("/api/status/:verificationId", getVerificationStatus);
@@ -95,13 +141,42 @@ router.get("/api/auction/:auctionId", getVerificationByAuction);
 // ============================================
 
 // GET: Get all verifications (Admin only)
-router.get("/api/admin/all", getAllVerifications);
+router.get("/api/admin/all", requireLogin, requireAdmin, getAllVerifications);
+
+// GET: Admin AI submissions with advanced search/filter
+router.get(
+  "/api/admin/ai-submissions",
+  requireLogin,
+  requireAdmin,
+  getAdminAIVerificationSubmissions,
+);
+
+// GET: Admin AI submission details
+router.get(
+  "/api/admin/ai-submissions/:verificationId",
+  requireLogin,
+  requireAdmin,
+  getAdminAIVerificationSubmission,
+);
+
+// POST: Run AI analysis for one submission
+router.post(
+  "/api/admin/ai-submissions/:verificationId/analyze",
+  requireLogin,
+  requireAdmin,
+  analyzeVerificationForAdmin,
+);
 
 // GET: Get current user's verifications (Farmer/Seller/Buyer)
 router.get("/api/my-verifications", getMyVerifications);
 
 // PATCH: Update verification status (Admin only)
-router.patch("/api/admin/:verificationId/status", updateVerificationStatus);
+router.patch(
+  "/api/admin/:verificationId/status",
+  requireLogin,
+  requireAdmin,
+  updateVerificationStatus,
+);
 
 // GET: Get current user info
 router.get("/api/current-user", getCurrentUser);

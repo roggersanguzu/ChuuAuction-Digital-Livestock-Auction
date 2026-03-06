@@ -1,0 +1,423 @@
+<html lang="en" data-theme="dark" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}} | ChuuAuction</title>
+    <link rel="stylesheet" href="/css/output.css" />
+    <link
+      rel="stylesheet"
+      href="/vendor/bootstrap-icons/css/bootstrap-icons.css"
+    />
+    <link href="/css/app-theme.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Bricolage+Grotesque:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --card-bg: rgba(15, 23, 42, 0.66);
+        --card-border: rgba(148, 163, 184, 0.25);
+        --muted: #94a3b8;
+      }
+      [data-theme="light"] {
+        --card-bg: rgba(255, 255, 255, 0.82);
+        --card-border: rgba(100, 116, 139, 0.25);
+        --muted: #475569;
+      }
+      body {
+        font-family: "Outfit", system-ui, sans-serif;
+        background:
+          radial-gradient(
+            circle at 8% 8%,
+            rgba(34, 197, 94, 0.13),
+            transparent 25%
+          ),
+          radial-gradient(
+            circle at 90% 18%,
+            rgba(14, 165, 233, 0.12),
+            transparent 30%
+          ),
+          linear-gradient(135deg, #0b1020, #121a2f 35%, #18263e 100%);
+        min-height: 100vh;
+      }
+      [data-theme="light"] body {
+        background:
+          radial-gradient(
+            circle at 8% 8%,
+            rgba(34, 197, 94, 0.1),
+            transparent 25%
+          ),
+          radial-gradient(
+            circle at 90% 18%,
+            rgba(14, 165, 233, 0.09),
+            transparent 30%
+          ),
+          linear-gradient(135deg, #f8fafc, #f1f5f9 35%, #e2e8f0 100%);
+      }
+      .font-display {
+        font-family: "Bricolage Grotesque", system-ui, sans-serif;
+      }
+      .glass {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        backdrop-filter: blur(14px);
+      }
+      .hero-wrap {
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-wrap::before,
+      .hero-wrap::after {
+        content: "";
+        position: absolute;
+        pointer-events: none;
+      }
+      .hero-wrap::before {
+        width: 260px;
+        height: 260px;
+        right: -50px;
+        top: -80px;
+        background: radial-gradient(
+          circle,
+          rgba(34, 197, 94, 0.35),
+          transparent 68%
+        );
+      }
+      .hero-wrap::after {
+        width: 280px;
+        height: 280px;
+        left: -80px;
+        bottom: -130px;
+        background: radial-gradient(
+          circle,
+          rgba(59, 130, 246, 0.35),
+          transparent 68%
+        );
+      }
+      .animal-cube {
+        width: 88px;
+        height: 88px;
+        border-radius: 20px;
+        background: linear-gradient(
+          145deg,
+          rgba(34, 197, 94, 0.25),
+          rgba(14, 165, 233, 0.2)
+        );
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        box-shadow: 0 18px 40px rgba(2, 6, 23, 0.5);
+        transform-style: preserve-3d;
+        animation: orbit 5.5s ease-in-out infinite;
+      }
+      .animal-cube img {
+        width: 56px;
+        height: 56px;
+        object-fit: contain;
+        filter: drop-shadow(0 8px 10px rgba(2, 6, 23, 0.5));
+      }
+      @keyframes orbit {
+        0%,
+        100% {
+          transform: perspective(700px) rotateY(-12deg) rotateX(6deg)
+            translateY(0px);
+        }
+        50% {
+          transform: perspective(700px) rotateY(12deg) rotateX(-2deg)
+            translateY(-6px);
+        }
+      }
+      .metric-card {
+        position: relative;
+        overflow: hidden;
+        transform-style: preserve-3d;
+        transition:
+          transform 0.35s ease,
+          border-color 0.35s ease;
+      }
+      .metric-card:hover {
+        transform: translateY(-4px) perspective(1000px) rotateX(2deg);
+        border-color: rgba(56, 189, 248, 0.45);
+      }
+      .metric-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          120deg,
+          transparent 30%,
+          rgba(255, 255, 255, 0.08),
+          transparent 70%
+        );
+        transform: translateX(-110%);
+        transition: transform 0.55s ease;
+      }
+      .metric-card:hover::after {
+        transform: translateX(110%);
+      }
+      .filter-control {
+        background: rgba(15, 23, 42, 0.72);
+        border: 1px solid rgba(100, 116, 139, 0.55);
+        color: #e2e8f0;
+      }
+      [data-theme="light"] .filter-control {
+        background: rgba(255, 255, 255, 0.86);
+        color: #0f172a;
+      }
+      .status-pill {
+        font-size: 0.73rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        padding: 0.22rem 0.58rem;
+        border-radius: 999px;
+      }
+      .status-pending {
+        background: rgba(245, 158, 11, 0.2);
+        color: #f59e0b;
+      }
+      .status-processing {
+        background: rgba(59, 130, 246, 0.2);
+        color: #60a5fa;
+      }
+      .status-verified {
+        background: rgba(34, 197, 94, 0.2);
+        color: #4ade80;
+      }
+      .status-rejected {
+        background: rgba(239, 68, 68, 0.2);
+        color: #f87171;
+      }
+      .status-needs_review {
+        background: rgba(249, 115, 22, 0.2);
+        color: #fb923c;
+      }
+      .status-incomplete {
+        background: rgba(107, 114, 128, 0.2);
+        color: #d1d5db;
+      }
+      .row-active {
+        background: linear-gradient(
+          135deg,
+          rgba(37, 99, 235, 0.18),
+          rgba(14, 165, 233, 0.12)
+        );
+        border-color: rgba(96, 165, 250, 0.5);
+      }
+      .panel-title {
+        font-family: "Bricolage Grotesque", system-ui, sans-serif;
+        letter-spacing: 0.01em;
+      }
+      .surface-pattern {
+        background-image:
+          linear-gradient(rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+        background-size: 22px 22px;
+      }
+      .live-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: #22c55e;
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.65);
+        animation: pulseDot 1.9s infinite;
+      }
+      @keyframes pulseDot {
+        70% {
+          box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+        }
+      }
+    </style>
+  </head>
+  <body class="text-gray-100">
+    <main class="mx-auto max-w-7xl px-4 py-6 md:px-6 lg:px-8">
+      <header
+        class="hero-wrap glass rounded-3xl p-5 md:p-7 mb-6 surface-pattern"
+      >
+        <div
+          class="relative z-10 flex flex-col gap-5 md:flex-row md:items-center md:justify-between"
+        >
+          <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-emerald-300">Admin
+              Control Center</p>
+            <h1 class="panel-title mt-2 text-2xl md:text-3xl font-bold">AI
+              Verification Status</h1>
+            <p class="mt-2 text-sm md:text-base text-slate-300 max-w-2xl">
+              Assess submitted livestock ownership and health records with
+              Gemini analysis, confidence metrics, and audit-ready review
+              actions.
+            </p>
+            <div
+              class="mt-3 inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs text-emerald-200"
+            >
+              <span class="live-dot"></span>
+              Real-time verification workflow
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="animal-cube hidden md:flex items-center justify-center">
+              <img src="/img/cow.png" alt="Livestock" />
+            </div>
+            <div
+              class="animal-cube hidden md:flex items-center justify-center"
+              style="animation-delay: 0.7s;"
+            >
+              <img src="/img/goat.png" alt="Livestock" />
+            </div>
+            <div class="flex items-center gap-3">
+              <a
+                href="/dashboard/admin"
+                class="rounded-xl border border-slate-500 px-4 py-2.5 text-sm font-semibold hover:bg-slate-700/40"
+              >
+                <i class="bi bi-arrow-left"></i>
+                Back to Admin
+              </a>
+              <button
+                id="refresh-btn"
+                class="rounded-xl bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-slate-900 hover:bg-emerald-400"
+              >
+                <i class="bi bi-arrow-clockwise"></i>
+                Refresh
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4 mb-6">
+        <article class="metric-card glass rounded-2xl p-4">
+          <p class="text-xs uppercase tracking-widest text-slate-400">Total
+            Submissions</p>
+          <p id="stat-total" class="mt-3 text-3xl font-bold">0</p>
+          <p class="text-xs text-slate-400 mt-1">All uploaded verification
+            records</p>
+        </article>
+        <article class="metric-card glass rounded-2xl p-4">
+          <p
+            class="text-xs uppercase tracking-widest text-slate-400"
+          >Pending</p>
+          <p
+            id="stat-pending"
+            class="mt-3 text-3xl font-bold text-amber-300"
+          >0</p>
+          <p class="text-xs text-slate-400 mt-1">Waiting for analysis/review</p>
+        </article>
+        <article class="metric-card glass rounded-2xl p-4">
+          <p
+            class="text-xs uppercase tracking-widest text-slate-400"
+          >Verified</p>
+          <p
+            id="stat-verified"
+            class="mt-3 text-3xl font-bold text-emerald-300"
+          >0</p>
+          <p class="text-xs text-slate-400 mt-1">Approved records on the
+            platform</p>
+        </article>
+        <article class="metric-card glass rounded-2xl p-4">
+          <p class="text-xs uppercase tracking-widest text-slate-400">AI
+            Analyzed</p>
+          <p
+            id="stat-analyzed"
+            class="mt-3 text-3xl font-bold text-cyan-300"
+          >0</p>
+          <p class="text-xs text-slate-400 mt-1">Completed Gemini analysis
+            passes</p>
+        </article>
+      </section>
+
+      <section class="glass rounded-2xl p-4 md:p-5 mb-6">
+        <p class="panel-title text-sm font-semibold mb-3">Advanced Search and
+          Filters</p>
+        <div class="grid gap-3 md:grid-cols-6">
+          <input
+            id="search-input"
+            type="text"
+            placeholder="Search submitter, phone, auction ID, verification ID"
+            class="filter-control md:col-span-2 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-cyan-400/50"
+          />
+          <select
+            id="status-filter"
+            class="filter-control rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-cyan-400/50"
+          >
+            <option value="all">All Statuses</option>
+            <option value="pending">Pending</option>
+            <option value="processing">Processing</option>
+            <option value="verified">Verified</option>
+            <option value="rejected">Rejected</option>
+            <option value="needs_review">Needs Review</option>
+            <option value="incomplete">Incomplete</option>
+          </select>
+          <select
+            id="type-filter"
+            class="filter-control rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-cyan-400/50"
+          >
+            <option value="all">All Types</option>
+            <option value="ownership">Ownership</option>
+            <option value="health">Health</option>
+            <option value="both">Both</option>
+          </select>
+          <select
+            id="ai-filter"
+            class="filter-control rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-cyan-400/50"
+          >
+            <option value="all">All AI States</option>
+            <option value="pending_ai">Not Analyzed</option>
+            <option value="analyzed">Analyzed</option>
+          </select>
+          <select
+            id="limit-filter"
+            class="filter-control rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-cyan-400/50"
+          >
+            <option value="8">8 per page</option>
+            <option value="12" selected>12 per page</option>
+            <option value="20">20 per page</option>
+            <option value="40">40 per page</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="grid gap-5 lg:grid-cols-5">
+        <div class="lg:col-span-3 glass rounded-2xl p-3 md:p-4">
+          <div class="mb-3 flex items-center justify-between">
+            <h2 class="panel-title text-base font-semibold">Submitted
+              Verifications</h2>
+            <p class="text-xs text-slate-400">Select a record to inspect AI
+              detail</p>
+          </div>
+          <div id="rows" class="space-y-2"></div>
+          <div class="mt-4 flex items-center justify-between gap-2">
+            <button
+              id="prev-page"
+              class="rounded-xl border border-slate-600 px-3 py-1.5 text-sm disabled:opacity-40"
+            >Previous</button>
+            <p id="page-label" class="text-sm text-slate-300">Page 1 of 1</p>
+            <button
+              id="next-page"
+              class="rounded-xl border border-slate-600 px-3 py-1.5 text-sm disabled:opacity-40"
+            >Next</button>
+          </div>
+        </div>
+
+        <aside
+          class="lg:col-span-2 glass rounded-2xl p-4 relative overflow-hidden"
+        >
+          <img
+            src="/img/sheep.png"
+            alt="Decorative livestock"
+            class="pointer-events-none absolute -right-5 -top-5 h-20 w-20 opacity-20"
+          />
+          <div id="detail-panel" class="relative z-10">
+            <p class="text-sm text-slate-300">Select a submission from the list
+              to view details and run AI analysis.</p>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script src="/js/app-theme.js"></script>
+    <script src="/js/admin-ai-verification.js"></script>
+  </body>
+</html>

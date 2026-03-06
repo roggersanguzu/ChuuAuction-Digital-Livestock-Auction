@@ -2,7 +2,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link
   rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+  href="/vendor/bootstrap-icons/css/bootstrap-icons.css"
 />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -384,12 +384,14 @@
                 >
                   I agree to the
                   <a
-                    href="#"
+                  href="#"
+                  onclick="return false;"
                     class="text-orange-500 hover:text-orange-600 underline font-bold"
                   >Terms & Conditions</a>
                   and
                   <a
-                    href="#"
+                  href="#"
+                  onclick="return false;"
                     class="text-orange-500 hover:text-orange-600 underline font-bold"
                   >Privacy Policy</a>
                 </span>
@@ -418,7 +420,10 @@
             </div>
             <div class="grid grid-cols-2 gap-2.5">
               <a
-                href="/auth/register"
+                href="#"
+                aria-disabled="true"
+                title="Google sign-up coming soon"
+                onclick="return false;"
                 type="button"
                 class="py-2 px-3 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700 rounded-xl font-semibold text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-orange-500 dark:hover:border-orange-500 transition-all duration-300 flex items-center justify-center gap-2 hover:scale-105 hover:-translate-y-0.5 group"
               >
@@ -428,7 +433,10 @@
                 <span>Google</span>
               </a>
               <a
-                href="/auth/register"
+                href="#"
+                aria-disabled="true"
+                title="Facebook sign-up coming soon"
+                onclick="return false;"
                 type="button"
                 class="py-2 px-3 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700 rounded-xl font-semibold text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-orange-500 dark:hover:border-orange-500 transition-all duration-300 flex items-center justify-center gap-2 hover:scale-105 hover:-translate-y-0.5 group"
               >
@@ -481,14 +489,16 @@ document.addEventListener("DOMContentLoaded", function () {
   // Theme Toggle
   var themeToggle = document.getElementById("theme-toggle");
   var html = document.documentElement;
-  var currentTheme = localStorage.getItem("theme") || "dark";
+  var currentTheme = localStorage.getItem("chuu-theme") || localStorage.getItem("theme") || "dark";
   if (currentTheme === "dark") {
     html.classList.add("dark");
   }
   if (themeToggle) {
     themeToggle.addEventListener("click", function () {
       html.classList.toggle("dark");
-      localStorage.setItem("theme", html.classList.contains("dark") ? "dark" : "light");
+      var nextTheme = html.classList.contains("dark") ? "dark" : "light";
+      localStorage.setItem("theme", nextTheme);
+      localStorage.setItem("chuu-theme", nextTheme);
     });
   }
 
@@ -652,3 +662,4 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("ChuuAuction Registration System Loaded");
 });
 </script>
+

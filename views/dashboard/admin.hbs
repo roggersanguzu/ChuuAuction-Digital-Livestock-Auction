@@ -2,12 +2,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ChuuAuction — Admin Command Center</title>
+    <title>ChuuAuction : Admin Command Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      href="/vendor/bootstrap-icons/css/bootstrap-icons.css"
     />
+    <link href="/css/app-theme.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -328,7 +329,7 @@
           <div
             class="w-9 h-9 rounded-lg bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center"
           >
-            <i class="bi bi-speedometer2 text-orange-400 text-lg"></i>
+            <i class="bi bi-grid-1x2-fill text-orange-400 text-lg"></i>
           </div>
           <span
             class="font-semibold text-sm text-gray-200 group-hover:text-white transition-colors"
@@ -381,7 +382,7 @@
           <div
             class="w-9 h-9 rounded-lg bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center"
           >
-            <i class="bi bi-hammer text-orange-400 text-lg"></i>
+            <i class="bi bi-broadcast-pin text-orange-400 text-lg"></i>
           </div>
           <span
             class="font-semibold text-sm text-gray-400 group-hover:text-white transition-colors"
@@ -398,7 +399,7 @@
           <div
             class="w-9 h-9 rounded-lg bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center"
           >
-            <i class="bi bi-hammer text-orange-400 text-lg"></i>
+            <i class="bi bi-journal-check text-orange-400 text-lg"></i>
           </div>
           <span
             class="font-semibold text-sm text-gray-400 group-hover:text-white transition-colors"
@@ -408,18 +409,18 @@
           >12</span>
         </a>
         <a
-          href="/Verification/Status"
+          href="/verification/ai-status"
           class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
           onclick="switchTab('auctions',this)"
         >
           <div
             class="w-9 h-9 rounded-lg bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center"
           >
-            <i class="bi bi-hammer text-orange-400 text-lg"></i>
+            <i class="bi bi-cpu text-orange-400 text-lg"></i>
           </div>
           <span
             class="font-semibold text-sm text-gray-400 group-hover:text-white transition-colors"
-          >Verification Status</span>
+          >AI Verification Status</span>
           <span
             class="ml-auto text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full animate-pulse"
           >12</span>
@@ -560,6 +561,12 @@
       </div>
 
       <div class="relative z-10 p-4 lg:p-7">
+        <div
+          id="dashboard-stats-context"
+          data-role="{{user.role}}"
+          data-user-id="{{user.id}}"
+          class="hidden"
+        ></div>
 
         <!-- ===== TOP BAR ===== -->
         <div
@@ -626,7 +633,9 @@
                 >
                   <div
                     class="w-8 h-8 rounded-lg bg-orange-500/20 flex items-center justify-center flex-shrink-0"
-                  ><i class="bi bi-hammer text-orange-500 text-sm"></i></div>
+                  ><i
+                      class="bi bi-clock-history text-orange-500 text-sm"
+                    ></i></div>
                   <div><p class="text-xs font-semibold text-white">Auction
                       ending soon</p><p
                       class="text-xs text-gray-500 mt-0.5"
@@ -730,7 +739,10 @@
                   class="text-[11px] px-2 py-0.5 rounded-full bg-green-500/15 text-green-400 font-semibold flex items-center gap-1"
                 ><i class="bi bi-arrow-up text-[9px]"></i>18.2%</span>
               </div>
-              <p class="text-2xl font-black font-display text-white">UGX 12.4M</p>
+              <p
+                id="admin-kpi-revenue"
+                class="text-2xl font-black font-display text-white"
+              >UGX 12.4M</p>
               <p class="text-xs text-gray-500 mt-0.5">Total Revenue</p>
               <div
                 class="mt-3 h-1 bg-gray-800 rounded-full overflow-hidden"
@@ -755,7 +767,10 @@
                   class="text-[11px] px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-400 font-semibold flex items-center gap-1"
                 ><i class="bi bi-arrow-up text-[9px]"></i>4.1%</span>
               </div>
-              <p class="text-2xl font-black font-display text-white">142</p>
+              <p
+                id="admin-kpi-users"
+                class="text-2xl font-black font-display text-white"
+              >142</p>
               <p class="text-xs text-gray-500 mt-0.5">Active Users</p>
               <div
                 class="mt-3 h-1 bg-gray-800 rounded-full overflow-hidden"
@@ -774,7 +789,7 @@
                 <div
                   class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center group-hover:scale-110 transition-transform"
                 >
-                  <i class="bi bi-hammer text-orange-400 text-lg"></i>
+                  <i class="bi bi-broadcast-pin text-orange-400 text-lg"></i>
                 </div>
                 <span
                   class="text-[11px] px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 font-semibold flex items-center gap-1"
@@ -782,7 +797,10 @@
                     class="bi bi-circle-fill text-[6px] animate-pulse"
                   ></i>Live</span>
               </div>
-              <p class="text-2xl font-black font-display text-white">12</p>
+              <p
+                id="admin-kpi-auctions"
+                class="text-2xl font-black font-display text-white"
+              >12</p>
               <p class="text-xs text-gray-500 mt-0.5">Active Auctions</p>
               <div
                 class="mt-3 h-1 bg-gray-800 rounded-full overflow-hidden"
@@ -807,7 +825,10 @@
                   class="text-[11px] px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-400 font-semibold"
                 >Top</span>
               </div>
-              <p class="text-2xl font-black font-display text-white">94.2%</p>
+              <p
+                id="admin-kpi-rate"
+                class="text-2xl font-black font-display text-white"
+              >94.2%</p>
               <p class="text-xs text-gray-500 mt-0.5">Success Rate</p>
               <div
                 class="mt-3 h-1 bg-gray-800 rounded-full overflow-hidden"
@@ -1281,10 +1302,12 @@
             </div>
             <div class="flex items-center gap-2">
               <button
+                id="add-user-btn"
                 class="px-4 py-2 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl text-sm font-semibold hover:shadow-lg hover:shadow-orange-500/30 transition-all"
                 onclick="showToast('New user modal would open here','info')"
               >+ Add User</button>
               <button
+                id="export-users-btn"
                 class="px-3 py-2 glass border border-gray-800 rounded-xl text-sm text-gray-400 hover:text-white transition-colors"
               ><i class="bi bi-download"></i> Export</button>
             </div>
@@ -1334,24 +1357,14 @@
             >
               <span class="text-xs text-gray-500" id="user-count-label">Showing
                 1–10 of 142</span>
-              <div class="flex items-center gap-1">
+              <div class="flex items-center gap-1" id="users-pagination">
                 <button
+                  id="users-prev-page"
                   class="w-8 h-8 rounded-lg hover:bg-gray-800/50 text-gray-500 hover:text-white flex items-center justify-center transition-colors"
                 ><i class="bi bi-chevron-left text-sm"></i></button>
+                <div id="users-page-numbers" class="flex items-center gap-1"></div>
                 <button
-                  class="w-8 h-8 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center text-xs font-bold"
-                >1</button>
-                <button
-                  class="w-8 h-8 rounded-lg hover:bg-gray-800/50 text-gray-500 hover:text-white flex items-center justify-center text-xs transition-colors"
-                >2</button>
-                <button
-                  class="w-8 h-8 rounded-lg hover:bg-gray-800/50 text-gray-500 hover:text-white flex items-center justify-center text-xs transition-colors"
-                >3</button>
-                <span class="text-gray-600 text-xs px-1">…</span>
-                <button
-                  class="w-8 h-8 rounded-lg hover:bg-gray-800/50 text-gray-500 hover:text-white flex items-center justify-center text-xs transition-colors"
-                >15</button>
-                <button
+                  id="users-next-page"
                   class="w-8 h-8 rounded-lg hover:bg-gray-800/50 text-gray-500 hover:text-white flex items-center justify-center transition-colors"
                 ><i class="bi bi-chevron-right text-sm"></i></button>
               </div>
@@ -1694,486 +1707,80 @@
       </div><!-- end p-4 wrapper -->
     </main>
 
-    <!-- ============================================================ JAVASCRIPT ============================================================ -->
+        <!-- ============================================================ JAVASCRIPT ============================================================ -->
     <script>
-      // ─── SIDEBAR MOBILE ─── const sidebar =
-      document.getElementById('sidebar'); const overlay =
-      document.getElementById('sidebar-overlay');
-      document.getElementById('mobile-menu-btn').addEventListener('click', () =>
-      { sidebar.classList.remove('-translate-x-full');
-      overlay.classList.add('active'); });
-      document.getElementById('sidebar-close').addEventListener('click', () => {
-      sidebar.classList.add('-translate-x-full');
-      overlay.classList.remove('active'); }); overlay.addEventListener('click',
-      () => { sidebar.classList.add('-translate-x-full');
-      overlay.classList.remove('active'); }); window.addEventListener('resize',
-      () => { if (window.innerWidth >= 1024) {
-      sidebar.classList.remove('-translate-x-full');
-      overlay.classList.remove('active'); } }); // ─── NOTIFICATIONS DROPDOWN
-      ─── function toggleNotifications() {
-      document.getElementById('notif-dropdown').classList.toggle('open'); }
-      document.addEventListener('click', (e) => { if
-      (!e.target.closest('[onclick="toggleNotifications()"]') &&
-      !e.target.closest('#notif-dropdown'))
-      document.getElementById('notif-dropdown').classList.remove('open'); }); //
-      ─── TOAST SYSTEM ─── let toastId = 0; function showToast(msg, type =
-      'success') { const colors = { success:'bg-green-500', error:'bg-red-500',
-      info:'bg-blue-500', warning:'bg-amber-500' }; const icons = {
-      success:'bi-check-circle', error:'bi-x-circle', info:'bi-info-circle',
-      warning:'bi-exclamation-triangle' }; const id = ++toastId; const el =
-      document.createElement('div'); el.id = 'toast-' + id; el.className = `flex
-      items-center gap-3 px-4 py-3 rounded-xl glass border border-gray-800/50
-      shadow-xl shadow-black/30 animate-toast-in max-w-sm`; el.innerHTML = `<div
-      class="w-7 h-7 rounded-lg ${colors[type]}/20 flex items-center
-      justify-center flex-shrink-0"><i class="bi ${icons[type]} text-${type ===
-      'success' ? 'green' : type === 'error' ? 'red' : type === 'info' ? 'blue'
-      : 'amber'}-400"></i></div><p class="text-sm text-white
-      flex-1">${msg}</p><button
-      onclick="document.getElementById('toast-${id}').remove()"
-      class="text-gray-500 hover:text-white"><i class="bi bi-x
-      text-sm"></i></button>`; // Force color classes
-      el.querySelector('div').style.background = `${type === 'success' ?
-      'rgba(34,197,94' : type === 'error' ? 'rgba(239,68,68' : type === 'info' ?
-      'rgba(59,130,246' : 'rgba(245,158,11'}, 0.15)`;
-      el.querySelector('i').style.color = type === 'success' ? '#4ade80' : type
-      === 'error' ? '#f87171' : type === 'info' ? '#60a5fa' : '#fbbf24';
-      document.getElementById('toast-container').appendChild(el); setTimeout(()
-      => { if (el.parentNode) { el.classList.add('animate-toast-out');
-      el.classList.remove('animate-toast-in'); setTimeout(() => el.remove(),
-      350); } }, 3500); } // ─── TAB SWITCHING ─── function switchTab(name,
-      clickedEl) { document.querySelectorAll('.tab-panel').forEach(p =>
-      p.classList.add('hidden')); document.getElementById('tab-' +
-      name).classList.remove('hidden');
-      document.querySelectorAll('.nav-link').forEach(l =>
-      l.classList.remove('active', 'bg-gray-800/40')); if (clickedEl) {
-      clickedEl.classList.add('active', 'bg-gray-800/40'); } // Close mobile
-      sidebar if (window.innerWidth < 1024) {
-      sidebar.classList.add('-translate-x-full');
-      overlay.classList.remove('active'); } // Init charts on first view if
-      (name === 'analytics') initAnalytics(); if (name === 'system')
-      initSystemLogs(); } // ─── REVENUE CHART ─── const revenueData = [320000,
-      480000, 390000, 720000, 560000, 810000, 950000]; function
-      drawRevenueChart() { const svg = document.getElementById('revenue-chart');
-      const container = document.getElementById('revenue-chart-container');
-      const w = 800, h = 180, padL = 40, padR = 20, padT = 10; const maxVal =
-      Math.max(...revenueData); const xs = revenueData.map((_, i) => padL + (i /
-      (revenueData.length - 1)) * (w - padL - padR)); const ys =
-      revenueData.map(v => padT + (1 - v / (maxVal * 1.1)) * h); // Line const
-      linePts = xs.map((x, i) => `${x},${ys[i]}`).join(' '); // Smooth with
-      cubic-bezier approximation let d = `M ${xs[0]} ${ys[0]}`; for (let i = 1;
-      i < xs.length; i++) { const cpx1 = xs[i-1] + (xs[i] - xs[i-1]) * 0.4;
-      const cpx2 = xs[i] - (xs[i] - xs[i-1]) * 0.4; d += ` C ${cpx1} ${ys[i-1]},
-      ${cpx2} ${ys[i]}, ${xs[i]} ${ys[i]}`; }
-      document.getElementById('revenue-line').setAttribute('d', d);
-      document.getElementById('revenue-fill').setAttribute('d', d + ` L
-      ${xs[xs.length-1]} ${h + padT} L ${xs[0]} ${h + padT} Z`); // Dots let
-      dotsHtml = ''; xs.forEach((x, i) => { dotsHtml += `<circle cx="${x}"
-      cy="${ys[i]}" r="4" fill="#f97316" stroke="#111827" stroke-width="2"
-      class="cursor-pointer" data-idx="${i}"
-      onmouseenter="showChartTooltip(event,${i})"
-      onmouseleave="hideChartTooltip()"/>`; });
-      document.getElementById('revenue-dots').innerHTML = dotsHtml; } function
-      showChartTooltip(e, idx) { const days =
-      ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']; const tip =
-      document.getElementById('chart-tooltip'); const container =
-      document.getElementById('revenue-chart-container'); const rect =
-      container.getBoundingClientRect(); const svgEl = e.target; const svgRect =
-      svgEl.closest('svg').getBoundingClientRect(); const cx =
-      parseFloat(svgEl.getAttribute('cx')); const cy =
-      parseFloat(svgEl.getAttribute('cy')); const scaleX = svgRect.width / 800;
-      const scaleY = svgRect.height / 200; tip.innerHTML =
-      `<strong>${days[idx]}</strong><br/>UGX
-      ${(revenueData[idx]/1000).toFixed(0)}K`; tip.style.left = (cx * scaleX -
-      35) + 'px'; tip.style.top = (cy * scaleY - 55) + 'px'; tip.style.opacity =
-      '1'; } function hideChartTooltip() {
-      document.getElementById('chart-tooltip').style.opacity = '0'; } // Draw on
-      load window.addEventListener('load', drawRevenueChart);
-      window.addEventListener('resize', drawRevenueChart); // ─── ACTIVITY FEED
-      ─── const activityItems = [ { icon:'bi-check-circle', color:'green',
-      title:'Sale Completed', desc:'2 cattle sold to John Okello — UGX
-      1,450,000', time:'2 min ago' }, { icon:'bi-hand-thumbs-up', color:'blue',
-      title:'New Bid', desc:'Sarah placed a bid of UGX 400,000 on goats',
-      time:'8 min ago' }, { icon:'bi-broadcast', color:'orange', title:'Auction
-      Started', desc:'Auction #849 for 5 sheep is now live', time:'15 min ago'
-      }, { icon:'bi-person-plus', color:'emerald', title:'New User', desc:'David
-      Munyagwa registered as Farmer', time:'22 min ago' }, {
-      icon:'bi-exclamation-triangle', color:'amber', title:'Flagged Item',
-      desc:'Listing #1204 flagged by buyer', time:'35 min ago' }, {
-      icon:'bi-cash-stack', color:'purple', title:'Payment Received', desc:'UGX
-      2,400,000 deposited via M-Money', time:'1 hr ago' }, {
-      icon:'bi-file-earmark-check', color:'sky', title:'Doc Verified',
-      desc:'Farmer certificate for Peter Adewe approved', time:'2 hr ago' }, ];
-      function renderActivity() { const el =
-      document.getElementById('activity-feed'); el.innerHTML =
-      activityItems.map(a => { const colors = { green:'bg-green-500/15',
-      blue:'bg-blue-500/15', orange:'bg-orange-500/15',
-      emerald:'bg-emerald-500/15', amber:'bg-amber-500/15',
-      purple:'bg-purple-500/15', sky:'bg-sky-500/15' }; const textC = {
-      green:'text-green-400', blue:'text-blue-400', orange:'text-orange-400',
-      emerald:'text-emerald-400', amber:'text-amber-400',
-      purple:'text-purple-400', sky:'text-sky-400' }; return `<div class="flex
-      items-start gap-3 p-2.5 rounded-xl hover:bg-gray-800/30 transition-colors
-      cursor-pointer group"> <div class="w-8 h-8 rounded-lg ${colors[a.color]}
-      flex items-center justify-center flex-shrink-0"><i class="bi ${a.icon}
-      ${textC[a.color]} text-sm"></i></div> <div class="flex-1 min-w-0"><p
-      class="text-xs font-semibold text-white group-hover:text-orange-400
-      transition-colors">${a.title}</p><p class="text-xs text-gray-500
-      truncate">${a.desc}</p></div> <span class="text-[10px] text-gray-600
-      whitespace-nowrap">${a.time}</span> </div>`; }).join(''); }
-      renderActivity(); // Simulate live feed additions setInterval(() => {
-      const newItem = { icon:'bi-arrow-repeat', color:'blue', title:'System
-      Event', desc:'Auto-refresh ping at ' + new Date().toLocaleTimeString(),
-      time:'Just now' }; activityItems.unshift(newItem); if
-      (activityItems.length > 12) activityItems.pop(); renderActivity(); },
-      8000); // ─── USERS TABLE ─── const usersData = [ { name:'Sarah Amoako',
-      email:'sarah.a@email.com', role:'buyer', status:'active', joined:'Jan 28,
-      2025', revenue:'UGX 340K', avatar:'SA' }, { name:'Peter Adewe',
-      email:'peter.ad@email.com', role:'farmer', status:'active', joined:'Jan
-      15, 2025', revenue:'UGX 1.2M', avatar:'PA' }, { name:'John Okello',
-      email:'j.okello@email.com', role:'buyer', status:'active', joined:'Dec 10,
-      2024', revenue:'UGX 890K', avatar:'JO' }, { name:'David Munyagwa',
-      email:'d.munya@email.com', role:'farmer', status:'active', joined:'Jan 30,
-      2025', revenue:'UGX 520K', avatar:'DM' }, { name:'Grace Nabiryo',
-      email:'grace.n@email.com', role:'buyer', status:'inactive', joined:'Nov
-      22, 2024', revenue:'UGX 0', avatar:'GN' }, { name:'Moses Kigunda',
-      email:'moses.k@email.com', role:'farmer', status:'suspended', joined:'Oct
-      5, 2024', revenue:'UGX 780K', avatar:'MK' }, { name:'Linda Acholi',
-      email:'linda.a@email.com', role:'buyer', status:'active', joined:'Jan 20,
-      2025', revenue:'UGX 210K', avatar:'LA' }, { name:'James Ssemukaya',
-      email:'james.s@email.com', role:'farmer', status:'active', joined:'Dec 28,
-      2024', revenue:'UGX 1.8M', avatar:'JS' }, { name:'Ruth Namukasa',
-      email:'ruth.n@email.com', role:'admin', status:'active', joined:'Sep 1,
-      2024', revenue:'—', avatar:'RN' }, { name:'Brian Tumusiime',
-      email:'brian.t@email.com', role:'farmer', status:'active', joined:'Jan 5,
-      2025', revenue:'UGX 440K', avatar:'BT' }, ]; let sortField = '', sortAsc =
-      true; function renderUsers(data) { const body =
-      document.getElementById('users-table-body'); const roleStyles = {
-      farmer:'bg-orange-500/15 text-orange-400', buyer:'bg-blue-500/15
-      text-blue-400', admin:'bg-purple-500/15 text-purple-400' }; const
-      statusStyles = { active:'bg-green-500/15 text-green-400',
-      inactive:'bg-gray-500/15 text-gray-400', suspended:'bg-red-500/15
-      text-red-400' }; body.innerHTML = data.map((u, i) => ` <tr class="border-b
-      border-gray-800/30 hover:bg-gray-800/20 transition-colors group
-      animate-slide-up" style="animation-delay:${i*0.03}s;"> <td class="px-5
-      py-3.5"> <div class="flex items-center gap-3"> <div class="w-8 h-8
-      rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex
-      items-center justify-center text-xs font-bold">${u.avatar}</div> <span
-      class="font-semibold text-sm group-hover:text-orange-400
-      transition-colors">${u.name}</span> </div> </td> <td class="px-5 py-3.5
-      text-sm text-gray-400">${u.email}</td> <td class="px-5 py-3.5"><span
-      class="text-[11px] px-2.5 py-0.5 rounded-full ${roleStyles[u.role]}
-      font-semibold capitalize">${u.role}</span></td> <td class="px-5
-      py-3.5"><span class="text-[11px] px-2.5 py-0.5 rounded-full
-      ${statusStyles[u.status]} font-semibold capitalize flex items-center
-      gap-1.5 w-fit">${u.status === 'active' ? '<span class="w-1.5 h-1.5
-      bg-green-500 rounded-full animate-pulse"></span>' : ''}
-      ${u.status}</span></td> <td class="px-5 py-3.5 text-sm
-      text-gray-400">${u.joined}</td> <td class="px-5 py-3.5 text-sm
-      font-semibold text-white">${u.revenue}</td> <td class="px-5 py-3.5"> <div
-      class="flex items-center justify-center gap-1 opacity-0
-      group-hover:opacity-100 transition-opacity"> <button class="w-7 h-7
-      rounded-lg hover:bg-blue-500/15 flex items-center justify-center
-      transition-colors" title="Edit"><i class="bi bi-pencil text-blue-400
-      text-xs"></i></button> <button class="w-7 h-7 rounded-lg
-      hover:bg-amber-500/15 flex items-center justify-center transition-colors"
-      title="Suspend" onclick="showToast('User ${u.name} action
-      triggered','warning')"><i class="bi bi-ban text-amber-400
-      text-xs"></i></button> <button class="w-7 h-7 rounded-lg
-      hover:bg-red-500/15 flex items-center justify-center transition-colors"
-      title="Delete" onclick="showToast('Delete confirmation for
-      ${u.name}','error')"><i class="bi bi-trash text-red-400
-      text-xs"></i></button> </div> </td> </tr> `).join(''); } function
-      filterUsers() { const search =
-      document.getElementById('user-search').value.toLowerCase(); const role =
-      document.getElementById('role-filter').value; const status =
-      document.getElementById('status-filter').value; let filtered =
-      usersData.filter(u => (search === '' ||
-      u.name.toLowerCase().includes(search) ||
-      u.email.toLowerCase().includes(search)) && (role === 'all' || u.role ===
-      role) && (status === 'all' || u.status === status) );
-      renderUsers(filtered);
-      document.getElementById('user-count-label').textContent = `Showing
-      1–${filtered.length} of ${filtered.length}`; } function sortUsers(field) {
-      sortAsc = sortField === field ? !sortAsc : true; sortField = field;
-      usersData.sort((a, b) => { const cmp = a[field].localeCompare(b[field]);
-      return sortAsc ? cmp : -cmp; }); filterUsers(); showToast(`Sorted by
-      ${field}`, 'info'); } renderUsers(usersData); // ─── AUCTIONS ─── const
-      auctionsData = [ { id:847, title:'Prime Dairy Cattle', category:'Cattle',
-      farmer:'Peter Adewe', startPrice:800000, currentBid:1200000, bids:14,
-      endTime:Date.now()+720*1000, status:'live' }, { id:848, title:'Alpine
-      Goats (x6)', category:'Goats', farmer:'Moses Kigunda', startPrice:350000,
-      currentBid:580000, bids:9, endTime:Date.now()+1800*1000, status:'live' },
-      { id:849, title:'Merino Sheep (x5)', category:'Sheep', farmer:'James
-      Ssemukaya', startPrice:500000, currentBid:720000, bids:7,
-      endTime:Date.now()+3600*1000, status:'live' }, { id:850, title:'Free-Range
-      Poultry', category:'Poultry', farmer:'David Munyagwa', startPrice:120000,
-      currentBid:195000, bids:11, endTime:Date.now()+5400*1000, status:'live' },
-      { id:851, title:'Bull (Single)', category:'Cattle', farmer:'Brian
-      Tumusiime', startPrice:1500000, currentBid:2100000, bids:3,
-      endTime:Date.now()+300*1000, status:'live' }, { id:852, title:'Boer Goats
-      (x3)', category:'Goats', farmer:'Peter Adewe', startPrice:250000,
-      currentBid:410000, bids:6, endTime:Date.now()+7200*1000, status:'live' },
-      ]; function renderAuctions() { const grid =
-      document.getElementById('auctions-grid'); const catColors = {
-      Cattle:'from-orange-500 to-red-600', Goats:'from-blue-500 to-cyan-600',
-      Sheep:'from-purple-500 to-violet-600', Poultry:'from-emerald-500
-      to-teal-600' }; const catBg = { Cattle:'bg-orange-500/15 text-orange-400',
-      Goats:'bg-blue-500/15 text-blue-400', Sheep:'bg-purple-500/15
-      text-purple-400', Poultry:'bg-emerald-500/15 text-emerald-400' };
-      grid.innerHTML = auctionsData.map(a => ` <div class="glass border
-      border-gray-800/40 rounded-2xl p-5 hover:border-orange-500/30
-      transition-all duration-300 group card-hover relative overflow-hidden
-      animate-slide-up"> <!-- Urgent badge for <10 min --> ${a.endTime -
-      Date.now() < 600000 ? '<div class="absolute top-0 left-0 right-0 h-0.5
-      bg-gradient-to-r from-red-500 to-orange-500 animate-pulse"></div>' : ''}
-      <div class="flex items-start justify-between mb-3"> <span class="text-xs
-      px-2.5 py-0.5 rounded-full ${catBg[a.category]}
-      font-semibold">${a.category}</span> <span class="text-[10px]
-      text-gray-600">#${a.id}</span> </div> <h4 class="font-black font-display
-      text-white mb-1 group-hover:text-orange-400
-      transition-colors">${a.title}</h4> <p class="text-xs text-gray-500
-      mb-3">by <span class="text-gray-400 font-semibold">${a.farmer}</span></p>
-      <!-- Bid progress --> <div class="mb-3"> <div class="flex items-center
-      justify-between mb-1.5"> <span class="text-[11px] text-gray-500">Current
-      Bid</span> <span class="text-[11px] text-gray-500">${a.bids} bids</span>
-      </div> <div class="h-1.5 bg-gray-800 rounded-full overflow-hidden"> <div
-      class="h-full bg-gradient-to-r ${catColors[a.category]} rounded-full"
-      style="width:${Math.min((a.currentBid/a.startPrice)*40, 95)}%;"></div>
-      </div> </div> <!-- Price row --> <div class="flex items-center
-      justify-between"> <div><p class="text-xs text-gray-500">Start</p><p
-      class="text-sm font-semibold text-gray-400">UGX
-      ${(a.startPrice/1000).toFixed(0)}K</p></div> <div class="text-right"><p
-      class="text-xs text-gray-500">Current</p><p class="text-lg font-black
-      font-display text-white">UGX ${(a.currentBid/1000).toFixed(0)}K</p></div>
-      </div> <!-- Timer --> <div class="flex items-center justify-between mt-3
-      pt-3 border-t border-gray-800/40"> <span class="countdown text-xs
-      font-semibold flex items-center gap-1.5 ${a.endTime - Date.now() < 600000
-      ? 'text-red-400' : 'text-amber-400'}" data-end="${a.endTime}"><i class="bi
-      bi-clock text-[10px]"></i><span class="countdown-text">...</span></span>
-      <button class="px-3 py-1 bg-gradient-to-r from-orange-500 to-red-600
-      rounded-lg text-[11px] font-semibold hover:shadow-md
-      hover:shadow-orange-500/30 transition-all" onclick="showToast('Monitoring
-      auction #${a.id}','success')">Monitor</button> </div> </div> `).join('');
-      startCountdowns(); } function filterAuctions(filter, btn) {
-      document.querySelectorAll('.tab-btn').forEach(b => {
-      b.classList.remove('bg-red-500/15','text-red-400','active-tab-btn');
-      b.classList.add('text-gray-500'); });
-      btn.classList.add('bg-red-500/15','text-red-400','active-tab-btn');
-      btn.classList.remove('text-gray-500'); // For demo just re-render (all are
-      'live') renderAuctions(); showToast(`Filtered to ${filter} auctions`,
-      'info'); } renderAuctions(); // Countdown timers function
-      startCountdowns() { document.querySelectorAll('.countdown').forEach(el =>
-      { const end = parseInt(el.dataset.end); function tick() { const diff = end
-      - Date.now(); if (diff <= 0) {
-      el.querySelector('.countdown-text').textContent = 'Ended'; return; } const
-      m = Math.floor(diff / 60000), s = Math.floor((diff % 60000) / 1000);
-      el.querySelector('.countdown-text').textContent = `${m}m ${s}s left`; if
-      (diff < 600000) { el.classList.add('text-red-400');
-      el.classList.remove('text-amber-400'); } setTimeout(tick, 1000); } tick();
-      }); } // ─── TRANSACTIONS ─── const txnData = [ { id:'TXN-8471',
-      from:'Sarah Amoako', to:'Peter Adewe', item:'2 Cattle',
-      amount:'1,450,000', status:'completed', date:'Feb 2, 2025' }, {
-      id:'TXN-8470', from:'John Okello', to:'James Ssemukaya', item:'5 Sheep',
-      amount:'720,000', status:'completed', date:'Feb 2, 2025' }, {
-      id:'TXN-8469', from:'Linda Acholi', to:'David Munyagwa', item:'Poultry
-      (20)', amount:'195,000', status:'pending', date:'Feb 1, 2025' }, {
-      id:'TXN-8468', from:'Brian Tumusiime', to:'Moses Kigunda', item:'3 Goats',
-      amount:'410,000', status:'failed', date:'Feb 1, 2025' }, { id:'TXN-8467',
-      from:'Grace Nabiryo', to:'Peter Adewe', item:'1 Bull', amount:'2,100,000',
-      status:'completed', date:'Jan 30, 2025' }, { id:'TXN-8466', from:'Sarah
-      Amoako', to:'Brian Tumusiime', item:'6 Goats', amount:'580,000',
-      status:'pending', date:'Jan 30, 2025' }, { id:'TXN-8465', from:'David
-      Munyagwa', to:'James Ssemukaya', item:'4 Sheep', amount:'440,000',
-      status:'completed', date:'Jan 29, 2025' }, ]; function
-      renderTransactions() { const statusS = { completed:'bg-green-500/15
-      text-green-400', pending:'bg-amber-500/15 text-amber-400',
-      failed:'bg-red-500/15 text-red-400' };
-      document.getElementById('transactions-body').innerHTML = txnData.map((t,
-      i) => ` <tr class="border-b border-gray-800/20 hover:bg-gray-800/20
-      transition-colors group animate-slide-up"
-      style="animation-delay:${i*0.04}s;"> <td class="px-5 py-3.5"><span
-      class="text-sm font-mono text-gray-300">${t.id}</span></td> <td
-      class="px-5 py-3.5"><div class="flex items-center gap-1.5 text-xs
-      text-gray-400"><span class="font-semibold text-white">${t.from}</span><i
-      class="bi bi-arrow-right text-gray-600"></i><span class="font-semibold
-      text-white">${t.to}</span></div></td> <td class="px-5 py-3.5 text-sm
-      text-gray-400">${t.item}</td> <td class="px-5 py-3.5 text-sm font-black
-      font-display text-white">UGX ${t.amount}</td> <td class="px-5
-      py-3.5"><span class="text-[11px] px-2.5 py-0.5 rounded-full
-      ${statusS[t.status]} font-semibold capitalize">${t.status}</span></td> <td
-      class="px-5 py-3.5 text-xs text-gray-500">${t.date}</td> <td class="px-5
-      py-3.5"><button class="text-xs text-orange-400 hover:text-orange-300
-      font-semibold opacity-0 group-hover:opacity-100 transition-opacity"
-      onclick="showToast('Viewing ${t.id}','info')">View →</button></td> </tr>
-      `).join(''); } renderTransactions(); // ─── ANALYTICS ─── let
-      analyticsInited = false; function initAnalytics() { if (analyticsInited)
-      return; analyticsInited = true; // Bar chart const categories = [ {
-      name:'Cattle', value:4500000, color:'from-orange-500 to-red-600',
-      max:5000000 }, { name:'Goats', value:3100000, color:'from-blue-500
-      to-cyan-500', max:5000000 }, { name:'Sheep', value:2200000,
-      color:'from-purple-500 to-violet-500', max:5000000 }, { name:'Poultry',
-      value:1500000, color:'from-emerald-500 to-teal-500', max:5000000 }, {
-      name:'Pigs', value:900000, color:'from-pink-500 to-rose-500', max:5000000
-      }, ]; document.getElementById('bar-chart').innerHTML = categories.map((c,
-      i) => ` <div class="animate-slide-up" style="animation-delay:${i*0.1}s;">
-      <div class="flex items-center justify-between mb-1.5"> <div class="flex
-      items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-gradient-to-r
-      ${c.color}"></span><span class="text-sm font-semibold
-      text-white">${c.name}</span></div> <span class="text-sm font-black
-      font-display text-white">UGX ${(c.value/1000000).toFixed(1)}M</span>
-      </div> <div class="h-3 bg-gray-800 rounded-full overflow-hidden"> <div
-      class="h-full bg-gradient-to-r ${c.color} rounded-full transition-all
-      duration-1000 ease-out" style="width:0%;" id="bar-${i}"></div> </div>
-      </div> `).join(''); // Animate bars requestAnimationFrame(() => {
-      categories.forEach((c, i) => { setTimeout(() => {
-      document.getElementById('bar-' + i).style.width = (c.value / c.max * 100)
-      + '%'; }, 200 + i * 100); }); }); // Donut const circumference = 2 *
-      Math.PI * 50; // ~314 const percentages = [45, 25, 18, 12]; let offset =
-      0; const donutIds =
-      ['donut-cattle','donut-goat','donut-sheep','donut-poultry'];
-      donutIds.forEach((id, i) => { const el = document.getElementById(id);
-      const pct = percentages[i] / 100; const dashLen = circumference * pct;
-      el.style.strokeDasharray = `${dashLen} ${circumference}`;
-      el.style.strokeDashoffset = -offset; offset += dashLen; }); // Funnel
-      const funnelStages = [ { label:'Listings Created', value:284,
-      color:'from-blue-500 to-cyan-500', pct:100 }, { label:'Auctions Started',
-      value:198, color:'from-indigo-500 to-blue-500', pct:70 }, { label:'Bids
-      Received', value:156, color:'from-purple-500 to-indigo-500', pct:55 }, {
-      label:'Bids Accepted', value:112, color:'from-violet-500 to-purple-500',
-      pct:39 }, { label:'Payments Completed', value:98, color:'from-orange-500
-      to-red-500', pct:35 }, ];
-      document.getElementById('funnel-chart').innerHTML = funnelStages.map((s,
-      i) => ` <div class="animate-slide-up" style="animation-delay:${i*0.1}s;">
-      <div class="flex items-center gap-4"> <div class="w-24 text-right"><span
-      class="text-sm font-black font-display text-white">${s.value}</span></div>
-      <div class="flex-1"><div class="flex items-center justify-between
-      mb-1"><span class="text-xs text-gray-400">${s.label}</span><span
-      class="text-xs text-gray-500">${s.pct}%</span></div> <div class="h-6
-      bg-gray-800 rounded-lg overflow-hidden relative"> <div class="h-full
-      bg-gradient-to-r ${s.color} rounded-lg transition-all duration-1000"
-      style="width:${s.pct}%;"></div> <span class="absolute inset-0 flex
-      items-center pl-3 text-[11px] font-semibold
-      text-white/80">${s.label}</span> </div> </div> <div class="w-6 text-center
-      text-gray-600">→</div> </div> </div> `).join(''); } // ─── MODERATION ───
-      const moderationItems = [ { id:'MOD-102', type:'urgent', title:'Suspicious
-      Listing', desc:'Listing #1204 — price unusually low for cattle. May be
-      fraudulent.', farmer:'Moses Kigunda', time:'30 min ago',
-      actions:['Approve','Flag','Remove'] }, { id:'MOD-101', type:'urgent',
-      title:'Duplicate Account', desc:'Two accounts share the same phone number
-      +256-XXX-XXXX.', farmer:'Grace Nabiryo', time:'1 hr ago',
-      actions:['Merge','Suspend','Investigate'] }, { id:'MOD-100',
-      type:'review', title:'Buyer Complaint', desc:'Buyer reports livestock
-      quality does not match listing description.', farmer:'Brian Tumusiime',
-      time:'2 hr ago', actions:['Mediate','Escalate','Close'] }, { id:'MOD-099',
-      type:'review', title:'Price Manipulation', desc:'3 consecutive bids from
-      same IP address on auction #845.', farmer:'Peter Adewe', time:'3 hr ago',
-      actions:['Investigate','Suspend Bids','Ignore'] }, { id:'MOD-098',
-      type:'review', title:'Offensive Content', desc:'Listing description
-      contains inappropriate language.', farmer:'David Munyagwa', time:'4 hr
-      ago', actions:['Edit','Remove','Warn'] }, { id:'MOD-097', type:'docs',
-      title:'Document Verification', desc:'Farmer certificate uploaded — needs
-      manual verification.', farmer:'Linda Acholi', time:'5 hr ago',
-      actions:['Approve','Reject','Request More'] }, { id:'MOD-096',
-      type:'docs', title:'Payment Receipt Check', desc:'Receipt for TXN-8469
-      needs cross-verification with bank.', farmer:'James Ssemukaya', time:'6 hr
-      ago', actions:['Verify','Reject','Pending'] }, ]; function
-      renderModeration() { const typeStyles = { urgent:'border-red-500/40
-      bg-red-500/5', review:'border-amber-500/40 bg-amber-500/5',
-      docs:'border-sky-500/40 bg-sky-500/5' }; const typeBadge = {
-      urgent:'bg-red-500/15 text-red-400', review:'bg-amber-500/15
-      text-amber-400', docs:'bg-sky-500/15 text-sky-400' }; const typeIcon = {
-      urgent:'bi-exclamation-triangle', review:'bi-eye',
-      docs:'bi-file-earmark-text' };
-      document.getElementById('moderation-list').innerHTML =
-      moderationItems.map((m, i) => ` <div class="glass border
-      ${typeStyles[m.type]} rounded-2xl p-5 animate-slide-up
-      hover:border-orange-500/30 transition-all"
-      style="animation-delay:${i*0.06}s;"> <div class="flex items-start
-      justify-between"> <div class="flex items-center gap-3 mb-2"> <div
-      class="w-9 h-9 rounded-lg ${typeBadge[m.type].split(' ')[0]} flex
-      items-center justify-center"><i class="bi ${typeIcon[m.type]}
-      ${typeBadge[m.type].split(' ')[1]}"></i></div> <div><div class="flex
-      items-center gap-2"><h4 class="text-sm font-black font-display
-      text-white">${m.title}</h4><span class="text-[10px] px-2 py-0.5
-      rounded-full ${typeBadge[m.type]} font-semibold
-      capitalize">${m.type}</span></div><p class="text-xs text-gray-500
-      mt-0.5">${m.id} · ${m.time}</p></div> </div> <span class="text-xs
-      text-gray-600">by ${m.farmer}</span> </div> <p class="text-xs
-      text-gray-400 mb-3 ml-12">${m.desc}</p> <div class="flex items-center
-      gap-2 ml-12 flex-wrap"> ${m.actions.map((a, j) => `<button class="px-3
-      py-1 rounded-lg text-[11px] font-semibold ${j===0 ? 'bg-gradient-to-r
-      from-orange-500 to-red-600 text-white hover:shadow-md
-      hover:shadow-orange-500/25' : 'glass border border-gray-800 text-gray-400
-      hover:text-white hover:border-gray-600'} transition-all"
-      onclick="showToast('Action: ${a} on
-      ${m.id}','${j===0?'success':'info'}')">${a}</button>`).join('')} </div>
-      </div> `).join(''); } renderModeration(); // ─── SYSTEM LOGS ─── let
-      logsInited = false; const logMessages = [ { level:'info', msg:'Server
-      started on port 3000', time:'02:45:00' }, { level:'info', msg:'Database
-      connection pool ready (10 connections)', time:'02:45:01' }, {
-      level:'warn', msg:'WebSocket connection timeout — client 204.x',
-      time:'02:45:15' }, { level:'info', msg:'Auction #847 — bid received from
-      user_4821', time:'02:46:02' }, { level:'error', msg:'Payment gateway
-      timeout for TXN-8468 (retry 2/3)', time:'02:46:30' }, { level:'info',
-      msg:'Email sent: auction_alert to sarah.a@email.com', time:'02:47:11' }, {
-      level:'info', msg:'Cron: cleanup expired sessions — 14 removed',
-      time:'02:48:00' }, { level:'warn', msg:'High memory usage detected: 78%
-      threshold', time:'02:48:45' }, { level:'info', msg:'New user registered:
-      david.m (farmer)', time:'02:49:03' }, { level:'error', msg:'Rate limit
-      hit: IP 192.168.x — blocked 60s', time:'02:49:55' }, { level:'info',
-      msg:'Auction #849 started — 5 sheep listing live', time:'02:50:12' }, ];
-      function initSystemLogs() { if (logsInited) return; logsInited = true;
-      const el = document.getElementById('system-logs'); el.innerHTML =
-      logMessages.map(l => { const colors = { info:'text-gray-400',
-      warn:'text-amber-400', error:'text-red-400' }; const bg = { info:'',
-      warn:'bg-amber-500/5', error:'bg-red-500/5' }; return `<div class="flex
-      gap-2 px-2 py-0.5 rounded ${bg[l.level]} hover:bg-gray-800/40
-      transition-colors"> <span class="text-gray-600 text-[10px]
-      flex-shrink-0">${l.time}</span> <span class="text-[10px] font-semibold
-      ${l.level==='info'?'text-blue-400':l.level==='warn'?'text-amber-400':'text-red-400'}
-      flex-shrink-0 uppercase w-10 text-right">${l.level}</span> <span
-      class="text-[10px] ${colors[l.level]}">${l.msg}</span> </div>`;
-      }).join(''); // Simulate new log entries setInterval(() => { const newLog
-      = { level:'info', msg:`Heartbeat ping — ${new
-      Date().toLocaleTimeString()}`, time:new
-      Date().toLocaleTimeString().split(' ')[0] }; logMessages.push(newLog); if
-      (logMessages.length > 18) logMessages.shift(); el.innerHTML =
-      logMessages.map(l => { const colors = { info:'text-gray-400',
-      warn:'text-amber-400', error:'text-red-400' }; const bg = { info:'',
-      warn:'bg-amber-500/5', error:'bg-red-500/5' }; return `<div class="flex
-      gap-2 px-2 py-0.5 rounded ${bg[l.level]} hover:bg-gray-800/40
-      transition-colors"> <span class="text-gray-600 text-[10px]
-      flex-shrink-0">${l.time}</span> <span class="text-[10px] font-semibold
-      ${l.level==='info'?'text-blue-400':l.level==='warn'?'text-amber-400':'text-red-400'}
-      flex-shrink-0 uppercase w-10 text-right">${l.level}</span> <span
-      class="text-[10px] ${colors[l.level]}">${l.msg}</span> </div>`;
-      }).join(''); el.scrollTop = el.scrollHeight; }, 5000); } // ─── SYSTEM
-      PERF SIMULATION ─── setInterval(() => { const fluctuate = (base, range) =>
-      Math.max(5, Math.min(95, base + (Math.random()-0.5)*range)); const cpu =
-      fluctuate(34, 20); const mem = fluctuate(61, 8); const disk =
-      fluctuate(22, 6); const net = fluctuate(48, 15);
-      document.getElementById('cpu-val') &&
-      (document.getElementById('cpu-val').textContent = cpu.toFixed(0) + '%');
-      document.getElementById('cpu-bar') &&
-      (document.getElementById('cpu-bar').style.width = cpu + '%');
-      document.getElementById('mem-val') &&
-      (document.getElementById('mem-val').textContent = mem.toFixed(0) + '%');
-      document.getElementById('mem-bar') &&
-      (document.getElementById('mem-bar').style.width = mem + '%');
-      document.getElementById('disk-val') &&
-      (document.getElementById('disk-val').textContent = disk.toFixed(0) + '%');
-      document.getElementById('disk-bar') &&
-      (document.getElementById('disk-bar').style.width = disk + '%');
-      document.getElementById('net-val') &&
-      (document.getElementById('net-val').textContent = net.toFixed(0) + '%');
-      document.getElementById('net-bar') &&
-      (document.getElementById('net-bar').style.width = net + '%'); }, 3000); //
-      ─── GLOBAL SEARCH ───
-      document.getElementById('global-search').addEventListener('input',
-      function() { const q = this.value.toLowerCase(); if (q.length > 2)
-      showToast(`Searching for "${this.value}"…`, 'info'); }); // ─── INITIAL
-      TOAST ─── setTimeout(() => showToast('Welcome back, Super Admin!',
-      'success'), 800);
+      (function () {
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('sidebar-overlay');
+        var mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        var sidebarClose = document.getElementById('sidebar-close');
+
+        function closeSidebar() {
+          if (!sidebar || !overlay) return;
+          sidebar.classList.add('-translate-x-full');
+          overlay.classList.remove('active');
+        }
+
+        function openSidebar() {
+          if (!sidebar || !overlay) return;
+          sidebar.classList.remove('-translate-x-full');
+          overlay.classList.add('active');
+        }
+
+        if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openSidebar);
+        if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
+        if (overlay) overlay.addEventListener('click', closeSidebar);
+
+        window.addEventListener('resize', function () {
+          if (!sidebar || !overlay) return;
+          if (window.innerWidth >= 1024) {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('active');
+          }
+        });
+
+        var toastId = 0;
+        window.showToast = function (msg, type) {
+          type = type || 'info';
+          var host = document.getElementById('toast-container');
+          if (!host) return;
+          toastId += 1;
+          var item = document.createElement('div');
+          item.id = 'toast-' + toastId;
+          item.className = 'flex items-center gap-3 px-4 py-3 rounded-xl glass border border-gray-800/50 shadow-xl shadow-black/30 max-w-sm';
+          item.innerHTML = '<i class="bi bi-info-circle text-blue-400"></i><p class="text-sm text-white flex-1"></p>';
+          item.querySelector('p').textContent = msg;
+          host.appendChild(item);
+          setTimeout(function () { if (item.parentNode) item.remove(); }, 2800);
+        };
+
+        window.toggleNotifications = function () {
+          var dropdown = document.getElementById('notif-dropdown');
+          if (dropdown) dropdown.classList.toggle('open');
+        };
+
+        window.switchTab = function (name, clickedEl) {
+          var panels = document.querySelectorAll('.tab-panel');
+          panels.forEach(function (p) { p.classList.add('hidden'); });
+          var panel = document.getElementById('tab-' + name);
+          if (panel) panel.classList.remove('hidden');
+
+          var links = document.querySelectorAll('.nav-link');
+          links.forEach(function (l) { l.classList.remove('active', 'bg-gray-800/40'); });
+          if (clickedEl) clickedEl.classList.add('active', 'bg-gray-800/40');
+
+          if (window.innerWidth < 1024) closeSidebar();
+        };
+
+        if (window.location.hash === '#users') {
+          var usersLink = document.querySelector(".nav-link[onclick*=\"switchTab('users'\"]");
+          window.switchTab('users', usersLink || null);
+        }
+      })();
     </script>
+    <script src="/js/app-theme.js"></script>
+    <script src="/js/dashboard-stats.js"></script>
+    <script src="/js/admin-user-management.js"></script>
   </body>
 </html>
+

@@ -98,6 +98,14 @@ export const loginUser = async (req, res) => {
 
     console.log("User found! ID:", user._id, "Role:", user.role);
 
+    if (user.accountStatus && user.accountStatus !== "active") {
+      req.flash(
+        "error_msg",
+        "Your account is currently not active. Please contact an administrator.",
+      );
+      return res.redirect("/auth/login");
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
     console.log("Password match result:", isMatch);
 
@@ -112,6 +120,7 @@ export const loginUser = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role.trim(),
+      accountStatus: user.accountStatus || "active",
     };
 
     console.log("Session BEFORE save:", req.session.user);

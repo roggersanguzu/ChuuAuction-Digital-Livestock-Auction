@@ -4,15 +4,44 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Initialize Gemini AI
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+
+function getGeminiClient() {
+  const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+  if (!apiKey) {
+    throw new Error("Missing GEMINI_API_KEY (or GOOGLE_API_KEY)");
+  }
+  return new GoogleGenerativeAI(apiKey);
+}
+
+function getModel() {
+  const client = getGeminiClient();
+  return client.getGenerativeModel({
+    model: GEMINI_MODEL,
+    generationConfig: {
+      responseMimeType: "application/json",
+    },
+  });
+}
+
+function parseJsonResponse(text) {
+  try {
+    return JSON.parse(text);
+  } catch {
+    const jsonMatch = String(text || "").match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      throw new Error("Failed to parse AI response");
+    }
+    return JSON.parse(jsonMatch[0]);
+  }
+}
 
 /**
  * Verify ownership documents using Gemini AI
  */
 export async function verifyOwnershipDocuments(documents, animalDetails) {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = getModel();
 
     // Prepare image parts from documents
     const imageParts = documents.map((doc) => ({
@@ -57,13 +86,7 @@ Be thorough and professional. Flag any inconsistencies, missing information, or 
     const response = await result.response;
     const text = response.text();
 
-    // Extract JSON from response
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      throw new Error("Failed to parse AI response");
-    }
-
-    return JSON.parse(jsonMatch[0]);
+    return parseJsonResponse(text);
   } catch (error) {
     console.error("Gemini ownership verification error:", error);
     throw new Error(`Ownership verification failed: ${error.message}`);
@@ -75,7 +98,7 @@ Be thorough and professional. Flag any inconsistencies, missing information, or 
  */
 export async function verifyHealthRecords(documents, animalDetails) {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = getModel();
 
     const imageParts = documents.map((doc) => ({
       inlineData: {
@@ -127,12 +150,7 @@ Be thorough in assessing health status. Flag any concerns about animal welfare o
     const response = await result.response;
     const text = response.text();
 
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      throw new Error("Failed to parse AI response");
-    }
-
-    return JSON.parse(jsonMatch[0]);
+    return parseJsonResponse(text);
   } catch (error) {
     console.error("Gemini health verification error:", error);
     throw new Error(`Health verification failed: ${error.message}`);
@@ -144,7 +162,7 @@ Be thorough in assessing health status. Flag any concerns about animal welfare o
  */
 export async function verifyAnimalPhotos(photos, claimedDetails) {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = getModel();
 
     const imageParts = photos.map((photo) => ({
       inlineData: {
@@ -207,12 +225,7 @@ Be very thorough. Detect if photos are stock images, heavily edited, or show dif
     const response = await result.response;
     const text = response.text();
 
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      throw new Error("Failed to parse AI response");
-    }
-
-    return JSON.parse(jsonMatch[0]);
+    return parseJsonResponse(text);
   } catch (error) {
     console.error("Gemini photo verification error:", error);
     throw new Error(`Photo verification failed: ${error.message}`);

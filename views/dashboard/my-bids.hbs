@@ -12,8 +12,9 @@
     />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      href="/vendor/bootstrap-icons/css/bootstrap-icons.css"
     />
+    <link href="/css/app-theme.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
@@ -124,21 +125,23 @@
             <a href="/" class="flex items-center gap-2">
               <div
                 class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center font-bold"
-              >C</div>
+              >Back</div>
               <span class="font-display font-bold text-xl">ChuuAuction</span>
             </a>
           </div>
           <div class="flex items-center gap-4">
             <span class="text-sm text-gray-400">Welcome,
-              <span
-                class="text-orange-400 font-semibold"
-              >{{user.name}}</span></span>
-            <a
-              href="/auth/logout"
-              class="px-4 py-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition"
-            >
-              <i class="bi bi-box-arrow-left mr-2"></i>Logout
-            </a>
+              <span class="text-orange-400 font-semibold">{{user.name}}</span>
+            </span>
+            <form action="/auth/logout" method="POST">
+              <button
+                type="submit"
+                class="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 hover:border-red-500/50 transition cursor-pointer"
+              >
+                <i class="bi bi-box-arrow-left"></i>
+                Logout
+              </button>
+            </form>
           </div>
         </div>
       </div>
@@ -159,7 +162,6 @@
 
       <!-- Search and Filters -->
       <div class="glass-strong border border-gray-800 rounded-2xl p-6 mb-8">
-        <!-- Search Bar -->
         <div class="relative mb-4">
           <div
             class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
@@ -180,9 +182,7 @@
           </button>
         </div>
 
-        <!-- Filter Row -->
         <div class="flex flex-wrap items-center gap-4">
-          <!-- Status Filter -->
           <div class="flex items-center gap-2">
             <span class="text-sm text-gray-400"><i
                 class="bi bi-filter mr-1"
@@ -192,34 +192,25 @@
                 class="filter-btn px-4 py-2 rounded-lg border border-gray-700 text-sm hover:border-orange-500 transition active"
                 data-filter="status"
                 data-value="all"
-              >
-                All
-              </button>
+              >All</button>
               <button
                 class="filter-btn px-4 py-2 rounded-lg border border-gray-700 text-sm hover:border-orange-500 transition"
                 data-filter="status"
                 data-value="pending"
-              >
-                <i class="bi bi-hourglass-split mr-1"></i>Pending
-              </button>
+              ><i class="bi bi-hourglass-split mr-1"></i>Pending</button>
               <button
                 class="filter-btn px-4 py-2 rounded-lg border border-gray-700 text-sm hover:border-orange-500 transition"
                 data-filter="status"
                 data-value="accepted"
-              >
-                <i class="bi bi-trophy-fill mr-1"></i>Accepted
-              </button>
+              ><i class="bi bi-trophy-fill mr-1"></i>Accepted</button>
               <button
                 class="filter-btn px-4 py-2 rounded-lg border border-gray-700 text-sm hover:border-orange-500 transition"
                 data-filter="status"
                 data-value="rejected"
-              >
-                <i class="bi bi-x-circle-fill mr-1"></i>Rejected
-              </button>
+              ><i class="bi bi-x-circle-fill mr-1"></i>Rejected</button>
             </div>
           </div>
 
-          <!-- Animal Type Filter -->
           <div class="flex items-center gap-2">
             <span class="text-sm text-gray-400"><i
                 class="bi bi-grid mr-1"
@@ -238,7 +229,6 @@
             </select>
           </div>
 
-          <!-- Sort -->
           <div class="flex items-center gap-2">
             <span class="text-sm text-gray-400"><i
                 class="bi bi-sort-down mr-1"
@@ -254,14 +244,12 @@
             </select>
           </div>
 
-          <!-- Results Count -->
           <div class="ml-auto text-sm text-gray-400">
             <span id="results-count">0</span>
             results found
           </div>
         </div>
 
-        <!-- Advanced Search Tags -->
         <div class="mt-4 pt-4 border-t border-gray-800">
           <div class="flex items-center gap-2 flex-wrap">
             <span class="text-sm text-gray-400"><i
@@ -271,30 +259,22 @@
               class="quick-filter px-3 py-1 rounded-full bg-gray-800 border border-gray-700 text-xs hover:border-orange-500 transition"
               data-field="hasNotes"
               data-value="true"
-            >
-              <i class="bi bi-chat-quote mr-1"></i>Has Notes
-            </button>
+            ><i class="bi bi-chat-quote mr-1"></i>Has Notes</button>
             <button
               class="quick-filter px-3 py-1 rounded-full bg-gray-800 border border-gray-700 text-xs hover:border-orange-500 transition"
               data-field="hasPhotos"
               data-value="true"
-            >
-              <i class="bi bi-image mr-1"></i>Has Photos
-            </button>
+            ><i class="bi bi-image mr-1"></i>Has Photos</button>
             <button
               class="quick-filter px-3 py-1 rounded-full bg-gray-800 border border-gray-700 text-xs hover:border-orange-500 transition"
               data-field="minAmount"
               data-value="100000"
-            >
-              <i class="bi bi-cash mr-1"></i>Over 100K
-            </button>
+            ><i class="bi bi-cash mr-1"></i>Over 100K</button>
             <button
               class="quick-filter px-3 py-1 rounded-full bg-gray-800 border border-gray-700 text-xs hover:border-orange-500 transition"
               data-field="maxAmount"
               data-value="100000"
-            >
-              <i class="bi bi-cash-stack mr-1"></i>Under 100K
-            </button>
+            ><i class="bi bi-cash-stack mr-1"></i>Under 100K</button>
           </div>
         </div>
       </div>
@@ -339,7 +319,7 @@
             <div
               class="w-10 h-10 rounded-xl bg-orange-500/20 flex items-center justify-center"
             >
-              <i class="bi bi-cash-stack text-orange-500"></i>
+              <i class="bi bi-collection text-orange-500"></i>
             </div>
             <span class="text-gray-400 text-sm">Total Bids</span>
           </div>
@@ -392,11 +372,11 @@
           id="clear-filters"
           class="px-6 py-3 rounded-xl bg-gray-800 border border-gray-700 font-semibold hover:border-orange-500 transition"
         >
-          <i class="bi bi-x-circle mr-2"></i>Clear All Filters
+          <i class="bi bi-eraser mr-2"></i>Clear All Filters
         </button>
       </div>
 
-      <!-- Bids List - with userId data attribute -->
+      <!-- Bids List -->
       <div
         id="bids-container"
         data-user-id="{{userId}}"
@@ -407,7 +387,9 @@
 
     </div>
 
-    <!-- External JavaScript file -->
     <script src="/js/my-bids.js"></script>
+      <script src="/js/app-theme.js"></script>
   </body>
 </html>
+
+

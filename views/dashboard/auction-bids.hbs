@@ -12,8 +12,9 @@
     />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      href="/vendor/bootstrap-icons/css/bootstrap-icons.css"
     />
+    <link href="/css/app-theme.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
@@ -142,12 +143,14 @@
               <span
                 class="text-orange-400 font-semibold"
               >{{user.name}}</span></span>
-            <a
-              href="/auth/logout"
-              class="px-4 py-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition"
-            >
-              <i class="bi bi-box-arrow-left mr-2"></i>Logout
-            </a>
+            <form action="/auth/logout" method="POST">
+              <button
+                type="submit"
+                class="px-4 py-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition"
+              >
+                <i class="bi bi-box-arrow-left mr-2"></i>Logout
+              </button>
+            </form>
           </div>
         </div>
       </div>
@@ -157,6 +160,7 @@
       id="auction-bids-page"
       data-user-id="{{userId}}"
       data-is-admin="{{isAdmin}}"
+      data-can-manage-bids="{{canManageBids}}"
       data-auction-id="{{auctionId}}"
       class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
     >
@@ -165,7 +169,7 @@
       <div class="mb-8">
         <div class="flex items-center gap-3 mb-2">
           <a
-            href="/dashboard/farmer"
+            href="{{dashboardHome}}"
             class="w-10 h-10 rounded-xl glass border border-gray-800 hover:border-orange-500 flex items-center justify-center transition"
           >
             <i class="bi bi-arrow-left text-orange-500"></i>
@@ -176,8 +180,9 @@
         </div>
         <p class="text-gray-400 ml-14">
           {{#if isAdmin}}View and manage all bids across all auctions in the
-            system.{{else}}View and manage bids on your auctions. Only you can
-            declare winners.{{/if}}
+            system.{{else}}{{#if canManageBids}}View and manage bids on your
+              auctions. Only you can declare winners.{{else}}Track bids you have
+              placed across auctions. This view is read-only.{{/if}}{{/if}}
         </p>
       </div>
 
@@ -196,7 +201,7 @@
           <div class="flex items-center gap-3 mb-2">
             <div
               class="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center"
-            ><i class="bi bi-hand-thumbs-up text-yellow-500"></i></div>
+            ><i class="bi bi-stack text-yellow-500"></i></div>
             <span class="text-gray-400 text-sm">Total Bids</span>
           </div>
           <p class="text-3xl font-black text-yellow-500" id="stat-total">0</p>
@@ -226,7 +231,7 @@
           <div class="flex items-center gap-3 mb-2">
             <div
               class="w-10 h-10 rounded-xl bg-orange-500/20 flex items-center justify-center"
-            ><i class="bi bi-cash-stack text-orange-500"></i></div>
+            ><i class="bi bi-currency-exchange text-orange-500"></i></div>
             <span class="text-gray-400 text-sm">Highest Bid</span>
           </div>
           <p
@@ -307,14 +312,24 @@
           <i class="bi bi-inbox text-4xl text-gray-600"></i>
         </div>
         <h3 class="text-xl font-bold mb-2">No Bids Found</h3>
-        <p class="text-gray-400 mb-6">{{#if isAdmin}}No bids in the system yet.{{else}}You
-            haven't received any bids on your auctions yet.{{/if}}</p>
-        <a
-          href="/auctions/create"
-          class="px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 font-semibold hover:shadow-lg hover:shadow-orange-500/30 transition"
-        >
-          <i class="bi bi-plus-lg mr-2"></i>Create Auction
-        </a>
+        <p class="text-gray-400 mb-6">{{#if isAdmin}}No bids in the system yet.{{else}}{{#if
+              canManageBids}}You haven't received any bids on your auctions
+              yet.{{else}}You haven't placed any bids yet.{{/if}}{{/if}}</p>
+        {{#if canManageBids}}
+          <a
+            href="/auctions/create"
+            class="px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 font-semibold hover:shadow-lg hover:shadow-orange-500/30 transition"
+          >
+            <i class="bi bi-plus-lg mr-2"></i>Create Auction
+          </a>
+        {{else}}
+          <a
+            href="/auctions/animalList"
+            class="px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 font-semibold hover:shadow-lg hover:shadow-orange-500/30 transition"
+          >
+            <i class="bi bi-search mr-2"></i>Browse Auctions
+          </a>
+        {{/if}}
       </div>
 
       <!-- Bids Container -->
@@ -344,5 +359,10 @@
     </div>
 
     <script src="/js/auction-bids.js"></script>
+      <script src="/js/app-theme.js"></script>
   </body>
 </html>
+
+
+
+

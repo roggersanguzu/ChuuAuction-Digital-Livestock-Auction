@@ -99,20 +99,25 @@ router.get("/my-bids", requireLogin, (req, res) => {
 router.get(
   "/auction-bids",
   requireLogin,
-  requireRole(["seller", "farmer", "administrator", "admin"]),
   (req, res) => {
     console.log(
       "ROUTE HIT: /dashboard/auction-bids - Rendering dashboard/auction-bids.hbs",
     );
-    // For admin, we pass a flag to show all bids
-    const isAdmin =
-      req.session.user.role === "Administrator" ||
-      req.session.user.role === "admin";
+    const role = req.session.user.role?.trim().toLowerCase();
+    const isAdmin = role === "administrator" || role === "admin";
+    const canManageBids = ["seller", "farmer", "administrator", "admin"].includes(
+      role,
+    );
+    const dashboardHome = role === "buyer" ? "/dashboard/buyer" : "/dashboard/farmer";
+
     res.render("dashboard/auction-bids", {
       title: "Manage Auction Bids",
       user: req.session.user,
       userId: req.session.user.id,
       isAdmin: isAdmin,
+      canManageBids,
+      dashboardHome,
+      userRole: role,
     });
   },
 );
@@ -121,20 +126,26 @@ router.get(
 router.get(
   "/auction-bids/:auctionId",
   requireLogin,
-  requireRole(["seller", "farmer", "administrator", "admin"]),
   (req, res) => {
     console.log(
       "ROUTE HIT: /dashboard/auction-bids/:auctionId - Rendering dashboard/auction-bids.hbs",
     );
-    const isAdmin =
-      req.session.user.role === "Administrator" ||
-      req.session.user.role === "admin";
+    const role = req.session.user.role?.trim().toLowerCase();
+    const isAdmin = role === "administrator" || role === "admin";
+    const canManageBids = ["seller", "farmer", "administrator", "admin"].includes(
+      role,
+    );
+    const dashboardHome = role === "buyer" ? "/dashboard/buyer" : "/dashboard/farmer";
+
     res.render("dashboard/auction-bids", {
       title: "Manage Auction Bids",
       user: req.session.user,
       userId: req.session.user.id,
       auctionId: req.params.auctionId,
       isAdmin: isAdmin,
+      canManageBids,
+      dashboardHome,
+      userRole: role,
     });
   },
 );

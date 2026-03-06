@@ -19,6 +19,8 @@ const auctionSchema = new mongoose.Schema(
     description: String,
     photos: [{ url: String, publicId: String }],
     seller: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    endAt: { type: Date },
+    timezone: { type: String, default: "EAT" },
   },
   { timestamps: true },
 );

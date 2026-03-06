@@ -14,23 +14,24 @@ let currentPage = 1;
 const itemsPerPage = 12;
 let isLoading = false;
 let currentUser = null; // Store current user data
+let countdownIntervalId = null;
 
 // Animal type mapping
 const animalTypeMap = {
-  1: { name: "Cattle", icon: "🐄" },
-  2: { name: "Goat", icon: "🐐" },
-  3: { name: "Sheep", icon: "🐑" },
-  4: { name: "Pig", icon: "🐷" },
-  5: { name: "Poultry", icon: "🐔" },
-  6: { name: "Rabbit", icon: "🐰" },
-  7: { name: "Duck", icon: "🦆" },
+  1: { name: "Cattle", icon: "" },
+  2: { name: "Goat", icon: "" },
+  3: { name: "Sheep", icon: "" },
+  4: { name: "Pig", icon: "" },
+  5: { name: "Poultry", icon: "" },
+  6: { name: "Rabbit", icon: "" },
+  7: { name: "Duck", icon: "" },
 };
 
 // Health status icons
 const healthIcons = {
-  Excellent: "💚",
-  Good: "💙",
-  Fair: "💛",
+  Excellent: "",
+  Good: "",
+  Fair: "",
 };
 
 // ============================================
@@ -253,6 +254,38 @@ function displayListings() {
     const card = createListingCard(listing, index);
     container.appendChild(card);
   });
+
+  updateAuctionCountdowns();
+  if (countdownIntervalId) {
+    clearInterval(countdownIntervalId);
+  }
+  countdownIntervalId = setInterval(updateAuctionCountdowns, 1000);
+}
+
+function getCountdownLabel(endAt) {
+  if (!endAt) return "No end time";
+  const end = new Date(endAt);
+  if (Number.isNaN(end.getTime())) return "No end time";
+  const diff = end.getTime() - Date.now();
+  if (diff <= 0) return "Ended";
+  const totalSeconds = Math.floor(diff / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  if (days > 0) return `${days}d ${hours}h ${minutes}m left`;
+  if (hours > 0) return `${hours}h ${minutes}m left`;
+  return `${minutes}m ${seconds}s left`;
+}
+
+function updateAuctionCountdowns() {
+  document.querySelectorAll(".auction-countdown[data-end-at]").forEach((el) => {
+    const endAt = el.getAttribute("data-end-at");
+    const label = getCountdownLabel(endAt);
+    el.textContent = label;
+    el.classList.toggle("bg-red-500/90", label === "Ended");
+    el.classList.toggle("bg-emerald-500/90", label !== "Ended");
+  });
 }
 
 function createListingCard(listing, index) {
@@ -263,9 +296,9 @@ function createListingCard(listing, index) {
 
   const animalInfo = animalTypeMap[listing.animalType] || {
     name: "Unknown",
-    icon: "🐾",
+    icon: "",
   };
-  const healthIcon = healthIcons[listing.healthStatus] || "❤️";
+  const healthIcon = healthIcons[listing.healthStatus] || "";
   const ageDisplay = `${listing.age?.years || 0}y ${listing.age?.months || 0}m`;
 
   const mainPhoto =
@@ -274,6 +307,8 @@ function createListingCard(listing, index) {
       : "https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=400&h=300&fit=crop";
 
   const photoCount = listing.photos ? listing.photos.length : 0;
+  const countdownLabel = getCountdownLabel(listing.endAt);
+  const endAtAttr = listing.endAt ? String(listing.endAt) : "";
 
   card.innerHTML = `
     <div class="image-container relative h-56 overflow-hidden">
@@ -282,17 +317,22 @@ function createListingCard(listing, index) {
       }" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=400&h=300&fit=crop'">
       <div class="absolute top-3 left-3 flex gap-2">
         <span class="px-3 py-1 rounded-full glass-strong backdrop-blur-md text-xs font-bold">
-          ${animalInfo.icon} ${animalInfo.name}
+          ${animalInfo.name}
         </span>
         ${
           listing.vaccinated
-            ? '<span class="px-3 py-1 rounded-full bg-green-500/90 backdrop-blur-md text-xs font-bold status-live">✅ Vaccinated</span>'
+            ? '<span class="px-3 py-1 rounded-full bg-green-500/90 backdrop-blur-md text-xs font-bold status-live">Vaccinated</span>'
             : ""
         }
       </div>
       <div class="absolute top-3 right-3">
         <span class="px-3 py-1 rounded-full glass-strong backdrop-blur-md text-xs font-bold">
-          ${healthIcon} ${listing.healthStatus || "Good"}
+          ${(healthIcon ? healthIcon + " " : "") + (listing.healthStatus || "Good")}
+        </span>
+      </div>
+      <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+        <span class="px-3 py-1 rounded-full bg-emerald-500/95 backdrop-blur-sm text-xs font-bold shadow-lg border border-white/20 auction-countdown" data-end-at="${endAtAttr}">
+          ${countdownLabel}
         </span>
       </div>
       ${
@@ -390,9 +430,9 @@ function viewDetails(id) {
 
   const animalInfo = animalTypeMap[listing.animalType] || {
     name: "Unknown",
-    icon: "🐾",
+    icon: "",
   };
-  const healthIcon = healthIcons[listing.healthStatus] || "❤️";
+  const healthIcon = healthIcons[listing.healthStatus] || "";
   const ageDisplay = `${listing.age?.years || 0} years ${
     listing.age?.months || 0
   } months`;
@@ -440,14 +480,14 @@ function viewDetails(id) {
             }</h3>
             <div class="flex flex-wrap gap-2">
               <span class="tag-pill px-4 py-2 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 font-semibold">
-                ${animalInfo.icon} ${animalInfo.name}
+                ${animalInfo.name}
               </span>
               <span class="tag-pill px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-400 font-semibold">
-                ${healthIcon} ${listing.healthStatus || "Good"}
+                ${(healthIcon ? healthIcon + " " : "") + (listing.healthStatus || "Good")}
               </span>
               ${
                 listing.vaccinated
-                  ? '<span class="tag-pill px-4 py-2 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 font-semibold">✅ Vaccinated</span>'
+                  ? '<span class="tag-pill px-4 py-2 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 font-semibold">Vaccinated</span>'
                   : ""
               }
             </div>
@@ -627,7 +667,7 @@ function openBidModal(listingId) {
         <div class="p-4 rounded-xl glass border border-gray-800/50">
           <label class="block text-sm font-semibold text-gray-300 mb-2">Full Name</label>
           <div class="px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700/50 text-white font-medium">
-            ${currentUser.name || "Not Available"}
+            ${currentUser.name || "Roggers Anguzu"}
           </div>
         </div>
 
@@ -646,9 +686,9 @@ function openBidModal(listingId) {
         </h3>
         
         <div class="p-4 rounded-xl glass border border-gray-800/50">
-          <label class="block text-sm font-semibold text-gray-300 mb-2">Enter Your Bid (KES)</label>
+          <label class="block text-sm font-semibold text-gray-300 mb-2">Enter Your Bid (UGX)</label>
           <div class="relative">
-            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500 font-bold text-xl">KES</span>
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500 font-bold text-xl">UGX</span>
             <input
               type="number"
               id="bid-amount"
@@ -992,3 +1032,7 @@ function loadMore() {
 }
 
 console.log("[Frontend]  Script loaded successfully");
+
+
+
+

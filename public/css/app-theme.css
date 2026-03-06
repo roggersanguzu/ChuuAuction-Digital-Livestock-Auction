@@ -1,0 +1,101 @@
+:root {
+  --app-bg: #050608;
+  --app-bg-soft: #0f1117;
+  --app-surface: rgba(255, 255, 255, 0.04);
+  --app-border: rgba(255, 255, 255, 0.08);
+  --app-text: #f4f6fb;
+  --app-muted: #8c94a8;
+  --app-accent: #f97316;
+  --app-accent-2: #dc2626;
+  --app-success: #22c55e;
+}
+
+html[data-theme="light"] {
+  --app-bg: #f5f7fb;
+  --app-bg-soft: #ffffff;
+  --app-surface: rgba(15, 23, 42, 0.03);
+  --app-border: rgba(15, 23, 42, 0.12);
+  --app-text: #0b1020;
+  --app-muted: #475569;
+  --app-accent: #ea580c;
+  --app-accent-2: #b91c1c;
+  --app-success: #16a34a;
+}
+
+body {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.theme-fab {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--app-border);
+  background: color-mix(in srgb, var(--app-bg-soft) 88%, transparent);
+  color: var(--app-text);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.theme-fab:hover {
+  border-color: color-mix(in srgb, var(--app-accent) 55%, var(--app-border));
+}
+
+.theme-fab i {
+  font-size: 14px;
+}
+
+.theme-fab .theme-label {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .theme-fab .theme-label {
+    display: inline;
+  }
+}
+
+@media (max-width: 1024px) {
+  .page-header,
+  .top-bar,
+  .hero-ctas,
+  .stats-grid,
+  .analytics-row,
+  .bottom-row,
+  .auctions-grid {
+    grid-template-columns: 1fr !important;
+    flex-wrap: wrap;
+  }
+
+  .main,
+  .main-content,
+  main {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+@keyframes appFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.anim-fade-up {
+  animation: appFadeUp 0.45s ease both;
+}

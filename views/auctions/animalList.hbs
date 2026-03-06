@@ -6,8 +6,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      href="/vendor/bootstrap-icons/css/bootstrap-icons.css"
     />
+    <link href="/css/app-theme.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -604,42 +605,42 @@
 
             <div class="flex-1 min-w-[150px]">
               <select id="filter-animal-type" class="inp-compact">
-                <option value="">🔍 All Animals</option>
-                <option value="1">🐄 Cattle</option>
-                <option value="2">🐐 Goat</option>
-                <option value="3">🐑 Sheep</option>
-                <option value="4">🐷 Pig</option>
-                <option value="5">🐔 Poultry</option>
-                <option value="6">🐰 Rabbit</option>
-                <option value="7">🦆 Duck</option>
+                <option value="">All Animals</option>
+                <option value="1">Cattle</option>
+                <option value="2">Goat</option>
+                <option value="3">Sheep</option>
+                <option value="4">Pig</option>
+                <option value="5">Poultry</option>
+                <option value="6">Rabbit</option>
+                <option value="7">Duck</option>
               </select>
             </div>
 
             <div class="flex-1 min-w-[140px]">
               <select id="filter-health" class="inp-compact">
-                <option value="">💚 All Conditions</option>
-                <option value="Excellent">💚 Excellent</option>
-                <option value="Good">💙 Good</option>
-                <option value="Fair">💛 Fair</option>
+                <option value="">All Conditions</option>
+                <option value="Excellent">Excellent</option>
+                <option value="Good">Good</option>
+                <option value="Fair">Fair</option>
               </select>
             </div>
 
             <div class="flex-1 min-w-[120px]">
               <select id="filter-sex" class="inp-compact">
-                <option value="">⚥ All Sexes</option>
-                <option value="Male">♂ Male</option>
-                <option value="Female">♀ Female</option>
+                <option value="">All Sexes</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
               </select>
             </div>
 
             <div class="flex-1 min-w-[150px]">
               <select id="sort-by" class="inp-compact">
-                <option value="newest">🆕 Newest First</option>
-                <option value="oldest">⏰ Oldest First</option>
-                <option value="weight-high">⚖️ Highest Weight</option>
-                <option value="weight-low">⚖️ Lowest Weight</option>
-                <option value="quantity-high">📊 Most Quantity</option>
-                <option value="quantity-low">📊 Least Quantity</option>
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="weight-high">Highest Weight</option>
+                <option value="weight-low">Lowest Weight</option>
+                <option value="quantity-high">Most Quantity</option>
+                <option value="quantity-low">Least Quantity</option>
               </select>
             </div>
 
@@ -950,5 +951,8 @@
     </div>
 
     <script src="/js/animalList.js"></script>
+      <script src="/js/app-theme.js"></script>
   </body>
 </html>
+
+

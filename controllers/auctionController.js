@@ -30,7 +30,19 @@ export const createAuction = async (req, res) => {
       vaccinated,
       vaccinationLicense,
       description,
+      endDate,
+      endTime,
+      timezone,
     } = req.body;
+
+    let endAt = null;
+    if (endDate && endTime) {
+      const tzSuffix = String(timezone || "EAT").toUpperCase() === "UTC" ? "Z" : "+03:00";
+      const parsed = new Date(`${endDate}T${endTime}:00${tzSuffix}`);
+      if (!Number.isNaN(parsed.getTime())) {
+        endAt = parsed;
+      }
+    }
 
     console.log(
       "[Controller] Starting Cloudinary upload for",
@@ -90,6 +102,8 @@ export const createAuction = async (req, res) => {
       description,
       photos,
       seller: sellerId,
+      endAt,
+      timezone: timezone || "EAT",
     });
 
     console.log("[Controller] Auction created successfully. ID:", auction._id);
@@ -162,6 +176,8 @@ export const getAllAuctions = async (req, res) => {
         rating: auction.seller?.rating || 0,
       },
       createdAt: auction.createdAt,
+      endAt: auction.endAt || null,
+      timezone: auction.timezone || "EAT",
     }));
 
     console.log(
@@ -245,6 +261,8 @@ export const getAuctionById = async (req, res) => {
         rating: auction.seller?.rating || 0,
       },
       createdAt: auction.createdAt,
+      endAt: auction.endAt || null,
+      timezone: auction.timezone || "EAT",
     };
 
     console.log("[Controller] Sending single auction response");
@@ -386,6 +404,8 @@ export const getFilteredAuctions = async (req, res) => {
         rating: auction.seller?.rating || 0,
       },
       createdAt: auction.createdAt,
+      endAt: auction.endAt || null,
+      timezone: auction.timezone || "EAT",
     }));
 
     console.log(

@@ -12,8 +12,9 @@
     />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      href="/vendor/bootstrap-icons/css/bootstrap-icons.css"
     />
+    <link href="/css/app-theme.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
@@ -1545,6 +1546,11 @@
 
       <!-- ════════════════ SIDEBAR ════════════════ -->
       <aside class="sidebar" id="sidebar">
+        <div
+          id="dashboard-stats-context"
+          data-role="{{user.role}}"
+          class="hidden"
+        ></div>
         <div class="sidebar-inner">
 
           <!-- Logo row: logo block + close button side by side -->
@@ -1582,20 +1588,20 @@
 
           <a href="/dashboard/buyer" class="nav-link active">
             <span class="nav-icon orange"><i
-                class="bi bi-speedometer2"
+                class="bi bi-grid-1x2-fill"
               ></i></span>
             Dashboard
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
 
           <a href="/auctions/animalList" class="nav-link">
-            <span class="nav-icon blue"><i class="bi bi-cash-stack"></i></span>
+            <span class="nav-icon blue"><i class="bi bi-cursor-fill"></i></span>
             Place Bid
             <span class="nav-badge">NEW</span>
           </a>
 
           <a href="/livestock/priceCalculator" class="nav-link">
-            <span class="nav-icon green"><i class="bi bi-card-list"></i></span>
+            <span class="nav-icon green"><i class="bi bi-calculator"></i></span>
             Price Calculator
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
@@ -1613,32 +1619,24 @@
 
           <div class="nav-section-label">Manage</div>
 
-          <a href="/verification/status" class="nav-link">
-            <span class="nav-icon blue"><i
-                class="bi bi-shield-check"
-              ></i></span>
-            Status
-            <i class="bi bi-chevron-right nav-chevron"></i>
-          </a>
-
           <a href="/dashboard/my-bids" class="nav-link">
             <span class="nav-icon green"><i
-                class="bi bi-hand-thumbs-up"
+                class="bi bi-journal-check"
               ></i></span>
             My Bids
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
           <a href="/dashboard/auction-bids" class="nav-link">
             <span class="nav-icon green"><i
-                class="bi bi-hand-thumbs-up"
+                class="bi bi-kanban"
               ></i></span>
-            Manage Bids
+            Track Auction Bids
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
 
           <a href="/verification/submit" class="nav-link">
             <span class="nav-icon green"><i
-                class="bi bi-hand-thumbs-up"
+                class="bi bi-file-earmark-check"
               ></i></span>
             Verify Documents
             <i class="bi bi-chevron-right nav-chevron"></i>
@@ -1709,7 +1707,7 @@
 
         <!-- Quick Actions Band -->
         <div class="quick-band">
-          <a class="quick-tile" href="#">
+          <a class="quick-tile" href="/auctions/animalList">
             <div
               class="quick-tile-icon"
               style="background:rgba(59,130,246,0.12);color:#60a5fa"
@@ -1719,7 +1717,7 @@
               <div class="quick-tile-bottom">Search</div>
             </div>
           </a>
-          <a class="quick-tile" href="#">
+          <a class="quick-tile" href="/dashboard/my-bids">
             <div
               class="quick-tile-icon"
               style="background:rgba(34,197,94,0.12);color:#4ade80"
@@ -1729,7 +1727,7 @@
               <div class="quick-tile-bottom">History</div>
             </div>
           </a>
-          <a class="quick-tile" href="#">
+          <a class="quick-tile" href="/dashboard/buyer">
             <div
               class="quick-tile-icon"
               style="background:rgba(168,85,247,0.12);color:#c084fc"
@@ -1739,7 +1737,7 @@
               <div class="quick-tile-bottom">Analytics</div>
             </div>
           </a>
-          <a class="quick-tile" href="#">
+          <a class="quick-tile" href="/auctions/animalList">
             <div
               class="quick-tile-icon"
               style="background:rgba(234,179,8,0.12);color:#fde047"
@@ -1753,42 +1751,42 @@
 
         <!-- Stats Grid -->
         <div class="stats-grid">
-          <div class="stat-card blue">
+          <div class="stat-card blue" data-link="/dashboard/my-bids">
             <div class="stat-top">
               <div class="stat-icon blue"><i
                   class="bi bi-hourglass-split"
                 ></i></div>
               <span class="stat-tag blue">Active</span>
             </div>
-            <div class="stat-value">8</div>
+            <div class="stat-value" id="buyer-stat-pending">0</div>
             <div class="stat-label">Pending Bids</div>
             <div class="stat-change up"><i class="bi bi-arrow-up-short"></i>
               +2
               <span>from yesterday</span></div>
           </div>
 
-          <div class="stat-card green">
+          <div class="stat-card green" data-link="/dashboard/my-bids">
             <div class="stat-top">
               <div class="stat-icon green"><i
                   class="bi bi-cash-stack"
                 ></i></div>
               <span class="stat-tag green">Completed</span>
             </div>
-            <div class="stat-value" style="font-size:28px">UGX 1.2M</div>
+            <div class="stat-value" style="font-size:28px" id="buyer-stat-spent">UGX 0</div>
             <div class="stat-label">Total Spent</div>
             <div class="stat-change up"><i class="bi bi-arrow-up-short"></i>
               +15%
               <span>this month</span></div>
           </div>
 
-          <div class="stat-card yellow">
+          <div class="stat-card yellow" data-link="/auctions/animalList">
             <div class="stat-top">
               <div class="stat-icon yellow"><i
                   class="bi bi-heart-fill"
                 ></i></div>
               <span class="stat-tag yellow">Saved</span>
             </div>
-            <div class="stat-value">14</div>
+            <div class="stat-value" id="buyer-stat-favourites">0</div>
             <div class="stat-label">Favourites</div>
             <div class="stat-change" style="color:#fde047"><i
                 class="bi bi-star-fill"
@@ -1796,7 +1794,7 @@
               Trending items</div>
           </div>
 
-          <div class="stat-card purple">
+          <div class="stat-card purple" data-link="/auctions/animalList">
             <div class="stat-top">
               <div class="stat-icon purple"><i
                   class="bi bi-broadcast"
@@ -1804,7 +1802,7 @@
               <span class="stat-tag live"><span class="live-dot"></span>
                 Live</span>
             </div>
-            <div class="stat-value">5</div>
+            <div class="stat-value" id="buyer-stat-auctions">0</div>
             <div class="stat-label">Active Auctions</div>
             <div class="stat-change" style="color:#c084fc"><i
                 class="bi bi-lightning-fill"
@@ -1991,7 +1989,7 @@
               <div class="section-title" style="font-size:20px">Recent Activity</div>
               <a
                 class="section-action"
-                href="#"
+                href="/dashboard/my-bids"
                 style="padding:6px 12px;font-size:12px"
               >View All</a>
             </div>
@@ -2125,7 +2123,7 @@
                   x="90"
                   y="85"
                   style="font-family:'Bricolage Grotesque',sans-serif;font-size:36px;font-weight:800;fill:#f1f2f5;"
-                >75%</text>
+                id="buyer-success-rate">0%</text>
                 <text
                   class="ring-sublabel"
                   x="90"
@@ -2136,20 +2134,40 @@
             </div>
             <div class="win-stats-row">
               <div class="win-stat-item">
-                <div class="win-stat-val" style="color:#4ade80">24</div>
+                <div class="win-stat-val" style="color:#4ade80" id="buyer-win-count">0</div>
                 <div class="win-stat-label">Won</div>
               </div>
               <div class="win-stat-item">
-                <div class="win-stat-val" style="color:#f87171">8</div>
+                <div class="win-stat-val" style="color:#f87171" id="buyer-loss-count">0</div>
                 <div class="win-stat-label">Lost</div>
               </div>
               <div class="win-stat-item">
-                <div class="win-stat-val" style="color:#fde047">5</div>
+                <div class="win-stat-val" style="color:#fde047" id="buyer-pending-count">0</div>
                 <div class="win-stat-label">Pending</div>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- My Bid Outcomes (Read-only, last section) -->
+        <div
+          class="section-header"
+          style="margin-top:30px;margin-bottom:14px;"
+        >
+          <div>
+            <div class="section-title">My Bid Outcomes</div>
+            <div class="section-sub">Read-only status for bids you placed:
+              winner, in progress, or outbid</div>
+          </div>
+          <a class="section-action" href="/dashboard/my-bids">Open My Bids
+            <i class="bi bi-arrow-right"></i></a>
+        </div>
+
+        <div
+          id="buyer-bid-outcomes"
+          data-user-id="{{user.id}}"
+          class="auctions-grid"
+        ></div>
 
       </main>
     </div>
@@ -2202,5 +2220,13 @@
       const icon = btn.querySelector('i'); icon.classList.toggle('bi-heart');
       icon.classList.toggle('bi-heart-fill'); }); });
     </script>
+    <script src="/js/buyer-bid-outcomes.js"></script>
+      <script src="/js/app-theme.js"></script>
+      <script src="/js/dashboard-stats.js"></script>
   </body>
 </html>
+
+
+
+
+

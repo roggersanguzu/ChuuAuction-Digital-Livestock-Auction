@@ -2,7 +2,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Create Auction — AgriVault</title>
+    <title>Create Auction - AgriVault</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500;600&display=swap"
@@ -10,8 +10,9 @@
     />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      href="/vendor/fontawesome/css/all.min.css"
     />
+    <link href="/css/app-theme.css" rel="stylesheet" />
 
     <style>
       /* ── RESET & BASE ─────────────────────────────────────────────────────────── */
@@ -1303,7 +1304,7 @@
         id="auctionForm"
       >
 
-        <!-- STEP 1 — Animal Details -->
+        <!-- STEP 1 - Animal Details -->
         <div class="form-card fade-up-3" id="section1">
           <div class="section-header">
             <div class="section-icon blue"><i
@@ -1450,9 +1451,9 @@
                 <span class="req">*</span></label>
               <select name="healthStatus" required class="clean-select">
                 <option value="" disabled selected>Select health condition</option>
-                <option value="Excellent">💚 Excellent — Perfect condition</option>
-                <option value="Good">💙 Good — Minor wear, healthy</option>
-                <option value="Fair">💛 Fair — Acceptable condition</option>
+                <option value="Excellent">Excellent - Perfect condition</option>
+                <option value="Good">Good - Minor wear, healthy</option>
+                <option value="Fair">Fair - Acceptable condition</option>
               </select>
             </div>
 
@@ -1547,7 +1548,7 @@
                 rows="5"
                 minlength="50"
                 maxlength="1000"
-                placeholder="Provide a comprehensive overview of your livestock — include feeding habits, history, unique characteristics, and anything that adds value..."
+                placeholder="Provide a comprehensive overview of your livestock, include feeding habits, history, unique characteristics, and anything that adds value..."
                 class="clean-textarea"
                 id="descTextarea"
               ></textarea>
@@ -1577,12 +1578,12 @@
                 <div class="preview-item">
                   <i class="fas fa-filter" style="color:var(--orange)"></i>
                   <div class="preview-label">Category</div>
-                  <div class="preview-value" id="previewCategory">—</div>
+                  <div class="preview-value" id="previewCategory">-</div>
                 </div>
                 <div class="preview-item">
                   <i class="fas fa-award" style="color:var(--blue)"></i>
                   <div class="preview-label">Breed</div>
-                  <div class="preview-value" id="previewBreed">—</div>
+                  <div class="preview-value" id="previewBreed">-</div>
                 </div>
                 <div class="preview-item">
                   <i
@@ -1590,7 +1591,7 @@
                     style="color:var(--accent)"
                   ></i>
                   <div class="preview-label">Weight</div>
-                  <div class="preview-value" id="previewWeight">—</div>
+                  <div class="preview-value" id="previewWeight">-</div>
                 </div>
                 <div class="preview-item">
                   <i
@@ -1598,7 +1599,7 @@
                     style="color:var(--accent5)"
                   ></i>
                   <div class="preview-label">Location</div>
-                  <div class="preview-value" id="previewLocation">—</div>
+                  <div class="preview-value" id="previewLocation">-</div>
                 </div>
               </div>
             </div>
@@ -1606,7 +1607,7 @@
           </div>
         </div>
 
-        <!-- STEP 2 — Photo Gallery -->
+        <!-- STEP 2 - Photo Gallery -->
         <div class="form-card fade-up-4" id="section2">
           <div class="section-header">
             <div class="section-icon purple"><i class="fas fa-images"></i></div>
@@ -1620,7 +1621,7 @@
                     style="font-size:6px;color:var(--accent5)"
                   ></i>2–4 Photos</div>
               </div>
-              <p>High-quality images drive 3× more bids — no photo means no
+              <p>High-quality images drive 3x more bids, no photo means no
                 serious buyer</p>
             </div>
           </div>
@@ -1678,7 +1679,7 @@
           </div>
         </div>
 
-        <!-- STEP 3 — Pricing -->
+        <!-- STEP 3 - Pricing -->
         <div class="form-card fade-up-5" id="section3">
           <div class="section-header">
             <div class="section-icon green"><i class="fas fa-tag"></i></div>
@@ -1728,7 +1729,7 @@
               </div>
               <div class="info-text" style="color:var(--accent3)"><i
                   class="fas fa-eye-slash"
-                ></i>Hidden from buyers — protects your minimum value</div>
+                ></i>Hidden from buyers, protects your minimum value</div>
             </div>
           </div>
 
@@ -1747,13 +1748,13 @@
           </div>
         </div>
 
-        <!-- STEP 4 — Timing -->
+        <!-- STEP 4 - Timing -->
         <div class="form-card fade-up-6" id="section4">
           <div class="section-header">
             <div class="section-icon orange"><i class="fas fa-clock"></i></div>
             <div class="section-header-text">
               <h2>Step 4: Auction Duration</h2>
-              <p>Configure when your auction closes — minimum 1 day from now</p>
+              <p>Configure when your auction closes, minimum 1 day from now</p>
             </div>
           </div>
 
@@ -1787,8 +1788,8 @@
                   class="fas fa-globe"
                 ></i>Timezone</label>
               <select name="timezone" class="clean-select">
-                <option value="EAT" selected>🌍 East Africa Time (EAT — UTC+3)</option>
-                <option value="UTC">🌐 Universal Time (UTC+0)</option>
+                <option value="EAT" selected>East Africa Time (EAT - UTC+3)</option>
+                <option value="UTC">Universal Time (UTC+0)</option>
               </select>
             </div>
           </div>
@@ -1817,7 +1818,7 @@
           </div>
         </div>
 
-        <!-- FINAL — Review & Submit -->
+        <!-- FINAL - Review and Submit -->
         <div
           class="form-card"
           style="animation:fadeUp 0.5s ease-out 0.52s both;"
@@ -1898,179 +1899,9 @@
       </div>
     {{/if}}
 
-    <script>
-      /* ── CHARACTER COUNTER ──────────────────────────────────────────────────
-      */ const descTextarea = document.getElementById('descTextarea'); const
-      descCharCount = document.getElementById('descCharCount');
-      descTextarea?.addEventListener('input', () => { const count =
-      descTextarea.value.length; descCharCount.textContent = count;
-      descCharCount.className = count >= 50 ? 'ok' : ''; }); /* ── LIVE PREVIEW
-      ─────────────────────────────────────────────────────── */ const
-      categoryMap =
-      {'1':'Cattle','2':'Goat','3':'Sheep','4':'Pig','5':'Poultry','6':'Rabbit','7':'Duck'};
-      const updatePreview = () => { const sel =
-      document.querySelector('select[name="animalType"]')?.value; const breed =
-      document.getElementById('breedInput')?.value; const weight =
-      document.getElementById('weightInput')?.value; const loc =
-      document.getElementById('locationInput')?.value;
-      document.getElementById('previewCategory').textContent = sel ?
-      categoryMap[sel] : '—';
-      document.getElementById('previewBreed').textContent = breed || '—';
-      document.getElementById('previewWeight').textContent = weight ? weight + '
-      KG' : '—'; document.getElementById('previewLocation').textContent = loc ||
-      '—'; };
-      document.querySelector('select[name="animalType"]')?.addEventListener('change',
-      updatePreview);
-      document.getElementById('breedInput')?.addEventListener('input',
-      updatePreview);
-      document.getElementById('weightInput')?.addEventListener('input',
-      updatePreview);
-      document.getElementById('locationInput')?.addEventListener('input',
-      updatePreview); /* ── VACCINATION TOGGLE
-      ───────────────────────────────────────────────── */ const
-      vaccinatedToggle = document.getElementById('vaccinatedToggle'); const
-      vaccinatedLabel = document.getElementById('vaccinatedLabel'); const
-      vaccinationLicenseSection =
-      document.getElementById('vaccinationLicenseSection'); const
-      vaccinationLicense = document.getElementById('vaccinationLicense');
-      vaccinatedToggle?.addEventListener('change', (e) => { if
-      (e.target.checked) { vaccinatedLabel.textContent = 'Yes';
-      vaccinatedLabel.style.color = 'var(--accent)';
-      vaccinationLicenseSection.classList.add('show');
-      vaccinationLicense.required = true; } else { vaccinatedLabel.textContent =
-      'No'; vaccinatedLabel.style.color = 'var(--text3)';
-      vaccinationLicenseSection.classList.remove('show');
-      vaccinationLicense.required = false; } }); /* ── PHOTO UPLOAD + PREVIEW
-      ───────────────────────────────────────────── */ const photoInput =
-      document.getElementById('animalPhotosInput'); const photoPreviewGrid =
-      document.getElementById('photoPreviewGrid'); const uploadPrompt =
-      document.getElementById('uploadPrompt'); const photoCountBadge =
-      document.getElementById('photoCountBadge'); const photoCountText =
-      document.getElementById('photoCountText'); let currentFiles = []; function
-      renderPreviews(files) { photoPreviewGrid.innerHTML = ''; if (files.length
-      === 0) { photoPreviewGrid.classList.remove('show');
-      uploadPrompt.classList.remove('hidden');
-      photoCountBadge.classList.add('hidden');
-      document.getElementById('step2').innerHTML = '<i class="fas
-      fa-images"></i>';
-      document.getElementById('step2').classList.remove('completed');
-      document.getElementById('stepItem2').classList.remove('completed');
-      return; } photoPreviewGrid.classList.add('show');
-      uploadPrompt.classList.add('hidden'); photoCountText.textContent =
-      files.length + ' photo' + (files.length > 1 ? 's' : '') + ' selected';
-      photoCountBadge.classList.remove('hidden'); files.forEach((file, i) => {
-      const reader = new FileReader(); reader.onload = (ev) => { const div =
-      document.createElement('div'); div.className = 'photo-thumb';
-      div.innerHTML = ` <img src="${ev.target.result}" alt="Photo ${i+1}" />
-      <div class="thumb-overlay"> <button type="button" class="thumb-remove"
-      onclick="removeSinglePhoto(${i})" title="Remove this photo"> <i class="fas
-      fa-times"></i> </button> <div> <div class="thumb-num">#${i+1}</div> <div
-      class="thumb-name">${file.name}</div> </div> </div>`;
-      photoPreviewGrid.appendChild(div); }; reader.readAsDataURL(file); }); //
-      Mark step 2 completed const s2 = document.getElementById('step2');
-      s2.classList.add('completed'); s2.innerHTML = '<i class="fas
-      fa-check"></i>';
-      document.getElementById('stepItem2').classList.add('completed'); }
-      function removeSinglePhoto(index) { currentFiles.splice(index, 1);
-      syncFilesInput(); renderPreviews(currentFiles); } window.removeAllPhotos =
-      function() { currentFiles = []; syncFilesInput();
-      renderPreviews(currentFiles); }; function syncFilesInput() { const dt =
-      new DataTransfer(); currentFiles.forEach(f => dt.items.add(f));
-      photoInput.files = dt.files; } photoInput?.addEventListener('change', (e)
-      => { const newFiles = Array.from(e.target.files); const errors =
-      newFiles.filter(f => f.size > 5 * 1024 * 1024); if (errors.length) {
-      alert(`${errors.map(f=>f.name).join(', ')} exceed the 5MB limit and were
-      skipped.`); } const valid = newFiles.filter(f => f.size <= 5 * 1024 *
-      1024); currentFiles = [...currentFiles, ...valid].slice(0, 4); // cap at 4
-      syncFilesInput(); renderPreviews(currentFiles); }); // Drag & Drop const
-      photoZone = document.getElementById('photoZone');
-      photoZone?.addEventListener('dragover', (e) => { e.preventDefault();
-      photoZone.classList.add('drag-active'); });
-      photoZone?.addEventListener('dragleave', () => {
-      photoZone.classList.remove('drag-active'); });
-      photoZone?.addEventListener('drop', (e) => { e.preventDefault();
-      photoZone.classList.remove('drag-active'); const dropped =
-      Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
-      const dt = new DataTransfer(); dropped.forEach(f => dt.items.add(f));
-      photoInput.files = dt.files; photoInput.dispatchEvent(new Event('change',
-      { bubbles: true })); }); /* ── AUCTION TIMER PREVIEW
-      ────────────────────────────────────────────── */ function
-      updateDurationPreview() { const endDate =
-      document.getElementById('endDate').value; const endTime =
-      document.getElementById('endTime').value; if (!endDate || !endTime)
-      return; const end = new Date(`${endDate}T${endTime}`); const now = new
-      Date(); const diff = end - now; if (diff > 0) { const days =
-      Math.floor(diff / 86400000); const hours = Math.floor((diff % 86400000) /
-      3600000); const mins = Math.floor((diff % 3600000) / 60000);
-      document.getElementById('daysLeft').textContent =
-      String(days).padStart(2,'0');
-      document.getElementById('hoursLeft').textContent =
-      String(hours).padStart(2,'0');
-      document.getElementById('minsLeft').textContent =
-      String(mins).padStart(2,'0');
-      document.getElementById('durationPreview').textContent = `Auction will run
-      for ${days} day${days!==1?'s':''}, ${hours} hour${hours!==1?'s':''} and
-      ${mins} minute${mins!==1?'s':''}`; const s4 =
-      document.getElementById('step4'); s4.classList.add('completed');
-      s4.innerHTML = '<i class="fas fa-check"></i>';
-      document.getElementById('stepItem4').classList.add('completed'); } else {
-      document.getElementById('durationPreview').textContent = '⚠️ End time must
-      be in the future'; } }
-      document.getElementById('endDate')?.addEventListener('change',
-      updateDurationPreview);
-      document.getElementById('endTime')?.addEventListener('change',
-      updateDurationPreview); // Set min date to tomorrow const tomorrow = new
-      Date(); tomorrow.setDate(tomorrow.getDate() + 1);
-      document.getElementById('endDate').min =
-      tomorrow.toISOString().split('T')[0]; /* ── FORM SUBMIT
-      ──────────────────────────────────────────────────────── */
-      document.getElementById('auctionForm')?.addEventListener('submit', (e) =>
-      { if (!document.getElementById('termsCheckbox').checked) {
-      e.preventDefault(); alert('Please agree to the terms and conditions before
-      launching.'); return; } const submitBtn =
-      document.getElementById('submitBtn'); submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fas fa-hourglass-split
-      spin"></i><span>Creating Auction…</span>'; }); /* ── STEP 1 PROGRESS
-      ──────────────────────────────────────────────────── */
-      document.getElementById('auctionForm')?.addEventListener('input', () => {
-      const animalType =
-      document.querySelector('select[name="animalType"]')?.value; const breed =
-      document.getElementById('breedInput')?.value; const weight =
-      document.getElementById('weightInput')?.value; if (animalType && breed &&
-      weight) { const s1 = document.getElementById('step1');
-      s1.classList.add('completed'); s1.classList.remove('active'); s1.innerHTML
-      = '<i class="fas fa-check"></i>';
-      document.getElementById('stepItem1').classList.add('completed');
-      document.getElementById('stepItem1').classList.remove('active'); } const
-      startPrice = document.getElementById('startingPrice')?.value; if
-      (startPrice) { const s3 = document.getElementById('step3');
-      s3.classList.add('completed'); s3.innerHTML = '<i class="fas
-      fa-check"></i>';
-      document.getElementById('stepItem3').classList.add('completed'); } }); /*
-      ── SAVE DRAFT ───────────────────────────────────────────────────────── */
-      document.getElementById('saveDraftBtn')?.addEventListener('click', () => {
-      const formData = new FormData(document.getElementById('auctionForm'));
-      const draftData = {}; for (let [key, value] of formData.entries()) { if
-      (key !== 'animalPhotos') draftData[key] = value; }
-      localStorage.setItem('auctionDraft', JSON.stringify(draftData)); const btn
-      = document.getElementById('saveDraftBtn'); const orig = btn.innerHTML;
-      btn.innerHTML = '<i class="fas fa-check-circle"
-      style="color:var(--accent)"></i><span>Draft Saved!</span>';
-      btn.style.borderColor = 'var(--accent)'; btn.style.background =
-      'rgba(74,222,128,0.08)'; btn.style.color = 'var(--accent)'; setTimeout(()
-      => { btn.innerHTML = orig; btn.style.borderColor = '';
-      btn.style.background = ''; btn.style.color = ''; }, 2200); }); /* ── LOAD
-      DRAFT ───────────────────────────────────────────────────────── */
-      window.addEventListener('DOMContentLoaded', () => { const saved =
-      localStorage.getItem('auctionDraft'); if (!saved) return; try { const data
-      = JSON.parse(saved); Object.keys(data).forEach(key => { const el =
-      document.querySelector(`[name="${key}"]`); if (!el) return; if (el.type
-      === 'radio') { const r =
-      document.querySelector(`[name="${key}"][value="${data[key]}"]`); if (r)
-      r.checked = true; } else if (el.type === 'checkbox') { el.checked =
-      data[key] === 'on'; el.dispatchEvent(new Event('change')); } else {
-      el.value = data[key]; } }); updatePreview(); } catch(e) { /* ignore */ }
-      });
-    </script>
+    <script src="/js/app-theme.js"></script>
+    <script src="/js/create-auction-preview.js"></script>
   </body>
 </html>
+
+
