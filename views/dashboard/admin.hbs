@@ -392,23 +392,6 @@
           >12</span>
         </a>
         <a
-          href="/dashboard/auction-bids"
-          class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
-          onclick="switchTab('auctions',this)"
-        >
-          <div
-            class="w-9 h-9 rounded-lg bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center"
-          >
-            <i class="bi bi-journal-check text-orange-400 text-lg"></i>
-          </div>
-          <span
-            class="font-semibold text-sm text-gray-400 group-hover:text-white transition-colors"
-          >Animal Bids</span>
-          <span
-            class="ml-auto text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full animate-pulse"
-          >12</span>
-        </a>
-        <a
           href="/verification/ai-status"
           class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
           onclick="switchTab('auctions',this)"
@@ -1362,7 +1345,10 @@
                   id="users-prev-page"
                   class="w-8 h-8 rounded-lg hover:bg-gray-800/50 text-gray-500 hover:text-white flex items-center justify-center transition-colors"
                 ><i class="bi bi-chevron-left text-sm"></i></button>
-                <div id="users-page-numbers" class="flex items-center gap-1"></div>
+                <div
+                  id="users-page-numbers"
+                  class="flex items-center gap-1"
+                ></div>
                 <button
                   id="users-next-page"
                   class="w-8 h-8 rounded-lg hover:bg-gray-800/50 text-gray-500 hover:text-white flex items-center justify-center transition-colors"
@@ -1707,80 +1693,50 @@
       </div><!-- end p-4 wrapper -->
     </main>
 
-        <!-- ============================================================ JAVASCRIPT ============================================================ -->
+    <!-- ============================================================ JAVASCRIPT ============================================================ -->
     <script>
-      (function () {
-        var sidebar = document.getElementById('sidebar');
-        var overlay = document.getElementById('sidebar-overlay');
-        var mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        var sidebarClose = document.getElementById('sidebar-close');
-
-        function closeSidebar() {
-          if (!sidebar || !overlay) return;
-          sidebar.classList.add('-translate-x-full');
-          overlay.classList.remove('active');
-        }
-
-        function openSidebar() {
-          if (!sidebar || !overlay) return;
-          sidebar.classList.remove('-translate-x-full');
-          overlay.classList.add('active');
-        }
-
-        if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openSidebar);
-        if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
-        if (overlay) overlay.addEventListener('click', closeSidebar);
-
-        window.addEventListener('resize', function () {
-          if (!sidebar || !overlay) return;
-          if (window.innerWidth >= 1024) {
-            sidebar.classList.remove('-translate-x-full');
-            overlay.classList.remove('active');
-          }
-        });
-
-        var toastId = 0;
-        window.showToast = function (msg, type) {
-          type = type || 'info';
-          var host = document.getElementById('toast-container');
-          if (!host) return;
-          toastId += 1;
-          var item = document.createElement('div');
-          item.id = 'toast-' + toastId;
-          item.className = 'flex items-center gap-3 px-4 py-3 rounded-xl glass border border-gray-800/50 shadow-xl shadow-black/30 max-w-sm';
-          item.innerHTML = '<i class="bi bi-info-circle text-blue-400"></i><p class="text-sm text-white flex-1"></p>';
-          item.querySelector('p').textContent = msg;
-          host.appendChild(item);
-          setTimeout(function () { if (item.parentNode) item.remove(); }, 2800);
-        };
-
-        window.toggleNotifications = function () {
-          var dropdown = document.getElementById('notif-dropdown');
-          if (dropdown) dropdown.classList.toggle('open');
-        };
-
-        window.switchTab = function (name, clickedEl) {
-          var panels = document.querySelectorAll('.tab-panel');
-          panels.forEach(function (p) { p.classList.add('hidden'); });
-          var panel = document.getElementById('tab-' + name);
-          if (panel) panel.classList.remove('hidden');
-
-          var links = document.querySelectorAll('.nav-link');
-          links.forEach(function (l) { l.classList.remove('active', 'bg-gray-800/40'); });
-          if (clickedEl) clickedEl.classList.add('active', 'bg-gray-800/40');
-
-          if (window.innerWidth < 1024) closeSidebar();
-        };
-
-        if (window.location.hash === '#users') {
-          var usersLink = document.querySelector(".nav-link[onclick*=\"switchTab('users'\"]");
-          window.switchTab('users', usersLink || null);
-        }
-      })();
+      (function () { var sidebar = document.getElementById('sidebar'); var
+      overlay = document.getElementById('sidebar-overlay'); var mobileMenuBtn =
+      document.getElementById('mobile-menu-btn'); var sidebarClose =
+      document.getElementById('sidebar-close'); function closeSidebar() { if
+      (!sidebar || !overlay) return; sidebar.classList.add('-translate-x-full');
+      overlay.classList.remove('active'); } function openSidebar() { if
+      (!sidebar || !overlay) return;
+      sidebar.classList.remove('-translate-x-full');
+      overlay.classList.add('active'); } if (mobileMenuBtn)
+      mobileMenuBtn.addEventListener('click', openSidebar); if (sidebarClose)
+      sidebarClose.addEventListener('click', closeSidebar); if (overlay)
+      overlay.addEventListener('click', closeSidebar);
+      window.addEventListener('resize', function () { if (!sidebar || !overlay)
+      return; if (window.innerWidth >= 1024) {
+      sidebar.classList.remove('-translate-x-full');
+      overlay.classList.remove('active'); } }); var toastId = 0;
+      window.showToast = function (msg, type) { type = type || 'info'; var host
+      = document.getElementById('toast-container'); if (!host) return; toastId
+      += 1; var item = document.createElement('div'); item.id = 'toast-' +
+      toastId; item.className = 'flex items-center gap-3 px-4 py-3 rounded-xl
+      glass border border-gray-800/50 shadow-xl shadow-black/30 max-w-sm';
+      item.innerHTML = '<i class="bi bi-info-circle text-blue-400"></i><p
+      class="text-sm text-white flex-1"></p>';
+      item.querySelector('p').textContent = msg; host.appendChild(item);
+      setTimeout(function () { if (item.parentNode) item.remove(); }, 2800); };
+      window.toggleNotifications = function () { var dropdown =
+      document.getElementById('notif-dropdown'); if (dropdown)
+      dropdown.classList.toggle('open'); }; window.switchTab = function (name,
+      clickedEl) { var panels = document.querySelectorAll('.tab-panel');
+      panels.forEach(function (p) { p.classList.add('hidden'); }); var panel =
+      document.getElementById('tab-' + name); if (panel)
+      panel.classList.remove('hidden'); var links =
+      document.querySelectorAll('.nav-link'); links.forEach(function (l) {
+      l.classList.remove('active', 'bg-gray-800/40'); }); if (clickedEl)
+      clickedEl.classList.add('active', 'bg-gray-800/40'); if (window.innerWidth
+      < 1024) closeSidebar(); }; if (window.location.hash === '#users') { var
+      usersLink =
+      document.querySelector(".nav-link[onclick*=\"switchTab('users'\"]");
+      window.switchTab('users', usersLink || null); } })();
     </script>
     <script src="/js/app-theme.js"></script>
     <script src="/js/dashboard-stats.js"></script>
     <script src="/js/admin-user-management.js"></script>
   </body>
 </html>
-

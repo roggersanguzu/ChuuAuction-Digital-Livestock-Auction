@@ -1,5 +1,5 @@
 (function () {
-  const state = {
+  var state = {
     page: 1,
     limit: 12,
     status: "all",
@@ -11,7 +11,7 @@
     selectedId: null,
   };
 
-  const elements = {
+  var elements = {
     rows: document.getElementById("rows"),
     detailPanel: document.getElementById("detail-panel"),
     pageLabel: document.getElementById("page-label"),
@@ -29,15 +29,22 @@
     statAnalyzed: document.getElementById("stat-analyzed"),
   };
 
-  function statusClass(status) {
-    return "status-pill status-" + String(status || "pending");
+  /* ── Helpers ── */
+  function esc(v) {
+    return String(v || "").replace(/[&<>"']/g, function (c) {
+      if (c === "&") return "&amp;";
+      if (c === "<") return "&lt;";
+      if (c === ">") return "&gt;";
+      if (c === '"') return "&quot;";
+      return "&#39;";
+    });
   }
 
-  function formatDate(value) {
-    if (!value) return "-";
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return "-";
-    return date.toLocaleString("en-UG", {
+  function fmtDate(v) {
+    if (!v) return "N/A";
+    var d = new Date(v);
+    if (isNaN(d.getTime())) return "N/A";
+    return d.toLocaleString("en-UG", {
       year: "numeric",
       month: "short",
       day: "numeric",
@@ -46,218 +53,296 @@
     });
   }
 
-  function safeText(value) {
-    return String(value || "").replace(/[&<>"']/g, function (char) {
-      if (char === "&") return "&amp;";
-      if (char === "<") return "&lt;";
-      if (char === ">") return "&gt;";
-      if (char === '"') return "&quot;";
-      return "&#39;";
-    });
+  function statusClass(s) {
+    return "spill sp-" + String(s || "pending");
   }
 
-  async function api(path, options) {
-    const response = await fetch(path, {
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      ...options,
-    });
-
-    const data = await response.json().catch(function () {
-      return null;
-    });
-
-    if (!response.ok) {
-      throw new Error(data?.message || data?.error || "Request failed");
+  /* Animated number counter */
+  function animateNum(el, target) {
+    var start = parseInt(el.textContent) || 0;
+    var dur = 900;
+    var t0 = performance.now();
+    function tick(now) {
+      var p = Math.min((now - t0) / dur, 1);
+      var ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(start + (target - start) * ease);
+      if (p < 1) requestAnimationFrame(tick);
     }
-
-    return data;
+    requestAnimationFrame(tick);
   }
 
+  /* ── API ── */
+  function api(path, options) {
+    return fetch(
+      path,
+      Object.assign(
+        {
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/json" },
+        },
+        options || {},
+      ),
+    ).then(function (r) {
+      return r
+        .json()
+        .catch(function () {
+          return null;
+        })
+        .then(function (data) {
+          if (!r.ok)
+            throw new Error(
+              (data && (data.message || data.error)) || "Request failed",
+            );
+          return data;
+        });
+    });
+  }
+
+  /* ── Render rows ── */
   function renderRows() {
     if (!state.rows.length) {
       elements.rows.innerHTML =
-        '<div class="rounded-xl border border-dashed border-slate-600 p-6 text-center text-sm text-gray-300">No submissions found for your current filters.</div>';
+        '<div class="state-box">' +
+        '<div class="state-ico">📭</div>' +
+        '<div class="state-txt">No submissions found for your current filters.</div>' +
+        "</div>";
       return;
     }
 
     elements.rows.innerHTML = state.rows
       .map(function (item) {
-        const isActive = state.selectedId === item._id;
-        const submitter = item.farmer?.name || "Guest Submitter";
-        const auctionLabel = item.auction
+        var isActive = state.selectedId === item._id;
+        var submitter = (item.farmer && item.farmer.name) || "Guest Submitter";
+        var auctionLbl = item.auction
           ? [item.auction.animalType, item.auction.breed]
               .filter(Boolean)
-              .join(" - ")
+              .join(" / ")
           : "No linked auction";
+        var aiReady = !!(
+          item.aiVerification && item.aiVerification.verificationDate
+        );
+        var score = Math.round(item.verificationScore || 0);
+        var docCount =
+          ((item.documentCounts && item.documentCounts.ownership) || 0) +
+          ((item.documentCounts && item.documentCounts.health) || 0) +
+          ((item.documentCounts && item.documentCounts.photos) || 0);
 
         return (
           '<button type="button" data-id="' +
-          item._id +
-          '" class="w-full rounded-xl border border-slate-700 p-3 text-left transition hover:border-blue-400/60 ' +
-          (isActive ? "row-active" : "") +
+          esc(item._id) +
+          '"' +
+          ' class="sub-btn' +
+          (isActive ? " is-active" : "") +
           '">' +
-          '<div class="flex items-start justify-between gap-3">' +
+          '<div class="sub-top">' +
           "<div>" +
-          '<p class="text-sm font-semibold">' +
-          safeText(submitter) +
-          "</p>" +
-          '<p class="text-xs text-gray-300 mt-0.5">' +
-          safeText(auctionLabel) +
-          "</p>" +
-          '<p class="text-[11px] text-gray-400 mt-1">ID: ' +
-          safeText(item._id) +
-          "</p>" +
+          '<div class="sub-name">' +
+          esc(submitter) +
+          "</div>" +
+          '<div class="sub-auction">' +
+          esc(auctionLbl) +
+          "</div>" +
+          '<div class="sub-id">ID: ' +
+          esc(item._id) +
+          "</div>" +
           "</div>" +
           '<span class="' +
           statusClass(item.status) +
           '">' +
-          safeText(item.status) +
+          esc(item.status) +
           "</span>" +
           "</div>" +
-          '<div class="mt-3 flex flex-wrap items-center gap-2 text-xs text-gray-300">' +
-          '<span class="rounded-md bg-slate-700/70 px-2 py-1">Type: ' +
-          safeText(item.verificationType) +
+          '<div class="sub-chips">' +
+          '<span class="chip">Type: ' +
+          esc(item.verificationType) +
           "</span>" +
-          '<span class="rounded-md bg-slate-700/70 px-2 py-1">Score: ' +
-          Math.round(item.verificationScore || 0) +
+          '<span class="chip">Score: ' +
+          score +
           "</span>" +
-          '<span class="rounded-md bg-slate-700/70 px-2 py-1">Docs: ' +
-          ((item.documentCounts?.ownership || 0) +
-            (item.documentCounts?.health || 0) +
-            (item.documentCounts?.photos || 0)) +
+          '<span class="chip">Docs: ' +
+          docCount +
           "</span>" +
-          '<span class="rounded-md bg-slate-700/70 px-2 py-1">AI: ' +
-          (item.aiVerification?.verificationDate ? "Ready" : "Not Yet") +
+          '<span class="chip ' +
+          (aiReady ? "chip-ai-on" : "chip-ai-off") +
+          '">' +
+          '<i class="bi ' +
+          (aiReady ? "bi-cpu-fill" : "bi-cpu") +
+          '"></i> ' +
+          (aiReady ? "Analyzed" : "Not Yet") +
           "</span>" +
           "</div>" +
-          '<p class="mt-2 text-[11px] text-gray-400">Submitted: ' +
-          formatDate(item.createdAt) +
-          "</p>" +
+          '<div class="sub-date">Submitted: ' +
+          fmtDate(item.createdAt) +
+          "</div>" +
           "</button>"
         );
       })
       .join("");
   }
 
+  /* ── Render stats ── */
   function renderStats(stats) {
-    elements.statTotal.textContent = String(stats?.total || 0);
-    elements.statPending.textContent = String(stats?.pending || 0);
-    elements.statVerified.textContent = String(stats?.verified || 0);
-    elements.statAnalyzed.textContent = String(stats?.analyzed || 0);
+    animateNum(elements.statTotal, stats ? stats.total || 0 : 0);
+    animateNum(elements.statPending, stats ? stats.pending || 0 : 0);
+    animateNum(elements.statVerified, stats ? stats.verified || 0 : 0);
+    animateNum(elements.statAnalyzed, stats ? stats.analyzed || 0 : 0);
   }
 
-  function setPagination(pagination) {
-    state.totalPages = pagination?.totalPages || 1;
-    state.page = pagination?.page || 1;
+  /* ── Pagination ── */
+  function setPagination(pg) {
+    state.totalPages = (pg && pg.totalPages) || 1;
+    state.page = (pg && pg.page) || 1;
     elements.pageLabel.textContent =
       "Page " + state.page + " of " + state.totalPages;
-    elements.prevPage.disabled = !pagination?.hasPrev;
-    elements.nextPage.disabled = !pagination?.hasNext;
+    elements.prevPage.disabled = !(pg && pg.hasPrev);
+    elements.nextPage.disabled = !(pg && pg.hasNext);
   }
 
+  /* ── Render detail ── */
   function renderDetail(data) {
-    const docsOwnership = data.ownershipDocuments || [];
-    const docsHealth = data.healthDocuments || [];
-    const photos = data.animalPhotos || [];
-    const ai = data.aiVerification || {};
+    var docsOwn = data.ownershipDocuments || [];
+    var docsHlt = data.healthDocuments || [];
+    var photos = data.animalPhotos || [];
+    var ai = data.aiVerification || {};
 
-    const documentLinks = docsOwnership
-      .concat(docsHealth)
-      .concat(photos)
-      .map(function (doc, index) {
-        const label = doc.fileName || doc.type || "Document " + (index + 1);
-        return (
-          '<a class="underline text-blue-300" target="_blank" rel="noreferrer" href="' +
-          safeText(doc.url) +
-          '">' +
-          safeText(label) +
-          "</a>"
-        );
-      })
-      .join('<span class="text-gray-500">, </span>');
+    var allDocs = docsOwn.concat(docsHlt).concat(photos);
+    var docLinks =
+      allDocs
+        .map(function (doc, i) {
+          var label = doc.fileName || doc.type || "Document " + (i + 1);
+          return (
+            '<a class="doc-lnk" href="' +
+            esc(doc.url) +
+            '" target="_blank" rel="noreferrer">' +
+            '<i class="bi bi-file-earmark-text"></i>' +
+            esc(label) +
+            "</a>"
+          );
+        })
+        .join("") ||
+      '<span style="font-size:12px;color:var(--text-dim);">No files available</span>';
 
-    elements.detailPanel.innerHTML =
-      '<div class="space-y-4">' +
-      '<div class="flex items-start justify-between gap-2">' +
+    var ownConf = Math.round(ai.ownershipConfidence || 0);
+    var hltConf = Math.round(ai.healthConfidence || 0);
+
+    var farmerName = (data.farmer && data.farmer.name) || "Guest Submitter";
+    var farmerEmail = (data.farmer && data.farmer.email) || "No email";
+    var auctionLbl = data.auction
+      ? [data.auction.animalType, data.auction.breed]
+          .filter(Boolean)
+          .join(" / ")
+      : "No linked auction";
+
+    document.getElementById("detail-panel").innerHTML =
       "<div>" +
-      '<p class="text-xs uppercase tracking-wide text-gray-400">Selected Submission</p>' +
-      '<h2 class="text-lg font-semibold mt-1">' +
-      safeText(data.farmer?.name || "Guest Submitter") +
-      "</h2>" +
-      '<p class="text-xs text-gray-300 mt-1">' +
-      safeText(data.farmer?.email || "No email") +
-      "</p>" +
+      /* Header */
+      '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px;">' +
+      "<div>" +
+      '<div style="font-family:var(--f-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--hud-amber);margin-bottom:6px;">Selected Submission</div>' +
+      '<div style="font-family:var(--f-display);font-size:18px;font-weight:800;margin-bottom:4px;">' +
+      esc(farmerName) +
+      "</div>" +
+      '<div style="font-family:var(--f-mono);font-size:11px;color:var(--text-muted);">' +
+      esc(farmerEmail) +
+      "</div>" +
       "</div>" +
       '<span class="' +
       statusClass(data.status) +
       '">' +
-      safeText(data.status) +
+      esc(data.status) +
       "</span>" +
       "</div>" +
-      '<div class="rounded-xl border border-slate-700 p-3 text-sm">' +
-      '<p><span class="text-gray-400">Auction:</span> ' +
-      safeText(
-        data.auction
-          ? [data.auction.animalType, data.auction.breed]
-              .filter(Boolean)
-              .join(" - ")
-          : "No linked auction",
-      ) +
-      "</p>" +
-      '<p class="mt-1"><span class="text-gray-400">Verification Type:</span> ' +
-      safeText(data.verificationType) +
-      "</p>" +
-      '<p class="mt-1"><span class="text-gray-400">Submitted:</span> ' +
-      formatDate(data.createdAt) +
-      "</p>" +
+      /* Submission details */
+      '<div class="d-sec">' +
+      '<div class="d-sec-title"><i class="bi bi-info-circle-fill"></i> Submission Details</div>' +
+      '<div class="d-row"><span class="d-key">Auction</span><span class="d-val">' +
+      esc(auctionLbl) +
+      "</span></div>" +
+      '<div class="d-row"><span class="d-key">Type</span><span class="d-val">' +
+      esc(data.verificationType) +
+      "</span></div>" +
+      '<div class="d-row"><span class="d-key">Submitted</span><span class="d-val">' +
+      fmtDate(data.createdAt) +
+      "</span></div>" +
+      '<div class="d-row"><span class="d-key">Score</span>' +
+      '<span class="d-val" style="font-family:var(--f-mono);color:var(--hud-amber);">' +
+      Math.round(data.verificationScore || 0) +
+      "</span>" +
       "</div>" +
-      '<div class="rounded-xl border border-slate-700 p-3 text-sm">' +
-      '<p class="font-medium">Documents</p>' +
-      '<p class="text-xs text-gray-300 mt-1">Ownership: ' +
-      docsOwnership.length +
-      " | Health: " +
-      docsHealth.length +
-      " | Photos: " +
+      "</div>" +
+      /* Document chain */
+      '<div class="d-sec">' +
+      '<div class="d-sec-title"><i class="bi bi-folder2-open"></i> Document Chain</div>' +
+      '<div style="display:flex;gap:18px;margin-bottom:10px;font-family:var(--f-mono);font-size:11px;">' +
+      '<span style="color:var(--text-muted);">Ownership: <strong style="color:var(--text-primary);">' +
+      docsOwn.length +
+      "</strong></span>" +
+      '<span style="color:var(--text-muted);">Health: <strong style="color:var(--text-primary);">' +
+      docsHlt.length +
+      "</strong></span>" +
+      '<span style="color:var(--text-muted);">Photos: <strong style="color:var(--text-primary);">' +
       photos.length +
-      "</p>" +
-      '<p class="mt-2 text-xs text-gray-300 break-words">' +
-      (documentLinks || "No files available") +
-      "</p>" +
+      "</strong></span>" +
       "</div>" +
-      '<div class="rounded-xl border border-slate-700 p-3 text-sm">' +
-      '<p class="font-medium">AI Result</p>' +
-      '<p class="mt-1 text-xs text-gray-300">Last analyzed: ' +
-      formatDate(ai.verificationDate) +
-      "</p>" +
-      '<p class="mt-1 text-xs text-gray-300">Ownership confidence: ' +
-      Math.round(ai.ownershipConfidence || 0) +
-      "%</p>" +
-      '<p class="mt-1 text-xs text-gray-300">Health confidence: ' +
-      Math.round(ai.healthConfidence || 0) +
-      "%</p>" +
-      '<p class="mt-1 text-xs text-gray-300">Ownership notes: ' +
-      safeText(ai.ownershipAnalysis || "Not available") +
-      "</p>" +
-      '<p class="mt-1 text-xs text-gray-300">Health notes: ' +
-      safeText(ai.healthAnalysis || "Not available") +
-      "</p>" +
+      '<div style="display:flex;flex-wrap:wrap;gap:4px;">' +
+      docLinks +
       "</div>" +
-      '<button id="analyze-btn" type="button" class="w-full rounded-lg bg-blue-500 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-400">' +
-      '<i class="bi bi-cpu"></i> Analyze With Gemini' +
+      "</div>" +
+      /* AI results */
+      '<div class="d-sec">' +
+      '<div class="d-sec-title"><i class="bi bi-cpu-fill"></i> Gemini Analysis Results</div>' +
+      '<div class="d-row"><span class="d-key">Last Analyzed</span><span class="d-val">' +
+      fmtDate(ai.verificationDate) +
+      "</span></div>" +
+      '<div class="conf-wrap" style="margin-top:10px;">' +
+      '<div class="conf-row"><span>Ownership Confidence</span><span style="color:var(--hud-amber);">' +
+      ownConf +
+      "%</span></div>" +
+      '<div class="conf-track"><div class="conf-fill f-own" style="width:0%" data-target="' +
+      ownConf +
+      '"></div></div>' +
+      "</div>" +
+      '<div class="conf-wrap" style="margin-top:8px;margin-bottom:12px;">' +
+      '<div class="conf-row"><span>Health Confidence</span><span style="color:var(--hud-blue);">' +
+      hltConf +
+      "%</span></div>" +
+      '<div class="conf-track"><div class="conf-fill f-hlt" style="width:0%" data-target="' +
+      hltConf +
+      '"></div></div>' +
+      "</div>" +
+      '<div style="font-family:var(--f-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;">OWNERSHIP NOTES</div>' +
+      '<div class="ai-bubble">' +
+      esc(ai.ownershipAnalysis || "Not yet analyzed") +
+      "</div>" +
+      '<div style="font-family:var(--f-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin:10px 0 4px;">HEALTH NOTES</div>' +
+      '<div class="ai-bubble">' +
+      esc(ai.healthAnalysis || "Not yet analyzed") +
+      "</div>" +
+      "</div>" +
+      /* Analyze button */
+      '<button id="analyze-btn" type="button" class="btn-analyze">' +
+      "Run Gemini Analysis" +
       "</button>" +
       "</div>";
 
-    const analyzeBtn = document.getElementById("analyze-btn");
+    /* Animate confidence bars */
+    setTimeout(function () {
+      document
+        .querySelectorAll(".conf-fill[data-target]")
+        .forEach(function (bar) {
+          bar.style.width = bar.getAttribute("data-target") + "%";
+        });
+    }, 120);
+
+    var analyzeBtn = document.getElementById("analyze-btn");
     analyzeBtn.addEventListener("click", function () {
       analyzeSubmission(data._id, analyzeBtn);
     });
   }
 
-  async function loadRows() {
-    const query = new URLSearchParams({
+  /* ── Load rows ── */
+  function loadRows() {
+    var q = new URLSearchParams({
       page: String(state.page),
       limit: String(state.limit),
       status: state.status,
@@ -267,148 +352,167 @@
     });
 
     elements.rows.innerHTML =
-      '<div class="rounded-xl border border-dashed border-slate-600 p-5 text-sm text-gray-300">Loading submissions...</div>';
+      '<div class="state-box">' +
+      '<div class="animal-pod p-cow" style="width:54px;height:54px;font-size:24px;">' +
+      '<div class="pod-scan"></div>🐄</div>' +
+      '<div class="state-txt">Fetching submissions...</div>' +
+      "</div>";
 
-    try {
-      const payload = await api(
-        "/verification/api/admin/ai-submissions?" + query.toString(),
-      );
+    return api("/verification/api/admin/ai-submissions?" + q.toString())
+      .then(function (payload) {
+        state.rows = payload.data || [];
 
-      state.rows = payload.data || [];
+        if (state.selectedId) {
+          var stillExists = state.rows.some(function (r) {
+            return r._id === state.selectedId;
+          });
+          if (!stillExists) state.selectedId = null;
+        }
+        if (!state.selectedId && state.rows.length) {
+          state.selectedId = state.rows[0]._id;
+        }
 
-      if (state.selectedId) {
-        const stillExists = state.rows.some(function (row) {
-          return row._id === state.selectedId;
-        });
-        if (!stillExists) state.selectedId = null;
-      }
+        renderRows();
+        renderStats(payload.stats || {});
+        setPagination(payload.pagination || {});
 
-      if (!state.selectedId && state.rows.length) {
-        state.selectedId = state.rows[0]._id;
-      }
-
-      renderRows();
-      renderStats(payload.stats || {});
-      setPagination(payload.pagination || {});
-
-      if (state.selectedId) {
-        loadDetail(state.selectedId);
-      } else {
-        elements.detailPanel.innerHTML =
-          '<p class="text-sm text-gray-300">Select a submission from the list to view details and run AI analysis.</p>';
-      }
-    } catch (error) {
-      elements.rows.innerHTML =
-        '<div class="rounded-xl border border-red-500/40 bg-red-500/10 p-5 text-sm text-red-200">' +
-        safeText(error.message) +
-        "</div>";
-    }
+        if (state.selectedId) {
+          loadDetail(state.selectedId);
+        } else {
+          document.getElementById("detail-panel").innerHTML =
+            '<div class="dp-placeholder">' +
+            '<div class="dp-placeholder-ico">🔬</div>' +
+            '<div style="font-family:var(--f-display);font-size:17px;font-weight:800;">Select a Submission</div>' +
+            '<div style="font-size:13px;color:var(--text-muted);max-width:210px;line-height:1.65;">Choose a record from the list to view details.</div>' +
+            "</div>";
+        }
+      })
+      .catch(function (err) {
+        elements.rows.innerHTML =
+          '<div class="state-box">' +
+          '<div class="state-ico" style="color:#f87171;">⚠</div>' +
+          '<div class="state-txt">' +
+          esc(err.message) +
+          "</div>" +
+          "</div>";
+      });
   }
 
-  async function loadDetail(id) {
+  /* ── Load detail ── */
+  function loadDetail(id) {
     if (!id) return;
-    elements.detailPanel.innerHTML =
-      '<p class="text-sm text-gray-300">Loading selected submission...</p>';
+    document.getElementById("detail-panel").innerHTML =
+      '<div class="dp-placeholder">' +
+      '<div class="dp-placeholder-ico" style="font-size:26px;">⚙️</div>' +
+      '<div style="font-size:13px;color:var(--text-muted);">Loading submission details...</div>' +
+      "</div>";
 
-    try {
-      const payload = await api(
-        "/verification/api/admin/ai-submissions/" + encodeURIComponent(id),
-      );
-      renderDetail(payload.data);
-    } catch (error) {
-      elements.detailPanel.innerHTML =
-        '<div class="rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-200">' +
-        safeText(error.message) +
-        "</div>";
-    }
+    return api(
+      "/verification/api/admin/ai-submissions/" + encodeURIComponent(id),
+    )
+      .then(function (payload) {
+        renderDetail(payload.data);
+      })
+      .catch(function (err) {
+        document.getElementById("detail-panel").innerHTML =
+          '<div style="padding:20px;">' +
+          '<div style="background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.25);border-radius:12px;padding:16px;font-size:13px;color:#f87171;">' +
+          esc(err.message) +
+          "</div></div>";
+      });
   }
 
-  async function analyzeSubmission(id, button) {
+  /* ── Analyze submission ── */
+  function analyzeSubmission(id, btn) {
     if (!id) return;
+    btn.disabled = true;
+    var orig = btn.innerHTML;
+    btn.innerHTML =
+      '<span class="spin-ring"></span> Running Gemini Analysis...';
 
-    button.disabled = true;
-    const original = button.innerHTML;
-    button.innerHTML =
-      '<i class="bi bi-hourglass-split"></i> Running Analysis...';
-
-    try {
-      await api(
-        "/verification/api/admin/ai-submissions/" +
-          encodeURIComponent(id) +
-          "/analyze",
-        {
-          method: "POST",
-          body: JSON.stringify({}),
-        },
-      );
-      await loadRows();
-      await loadDetail(id);
-    } catch (error) {
-      alert(error.message || "AI analysis failed");
-    } finally {
-      button.disabled = false;
-      button.innerHTML = original;
-    }
+    api(
+      "/verification/api/admin/ai-submissions/" +
+        encodeURIComponent(id) +
+        "/analyze",
+      {
+        method: "POST",
+        body: JSON.stringify({}),
+      },
+    )
+      .then(function () {
+        return loadRows();
+      })
+      .then(function () {
+        return loadDetail(id);
+      })
+      .catch(function (err) {
+        alert(err.message || "Analysis failed");
+      })
+      .finally(function () {
+        btn.disabled = false;
+        btn.innerHTML = orig;
+      });
   }
 
+  /* ── Events ── */
   function setupEvents() {
-    let searchTimer = null;
+    var searchTimer = null;
 
-    elements.searchInput.addEventListener("input", function (event) {
+    elements.searchInput.addEventListener("input", function (e) {
       clearTimeout(searchTimer);
       searchTimer = setTimeout(function () {
-        state.q = event.target.value.trim();
+        state.q = e.target.value.trim();
         state.page = 1;
         loadRows();
       }, 350);
     });
 
-    elements.statusFilter.addEventListener("change", function (event) {
-      state.status = event.target.value;
+    elements.statusFilter.addEventListener("change", function (e) {
+      state.status = e.target.value;
       state.page = 1;
       loadRows();
     });
-
-    elements.typeFilter.addEventListener("change", function (event) {
-      state.type = event.target.value;
+    elements.typeFilter.addEventListener("change", function (e) {
+      state.type = e.target.value;
       state.page = 1;
       loadRows();
     });
-
-    elements.aiFilter.addEventListener("change", function (event) {
-      state.aiState = event.target.value;
+    elements.aiFilter.addEventListener("change", function (e) {
+      state.aiState = e.target.value;
       state.page = 1;
       loadRows();
     });
-
-    elements.limitFilter.addEventListener("change", function (event) {
-      state.limit = Number(event.target.value) || 12;
+    elements.limitFilter.addEventListener("change", function (e) {
+      state.limit = Number(e.target.value) || 12;
       state.page = 1;
       loadRows();
     });
 
     elements.refreshBtn.addEventListener("click", function () {
-      loadRows();
+      elements.refreshBtn.classList.add("is-spinning");
+      loadRows().finally(function () {
+        elements.refreshBtn.classList.remove("is-spinning");
+      });
     });
 
     elements.prevPage.addEventListener("click", function () {
-      if (state.page <= 1) return;
-      state.page -= 1;
-      loadRows();
+      if (state.page > 1) {
+        state.page--;
+        loadRows();
+      }
     });
-
     elements.nextPage.addEventListener("click", function () {
-      if (state.page >= state.totalPages) return;
-      state.page += 1;
-      loadRows();
+      if (state.page < state.totalPages) {
+        state.page++;
+        loadRows();
+      }
     });
 
-    elements.rows.addEventListener("click", function (event) {
-      const button = event.target.closest("button[data-id]");
-      if (!button) return;
-      const id = button.getAttribute("data-id");
+    elements.rows.addEventListener("click", function (e) {
+      var btn = e.target.closest("button[data-id]");
+      if (!btn) return;
+      var id = btn.getAttribute("data-id");
       if (!id) return;
-
       state.selectedId = id;
       renderRows();
       loadDetail(id);

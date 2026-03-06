@@ -36,7 +36,12 @@
     var clean = String(name || "").trim();
     if (!clean) return "?";
     var parts = clean.split(/\s+/).slice(0, 2);
-    return parts.map(function (p) { return p[0]; }).join("").toUpperCase();
+    return parts
+      .map(function (p) {
+        return p[0];
+      })
+      .join("")
+      .toUpperCase();
   }
 
   function formatRole(role) {
@@ -57,10 +62,16 @@
   }
 
   async function api(path, options) {
-    var response = await fetch(path, Object.assign({
-      credentials: "same-origin",
-      headers: { "Content-Type": "application/json" },
-    }, options || {}));
+    var response = await fetch(
+      path,
+      Object.assign(
+        {
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/json" },
+        },
+        options || {},
+      ),
+    );
 
     var payload = null;
     try {
@@ -107,37 +118,72 @@
       return;
     }
 
-    tableBody.innerHTML = users.map(function (u, i) {
-      var roleLabel = formatRole(u.role);
-      var status = String(u.accountStatus || "active").toLowerCase();
-      var statusClass = statusStyles[status] || statusStyles.inactive;
-      var roleClass = roleStyles[roleLabel] || roleStyles.Buyer;
-      var selfTag = u.isCurrentUser ? '<span class="ml-2 text-[10px] text-orange-400">(You)</span>' : "";
+    tableBody.innerHTML = users
+      .map(function (u, i) {
+        var roleLabel = formatRole(u.role);
+        var status = String(u.accountStatus || "active").toLowerCase();
+        var statusClass = statusStyles[status] || statusStyles.inactive;
+        var roleClass = roleStyles[roleLabel] || roleStyles.Buyer;
+        var selfTag = u.isCurrentUser
+          ? '<span class="ml-2 text-[10px] text-orange-400">(You)</span>'
+          : "";
 
-      return (
-        '<tr class="border-b border-gray-800/30 hover:bg-gray-800/20 transition-colors group animate-slide-up" style="animation-delay:' + (i * 0.03) + 's;">' +
+        return (
+          '<tr class="border-b border-gray-800/30 hover:bg-gray-800/20 transition-colors group animate-slide-up" style="animation-delay:' +
+          i * 0.03 +
+          's;">' +
           '<td class="px-5 py-3.5">' +
-            '<div class="flex items-center gap-3">' +
-              '<div class="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-xs font-bold">' + escapeHtml(initials(u.name)) + "</div>" +
-              '<span class="font-semibold text-sm group-hover:text-orange-400 transition-colors">' + escapeHtml(u.name) + selfTag + "</span>" +
-            "</div>" +
+          '<div class="flex items-center gap-3">' +
+          '<div class="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-xs font-bold">' +
+          escapeHtml(initials(u.name)) +
+          "</div>" +
+          '<span class="font-semibold text-sm group-hover:text-orange-400 transition-colors">' +
+          escapeHtml(u.name) +
+          selfTag +
+          "</span>" +
+          "</div>" +
           "</td>" +
-          '<td class="px-5 py-3.5 text-sm text-gray-400">' + escapeHtml(u.email || "-") + "<br><span class=\"text-[11px] text-gray-600\">" + escapeHtml(u.phone || "No phone") + "</span></td>" +
-          '<td class="px-5 py-3.5"><span class="text-[11px] px-2.5 py-0.5 rounded-full ' + roleClass + ' font-semibold capitalize">' + escapeHtml(roleLabel) + "</span></td>" +
-          '<td class="px-5 py-3.5"><span class="text-[11px] px-2.5 py-0.5 rounded-full ' + statusClass + ' font-semibold capitalize">' + escapeHtml(status) + "</span></td>" +
-          '<td class="px-5 py-3.5 text-sm text-gray-400">' + escapeHtml(formatDate(u.createdAt)) + "</td>" +
+          '<td class="px-5 py-3.5 text-sm text-gray-400">' +
+          escapeHtml(u.email || "-") +
+          '<br><span class="text-[11px] text-gray-600">' +
+          escapeHtml(u.phone || "No phone") +
+          "</span></td>" +
+          '<td class="px-5 py-3.5"><span class="text-[11px] px-2.5 py-0.5 rounded-full ' +
+          roleClass +
+          ' font-semibold capitalize">' +
+          escapeHtml(roleLabel) +
+          "</span></td>" +
+          '<td class="px-5 py-3.5"><span class="text-[11px] px-2.5 py-0.5 rounded-full ' +
+          statusClass +
+          ' font-semibold capitalize">' +
+          escapeHtml(status) +
+          "</span></td>" +
+          '<td class="px-5 py-3.5 text-sm text-gray-400">' +
+          escapeHtml(formatDate(u.createdAt)) +
+          "</td>" +
           '<td class="px-5 py-3.5 text-sm font-semibold text-white">UGX 0</td>' +
           '<td class="px-5 py-3.5">' +
-            '<div class="flex items-center justify-center gap-1">' +
-              '<button class="w-7 h-7 rounded-lg hover:bg-blue-500/15 flex items-center justify-center transition-colors" title="Edit" data-action="edit" data-id="' + escapeHtml(u._id) + '"><i class="bi bi-pencil text-blue-400 text-xs"></i></button>' +
-              '<button class="w-7 h-7 rounded-lg hover:bg-amber-500/15 flex items-center justify-center transition-colors" title="Change Status" data-action="status" data-id="' + escapeHtml(u._id) + '" data-status="' + escapeHtml(status) + '"><i class="bi bi-toggle-on text-amber-400 text-xs"></i></button>' +
-              '<button class="w-7 h-7 rounded-lg hover:bg-indigo-500/15 flex items-center justify-center transition-colors" title="Reset Password" data-action="password" data-id="' + escapeHtml(u._id) + '"><i class="bi bi-key text-indigo-400 text-xs"></i></button>' +
-              '<button class="w-7 h-7 rounded-lg hover:bg-red-500/15 flex items-center justify-center transition-colors" title="Delete" data-action="delete" data-id="' + escapeHtml(u._id) + '"><i class="bi bi-trash text-red-400 text-xs"></i></button>' +
-            "</div>" +
+          '<div class="flex items-center justify-center gap-1">' +
+          '<button class="w-7 h-7 rounded-lg hover:bg-blue-500/15 flex items-center justify-center transition-colors" title="Edit" data-action="edit" data-id="' +
+          escapeHtml(u._id) +
+          '"><i class="bi bi-pencil text-blue-400 text-xs"></i></button>' +
+          '<button class="w-7 h-7 rounded-lg hover:bg-amber-500/15 flex items-center justify-center transition-colors" title="Change Status" data-action="status" data-id="' +
+          escapeHtml(u._id) +
+          '" data-status="' +
+          escapeHtml(status) +
+          '"><i class="bi bi-toggle-on text-amber-400 text-xs"></i></button>' +
+          '<button class="w-7 h-7 rounded-lg hover:bg-indigo-500/15 flex items-center justify-center transition-colors" title="Reset Password" data-action="password" data-id="' +
+          escapeHtml(u._id) +
+          '"><i class="bi bi-key text-indigo-400 text-xs"></i></button>' +
+          '<button class="w-7 h-7 rounded-lg hover:bg-red-500/15 flex items-center justify-center transition-colors" title="Delete" data-action="delete" data-id="' +
+          escapeHtml(u._id) +
+          '"><i class="bi bi-trash text-red-400 text-xs"></i></button>' +
+          "</div>" +
           "</td>" +
-        "</tr>"
-      );
-    }).join("");
+          "</tr>"
+        );
+      })
+      .join("");
   }
 
   function renderPagination() {
@@ -147,7 +193,7 @@
     var next = document.getElementById("users-next-page");
     if (!label || !numbers || !prev || !next) return;
 
-    var from = state.total === 0 ? 0 : ((state.page - 1) * state.limit) + 1;
+    var from = state.total === 0 ? 0 : (state.page - 1) * state.limit + 1;
     var to = Math.min(state.total, state.page * state.limit);
     label.textContent = "Showing " + from + "-" + to + " of " + state.total;
 
@@ -157,18 +203,30 @@
     next.classList.toggle("opacity-40", next.disabled);
 
     var pages = [];
-    for (var p = Math.max(1, state.page - 1); p <= Math.min(state.totalPages, state.page + 1); p += 1) {
+    for (
+      var p = Math.max(1, state.page - 1);
+      p <= Math.min(state.totalPages, state.page + 1);
+      p += 1
+    ) {
       pages.push(p);
     }
 
-    numbers.innerHTML = pages.map(function (p) {
-      var active = p === state.page;
-      return '<button class="w-8 h-8 rounded-lg ' +
-        (active
-          ? "bg-orange-500/20 text-orange-400"
-          : "hover:bg-gray-800/50 text-gray-500 hover:text-white") +
-        ' flex items-center justify-center text-xs font-bold transition-colors" data-page="' + p + '">' + p + "</button>";
-    }).join("");
+    numbers.innerHTML = pages
+      .map(function (p) {
+        var active = p === state.page;
+        return (
+          '<button class="w-8 h-8 rounded-lg ' +
+          (active
+            ? "bg-orange-500/20 text-orange-400"
+            : "hover:bg-gray-800/50 text-gray-500 hover:text-white") +
+          ' flex items-center justify-center text-xs font-bold transition-colors" data-page="' +
+          p +
+          '">' +
+          p +
+          "</button>"
+        );
+      })
+      .join("");
   }
 
   async function loadUsers() {
@@ -176,12 +234,16 @@
       var payload = await api("/api/user/admin/users?" + buildQuery());
       var list = Array.isArray(payload.data) ? payload.data : [];
       var currentUserId = document.getElementById("dashboard-stats-context")
-        ? document.getElementById("dashboard-stats-context").getAttribute("data-user-id")
+        ? document
+            .getElementById("dashboard-stats-context")
+            .getAttribute("data-user-id")
         : null;
 
       state.users = list.map(function (u) {
         return Object.assign({}, u, {
-          isCurrentUser: currentUserId ? String(currentUserId) === String(u._id) : false,
+          isCurrentUser: currentUserId
+            ? String(currentUserId) === String(u._id)
+            : false,
         });
       });
       state.total = payload.pagination.total;
@@ -204,30 +266,49 @@
   function openUserModal(user) {
     var isEdit = !!user;
     var modal = document.createElement("div");
-    modal.className = "fixed inset-0 z-[120] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4";
+    modal.className =
+      "fixed inset-0 z-[120] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4";
     modal.innerHTML =
       '<div class="w-full max-w-lg glass border border-gray-800/50 rounded-2xl p-5">' +
-        '<div class="flex items-center justify-between mb-4">' +
-          '<h3 class="text-lg font-black font-display">' + (isEdit ? "Edit User" : "Create User") + "</h3>" +
-          '<button type="button" class="w-8 h-8 rounded-lg hover:bg-gray-800/50 text-gray-400" data-close><i class="bi bi-x-lg"></i></button>' +
-        "</div>" +
-        '<form id="admin-user-form" class="space-y-3">' +
-          '<input type="text" name="name" required placeholder="Full name" value="' + escapeHtml(isEdit ? user.name : "") + '" class="w-full bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2 text-sm text-white">' +
-          '<input type="email" name="email" required placeholder="Email address" value="' + escapeHtml(isEdit ? user.email : "") + '" class="w-full bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2 text-sm text-white">' +
-          '<input type="text" name="phone" placeholder="Phone number" value="' + escapeHtml(isEdit ? (user.phone || "") : "") + '" class="w-full bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2 text-sm text-white">' +
-          '<select name="role" class="w-full bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2 text-sm text-white">' +
-            '<option value="seller"' + (formatRole(isEdit ? user.role : "") === "Farmer" ? " selected" : "") + ">Farmer</option>" +
-            '<option value="buyer"' + (formatRole(isEdit ? user.role : "Buyer") === "Buyer" ? " selected" : "") + ">Buyer</option>" +
-            '<option value="administrator"' + (formatRole(isEdit ? user.role : "") === "Admin" ? " selected" : "") + ">Admin</option>" +
-          "</select>" +
-          (isEdit
-            ? ""
-            : '<input type="password" name="password" required minlength="6" placeholder="Temporary password (min 6 chars)" class="w-full bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2 text-sm text-white">') +
-          '<div class="flex items-center justify-end gap-2 pt-2">' +
-            '<button type="button" class="px-4 py-2 rounded-xl border border-gray-700 text-gray-300 text-sm" data-close>Cancel</button>' +
-            '<button type="submit" class="px-4 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 text-sm font-semibold">' + (isEdit ? "Save Changes" : "Create User") + "</button>" +
-          "</div>" +
-        "</form>" +
+      '<div class="flex items-center justify-between mb-4">' +
+      '<h3 class="text-lg font-black font-display">' +
+      (isEdit ? "Edit User" : "Create User") +
+      "</h3>" +
+      '<button type="button" class="w-8 h-8 rounded-lg hover:bg-gray-800/50 text-gray-400" data-close><i class="bi bi-x-lg"></i></button>' +
+      "</div>" +
+      '<form id="admin-user-form" class="space-y-3">' +
+      '<input type="text" name="name" required placeholder="Full name" value="' +
+      escapeHtml(isEdit ? user.name : "") +
+      '" class="w-full bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2 text-sm text-white">' +
+      '<input type="email" name="email" required placeholder="Email address" value="' +
+      escapeHtml(isEdit ? user.email : "") +
+      '" class="w-full bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2 text-sm text-white">' +
+      '<input type="text" name="phone" placeholder="Phone number" value="' +
+      escapeHtml(isEdit ? user.phone || "" : "") +
+      '" class="w-full bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2 text-sm text-white">' +
+      '<select name="role" class="w-full bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2 text-sm text-white">' +
+      '<option value="seller"' +
+      (formatRole(isEdit ? user.role : "") === "Farmer" ? " selected" : "") +
+      ">Farmer</option>" +
+      '<option value="buyer"' +
+      (formatRole(isEdit ? user.role : "Buyer") === "Buyer"
+        ? " selected"
+        : "") +
+      ">Buyer</option>" +
+      '<option value="administrator"' +
+      (formatRole(isEdit ? user.role : "") === "Admin" ? " selected" : "") +
+      ">Admin</option>" +
+      "</select>" +
+      (isEdit
+        ? ""
+        : '<input type="password" name="password" required minlength="6" placeholder="Temporary password (min 6 chars)" class="w-full bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2 text-sm text-white">') +
+      '<div class="flex items-center justify-end gap-2 pt-2">' +
+      '<button type="button" class="px-4 py-2 rounded-xl border border-gray-700 text-gray-300 text-sm" data-close>Cancel</button>' +
+      '<button type="submit" class="px-4 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 text-sm font-semibold">' +
+      (isEdit ? "Save Changes" : "Create User") +
+      "</button>" +
+      "</div>" +
+      "</form>" +
       "</div>";
 
     document.body.appendChild(modal);
@@ -244,41 +325,45 @@
       if (event.target === modal) close();
     });
 
-    modal.querySelector("#admin-user-form").addEventListener("submit", async function (event) {
-      event.preventDefault();
-      var fd = new FormData(event.target);
-      var payload = {
-        name: String(fd.get("name") || "").trim(),
-        email: String(fd.get("email") || "").trim(),
-        phone: String(fd.get("phone") || "").trim(),
-        role: roleValueFromLabel(fd.get("role")),
-      };
-      if (!isEdit) payload.password = String(fd.get("password") || "");
+    modal
+      .querySelector("#admin-user-form")
+      .addEventListener("submit", async function (event) {
+        event.preventDefault();
+        var fd = new FormData(event.target);
+        var payload = {
+          name: String(fd.get("name") || "").trim(),
+          email: String(fd.get("email") || "").trim(),
+          phone: String(fd.get("phone") || "").trim(),
+          role: roleValueFromLabel(fd.get("role")),
+        };
+        if (!isEdit) payload.password = String(fd.get("password") || "");
 
-      try {
-        if (isEdit) {
-          await api("/api/user/admin/users/" + encodeURIComponent(user._id), {
-            method: "PATCH",
-            body: JSON.stringify(payload),
-          });
-          toast("User updated successfully", "success");
-        } else {
-          await api("/api/user/admin/users", {
-            method: "POST",
-            body: JSON.stringify(payload),
-          });
-          toast("User created successfully", "success");
+        try {
+          if (isEdit) {
+            await api("/api/user/admin/users/" + encodeURIComponent(user._id), {
+              method: "PATCH",
+              body: JSON.stringify(payload),
+            });
+            toast("User updated successfully", "success");
+          } else {
+            await api("/api/user/admin/users", {
+              method: "POST",
+              body: JSON.stringify(payload),
+            });
+            toast("User created successfully", "success");
+          }
+          close();
+          loadUsers();
+        } catch (error) {
+          toast(error.message || "Failed to save user", "error");
         }
-        close();
-        loadUsers();
-      } catch (error) {
-        toast(error.message || "Failed to save user", "error");
-      }
-    });
+      });
   }
 
   function getUserById(id) {
-    return state.users.find(function (u) { return String(u._id) === String(id); });
+    return state.users.find(function (u) {
+      return String(u._id) === String(id);
+    });
   }
 
   async function updateStatus(userId, currentStatus) {
@@ -288,10 +373,13 @@
     if (currentStatus === "suspended") next = "active";
 
     try {
-      await api("/api/user/admin/users/" + encodeURIComponent(userId) + "/status", {
-        method: "PATCH",
-        body: JSON.stringify({ status: next }),
-      });
+      await api(
+        "/api/user/admin/users/" + encodeURIComponent(userId) + "/status",
+        {
+          method: "PATCH",
+          body: JSON.stringify({ status: next }),
+        },
+      );
       toast("User status updated to " + next, "success");
       loadUsers();
     } catch (error) {
@@ -303,10 +391,13 @@
     var value = window.prompt("Enter new password (min 6 characters):");
     if (!value) return;
     try {
-      await api("/api/user/admin/users/" + encodeURIComponent(userId) + "/password", {
-        method: "PATCH",
-        body: JSON.stringify({ newPassword: value }),
-      });
+      await api(
+        "/api/user/admin/users/" + encodeURIComponent(userId) + "/password",
+        {
+          method: "PATCH",
+          body: JSON.stringify({ newPassword: value }),
+        },
+      );
       toast("Password reset successfully", "success");
     } catch (error) {
       toast(error.message || "Failed to reset password", "error");
@@ -316,7 +407,8 @@
   async function deleteUser(userId) {
     var user = getUserById(userId);
     var label = user ? user.name : "this user";
-    if (!window.confirm("Delete " + label + "? This action cannot be undone.")) return;
+    if (!window.confirm("Delete " + label + "? This action cannot be undone."))
+      return;
     try {
       await api("/api/user/admin/users/" + encodeURIComponent(userId), {
         method: "DELETE",
@@ -340,11 +432,15 @@
         formatDate(u.createdAt),
       ]);
     });
-    var csv = rows.map(function (r) {
-      return r.map(function (cell) {
-        return '"' + String(cell).replace(/"/g, '""') + '"';
-      }).join(",");
-    }).join("\n");
+    var csv = rows
+      .map(function (r) {
+        return r
+          .map(function (cell) {
+            return '"' + String(cell).replace(/"/g, '""') + '"';
+          })
+          .join(",");
+      })
+      .join("\n");
 
     var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     var url = URL.createObjectURL(blob);

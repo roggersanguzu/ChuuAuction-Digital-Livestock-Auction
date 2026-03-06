@@ -5,7 +5,8 @@
   var dynamicCountdownRegistry = [];
 
   function getSavedTheme() {
-    var saved = localStorage.getItem(THEME_KEY) || localStorage.getItem(LEGACY_THEME_KEY);
+    var saved =
+      localStorage.getItem(THEME_KEY) || localStorage.getItem(LEGACY_THEME_KEY);
     if (saved === "light" || saved === "dark") return saved;
     return "dark";
   }
@@ -36,7 +37,10 @@
   }
 
   function toggleTheme() {
-    var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    var next =
+      document.documentElement.getAttribute("data-theme") === "dark"
+        ? "light"
+        : "dark";
     applyTheme(next);
   }
 
@@ -55,54 +59,26 @@
     document.body.appendChild(btn);
   }
 
-  function ensureClockBadge() {
-    if (document.getElementById("global-time-badge")) return;
-    var badge = document.createElement("div");
-    badge.id = "global-time-badge";
-    badge.className = "theme-fab";
-    badge.style.left = "50%";
-    badge.style.right = "auto";
-    badge.style.transform = "translateX(-50%)";
-    badge.style.top = "14px";
-    badge.style.bottom = "auto";
-    badge.style.padding = "10px 12px";
-    badge.style.display = "flex";
-    badge.style.alignItems = "center";
-    badge.style.gap = "8px";
-    badge.style.zIndex = "1200";
-    badge.style.pointerEvents = "none";
-    badge.style.maxWidth = "min(92vw, 560px)";
-    badge.style.justifyContent = "center";
-    badge.innerHTML =
-      '<i class="bi bi-clock-history" aria-hidden="true"></i>' +
-      '<span class="theme-label"><span id="global-time-text">--:--:--</span></span>';
-    document.body.appendChild(badge);
-  }
-
-  function updateClockBadge() {
-    var el = document.getElementById("global-time-text");
-    if (!el) return;
-    var now = new Date();
-    el.textContent = now.toLocaleString("en-UG", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
-  }
-
   function toMs(unit, value) {
-    if (unit === "d" || unit === "day" || unit === "days") return value * 86400000;
-    if (unit === "h" || unit === "hr" || unit === "hrs" || unit === "hour" || unit === "hours") return value * 3600000;
+    if (unit === "d" || unit === "day" || unit === "days")
+      return value * 86400000;
+    if (
+      unit === "h" ||
+      unit === "hr" ||
+      unit === "hrs" ||
+      unit === "hour" ||
+      unit === "hours"
+    )
+      return value * 3600000;
     return value * 60000;
   }
 
   function parseAgoToken(tokenText) {
     var m = String(tokenText || "")
       .toLowerCase()
-      .match(/(\d+)\s*(d|day|days|h|hr|hrs|hour|hours|m|min|mins|minute|minutes)\s+ago/);
+      .match(
+        /(\d+)\s*(d|day|days|h|hr|hrs|hour|hours|m|min|mins|minute|minutes)\s+ago/,
+      );
     if (!m) return null;
     var value = Number(m[1]);
     if (Number.isNaN(value)) return null;
@@ -110,7 +86,9 @@
   }
 
   function parseLeftToken(tokenText) {
-    var value = String(tokenText || "").toLowerCase().trim();
+    var value = String(tokenText || "")
+      .toLowerCase()
+      .trim();
     var hm = value.match(/(\d+)\s*h\s*(\d+)\s*m\s*left/);
     if (hm) {
       return Date.now() + Number(hm[1]) * 3600000 + Number(hm[2]) * 60000;
@@ -173,7 +151,9 @@
         }
       }
 
-      var leftTokenMatch = raw.match(/(\d+\s*d\s*\d+\s*h\s*left|\d+\s*h\s*\d+\s*m\s*left|\d+\s*m\s*left)/i);
+      var leftTokenMatch = raw.match(
+        /(\d+\s*d\s*\d+\s*h\s*left|\d+\s*h\s*\d+\s*m\s*left|\d+\s*m\s*left)/i,
+      );
       if (leftTokenMatch) {
         var endMs = parseLeftToken(leftTokenMatch[1]);
         if (endMs) {
@@ -206,7 +186,10 @@
   function refreshDynamicTimeNodes() {
     dynamicTimeRegistry = dynamicTimeRegistry.filter(function (item) {
       if (!item.el || !item.el.isConnected) return false;
-      item.el.textContent = item.template.replace("{{time}}", formatAgoFrom(item.baseMs));
+      item.el.textContent = item.template.replace(
+        "{{time}}",
+        formatAgoFrom(item.baseMs),
+      );
       return true;
     });
 
@@ -259,7 +242,9 @@
     if (!openBtn.dataset.menuBound) {
       openBtn.addEventListener("click", function () {
         if (Date.now() - closeStamp < 280) return;
-        var isOpen = sidebar.classList.contains("open") || sidebar.classList.contains("translate-x-0");
+        var isOpen =
+          sidebar.classList.contains("open") ||
+          sidebar.classList.contains("translate-x-0");
         if (isOpen) {
           closeFn();
         } else {
@@ -382,9 +367,6 @@
     ensureThemeButton();
     bindExistingThemeButtons();
     bindGenericMobileMenus();
-    ensureClockBadge();
-    updateClockBadge();
-    setInterval(updateClockBadge, 1000);
 
     registerDynamicTimeNodes();
     refreshDynamicTimeNodes();
@@ -393,14 +375,16 @@
 
     // Auto-dismiss flash messages to keep dashboard clean after login.
     setTimeout(function () {
-      document.querySelectorAll(".flash, .flash-success, .flash-error").forEach(function (el) {
-        el.style.transition = "opacity 0.35s ease, transform 0.35s ease";
-        el.style.opacity = "0";
-        el.style.transform = "translateY(-8px)";
-        setTimeout(function () {
-          if (el && el.parentNode) el.parentNode.removeChild(el);
-        }, 380);
-      });
+      document
+        .querySelectorAll(".flash, .flash-success, .flash-error")
+        .forEach(function (el) {
+          el.style.transition = "opacity 0.35s ease, transform 0.35s ease";
+          el.style.opacity = "0";
+          el.style.transform = "translateY(-8px)";
+          setTimeout(function () {
+            if (el && el.parentNode) el.parentNode.removeChild(el);
+          }, 380);
+        });
     }, 2800);
 
     // Keep footer years current automatically.

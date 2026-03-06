@@ -1,496 +1,480 @@
-(function () {
-  var page = document.getElementById("auction-bids-page");
-  if (!page) return;
+// auction-bids.js - External JavaScript for auction-bids dashboard
+// Note: userId and isAdmin are set globally in the HTML before this script loads
 
-  var userId = page.dataset.userId || "";
-  var auctionId = page.dataset.auctionId || "";
-  var isAdmin = (page.dataset.isAdmin || "").toLowerCase() === "true";
-  var canManageBids =
-    (page.dataset.canManageBids || "").toLowerCase() === "true";
+console.log("=== AUCTION BIDS JS LOADED ===");
+console.log("userId:", userId);
+console.log("userId type:", typeof userId);
+console.log("isAdmin:", isAdmin);
+console.log("isAdmin type:", typeof isAdmin);
 
-  var allGroupedBids = {};
-  var currentFilter = "all";
+var allGroupedBids = {};
+var currentFilter = "all";
 
-  function escapeHtml(value) {
-    return String(value || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/\"/g, "&quot;")
-      .replace(/'/g, "&#39;");
+// Format currency
+function formatCurrency(amount) {
+  return "UGX " + new Intl.NumberFormat("en-UG").format(amount || 0);
+}
+
+// Format date
+function formatDate(dateStr) {
+  var date = new Date(dateStr);
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+// Get status badge
+function getStatusBadge(status) {
+  var statusMap = {
+    pending: {
+      class: "status-pending",
+      icon: "bi-hourglass-split",
+      text: "Pending",
+    },
+    accepted: {
+      class: "status-accepted",
+      icon: "bi-trophy-fill",
+      text: "Winner",
+    },
+    rejected: {
+      class: "status-rejected",
+      icon: "bi-x-circle-fill",
+      text: "Rejected",
+    },
+  };
+  var s = statusMap[status] || statusMap["pending"];
+  return (
+    '<span class="px-3 py-1 rounded-full text-xs font-bold border ' +
+    s.class +
+    '"><i class="bi ' +
+    s.icon +
+    ' mr-1"></i>' +
+    s.text +
+    "</span>"
+  );
+}
+
+// Get animal image
+function getAnimalImage(photos) {
+  if (photos && photos.length > 0) {
+    return photos[0].url;
+  }
+  return "/img/cow.png";
+}
+
+// Show toast notification
+function showToast(title, message, isError) {
+  if (!isError) isError = false;
+  var toast = document.getElementById("toast");
+  var toastTitle = document.getElementById("toast-title");
+  var toastMessage = document.getElementById("toast-message");
+
+  toastTitle.textContent = title;
+  toastMessage.textContent = message;
+
+  if (isError) {
+    toast.querySelector("div").classList.remove("border-green-500/50");
+    toast.querySelector("div").classList.add("border-red-500/50");
+  } else {
+    toast.querySelector("div").classList.add("border-green-500/50");
+    toast.querySelector("div").classList.remove("border-red-500/50");
   }
 
-  function formatCurrency(amount) {
-    return "UGX " + new Intl.NumberFormat("en-UG").format(amount || 0);
+  toast.classList.remove("translate-y-20", "opacity-0");
+  setTimeout(function () {
+    toast.classList.add("translate-y-20", "opacity-0");
+  }, 3000);
+}
+
+// Mark bid as winner
+async function markAsWinner(bidId, bidderName) {
+  if (
+    !confirm(
+      "Are you sure you want to declare " +
+        bidderName +
+        " as the winner? This will reject all other bids.",
+    )
+  ) {
+    return;
   }
 
-  function formatDate(dateStr) {
-    var date = new Date(dateStr);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
+  try {
+    var response = await fetch("/api/bids/" + bidId + "/mark-winner", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sellerId: userId }),
     });
-  }
 
-  function getStatusBadge(status) {
-    var statusMap = {
-      pending: {
-        className: "status-pending",
-        icon: "bi-hourglass-split",
-        text: "In Progress",
-      },
-      accepted: {
-        className: "status-accepted",
-        icon: "bi-trophy-fill",
-        text: "Winner",
-      },
-      rejected: {
-        className: "status-rejected",
-        icon: "bi-x-circle-fill",
-        text: "Rejected",
-      },
-    };
+    var result = await response.json();
 
-    var s = statusMap[status] || statusMap.pending;
-    return (
-      '<span class="px-3 py-1 rounded-full text-xs font-bold border ' +
-      s.className +
-      '"><i class="bi ' +
-      s.icon +
-      ' mr-1"></i>' +
-      s.text +
-      "</span>"
-    );
-  }
-
-  function getAnimalImage(photos) {
-    if (Array.isArray(photos) && photos.length > 0) {
-      if (photos[0] && photos[0].url) return photos[0].url;
-      if (typeof photos[0] === "string") return photos[0];
-    }
-    return "/img/cow.png";
-  }
-
-  function showToast(title, message, isError) {
-    var toast = document.getElementById("toast");
-    if (!toast) return;
-
-    var toastTitle = document.getElementById("toast-title");
-    var toastMessage = document.getElementById("toast-message");
-    toastTitle.textContent = title;
-    toastMessage.textContent = message;
-
-    var panel = toast.querySelector("div");
-    panel.classList.toggle("border-red-500/50", !!isError);
-    panel.classList.toggle("border-green-500/50", !isError);
-
-    toast.classList.remove("translate-y-20", "opacity-0");
-    setTimeout(function () {
-      toast.classList.add("translate-y-20", "opacity-0");
-    }, 3000);
-  }
-
-  function hideStates() {
-    document.getElementById("loading").classList.add("hidden");
-    document.getElementById("no-bids").classList.add("hidden");
-    document.getElementById("error-state").classList.add("hidden");
-  }
-
-  function showError(message) {
-    hideStates();
-    document.getElementById("bids-container").classList.add("hidden");
-    document.getElementById("error-message").textContent =
-      message || "Could not load bids.";
-    document.getElementById("error-state").classList.remove("hidden");
-  }
-
-  async function setBidStatus(bidId, nextStatus) {
-    var label =
-      nextStatus === "accepted"
-        ? "Winner"
-        : nextStatus === "pending"
-          ? "In Progress"
-          : "Rejected";
-
-    if (nextStatus === "accepted") {
-      var okay = confirm("Set this bid as WINNER? Other bids on this auction will be rejected.");
-      if (!okay) return;
-    }
-
-    try {
-      var response = await fetch("/api/bids/" + bidId + "/status", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          status: nextStatus,
-          sellerId: userId,
-        }),
-      });
-
-      var result = await response.json();
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || "Failed to update bid status");
-      }
-
-      showToast("Updated", "Bid status set to " + label + ".", false);
-      await loadBids();
-    } catch (error) {
-      console.error("Error updating bid status:", error);
-      showToast("Error", error.message || "Could not update bid status", true);
-    }
-  }
-
-  function renderStatusActions(bid) {
-    if (!bid.canControl) return "";
-
-    var btnBase =
-      "px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all";
-
-    function button(status, text, classes) {
-      var disabled = bid.status === status;
-      var attr = disabled
-        ? "disabled"
-        : 'onclick="setBidStatus(\'' + bid._id + "', '" + status + '\')"';
-      var className =
-        btnBase +
-        (disabled ? " opacity-60 cursor-not-allowed " : " ") +
-        classes;
-      return (
-        "<button " + attr + ' class="' + className + '">' + text + "</button>"
+    if (result.success) {
+      showToast("Success!", bidderName + " has been declared as the winner!");
+      loadBids();
+    } else {
+      showToast(
+        "Error",
+        result.message || "Failed to mark bid as winner",
+        true,
       );
     }
-
-    return (
-      '<div class="flex flex-wrap gap-2 mt-3">' +
-      button("accepted", "Winner", "bg-green-500/20 border-green-500/40 text-green-300") +
-      button("pending", "In Progress", "bg-yellow-500/20 border-yellow-500/40 text-yellow-300") +
-      button("rejected", "Reject", "bg-red-500/20 border-red-500/40 text-red-300") +
-      "</div>"
-    );
+  } catch (error) {
+    console.error("Error marking bid as winner:", error);
+    showToast("Error", "An error occurred. Please try again.", true);
   }
+}
 
-  function renderBidCard(bid) {
-    var isWinner = bid.status === "accepted";
-    var bidderName = escapeHtml(bid.bidderName || "Anonymous");
-    var bidderPhone = escapeHtml(bid.bidderPhone || "N/A");
-    var bidderInitials = bidderName
+// Render single bid card
+function renderBidCard(bid) {
+  var isWinner = bid.status === "accepted";
+  var isPending = bid.status === "pending";
+  var canControl = bid.canControl && isPending;
+
+  var bidderInitials = "??";
+  if (bid.bidderName) {
+    bidderInitials = bid.bidderName
       .split(" ")
       .map(function (n) {
-        return n[0] || "";
+        return n[0];
       })
       .join("")
-      .slice(0, 2)
+      .substring(0, 2)
       .toUpperCase();
+  }
 
-    var cardClass =
-      "bid-card p-4 rounded-xl glass border border-gray-800 hover:border-orange-500/50 transition-all";
-    if (isWinner) {
-      cardClass =
-        "bid-card p-4 rounded-xl winner-card bg-gradient-to-r from-green-500/20 to-emerald-500/20 border-2 border-green-500/50 transition-all";
+  var cardClass =
+    "bid-card p-4 rounded-xl glass border border-gray-800 hover:border-orange-500/50 transition-all";
+  if (isWinner) {
+    cardClass =
+      "bid-card p-4 rounded-xl winner-card bg-gradient-to-r from-green-500/20 to-emerald-500/20 border-2 border-green-500/50 transition-all";
+  }
+
+  var bgGradient = "from-orange-500 to-red-600";
+  if (isWinner) bgGradient = "from-green-500 to-emerald-600";
+
+  var winnerBadge = "";
+  if (isWinner) {
+    winnerBadge =
+      '<div class="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center border-2 border-gray-900"><i class="bi bi-check text-xs"></i></div>';
+  }
+
+  var textColor = "text-orange-500";
+  if (isWinner) textColor = "text-green-500";
+
+  var notesHtml = "";
+  if (bid.notes) {
+    notesHtml =
+      '<div class="p-2 rounded-lg bg-gray-800/30 border border-gray-700/50 mb-3"><p class="text-sm text-gray-300">' +
+      bid.notes +
+      "</p></div>";
+  }
+
+  var actionHtml = "";
+  if (canControl) {
+    actionHtml =
+      '<div class="flex gap-2 mt-2"><button onclick="markAsWinner(\'' +
+      bid._id +
+      "', '" +
+      (bid.bidderName || "Anonymous") +
+      '\')" class="px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 font-semibold hover:shadow-lg hover:shadow-green-500/30 transition text-sm"><i class="bi bi-trophy-fill mr-1"></i>Declare Winner</button></div>';
+  }
+
+  return (
+    '<div class="' +
+    cardClass +
+    '">' +
+    '<div class="flex items-start gap-4">' +
+    '<div class="relative flex-shrink-0">' +
+    '<div class="w-12 h-12 rounded-full bg-gradient-to-br ' +
+    bgGradient +
+    ' flex items-center justify-center font-bold text-lg">' +
+    bidderInitials +
+    "</div>" +
+    winnerBadge +
+    "</div>" +
+    '<div class="flex-1 min-w-0">' +
+    '<div class="flex items-start justify-between mb-2">' +
+    '<div><h5 class="font-bold flex items-center gap-2">' +
+    (bid.bidderName || "Anonymous") +
+    '<span class="px-2 py-0.5 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-400 text-xs"><i class="bi bi-telephone mr-1"></i>' +
+    (bid.bidderPhone || "N/A") +
+    "</span></h5>" +
+    '<p class="text-xs text-gray-500 mt-1"><i class="bi bi-clock mr-1"></i>' +
+    formatDate(bid.createdAt) +
+    "</p></div>" +
+    '<div class="text-right"><p class="text-xl font-black ' +
+    textColor +
+    '">' +
+    formatCurrency(bid.amount) +
+    "</p>" +
+    getStatusBadge(bid.status) +
+    "</div>" +
+    "</div>" +
+    notesHtml +
+    actionHtml +
+    "</div></div></div>"
+  );
+}
+
+// Render auction group
+function renderAuctionGroup(auctionId, group) {
+  var auction = group.auction || {};
+  var photoUrl = getAnimalImage(auction.photos);
+  var animalType = auction.animalType || "Livestock";
+
+  var filteredBids = group.bids;
+  if (currentFilter !== "all") {
+    filteredBids = group.bids.filter(function (b) {
+      return b.status === currentFilter;
+    });
+  }
+  if (filteredBids.length === 0 && currentFilter !== "all") {
+    return "";
+  }
+
+  var highestBid = 0;
+  group.bids.forEach(function (bid) {
+    if (bid.amount > highestBid) highestBid = bid.amount;
+  });
+
+  var winnerCount = 0;
+  group.bids.forEach(function (bid) {
+    if (bid.status === "accepted") winnerCount++;
+  });
+
+  var sexHtml = "";
+  if (auction.sex) {
+    sexHtml =
+      '<span class="px-2 py-1 rounded-lg bg-gray-800/50 text-xs"><i class="bi bi-gender-' +
+      auction.sex.toLowerCase() +
+      ' mr-1"></i>' +
+      auction.sex +
+      "</span>";
+  }
+
+  var weightHtml = "";
+  if (auction.weight) {
+    weightHtml =
+      '<span class="px-2 py-1 rounded-lg bg-gray-800/50 text-xs"><i class="bi bi-speedometer mr-1"></i>' +
+      auction.weight +
+      "kg</span>";
+  }
+
+  var locationHtml = "";
+  if (auction.location) {
+    locationHtml =
+      '<span class="px-2 py-1 rounded-lg bg-gray-800/50 text-xs"><i class="bi bi-geo-alt mr-1"></i>' +
+      auction.location +
+      "</span>";
+  }
+
+  var healthHtml = "";
+  if (auction.healthStatus) {
+    healthHtml =
+      '<span class="px-2 py-1 rounded-lg bg-green-500/20 text-green-400 text-xs"><i class="bi bi-heart-pulse mr-1"></i>' +
+      auction.healthStatus +
+      "</span>";
+  }
+
+  var winnerText = "Pending";
+  var winnerClass = "text-gray-500";
+  if (winnerCount > 0) {
+    winnerText = "Declared";
+    winnerClass = "text-green-500";
+  }
+
+  var bidsHtml = filteredBids.map(renderBidCard).join("");
+  var noBidsHtml = "";
+  if (filteredBids.length === 0) {
+    noBidsHtml =
+      '<p class="text-gray-500 text-sm">No bids in this category</p>';
+  }
+
+  return (
+    '<div class="auction-group">' +
+    '<div class="glass-strong border border-gray-800 rounded-2xl p-6 mb-4">' +
+    '<div class="flex flex-col lg:flex-row gap-6">' +
+    '<div class="lg:w-48 h-36 rounded-xl overflow-hidden relative flex-shrink-0">' +
+    '<img src="' +
+    photoUrl +
+    '" alt="' +
+    animalType +
+    '" class="w-full h-full object-cover" onerror="this.src=\'/img/cow.png\'">' +
+    '<div class="absolute top-3 right-3"><span class="px-3 py-1 rounded-full bg-green-500/90 backdrop-blur-sm text-xs font-bold flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>LIVE</span></div></div>' +
+    '<div class="flex-1"><h3 class="text-xl font-bold font-display mb-2">' +
+    animalType +
+    (auction.breed ? "- " + auction.breed : "") +
+    "</h3>" +
+    '<div class="flex flex-wrap gap-2 mb-3">' +
+    sexHtml +
+    weightHtml +
+    locationHtml +
+    healthHtml +
+    "</div>" +
+    '<p class="text-sm text-gray-400 mb-4">' +
+    (auction.description || "") +
+    "</p>" +
+    '<div class="grid grid-cols-3 gap-4"><div class="p-3 rounded-xl bg-gray-800/30"><p class="text-xs text-gray-400 mb-1">Total Bids</p><p class="text-lg font-black">' +
+    group.bids.length +
+    "</p></div>" +
+    '<div class="p-3 rounded-xl bg-green-500/10 border border-green-500/30"><p class="text-xs text-gray-400 mb-1">Highest Bid</p><p class="text-lg font-black text-green-500">' +
+    formatCurrency(highestBid) +
+    "</p></div>" +
+    '<div class="p-3 rounded-xl bg-orange-500/10 border border-orange-500/30"><p class="text-xs text-gray-400 mb-1">Winner</p><p class="text-lg font-black ' +
+    winnerClass +
+    '">' +
+    winnerText +
+    "</p></div></div></div></div></div>" +
+    '<div class="space-y-3 pl-4"><h4 class="text-sm font-bold text-gray-400 mb-3"><i class="bi bi-hand-thumbs-up mr-2"></i>Bids (' +
+    filteredBids.length +
+    ")</h4>" +
+    bidsHtml +
+    noBidsHtml +
+    "</div></div>"
+  );
+}
+
+// Filter bids
+function filterBids(filter) {
+  currentFilter = filter;
+  document.querySelectorAll(".filter-btn").forEach(function (btn) {
+    btn.classList.remove("active", "border-orange-500/50");
+    btn.classList.add("border-gray-700");
+    if (btn.dataset.filter === filter) {
+      btn.classList.add("active", "border-orange-500/50");
+      btn.classList.remove("border-gray-700");
     }
+  });
+  renderBids();
+}
 
-    var bgGradient = isWinner ? "from-green-500 to-emerald-600" : "from-orange-500 to-red-600";
-    var textColor = isWinner ? "text-green-500" : "text-orange-500";
+// Render all bids
+function renderBids() {
+  console.log("=== RENDER BIDS CALLED ===");
+  console.log("allGroupedBids:", allGroupedBids);
 
-    var notesHtml = bid.notes
-      ? '<div class="p-2 rounded-lg bg-gray-800/30 border border-gray-700/50 mb-3"><p class="text-sm text-gray-300">' +
-        escapeHtml(bid.notes) +
-        "</p></div>"
-      : "";
-    var paymentButtonHtml =
-      !canManageBids && bid.status === "accepted"
-        ? '<a href="/dashboard/payment?bidId=' +
-          bid._id +
-          '" class="inline-flex items-center px-3 py-1.5 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs font-semibold hover:shadow-lg hover:shadow-green-500/30 transition"><i class="bi bi-credit-card mr-1"></i>Proceed to Payment</a>'
-        : "";
+  var container = document.getElementById("bids-container");
+  var groups = Object.entries(allGroupedBids);
 
-    return (
-      '<div class="' +
-      cardClass +
-      '">' +
-      '<div class="flex items-start gap-4">' +
-      '<div class="relative flex-shrink-0"><div class="w-12 h-12 rounded-full bg-gradient-to-br ' +
-      bgGradient +
-      ' flex items-center justify-center font-bold text-lg">' +
-      escapeHtml(bidderInitials || "??") +
-      "</div></div>" +
-      '<div class="flex-1 min-w-0">' +
-      '<div class="flex items-start justify-between mb-2">' +
-      "<div><h5 class=\"font-bold flex items-center gap-2\">" +
-      bidderName +
-      '<span class="px-2 py-0.5 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-400 text-xs"><i class="bi bi-telephone mr-1"></i>' +
-      bidderPhone +
-      "</span></h5>" +
-      '<p class="text-xs text-gray-500 mt-1"><i class="bi bi-clock mr-1"></i>' +
-      formatDate(bid.createdAt) +
-      "</p></div>" +
-      '<div class="text-right"><p class="text-xl font-black ' +
-      textColor +
-      '">' +
-      formatCurrency(bid.amount) +
-      "</p>" +
-      getStatusBadge(bid.status) +
-      (paymentButtonHtml
-        ? '<div class="mt-2 flex justify-end">' + paymentButtonHtml + "</div>"
-        : "") +
-      "</div></div>" +
-      notesHtml +
-      renderStatusActions(bid) +
-      "</div></div></div>"
-    );
+  console.log("Groups found:", groups.length);
+
+  if (groups.length === 0) {
+    document.getElementById("no-bids").classList.remove("hidden");
+    container.classList.add("hidden");
+    console.log("No groups - showing no-bids");
+    return;
   }
 
-  function renderAuctionGroup(group) {
-    var auction = group.auction || {};
-    var photoUrl = getAnimalImage(auction.photos);
-    var animalType = escapeHtml(auction.animalType || "Livestock");
-    var breed = auction.breed ? " - " + escapeHtml(auction.breed) : "";
+  document.getElementById("no-bids").classList.add("hidden");
+  container.classList.remove("hidden");
 
-    var filteredBids =
-      currentFilter === "all"
-        ? group.bids
-        : group.bids.filter(function (b) {
-            return b.status === currentFilter;
-          });
+  var allBids = [];
+  groups.forEach(function (g) {
+    allBids = allBids.concat(g[1].bids);
+  });
 
-    if (filteredBids.length === 0 && currentFilter !== "all") return "";
+  var auctions = groups.length;
+  var totalBids = allBids.length;
 
-    var highestBidEntry = group.bids.reduce(
-      function (max, bid) {
-        return (bid.amount || 0) > (max.amount || 0) ? bid : max;
-      },
-      { amount: 0, bidderName: "-" },
-    );
-    var trackedHighest = group.auctionTracking || null;
-    var highestBid = trackedHighest
-      ? trackedHighest.highestBidAmount || 0
-      : highestBidEntry.amount || 0;
-    var highestBidderName = escapeHtml(
-      trackedHighest
-        ? trackedHighest.highestBidderName || "-"
-        : highestBidEntry.bidderName || "-",
-    );
+  console.log("Total auctions:", auctions);
+  console.log("Total bids:", totalBids);
+  console.log("All bids:", allBids);
 
-    var winnerCount = group.bids.filter(function (b) {
-      return b.status === "accepted";
-    }).length;
+  var winners = 0;
+  allBids.forEach(function (bid) {
+    if (bid.status === "accepted") winners++;
+  });
 
-    var winnerText = winnerCount > 0 ? "Declared" : "Pending";
-    var winnerClass = winnerCount > 0 ? "text-green-500" : "text-gray-500";
+  var highestBid = { amount: 0, bidderName: "-" };
+  allBids.forEach(function (bid) {
+    console.log("Bid:", {
+      bidderName: bid.bidderName,
+      amount: bid.amount,
+      status: bid.status,
+      isSeller: bid.isSeller,
+      canControl: bid.canControl,
+    });
+    if (bid.amount > highestBid.amount) {
+      highestBid = bid;
+      console.log("New highest bid:", highestBid);
+    }
+  });
 
-    var sexHtml = auction.sex
-      ? '<span class="px-2 py-1 rounded-lg bg-gray-800/50 text-xs"><i class="bi bi-gender-' +
-        String(auction.sex).toLowerCase() +
-        ' mr-1"></i>' +
-        escapeHtml(auction.sex) +
-        "</span>"
-      : "";
+  var topBidder = highestBid.bidderName || "-";
+  var highest = highestBid.amount;
 
-    var weightHtml = auction.weight
-      ? '<span class="px-2 py-1 rounded-lg bg-gray-800/50 text-xs"><i class="bi bi-activity mr-1"></i>' +
-        escapeHtml(auction.weight) +
-        "kg</span>"
-      : "";
+  console.log("Final highestBid:", highestBid);
+  console.log("topBidder:", topBidder);
 
-    var locationHtml = auction.location
-      ? '<span class="px-2 py-1 rounded-lg bg-gray-800/50 text-xs"><i class="bi bi-geo-alt mr-1"></i>' +
-        escapeHtml(auction.location) +
-        "</span>"
-      : "";
+  // Update all stat elements
+  document.getElementById("stat-auctions").textContent = auctions;
+  document.getElementById("stat-total").textContent = totalBids;
+  document.getElementById("stat-winners").textContent = winners;
+  document.getElementById("stat-top-bidder").textContent = topBidder;
+  document.getElementById("stat-highest-amount").textContent =
+    formatCurrency(highest);
 
-    var healthHtml = auction.healthStatus
-      ? '<span class="px-2 py-1 rounded-lg bg-green-500/20 text-green-400 text-xs"><i class="bi bi-heart-pulse mr-1"></i>' +
-        escapeHtml(auction.healthStatus) +
-        "</span>"
-      : "";
+  container.innerHTML = groups
+    .map(function (g) {
+      return renderAuctionGroup(g[0], g[1]);
+    })
+    .join("");
+}
 
-    return (
-      '<div class="auction-group">' +
-      '<div class="glass-strong border border-gray-800 rounded-2xl p-6 mb-4">' +
-      '<div class="flex flex-col lg:flex-row gap-6">' +
-      '<div class="lg:w-48 h-36 rounded-xl overflow-hidden relative flex-shrink-0">' +
-      '<img src="' +
-      photoUrl +
-      '" alt="' +
-      animalType +
-      '" class="w-full h-full object-cover" onerror="this.src=\'/img/cow.png\'">' +
-      '<div class="absolute top-3 right-3"><span class="px-3 py-1 rounded-full bg-green-500/90 backdrop-blur-sm text-xs font-bold flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>LIVE</span></div>' +
-      "</div>" +
-      '<div class="flex-1"><h3 class="text-xl font-bold font-display mb-2">' +
-      animalType +
-      breed +
-      "</h3>" +
-      '<div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">' +
-      '<div class="p-3 rounded-xl bg-purple-500/10 border border-purple-500/30">' +
-      '<p class="text-xs text-gray-400 mb-1">Current Highest Bidder</p>' +
-      '<p class="text-sm font-bold text-purple-300 truncate"><i class="bi bi-person-fill mr-1"></i>' +
-      highestBidderName +
-      "</p></div>" +
-      '<div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30">' +
-      '<p class="text-xs text-gray-400 mb-1">Current Highest Amount</p>' +
-      '<p class="text-sm font-black text-emerald-400"><i class="bi bi-cash-stack mr-1"></i>' +
-      formatCurrency(highestBid) +
-      "</p></div></div>" +
-      (!canManageBids && trackedHighest
-        ? '<div class="p-3 rounded-xl bg-blue-500/10 border border-blue-500/30 mb-3"><p class="text-xs text-gray-300">' +
-          (trackedHighest.isUserLeading
-            ? "You are currently leading on this auction."
-            : "You are currently outbid on this auction.") +
-          "</p></div>"
-        : "") +
-      '<div class="flex flex-wrap gap-2 mb-3">' +
-      sexHtml +
-      weightHtml +
-      locationHtml +
-      healthHtml +
-      "</div>" +
-      '<p class="text-sm text-gray-400 mb-4">' +
-      escapeHtml(auction.description || "") +
-      "</p>" +
-      '<div class="grid grid-cols-3 gap-4">' +
-      '<div class="p-3 rounded-xl bg-gray-800/30"><p class="text-xs text-gray-400 mb-1">Total Bids</p><p class="text-lg font-black">' +
-      group.bids.length +
-      "</p></div>" +
-      '<div class="p-3 rounded-xl bg-green-500/10 border border-green-500/30"><p class="text-xs text-gray-400 mb-1">Highest Bid</p><p class="text-lg font-black text-green-500">' +
-      formatCurrency(highestBid) +
-      "</p></div>" +
-      '<div class="p-3 rounded-xl bg-orange-500/10 border border-orange-500/30"><p class="text-xs text-gray-400 mb-1">Winner</p><p class="text-lg font-black ' +
-      winnerClass +
-      '">' +
-      winnerText +
-      "</p></div>" +
-      "</div></div></div></div>" +
-      '<div class="space-y-3 pl-4"><h4 class="text-sm font-bold text-gray-400 mb-3"><i class="bi bi-cash-coin mr-2"></i>Bids (' +
-      filteredBids.length +
-      ")</h4>" +
-      filteredBids.map(renderBidCard).join("") +
-      (filteredBids.length === 0
-        ? '<p class="text-gray-500 text-sm">No bids in this category</p>'
-        : "") +
-      "</div></div>"
-    );
-  }
+// Fetch and render bids
+async function loadBids() {
+  try {
+    console.log("=== LOAD BIDS CALLED ===");
+    console.log("userId value:", userId);
+    console.log("isAdmin value:", isAdmin);
 
-  function renderBids() {
-    var container = document.getElementById("bids-container");
-    var groups = Object.values(allGroupedBids);
-
-    if (groups.length === 0) {
-      hideStates();
-      document.getElementById("no-bids").classList.remove("hidden");
-      container.classList.add("hidden");
+    // Check if userId is properly set
+    if (!userId || userId === "{{userId}}") {
+      console.error("ERROR: userId is not properly set!值为:", userId);
+      document.getElementById("loading").innerHTML =
+        '<div class="text-red-500"><i class="bi bi-exclamation-triangle text-2xl mb-2"></i><p>Error: User ID not found. Please log in again.</p></div>';
       return;
     }
 
-    hideStates();
-    container.classList.remove("hidden");
-
-    var allBids = [];
-    groups.forEach(function (group) {
-      allBids = allBids.concat(group.bids);
-    });
-
-    var winners = allBids.filter(function (b) {
-      return b.status === "accepted";
-    }).length;
-
-    var highestBid = allBids.reduce(
-      function (max, bid) {
-        return bid.amount > max.amount ? bid : max;
-      },
-      { amount: 0, bidderName: "-" },
-    );
-
-    document.getElementById("stat-auctions").textContent = groups.length;
-    document.getElementById("stat-total").textContent = allBids.length;
-    document.getElementById("stat-winners").textContent = winners;
-    document.getElementById("stat-top-bidder").textContent =
-      highestBid.bidderName || "-";
-    document.getElementById("stat-highest-amount").textContent = formatCurrency(
-      highestBid.amount,
-    );
-
-    container.innerHTML = groups.map(renderAuctionGroup).join("");
-  }
-
-  function filterBids(filter) {
-    currentFilter = filter;
-    document.querySelectorAll(".filter-btn").forEach(function (btn) {
-      btn.classList.toggle("active", btn.dataset.filter === filter);
-    });
-    renderBids();
-  }
-
-  async function loadBids() {
-    document.getElementById("loading").classList.remove("hidden");
-    document.getElementById("bids-container").classList.add("hidden");
-    document.getElementById("no-bids").classList.add("hidden");
-    document.getElementById("error-state").classList.add("hidden");
-
-    try {
-      if (!isAdmin && !userId) {
-        showError("User ID not found. Please log in again.");
-        return;
-      }
-
-      var apiUrl;
-      if (isAdmin) {
-        apiUrl = "/api/bids/admin/all";
-      } else if (canManageBids) {
-        apiUrl = "/api/bids/seller/" + encodeURIComponent(userId);
-      } else {
-        apiUrl = "/api/bids/user/" + encodeURIComponent(userId) + "/details";
-      }
-
-      var response = await fetch(apiUrl);
-      var result = await response.json();
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || "Failed to fetch bids");
-      }
-
-      if (canManageBids || isAdmin) {
-        allGroupedBids = result.groupedByAuction || {};
-      } else {
-        var grouped = {};
-        (result.data || []).forEach(function (bid) {
-          var bidCopy = Object.assign({}, bid, { canControl: false });
-          var id = bidCopy.listingId ? String(bidCopy.listingId) : "unknown";
-          if (!grouped[id]) {
-            grouped[id] = {
-              auction: bidCopy.auction || {},
-              auctionTracking: bidCopy.tracking || null,
-              bids: [],
-              canControl: false,
-            };
-          }
-          if (!grouped[id].auctionTracking && bidCopy.tracking) {
-            grouped[id].auctionTracking = bidCopy.tracking;
-          }
-          grouped[id].bids.push(bidCopy);
-        });
-        allGroupedBids = grouped;
-      }
-      if (auctionId) {
-        allGroupedBids = allGroupedBids[auctionId]
-          ? { [auctionId]: allGroupedBids[auctionId] }
-          : {};
-      }
-
-      renderBids();
-    } catch (error) {
-      console.error("Error loading bids:", error);
-      showError(error.message || "Error loading bids. Please try again.");
+    var apiUrl;
+    if (isAdmin === true) {
+      apiUrl = "/api/bids/admin/all";
+    } else {
+      apiUrl = "/api/bids/seller/" + userId;
     }
+
+    console.log("Fetching from API URL:", apiUrl);
+
+    var response = await fetch(apiUrl);
+    var result = await response.json();
+
+    console.log("API Response status:", response.status);
+    console.log("API Response:", result);
+
+    document.getElementById("loading").classList.add("hidden");
+
+    if (!result.success) {
+      document.getElementById("loading").innerHTML =
+        '<div class="text-red-500"><i class="bi bi-exclamation-triangle text-2xl mb-2"></i><p>Error loading bids: ' +
+        (result.message || "Unknown error") +
+        "</p></div>";
+      return;
+    }
+
+    console.log("Bids loaded successfully:", result.count);
+    console.log("Grouped by auction:", result.groupedByAuction);
+
+    allGroupedBids = result.groupedByAuction || {};
+    renderBids();
+  } catch (error) {
+    console.error("ERROR in loadBids:", error);
+    document.getElementById("loading").innerHTML =
+      '<div class="text-red-500"><i class="bi bi-exclamation-triangle text-2xl mb-2"></i><p>Error loading bids. Please try again.</p></div>';
   }
+}
 
-  window.filterBids = filterBids;
-  window.setBidStatus = setBidStatus;
-  window.reloadBids = loadBids;
-
-  document.addEventListener("DOMContentLoaded", loadBids);
-})();
-
+// Initialize
+document.addEventListener("DOMContentLoaded", loadBids);
