@@ -1656,7 +1656,7 @@
       }
     </style>
   </head>
-  <body>
+  <body data-index-mobile-drawer="1">
     <nav id="navbar">
       <div class="nav-inner">
         <a href="#hero" class="nav-logo">
@@ -2493,8 +2493,81 @@
       el.textContent = raw; clearInterval(timer); } }, 16);
       countObs.unobserve(el); }); }, { threshold: 0.5 });
       document.querySelectorAll('.stat-num, .i-num').forEach(el =>
-      countObs.observe(el)); console.log('🐐 ChuuAuction loaded successfully.');
+      countObs.observe(el));
       });
+    </script>
+    <script>
+      (function () {
+        function initIndexMobileDrawer() {
+          var ham = document.getElementById("ham");
+          var drw = document.getElementById("drw");
+          var overlay = document.getElementById("drw-overlay");
+          var closeBtn = document.getElementById("drw-close");
+          if (!ham || !drw || !overlay || !closeBtn) return;
+          var isOpen = function () {
+            return drw.classList.contains("open");
+          };
+          var open = function () {
+            drw.classList.add("open");
+            overlay.classList.add("open");
+            ham.classList.add("open");
+            document.body.style.overflow = "hidden";
+          };
+          var close = function () {
+            drw.classList.remove("open");
+            overlay.classList.remove("open");
+            ham.classList.remove("open");
+            document.body.style.overflow = "";
+          };
+          if (ham.dataset.indexDrawerBound === "1") return;
+          ham.dataset.indexDrawerBound = "1";
+          ham.addEventListener(
+            "click",
+            function (event) {
+              event.preventDefault();
+              event.stopImmediatePropagation();
+              if (isOpen()) close();
+              else open();
+            },
+            true,
+          );
+          closeBtn.addEventListener(
+            "click",
+            function (event) {
+              event.preventDefault();
+              event.stopImmediatePropagation();
+              close();
+            },
+            true,
+          );
+          overlay.addEventListener(
+            "click",
+            function (event) {
+              event.preventDefault();
+              event.stopImmediatePropagation();
+              close();
+            },
+            true,
+          );
+          drw.querySelectorAll("a").forEach(function (link) {
+            link.addEventListener(
+              "click",
+              function () {
+                close();
+              },
+              true,
+            );
+          });
+          document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") close();
+          });
+        }
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", initIndexMobileDrawer);
+        } else {
+          initIndexMobileDrawer();
+        }
+      })();
     </script>
   </body>
 </html>

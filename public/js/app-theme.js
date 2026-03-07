@@ -620,6 +620,8 @@
     host.innerHTML = '<nav class="app-breadcrumbs" aria-label="Breadcrumb">' + html + "</nav>";
   }
   function ensureBreadcrumbs() {
+    var path = window.location.pathname || "";
+    if (/^\/auth\/(login|register)$/i.test(path)) return;
     var existing = document.querySelector("[data-app-breadcrumbs]");
     var host = existing;
     if (!host) {
