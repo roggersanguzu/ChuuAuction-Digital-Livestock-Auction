@@ -35,6 +35,8 @@
     applyTheme(next);
   }
   function ensureThemeButton() {
+    var path = window.location.pathname || "";
+    if (/^\/dashboard\/buyer(\/|$)/i.test(path)) return;
     if (document.getElementById("global-theme-fab")) return;
     var btn = document.createElement("button");
     btn.id = "global-theme-fab";
@@ -622,6 +624,7 @@
   function ensureBreadcrumbs() {
     var path = window.location.pathname || "";
     if (/^\/auth\/(login|register)$/i.test(path)) return;
+    if (/^\/dashboard\/buyer(\/|$)/i.test(path)) return;
     var existing = document.querySelector("[data-app-breadcrumbs]");
     var host = existing;
     if (!host) {
@@ -666,8 +669,7 @@
     if (document.querySelector("footer")) return;
     var ctx = document.getElementById("dashboard-stats-context");
     var role = ctx ? String(ctx.getAttribute("data-role") || "").toLowerCase() : "";
-    var main = document.querySelector("main");
-    var host = main && main.parentNode ? main.parentNode : document.body;
+    var host = document.body;
     if (!host) return;
     var wrap = document.createElement("div");
     wrap.innerHTML = buildFooterMarkup(role);

@@ -13,6 +13,10 @@
       rel="stylesheet"
       href="/vendor/bootstrap-icons/css/bootstrap-icons.css"
     />
+    <script>
+      tailwind = { config: { corePlugins: { preflight: false } } };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="/css/app-theme.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -106,7 +110,7 @@
       /* ─── LAYOUT ─── */
       .layout {
         display: flex;
-        min-height: 100vh;
+        min-height: calc(100vh - 1px);
         position: relative;
         z-index: 2;
       }
@@ -440,7 +444,8 @@
         flex: 1;
         min-width: 0;
         padding: 36px 40px;
-        overflow-y: auto;
+        overflow: visible;
+        padding-bottom: 56px;
       }
       /* ─── PAGE HEADER ─── */
       .page-header {
@@ -2042,52 +2047,95 @@
       </main>
     </div>
     <script>
-      // ─── Sidebar Mobile ─── const sidebar =
-      document.getElementById('sidebar'); const overlay =
-      document.getElementById('sidebarOverlay'); const mobileToggle =
-      document.getElementById('mobileToggle'); const closeBtn =
-      document.getElementById('sidebarClose'); function openSidebar() {
-      sidebar.classList.add('open'); overlay.classList.add('active'); } function
-      closeSidebar() { sidebar.classList.remove('open');
-      overlay.classList.remove('active'); }
-      mobileToggle?.addEventListener('click', openSidebar);
-      closeBtn?.addEventListener('click', closeSidebar);
-      overlay?.addEventListener('click', closeSidebar); function syncSidebar() {
-      if (window.innerWidth >= 1024) closeSidebar(); }
-      window.addEventListener('resize', syncSidebar); syncSidebar(); // ─── Tab
-      switching ─── document.querySelectorAll('.tab-group').forEach(group => {
-      group.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-      group.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active'); }); }); }); // ─── Charts ─── const
-      darkTooltip = { backgroundColor: 'rgba(13,15,18,0.95)', titleColor:
-      '#f1f2f5', bodyColor: '#8892a4', borderColor: 'rgba(249,115,22,0.3)',
-      borderWidth: 1, padding: 12, cornerRadius: 10, displayColors: false }; //
-      Bidding Chart const bCtx = document.getElementById('biddingChart'); if
-      (bCtx) { new Chart(bCtx, { type: 'line', data: { labels:
-      ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], datasets: [{ label: 'Bids
-      Placed', data: [3,5,2,8,4,7,6], borderColor: '#f97316', backgroundColor:
-      'rgba(249,115,22,0.07)', tension: 0.45, fill: true, pointBackgroundColor:
-      '#f97316', pointBorderColor: '#050608', pointBorderWidth: 3, pointRadius:
-      6, pointHoverRadius: 9 }] }, options: { responsive: true,
-      maintainAspectRatio: false, plugins: { legend: { display: false },
-      tooltip: darkTooltip }, scales: { y: { beginAtZero: true, grid: { color:
-      'rgba(249,115,22,0.05)', drawBorder: false }, ticks: { color: '#4d5566',
-      font: { family: 'Outfit' } } }, x: { grid: { display: false }, ticks: {
-      color: '#4d5566', font: { family: 'Outfit' } } } } } }); } // Spending
-      Donut const sCtx = document.getElementById('spendingChart'); if (sCtx) {
-      new Chart(sCtx, { type: 'doughnut', data: { labels:
-      ['Cattle','Goats','Sheep','Others'], datasets: [{ data: [45,30,15,10],
-      backgroundColor:
-      ['rgba(59,130,246,0.75)','rgba(34,197,94,0.75)','rgba(168,85,247,0.75)','rgba(234,179,8,0.75)'],
-      borderColor: ['#0d0f12','#0d0f12','#0d0f12','#0d0f12'], borderWidth: 3,
-      hoverOffset: 8 }] }, options: { responsive: true, maintainAspectRatio:
-      false, plugins: { legend: { display: false }, tooltip: darkTooltip },
-      cutout: '72%' } }); } // ─── Heart toggle ───
-      document.querySelectorAll('.btn-heart').forEach(btn => {
-      btn.addEventListener('click', () => { btn.classList.toggle('active');
-      const icon = btn.querySelector('i'); icon.classList.toggle('bi-heart');
-      icon.classList.toggle('bi-heart-fill'); }); });
+      (function () {
+        document.querySelectorAll(".tab-group").forEach(function (group) {
+          group.querySelectorAll(".tab").forEach(function (tab) {
+            if (tab.dataset.bound === "1") return;
+            tab.dataset.bound = "1";
+            tab.addEventListener("click", function () {
+              group.querySelectorAll(".tab").forEach(function (t) {
+                t.classList.remove("active");
+              });
+              tab.classList.add("active");
+            });
+          });
+        });
+        var darkTooltip = {
+          backgroundColor: "rgba(13,15,18,0.95)",
+          titleColor: "#f1f2f5",
+          bodyColor: "#8892a4",
+          borderColor: "rgba(249,115,22,0.3)",
+          borderWidth: 1,
+          padding: 12,
+          cornerRadius: 10,
+          displayColors: false,
+        };
+        var bCtx = document.getElementById("biddingChart");
+        if (bCtx && typeof Chart !== "undefined") {
+          new Chart(bCtx, {
+            type: "line",
+            data: {
+              labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+              datasets: [{
+                label: "Bids Placed",
+                data: [3, 5, 2, 8, 4, 7, 6],
+                borderColor: "#f97316",
+                backgroundColor: "rgba(249,115,22,0.07)",
+                tension: 0.45,
+                fill: true,
+                pointBackgroundColor: "#f97316",
+                pointBorderColor: "#050608",
+                pointBorderWidth: 3,
+                pointRadius: 6,
+                pointHoverRadius: 9,
+              }],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false }, tooltip: darkTooltip },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  grid: { color: "rgba(249,115,22,0.05)", drawBorder: false },
+                  ticks: { color: "#4d5566", font: { family: "Outfit" } },
+                },
+                x: {
+                  grid: { display: false },
+                  ticks: { color: "#4d5566", font: { family: "Outfit" } },
+                },
+              },
+            },
+          });
+        }
+        var sCtx = document.getElementById("spendingChart");
+        if (sCtx && typeof Chart !== "undefined") {
+          new Chart(sCtx, {
+            type: "doughnut",
+            data: {
+              labels: ["Cattle", "Goats", "Sheep", "Others"],
+              datasets: [{
+                data: [45, 30, 15, 10],
+                backgroundColor: [
+                  "rgba(59,130,246,0.75)",
+                  "rgba(34,197,94,0.75)",
+                  "rgba(168,85,247,0.75)",
+                  "rgba(234,179,8,0.75)",
+                ],
+                borderColor: ["#0d0f12", "#0d0f12", "#0d0f12", "#0d0f12"],
+                borderWidth: 3,
+                hoverOffset: 8,
+              }],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false }, tooltip: darkTooltip },
+              cutout: "72%",
+            },
+          });
+        }
+      })();
     </script>
 <script src="/js/buyer-bid-outcomes.js"></script>
 <script src="/js/buyer-dashboard.js"></script>
