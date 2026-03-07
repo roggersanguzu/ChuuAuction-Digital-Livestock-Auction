@@ -1,6 +1,6 @@
-/** @type {import('tailwindcss').Config} */
+﻿
 module.exports = {
-  content: ["./views/**/*.hbs", "./views/**/*.html", "./public/**/*.js"],
+  content: ["./views*.hbs", "./views*.html", "./public*.js"],
   theme: {
     extend: {
       fontFamily: {
@@ -8,7 +8,6 @@ module.exports = {
         display: ["Syne", "sans-serif"],
       },
       colors: {
-        // Custom colors for ChuuAuction
         primary: {
           50: "#fff7ed",
           100: "#ffedd5",

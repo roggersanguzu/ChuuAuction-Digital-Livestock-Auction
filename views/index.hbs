@@ -1,4 +1,4 @@
-<html lang="en" data-theme="dark">
+﻿<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -54,7 +54,6 @@
         --muted: #7c5e38;
         --dim: #c4a97a;
       }
-
       *,
       *::before,
       *::after {
@@ -83,7 +82,6 @@
         max-width: 100%;
         display: block;
       }
-
       /* ── GRAIN OVERLAY ── */
       body::before {
         content: "";
@@ -95,7 +93,6 @@
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
         background-size: 200px 200px;
       }
-
       /* ── SCROLLBAR ── */
       ::-webkit-scrollbar {
         width: 5px;
@@ -107,7 +104,6 @@
         background: var(--amber);
         border-radius: 99px;
       }
-
       /* ── TYPOGRAPHY HELPERS ── */
       .display {
         font-family: "Playfair Display", serif;
@@ -115,7 +111,6 @@
       .mono {
         font-family: "JetBrains Mono", monospace;
       }
-
       .grad-text {
         background: linear-gradient(
           135deg,
@@ -127,7 +122,6 @@
         -webkit-text-fill-color: transparent;
         background-clip: text;
       }
-
       /* ── LABEL CHIP ── */
       .chip {
         display: inline-flex;
@@ -143,7 +137,6 @@
         text-transform: uppercase;
         color: var(--amber);
       }
-
       /* ── BUTTONS ── */
       .btn-fire {
         display: inline-flex;
@@ -187,7 +180,6 @@
       .btn-fire:active {
         transform: translateY(0);
       }
-
       .btn-outline {
         display: inline-flex;
         align-items: center;
@@ -211,7 +203,6 @@
         background: var(--surf);
         transform: translateY(-2px);
       }
-
       /* ── CARD ── */
       .card {
         background: var(--surf);
@@ -228,7 +219,6 @@
           0 24px 64px rgba(0, 0, 0, 0.35),
           0 0 0 1px var(--border2);
       }
-
       /* ══════════════════════════════
        NAVBAR
     ══════════════════════════════ */
@@ -252,7 +242,6 @@
         border-bottom-color: var(--border2);
         box-shadow: 0 8px 48px rgba(0, 0, 0, 0.25);
       }
-
       .nav-inner {
         display: flex;
         align-items: center;
@@ -262,7 +251,6 @@
         margin: 0 auto;
         padding: 0 28px;
       }
-
       .nav-logo {
         display: flex;
         align-items: center;
@@ -296,7 +284,6 @@
         color: var(--muted);
         letter-spacing: 0.06em;
       }
-
       .nav-links {
         display: flex;
         align-items: center;
@@ -331,20 +318,17 @@
         left: 18px;
         right: 18px;
       }
-
       .nav-sep {
         width: 1px;
         height: 22px;
         background: var(--border);
         margin: 0 8px;
       }
-
       .nav-actions {
         display: flex;
         align-items: center;
         gap: 8px;
       }
-
       .icon-btn {
         width: 38px;
         height: 38px;
@@ -364,7 +348,6 @@
         color: var(--amber);
         background: var(--surf2);
       }
-
       /* hamburger */
       .ham {
         display: none;
@@ -401,7 +384,6 @@
       .ham.open .ham-l:nth-child(3) {
         transform: translateY(-8px) rotate(-45deg);
       }
-
       /* DRAWER */
       .drw-overlay {
         position: fixed;
@@ -510,7 +492,6 @@
         flex-direction: column;
         gap: 10px;
       }
-
       /* ══════════════════════════════
        HERO
     ══════════════════════════════ */
@@ -522,7 +503,6 @@
         position: relative;
         overflow: hidden;
       }
-
       /* SVG landscape background */
       .hero-landscape {
         position: absolute;
@@ -533,7 +513,6 @@
         z-index: 0;
         pointer-events: none;
       }
-
       /* Horizon gradient */
       .hero-sky {
         position: absolute;
@@ -556,7 +535,6 @@
             transparent 60%
           );
       }
-
       /* Grid lines */
       .hero-grid {
         position: absolute;
@@ -578,7 +556,6 @@
           background-position: 72px 72px;
         }
       }
-
       /* Orbs */
       .orb {
         position: absolute;
@@ -619,7 +596,6 @@
           transform: translate(20px, -30px) scale(1.06);
         }
       }
-
       /* Animal silhouettes floating */
       .animal-sil {
         position: absolute;
@@ -638,7 +614,6 @@
           transform: translate(12px, -18px) scale(1.03);
         }
       }
-
       /* Particles */
       .pt {
         position: absolute;
@@ -666,7 +641,6 @@
           opacity: 0;
         }
       }
-
       .hero-content {
         position: relative;
         z-index: 3;
@@ -674,14 +648,12 @@
         max-width: 980px;
         margin: 0 auto;
       }
-
       .hero-eyebrow {
         display: flex;
         justify-content: center;
         margin-bottom: 30px;
         animation: fadeUp 0.8s ease both;
       }
-
       .hero-h1 {
         font-family: "Playfair Display", serif;
         font-size: clamp(34px, 6vw, 78px);
@@ -691,7 +663,6 @@
         margin-bottom: 28px;
         animation: fadeUp 0.8s ease 0.1s both;
       }
-
       .hero-sub {
         font-size: clamp(16px, 2.2vw, 20px);
         color: var(--muted);
@@ -704,7 +675,6 @@
         color: var(--amber);
         font-weight: 600;
       }
-
       .hero-ctas {
         display: flex;
         gap: 14px;
@@ -721,7 +691,6 @@
         padding: 17px 32px;
         font-size: 16px;
       }
-
       /* Stats bar */
       .hero-stats {
         display: grid;
@@ -763,7 +732,6 @@
         letter-spacing: 0.07em;
         text-transform: uppercase;
       }
-
       /* scroll hint */
       .scroll-hint {
         position: absolute;
@@ -811,7 +779,6 @@
         letter-spacing: 0.1em;
         text-transform: uppercase;
       }
-
       /* ══════════════════════════════
        TRUST STRIP
     ══════════════════════════════ */
@@ -851,7 +818,6 @@
           transform: translateX(-50%);
         }
       }
-
       /* ══════════════════════════════
        SECTIONS BASE
     ══════════════════════════════ */
@@ -886,7 +852,6 @@
         margin: 0 auto 68px;
         line-height: 1.7;
       }
-
       /* reveal */
       .js-go .reveal {
         opacity: 0;
@@ -899,7 +864,6 @@
         opacity: 1;
         transform: translateY(0);
       }
-
       /* ══════════════════════════════
        FEATURES
     ══════════════════════════════ */
@@ -996,7 +960,6 @@
       .feat-card:hover .feat-num {
         color: rgba(245, 158, 11, 0.08);
       }
-
       /* ══════════════════════════════
        ANIMAL SHOWCASE
     ══════════════════════════════ */
@@ -1065,7 +1028,6 @@
         font-weight: 700;
         color: var(--amber);
       }
-
       /* Marquee animals row */
       .animals-marquee {
         overflow: hidden;
@@ -1095,7 +1057,6 @@
       .a-pill span {
         font-size: 20px;
       }
-
       /* ══════════════════════════════
        HOW IT WORKS
     ══════════════════════════════ */
@@ -1178,7 +1139,6 @@
         font-size: 56px;
         text-align: center;
       }
-
       /* ══════════════════════════════
        DATA DASHBOARD PREVIEW
     ══════════════════════════════ */
@@ -1298,7 +1258,6 @@
       .bar-col:hover {
         opacity: 1;
       }
-
       /* ══════════════════════════════
        IMPACT
     ══════════════════════════════ */
@@ -1381,7 +1340,6 @@
         font-size: 15px;
         line-height: 1.55;
       }
-
       /* ══════════════════════════════
        TESTIMONIALS
     ══════════════════════════════ */
@@ -1462,7 +1420,6 @@
         font-size: 11px;
         color: var(--muted);
       }
-
       /* ══════════════════════════════
        CTA
     ══════════════════════════════ */
@@ -1513,7 +1470,6 @@
         padding: 20px 48px;
         font-size: 16px;
       }
-
       /* Decorative animal silhouette in CTA */
       .cta-sil {
         position: absolute;
@@ -1522,7 +1478,6 @@
         opacity: 0.04;
         pointer-events: none;
       }
-
       /* ══════════════════════════════
        FOOTER
     ══════════════════════════════ */
@@ -1586,7 +1541,6 @@
         border-color: var(--border2);
         transform: translateY(-2px);
       }
-
       /* ══════════════════════════════
        ANIMATIONS
     ══════════════════════════════ */
@@ -1600,7 +1554,6 @@
           transform: translateY(0);
         }
       }
-
       /* ══════════════════════════════
        RESPONSIVE
     ══════════════════════════════ */
@@ -1704,12 +1657,10 @@
     </style>
   </head>
   <body>
-
-    <!-- ══════════ NAVBAR ══════════ -->
     <nav id="navbar">
       <div class="nav-inner">
         <a href="#hero" class="nav-logo">
-          <div class="nav-logo-mark">🐐</div>
+          <div class="nav-logo-mark"><img src="/img/logo.png" alt="ChuuAuction Logo" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" /></div>
           <div>
             <div class="nav-logo-name"><span
                 class="grad-text"
@@ -1717,7 +1668,6 @@
             <div class="nav-logo-sub">Digital Livestock Market in Uganda</div>
           </div>
         </a>
-
         <div class="nav-links">
           <a href="#features" class="nav-link">Features</a>
           <a href="#showcase" class="nav-link">Animals</a>
@@ -1725,7 +1675,6 @@
           <a href="#impact" class="nav-link">Impact</a>
           <a href="#testimonials" class="nav-link">Stories</a>
         </div>
-
         <div class="nav-actions">
           <button class="icon-btn" id="theme-toggle" title="Toggle theme">
             <i class="bi bi-moon-stars" id="theme-icon"></i>
@@ -1741,7 +1690,7 @@
             class="btn-fire"
             style="padding:10px 22px;font-size:14px;"
           >Get Started</a>
-          <button class="ham" id="ham" aria-label="Open menu">
+          <button type="button" class="ham" id="ham" aria-label="Open menu">
             <span class="ham-l"></span><span class="ham-l"></span><span
               class="ham-l"
             ></span>
@@ -1749,12 +1698,11 @@
         </div>
       </div>
     </nav>
-
     <div class="drw-overlay" id="drw-overlay"></div>
     <div class="drw" id="drw">
       <div class="drw-hd">
         <span class="drw-title">Navigation</span>
-        <button class="drw-close" id="drw-close"><i
+        <button type="button" class="drw-close" id="drw-close"><i
             class="bi bi-x-lg"
           ></i></button>
       </div>
@@ -1788,23 +1736,18 @@
         > Get Started Free</a>
       </div>
     </div>
-
-    <!-- ══════════ HERO ══════════ -->
     <section id="hero">
       <div class="hero-sky"></div>
       <div class="hero-grid"></div>
       <div class="orb orb-a"></div>
       <div class="orb orb-b"></div>
       <div class="orb orb-c"></div>
-
-      <!-- Floating animal silhouettes -->
       <svg
         class="animal-sil"
         style="width:220px;top:12%;left:4%;animation-delay:0s;"
         viewBox="0 0 200 120"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <!-- Cow silhouette -->
         <ellipse cx="100" cy="75" rx="60" ry="28" />
         <rect x="50" y="90" width="12" height="28" rx="5" />
         <rect x="70" y="90" width="12" height="28" rx="5" />
@@ -1823,14 +1766,12 @@
           stroke-linecap="round"
         />
       </svg>
-
       <svg
         class="animal-sil"
         style="width:160px;top:18%;right:6%;animation-delay:2s;"
         viewBox="0 0 160 180"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <!-- Goat silhouette -->
         <ellipse cx="80" cy="100" rx="50" ry="32" />
         <rect x="45" y="118" width="10" height="44" rx="5" />
         <rect x="62" y="118" width="10" height="44" rx="5" />
@@ -1860,14 +1801,12 @@
           stroke-linecap="round"
         />
       </svg>
-
       <svg
         class="animal-sil"
         style="width:140px;bottom:20%;left:8%;animation-delay:4s;"
         viewBox="0 0 140 160"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <!-- Sheep silhouette -->
         <ellipse cx="70" cy="95" rx="52" ry="38" />
         <ellipse cx="105" cy="75" rx="22" ry="18" />
         <circle cx="115" cy="70" r="3" />
@@ -1884,8 +1823,6 @@
           stroke-linecap="round"
         />
       </svg>
-
-      <!-- Particles -->
       <div class="pt" style="left:15%;bottom:15%;animation-delay:0s;"></div>
       <div class="pt" style="left:28%;bottom:8%;animation-delay:1.2s;"></div>
       <div class="pt" style="left:52%;bottom:10%;animation-delay:2.4s;"></div>
@@ -1893,10 +1830,8 @@
       <div class="pt" style="left:90%;bottom:7%;animation-delay:1.8s;"></div>
       <div class="pt" style="left:6%;bottom:30%;animation-delay:3s;"></div>
       <div class="pt" style="left:94%;bottom:28%;animation-delay:2s;"></div>
-
       <div class="container">
         <div class="hero-content">
-
           <div class="hero-eyebrow">
             <div class="chip">
               <span
@@ -1909,19 +1844,16 @@
               Live Platform. Over 1,200 Farmers Active Now
             </div>
           </div>
-
           <h1 class="hero-h1">
             Uganda's Most Trusted<br />
             <span class="grad-text">Livestock Auction</span><br />
             Marketplace
           </h1>
-
           <p class="hero-sub">
             Connecting farmers directly with buyers through verified listings,
             real-time remote auctions, and smart market-based pricing.
             <strong>Empowering rural Uganda, one auction at a time.</strong>
           </p>
-
           <div class="hero-ctas">
             <a href="/auth/register" class="btn-fire">
               Start Selling Today
@@ -1931,7 +1863,6 @@
               Browse Animals
             </a>
           </div>
-
           <div class="hero-stats">
             <div class="stat-tile reveal">
               <span class="stat-num">1,200+</span>
@@ -1950,10 +1881,8 @@
               <span class="stat-label">Trust Rating</span>
             </div>
           </div>
-
         </div>
       </div>
-
       <div
         class="scroll-hint"
         onclick="document.getElementById('trust-strip').scrollIntoView({behavior:'smooth'})"
@@ -1962,8 +1891,6 @@
         <span class="scroll-text">Scroll</span>
       </div>
     </section>
-
-    <!-- ══════════ TRUST STRIP ══════════ -->
     <div id="trust-strip">
       <div class="trust-track" id="trust-track">
         <span class="trust-item"><i class="bi bi-shield-fill-check"></i>
@@ -1982,7 +1909,6 @@
           Arua, Karamoja, Mbarara and Kigezi</span>
         <span class="trust-item"><i class="bi bi-trophy-fill"></i>
           Uganda Digital Innovation Award 2025</span>
-        <!-- Duplicate for seamless loop -->
         <span class="trust-item"><i class="bi bi-shield-fill-check"></i>
           Verified Health Certificates</span>
         <span class="trust-item"><i class="bi bi-bank2"></i>
@@ -2001,8 +1927,6 @@
           Uganda Digital Innovation Award 2025</span>
       </div>
     </div>
-
-    <!-- ══════════ FEATURES ══════════ -->
     <section id="features">
       <div class="container">
         <div class="sec-tag"><span class="chip">Platform Capabilities</span></div>
@@ -2011,7 +1935,6 @@
           >to Trade Smart</span></h2>
         <p class="sec-sub reveal">Built for farmers, designed for transparency,
           engineered for Uganda's terrain</p>
-
         <div class="features-grid">
           <div class="feat-card reveal">
             <div class="feat-ico"><i class="bi bi-patch-check-fill"></i></div>
@@ -2064,8 +1987,6 @@
         </div>
       </div>
     </section>
-
-    <!-- ══════════ ANIMAL SHOWCASE ══════════ -->
     <section id="showcase">
       <div class="container">
         <div class="sec-tag"><span class="chip">Live Listings</span></div>
@@ -2075,8 +1996,6 @@
         <p class="sec-sub reveal">Thousands of verified animals listed daily
           from farms across Uganda</p>
       </div>
-
-      <!-- Marquee rows -->
       <div class="animals-marquee" style="margin-bottom:14px;">
         <div class="animals-track">
           <div class="a-pill"><span>🐄</span>
@@ -2135,7 +2054,6 @@
             Kuroiler Pullets (30) , Lira , 380K/=</div>
         </div>
       </div>
-
       <div class="container">
         <div class="showcase-grid">
           <div class="animal-tile reveal">
@@ -2164,7 +2082,6 @@
             <div class="animal-price">From 18K/=</div>
           </div>
         </div>
-
         <div style="text-align:center;margin-top:40px;">
           <a href="/auctions/animalList" class="btn-fire"><i
               class="bi bi-search"
@@ -2173,8 +2090,6 @@
         </div>
       </div>
     </section>
-
-    <!-- ══════════ DASHBOARD PREVIEW ══════════ -->
     <section id="dashboard-preview">
       <div class="container">
         <div class="sec-tag"><span class="chip">Platform Analytics</span></div>
@@ -2183,7 +2098,6 @@
           >Intelligence</span></h2>
         <p class="sec-sub reveal">Live pricing data, bid activity, and trend
           analysis at your fingertips</p>
-
         <div class="dash-wrap reveal">
           <div class="dash-bar">
             <div class="dash-dot" style="background:#ef4444;"></div>
@@ -2194,7 +2108,6 @@
               style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;color:#22c55e;"
             >● LIVE</span>
           </div>
-
           <div class="dash-grid">
             <div class="dash-kpi">
               <div class="dash-kpi-label">Today's Bids</div>
@@ -2228,8 +2141,6 @@
         </div>
       </div>
     </section>
-
-    <!-- ══════════ HOW IT WORKS ══════════ -->
     <section id="how">
       <div class="container">
         <div class="sec-tag"><span class="chip">Simple Four-Step Process</span></div>
@@ -2238,7 +2149,6 @@
           Works</h2>
         <p class="sec-sub reveal">From farm to payment in four seamless steps ,
           designed for every Ugandan farmer</p>
-
         <div class="steps-wrap">
           <div class="step">
             <div class="step-num-wrap"><div
@@ -2311,8 +2221,6 @@
         </div>
       </div>
     </section>
-
-    <!-- ══════════ IMPACT ══════════ -->
     <section id="impact">
       <div class="container">
         <div class="sec-tag"><span class="chip">Sustainable Development</span></div>
@@ -2321,7 +2229,6 @@
           on Uganda</h2>
         <p class="sec-sub reveal">Directly contributing to four UN Sustainable
           Development Goals while transforming rural livelihoods</p>
-
         <div class="sdg-grid">
           <div class="sdg-card reveal">
             <span class="sdg-emo">🎯</span>
@@ -2356,7 +2263,6 @@
               technology accessible to all.</p>
           </div>
         </div>
-
         <div class="impact-nums">
           <div class="impact-num-tile reveal">
             <div class="i-num">45%</div>
@@ -2376,8 +2282,6 @@
         </div>
       </div>
     </section>
-
-    <!-- ══════════ TESTIMONIALS ══════════ -->
     <section id="testimonials">
       <div class="container">
         <div class="sec-tag"><span class="chip">Success Stories</span></div>
@@ -2386,7 +2290,6 @@
           >Community</span></h2>
         <p class="sec-sub reveal" style="margin-bottom:52px;">Real farmers. Real
           results. Real transformation.</p>
-
         <div class="testi-grid">
           <div class="testi-card reveal">
             <div class="testi-stars">
@@ -2449,12 +2352,8 @@
         </div>
       </div>
     </section>
-
-    <!-- ══════════ CTA ══════════ -->
     <section id="cta">
       <div class="cta-glow"></div>
-
-      <!-- Decorative SVG animal -->
       <svg
         class="cta-sil"
         style="width:400px;bottom:-20px;right:-40px;"
@@ -2479,7 +2378,6 @@
           stroke-linecap="round"
         />
       </svg>
-
       <div class="container">
         <div class="cta-inner">
           <h2 class="cta-title reveal">
@@ -2502,12 +2400,10 @@
         </div>
       </div>
     </section>
-
-    <!-- ══════════ FOOTER ══════════ -->
-    <footer>
+    <footer class="app-footer" data-app-footer="1">
       <div class="container footer-inner">
         <div class="footer-logo">
-          <div class="footer-logo-mark">🐐</div>
+          <div class="footer-logo-mark"><img src="/img/logo.png" alt="ChuuAuction Logo" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" /></div>
           <div class="footer-logo-text"><span
               class="grad-text"
             >Chuu</span>Auction</div>
@@ -2543,7 +2439,6 @@
         </div>
       </div>
     </footer>
-
     <script src="/js/app-theme.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', () => { /* ── THEME ── */
@@ -2563,19 +2458,10 @@
       { nb.classList.toggle('scrolled', scrollY > 40); }, { passive: true }); /*
       ── DRAWER ── */ const ham = document.getElementById('ham'); const drw =
       document.getElementById('drw'); const drwOvl =
-      document.getElementById('drw-overlay'); const drwCls =
-      document.getElementById('drw-close'); const open = () => {
-      drw.classList.add('open'); drwOvl.classList.add('open');
-      ham.classList.add('open'); document.body.style.overflow = 'hidden'; };
-      const close = () => { drw.classList.remove('open');
+      document.getElementById('drw-overlay'); const close = () => { if (!drw ||
+      !drwOvl || !ham) return; drw.classList.remove('open');
       drwOvl.classList.remove('open'); ham.classList.remove('open');
-      document.body.style.overflow = ''; }; if (!ham.dataset.menuBound)
-      ham.addEventListener('click', () => { if (drw.classList.contains('open'))
-      close(); else open(); }); if (!drwCls.dataset.menuBound)
-      drwCls.addEventListener('click', close); if (!drwOvl.dataset.menuBound)
-      drwOvl.addEventListener('click', close);
-      document.addEventListener('keydown', e => { if (e.key === 'Escape')
-      close(); }); document.querySelectorAll('.drw-link').forEach(link => { if
+      document.body.style.overflow = ''; }; document.querySelectorAll('.drw-link').forEach(link => { if
       (link.dataset.menuBound) return; link.addEventListener('click', e => {
       const href = link.getAttribute('href'); if (href && href.startsWith('#'))
       { e.preventDefault(); close(); setTimeout(() => { const t =
@@ -2610,6 +2496,8 @@
       countObs.observe(el)); console.log('🐐 ChuuAuction loaded successfully.');
       });
     </script>
-
   </body>
 </html>
+
+
+

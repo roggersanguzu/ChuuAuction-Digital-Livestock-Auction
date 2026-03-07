@@ -1,7 +1,5 @@
-// utils/cloudinaryUpload.js
-import cloudinary from "../config/cloudinary.js";
+﻿import cloudinary from "../config/cloudinary.js";
 import streamifier from "streamifier";
-
 export const uploadFromBuffer = (buffer, folder = "animal-auctions") => {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
@@ -19,7 +17,7 @@ export const uploadFromBuffer = (buffer, folder = "animal-auctions") => {
         resolve(result);
       },
     );
-
     streamifier.createReadStream(buffer).pipe(stream);
   });
 };
+

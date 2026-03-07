@@ -1,9 +1,8 @@
-<html lang="en" class="dark">
+﻿<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Bids - ChuuAuction</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,13 +15,11 @@
     />
     <link href="/css/app-theme.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
-
     <script>
       tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: {
       'display': ['Bricolage Grotesque', 'system-ui', 'sans-serif'], 'body':
       ['Outfit', 'system-ui', 'sans-serif'], } } } }
     </script>
-
     <style>
       :root {
         --orange-core: #f97316;
@@ -41,31 +38,26 @@
         --text-secondary: #8892a4;
         --text-muted: #4d5566;
       }
-
       body {
         font-family: "Outfit", system-ui, sans-serif;
         background: var(--surface-0);
         color: var(--text-primary);
       }
-
       .glass {
         background: rgba(255, 255, 255, 0.03);
         backdrop-filter: blur(20px);
         border: 1px solid rgba(255, 255, 255, 0.05);
       }
-
       .glass-strong {
         background: rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(30px);
         border: 1px solid rgba(255, 255, 255, 0.1);
       }
-
       .text-gradient {
         background: linear-gradient(135deg, #f97316, #dc2626);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
-
       .status-pending {
         background: rgba(234, 179, 8, 0.15);
         color: #facc15;
@@ -81,12 +73,10 @@
         color: #f87171;
         border-color: rgba(239, 68, 68, 0.3);
       }
-
       .bid-card:hover {
         transform: translateY(-2px);
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
       }
-
       ::-webkit-scrollbar {
         width: 8px;
       }
@@ -101,13 +91,11 @@
         );
         border-radius: 4px;
       }
-
       .search-input:focus {
         outline: none;
         border-color: var(--orange-core);
         box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
       }
-
       .filter-btn.active {
         background: var(--orange-core);
         color: white;
@@ -116,8 +104,6 @@
     </style>
   </head>
   <body class="min-h-screen bg-gray-950 text-white">
-
-    <!-- Navigation -->
     <nav class="glass border-b border-gray-800 sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
@@ -146,10 +132,7 @@
         </div>
       </div>
     </nav>
-
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-      <!-- Header -->
       <div class="mb-8">
         <div class="flex items-center gap-3 mb-2">
           <h1 class="text-4xl font-black font-display">
@@ -159,8 +142,6 @@
         <p class="text-gray-400 ml-14">View all your bids and their status
           across all auctions</p>
       </div>
-
-      <!-- Search and Filters -->
       <div class="glass-strong border border-gray-800 rounded-2xl p-6 mb-8">
         <div class="relative mb-4">
           <div
@@ -181,7 +162,6 @@
             <i class="bi bi-x-lg"></i>
           </button>
         </div>
-
         <div class="flex flex-wrap items-center gap-4">
           <div class="flex items-center gap-2">
             <span class="text-sm text-gray-400"><i
@@ -210,7 +190,6 @@
               ><i class="bi bi-x-circle-fill mr-1"></i>Rejected</button>
             </div>
           </div>
-
           <div class="flex items-center gap-2">
             <span class="text-sm text-gray-400"><i
                 class="bi bi-grid mr-1"
@@ -228,7 +207,6 @@
               <option value="other">Other</option>
             </select>
           </div>
-
           <div class="flex items-center gap-2">
             <span class="text-sm text-gray-400"><i
                 class="bi bi-sort-down mr-1"
@@ -243,13 +221,11 @@
               <option value="lowest">Lowest Bid</option>
             </select>
           </div>
-
           <div class="ml-auto text-sm text-gray-400">
             <span id="results-count">0</span>
             results found
           </div>
         </div>
-
         <div class="mt-4 pt-4 border-t border-gray-800">
           <div class="flex items-center gap-2 flex-wrap">
             <span class="text-sm text-gray-400"><i
@@ -278,8 +254,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Stats -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <div class="glass-strong border border-gray-800 rounded-2xl p-6">
           <div class="flex items-center gap-3 mb-2">
@@ -326,16 +300,12 @@
           <p class="text-3xl font-black text-orange-500" id="stat-total">0</p>
         </div>
       </div>
-
-      <!-- Loading State -->
       <div id="loading" class="text-center py-12">
         <div
           class="w-16 h-16 rounded-full border-4 border-orange-500/30 border-t-orange-500 animate-spin mx-auto mb-4"
         ></div>
         <p class="text-gray-400">Loading your bids...</p>
       </div>
-
-      <!-- No Bids State -->
       <div
         id="no-bids"
         class="hidden text-center py-12 glass-strong border border-gray-800 rounded-2xl"
@@ -355,8 +325,6 @@
           <i class="bi bi-search mr-2"></i>Browse Auctions
         </a>
       </div>
-
-      <!-- No Results State -->
       <div
         id="no-results"
         class="hidden text-center py-12 glass-strong border border-gray-800 rounded-2xl"
@@ -375,21 +343,15 @@
           <i class="bi bi-eraser mr-2"></i>Clear All Filters
         </button>
       </div>
-
-      <!-- Bids List -->
       <div
         id="bids-container"
         data-user-id="{{userId}}"
         class="space-y-6 hidden"
       >
-        <!-- Bids will be dynamically inserted here -->
       </div>
-
     </div>
-
     <script src="/js/my-bids.js"></script>
       <script src="/js/app-theme.js"></script>
   </body>
 </html>
-
 

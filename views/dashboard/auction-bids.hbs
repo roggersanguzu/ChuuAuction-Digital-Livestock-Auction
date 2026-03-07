@@ -1,9 +1,8 @@
-<html lang="en" class="dark">
+﻿<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manage Auction Bids - ChuuAuction</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,13 +15,11 @@
     />
     <link href="/css/app-theme.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
-
     <script>
       tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: {
       'display': ['Bricolage Grotesque', 'system-ui', 'sans-serif'], 'body':
       ['Outfit', 'system-ui', 'sans-serif'], } } } }
     </script>
-
     <style>
       :root {
         --orange-core: #f97316;
@@ -41,31 +38,26 @@
         --text-secondary: #8892a4;
         --text-muted: #4d5566;
       }
-
       body {
         font-family: "Outfit", system-ui, sans-serif;
         background: var(--surface-0);
         color: var(--text-primary);
       }
-
       .glass {
         background: rgba(255, 255, 255, 0.03);
         backdrop-filter: blur(20px);
         border: 1px solid rgba(255, 255, 255, 0.05);
       }
-
       .glass-strong {
         background: rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(30px);
         border: 1px solid rgba(255, 255, 255, 0.1);
       }
-
       .text-gradient {
         background: linear-gradient(135deg, #f97316, #dc2626);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
-
       .status-pending {
         background: rgba(234, 179, 8, 0.15);
         color: #facc15;
@@ -81,11 +73,9 @@
         color: #f87171;
         border-color: rgba(239, 68, 68, 0.3);
       }
-
       .winner-card {
         animation: winnerGlow 2s ease-in-out infinite;
       }
-
       @keyframes winnerGlow {
         0%,
         100% {
@@ -97,11 +87,9 @@
             0 0 60px rgba(34, 197, 94, 0.3);
         }
       }
-
       .bid-card:hover {
         transform: translateY(-2px);
       }
-
       ::-webkit-scrollbar {
         width: 8px;
       }
@@ -116,7 +104,6 @@
         );
         border-radius: 4px;
       }
-
       .filter-btn.active {
         background: var(--orange-core);
         color: white;
@@ -125,8 +112,6 @@
     </style>
   </head>
   <body class="min-h-screen bg-gray-950 text-white">
-
-    <!-- Navigation -->
     <nav class="glass border-b border-gray-800 sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
@@ -155,7 +140,6 @@
         </div>
       </div>
     </nav>
-
     <div
       id="auction-bids-page"
       data-user-id="{{userId}}"
@@ -164,8 +148,6 @@
       data-auction-id="{{auctionId}}"
       class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
     >
-
-      <!-- Header -->
       <div class="mb-8">
         <div class="flex items-center gap-3 mb-2">
           <a
@@ -185,8 +167,6 @@
               placed across auctions. This view is read-only.{{/if}}{{/if}}
         </p>
       </div>
-
-      <!-- Stats -->
       <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
         <div class="glass-strong border border-gray-800 rounded-2xl p-6">
           <div class="flex items-center gap-3 mb-2">
@@ -240,8 +220,6 @@
           >UGX 0</p>
         </div>
       </div>
-
-      <!-- Filter Tabs -->
       <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
         <button
           onclick="filterBids('all')"
@@ -272,16 +250,12 @@
           <i class="bi bi-x-circle-fill mr-2"></i>Rejected
         </button>
       </div>
-
-      <!-- Loading State -->
       <div id="loading" class="text-center py-12">
         <div
           class="w-16 h-16 rounded-full border-4 border-orange-500/30 border-t-orange-500 animate-spin mx-auto mb-4"
         ></div>
         <p class="text-gray-400">Loading auction bids...</p>
       </div>
-
-      <!-- Error State -->
       <div
         id="error-state"
         class="hidden text-center py-12 glass-strong border border-red-500/40 rounded-2xl"
@@ -300,8 +274,6 @@
           <i class="bi bi-arrow-clockwise mr-2"></i>Retry
         </button>
       </div>
-
-      <!-- No Bids State -->
       <div
         id="no-bids"
         class="hidden text-center py-12 glass-strong border border-gray-800 rounded-2xl"
@@ -331,15 +303,9 @@
           </a>
         {{/if}}
       </div>
-
-      <!-- Bids Container -->
       <div id="bids-container" class="space-y-8 hidden">
-        <!-- Auction groups will be inserted here -->
       </div>
-
     </div>
-
-    <!-- Toast Notification -->
     <div
       id="toast"
       class="fixed bottom-4 right-4 transform translate-y-20 opacity-0 transition-all duration-300 z-50"
@@ -357,12 +323,8 @@
         </div>
       </div>
     </div>
-
     <script src="/js/auction-bids.js"></script>
       <script src="/js/app-theme.js"></script>
   </body>
 </html>
-
-
-
 

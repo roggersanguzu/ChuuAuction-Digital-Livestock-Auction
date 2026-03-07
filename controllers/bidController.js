@@ -1,8 +1,6 @@
-// bidController.js - Controller for handling bid operations
-import Bid from "../models/Bid.js";
+﻿import Bid from "../models/Bid.js";
 import Auction from "../models/Auction.js";
 import mongoose from "mongoose";
-
 const normalizeObjectIdString = (value) => {
   if (!value) return null;
   try {
@@ -11,32 +9,23 @@ const normalizeObjectIdString = (value) => {
     return null;
   }
 };
-
-// Create a new bid
 export const createBid = async (req, res) => {
   try {
-    console.log("[BidController] Creating new bid");
-    console.log("[BidController] Request body:", req.body);
-
     const { listingId, bidderId, bidderName, bidderPhone, amount, notes } =
       req.body;
-
-    // Validation
     if (!listingId || !bidderId || !amount) {
       return res.status(400).json({
         success: false,
         message: "Missing required fields: listingId, bidderId, or amount",
       });
     }
-
-    if (amount <= 0) {
+    const numericAmount = Number(amount);
+    if (numericAmount <= 0) {
       return res.status(400).json({
         success: false,
         message: "Bid amount must be greater than 0",
       });
     }
-
-    // Check if listing exists
     const listing = await Auction.findById(listingId);
     if (!listing) {
       return res.status(404).json({
@@ -44,30 +33,34 @@ export const createBid = async (req, res) => {
         message: "Listing not found",
       });
     }
-
-    // Create new bid - ensure bidderId is stored as ObjectId
+    const openingPrice = Number(listing.startingPrice || 0);
+    if (openingPrice > 0 && numericAmount < openingPrice) {
+      return res.status(400).json({
+        success: false,
+        message: `Bid must be at least UGX ${openingPrice.toLocaleString("en-US")}`,
+      });
+    }
     const newBid = new Bid({
       listingId,
       bidderId: new mongoose.Types.ObjectId(bidderId),
       bidderName,
       bidderPhone,
-      amount,
+      amount: numericAmount,
       notes: notes || "",
       status: "pending",
       createdAt: new Date(),
     });
-
     await newBid.save();
-
-    console.log("[BidController] ✅ Bid created successfully:", newBid._id);
-
+    if (numericAmount > Number(listing.currentHighestBid || 0)) {
+      listing.currentHighestBid = numericAmount;
+      await listing.save();
+    }
     return res.status(201).json({
       success: true,
       message: "Bid placed successfully",
       data: newBid,
     });
   } catch (error) {
-    console.error("[BidController] ❌ Error creating bid:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to create bid",
@@ -75,21 +68,16 @@ export const createBid = async (req, res) => {
     });
   }
 };
-
-// Get all bids for a listing
 export const getBidsForListing = async (req, res) => {
   try {
     const { listingId } = req.params;
-
     const bids = await Bid.find({ listingId }).sort({ createdAt: -1 });
-
     return res.status(200).json({
       success: true,
       count: bids.length,
       data: bids,
     });
   } catch (error) {
-    console.error("[BidController] ❌ Error fetching bids:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to fetch bids",
@@ -97,8 +85,6 @@ export const getBidsForListing = async (req, res) => {
     });
   }
 };
-
-// Get all bids made by a user
 export const getBidsByUser = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -106,28 +92,19 @@ export const getBidsByUser = async (req, res) => {
     const sessionUserId = sessionUser?.id || sessionUser?._id;
     const sessionRole = sessionUser?.role?.trim().toLowerCase();
     const isAdmin = sessionRole === "administrator" || sessionRole === "admin";
-
     if (!sessionUserId && !isAdmin) {
       return res.status(401).json({
         success: false,
         message: "Please log in to view bids",
       });
     }
-
     if (!isAdmin && String(sessionUserId) !== String(userId)) {
       return res.status(403).json({
         success: false,
         message: "You are not allowed to view another user's bids",
       });
     }
-
-    console.log(
-      "[BidController] getBidsByUser - Looking for bidderId:",
-      userId,
-    );
-
-    // Query for both ObjectId AND string bidderId (to handle old bids stored as strings)
-    const bids = await Bid.find({
+const bids = await Bid.find({
       $or: [
         { bidderId: userId }, // Match string bidderId (old format)
         { bidderId: new mongoose.Types.ObjectId(userId) }, // Match ObjectId (new format)
@@ -135,16 +112,12 @@ export const getBidsByUser = async (req, res) => {
     })
       .populate("listingId")
       .sort({ createdAt: -1 });
-
-    console.log("[BidController] Found bids:", bids.length);
-
     return res.status(200).json({
       success: true,
       count: bids.length,
       data: bids,
     });
   } catch (error) {
-    console.error("[BidController] ❌ Error fetching user bids:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to fetch user bids",
@@ -152,8 +125,6 @@ export const getBidsByUser = async (req, res) => {
     });
   }
 };
-
-// Update bid status (accept/reject)
 export const updateBidStatus = async (req, res) => {
   try {
     const { bidId } = req.params;
@@ -162,40 +133,34 @@ export const updateBidStatus = async (req, res) => {
     const sessionRole = sessionUser?.role?.trim().toLowerCase();
     const isAdmin = sessionRole === "administrator" || sessionRole === "admin";
     const effectiveSellerId = sellerId || sessionUser?.id || sessionUser?._id;
-
     if (!["accepted", "rejected", "pending"].includes(status)) {
       return res.status(400).json({
         success: false,
         message: "Invalid status. Must be 'accepted', 'rejected', or 'pending'",
       });
     }
-
     if (!effectiveSellerId && !isAdmin) {
       return res.status(400).json({
         success: false,
         message: "Seller ID is required",
       });
     }
-
     const bid = await Bid.findById(bidId).populate({
       path: "listingId",
       select: "seller",
     });
-
     if (!bid) {
       return res.status(404).json({
         success: false,
         message: "Bid not found",
       });
     }
-
     if (!bid.listingId || !bid.listingId.seller) {
       return res.status(400).json({
         success: false,
         message: "Auction not found or has no seller",
       });
     }
-
     const auctionSellerId = normalizeObjectIdString(bid.listingId.seller);
     const requestSellerId = normalizeObjectIdString(effectiveSellerId);
     if (
@@ -208,7 +173,6 @@ export const updateBidStatus = async (req, res) => {
           "You are not authorized to update this bid. Only the auction creator can do this.",
       });
     }
-
     let updatedBid;
     if (status === "accepted") {
       await Bid.updateMany(
@@ -230,14 +194,12 @@ export const updateBidStatus = async (req, res) => {
         { new: true },
       );
     }
-
     return res.status(200).json({
       success: true,
       message: `Bid ${status} successfully`,
       data: updatedBid,
     });
   } catch (error) {
-    console.error("[BidController] ❌ Error updating bid status:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to update bid status",
@@ -245,8 +207,6 @@ export const updateBidStatus = async (req, res) => {
     });
   }
 };
-
-// Get all bids with auction details for a specific seller (auction initiator)
 export const getBidsForSeller = async (req, res) => {
   try {
     const { sellerId } = req.params;
@@ -254,29 +214,20 @@ export const getBidsForSeller = async (req, res) => {
     const sessionUserId = sessionUser?.id || sessionUser?._id;
     const sessionRole = sessionUser?.role?.trim().toLowerCase();
     const isAdmin = sessionRole === "administrator" || sessionRole === "admin";
-
     if (!sessionUserId && !isAdmin) {
       return res.status(401).json({
         success: false,
         message: "Please log in to view auction bids",
       });
     }
-
     if (!isAdmin && String(sessionUserId) !== String(sellerId)) {
       return res.status(403).json({
         success: false,
         message: "You are not allowed to view another seller's bids",
       });
     }
-
-    console.log("[BidController] Fetching bids for seller:", sellerId);
-
-    // First, get all auctions by this seller
     const auctions = await Auction.find({ seller: sellerId });
     const auctionIds = auctions.map((a) => a._id);
-
-    console.log("[BidController] Found auctions:", auctionIds.length);
-
     if (auctionIds.length === 0) {
       return res.status(200).json({
         success: true,
@@ -285,8 +236,6 @@ export const getBidsForSeller = async (req, res) => {
         groupedByAuction: {},
       });
     }
-
-    // Get all bids for these auctions
     const bids = await Bid.find({ listingId: { $in: auctionIds } })
       .populate({
         path: "listingId",
@@ -294,10 +243,6 @@ export const getBidsForSeller = async (req, res) => {
           "animalType breed age sex weight healthStatus quantity location photos description seller createdAt",
       })
       .sort({ createdAt: -1 });
-
-    console.log("[BidController] Found bids:", bids.length);
-
-    // Transform data to include auction details and seller check
     const transformedBids = bids.map((bid) => {
       const auction = bid.listingId;
       const isSeller =
@@ -305,7 +250,6 @@ export const getBidsForSeller = async (req, res) => {
         auction.seller &&
         new mongoose.Types.ObjectId(auction.seller).toString() ===
           new mongoose.Types.ObjectId(sellerId).toString();
-
       return {
         _id: bid._id,
         listingId: bid.listingId?._id,
@@ -317,7 +261,6 @@ export const getBidsForSeller = async (req, res) => {
         status: bid.status,
         createdAt: bid.createdAt,
         updatedAt: bid.updatedAt,
-        // Auction details
         auction: auction
           ? {
               animalType: auction.animalType,
@@ -334,12 +277,9 @@ export const getBidsForSeller = async (req, res) => {
               seller: auction.seller,
             }
           : null,
-        // Whether current user is the auction seller
         canControl: isSeller,
       };
     });
-
-    // Group bids by auction
     const groupedBids = transformedBids.reduce((acc, bid) => {
       const auctionId = bid.listingId?.toString() || "unknown";
       if (!acc[auctionId]) {
@@ -352,7 +292,6 @@ export const getBidsForSeller = async (req, res) => {
       acc[auctionId].bids.push(bid);
       return acc;
     }, {});
-
     return res.status(200).json({
       success: true,
       count: bids.length,
@@ -360,7 +299,6 @@ export const getBidsForSeller = async (req, res) => {
       data: transformedBids,
     });
   } catch (error) {
-    console.error("[BidController] ❌ Error fetching seller bids:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to fetch seller bids",
@@ -368,8 +306,6 @@ export const getBidsForSeller = async (req, res) => {
     });
   }
 };
-
-// Get all bids made by a user with auction details
 export const getUserBidsWithAuctionDetails = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -377,41 +313,20 @@ export const getUserBidsWithAuctionDetails = async (req, res) => {
     const sessionUserId = sessionUser?.id || sessionUser?._id;
     const sessionRole = sessionUser?.role?.trim().toLowerCase();
     const isAdmin = sessionRole === "administrator" || sessionRole === "admin";
-
     if (!sessionUserId && !isAdmin) {
       return res.status(401).json({
         success: false,
         message: "Please log in to view your bids",
       });
     }
-
     if (!isAdmin && String(sessionUserId) !== String(userId)) {
       return res.status(403).json({
         success: false,
         message: "You are not allowed to view another user's bids",
       });
     }
-
-    console.log(
-      "[BidController] getUserBidsWithAuctionDetails - Looking for bidderId:",
-      userId,
-    );
-
-    // First, let's check what bids exist in the database
-    const allBids = await Bid.find({});
-    console.log("[BidController] Total bids in database:", allBids.length);
-    console.log(
-      "[BidController] Sample bid bidderIds:",
-      allBids.slice(0, 3).map((b) => ({
-        _id: b._id,
-        bidderId: b.bidderId,
-        bidderIdType: typeof b.bidderId,
-        bidderIdIsObjectId: b.bidderId instanceof mongoose.Types.ObjectId,
-      })),
-    );
-
-    // Query for both ObjectId AND string bidderId (to handle old bids stored as strings)
-    const bids = await Bid.find({
+const allBids = await Bid.find({});
+const bids = await Bid.find({
       $or: [
         { bidderId: userId }, // Match string bidderId (old format)
         { bidderId: new mongoose.Types.ObjectId(userId) }, // Match ObjectId (new format)
@@ -423,9 +338,6 @@ export const getUserBidsWithAuctionDetails = async (req, res) => {
           "animalType breed age sex weight healthStatus quantity location photos description seller createdAt",
       })
       .sort({ createdAt: -1 });
-
-    console.log("[BidController] Found user bids:", bids.length);
-
     const auctionIds = [
       ...new Set(
         bids
@@ -433,23 +345,18 @@ export const getUserBidsWithAuctionDetails = async (req, res) => {
           .filter(Boolean),
       ),
     ];
-
     let highestBidByAuction = {};
     let totalBidsByAuction = {};
     let userHighestBidByAuction = {};
-
     if (auctionIds.length > 0) {
       const allAuctionBids = await Bid.find(
         { listingId: { $in: auctionIds } },
         "listingId bidderName amount createdAt",
       ).sort({ amount: -1, createdAt: 1 });
-
       allAuctionBids.forEach((bid) => {
         const auctionKey = bid.listingId?.toString();
         if (!auctionKey) return;
-
         totalBidsByAuction[auctionKey] = (totalBidsByAuction[auctionKey] || 0) + 1;
-
         if (
           !highestBidByAuction[auctionKey] ||
           bid.amount > highestBidByAuction[auctionKey].amount
@@ -460,7 +367,6 @@ export const getUserBidsWithAuctionDetails = async (req, res) => {
           };
         }
       });
-
       bids.forEach((bid) => {
         const auctionKey = bid.listingId?._id?.toString();
         if (!auctionKey) return;
@@ -470,7 +376,6 @@ export const getUserBidsWithAuctionDetails = async (req, res) => {
         );
       });
     }
-
     const transformedBids = bids.map((bid) => {
       const auction = bid.listingId;
       const auctionKey = bid.listingId?._id?.toString();
@@ -479,7 +384,6 @@ export const getUserBidsWithAuctionDetails = async (req, res) => {
         bidderName: "-",
       };
       const userHighestBid = userHighestBidByAuction[auctionKey] || 0;
-
       return {
         _id: bid._id,
         listingId: bid.listingId?._id,
@@ -499,7 +403,6 @@ export const getUserBidsWithAuctionDetails = async (req, res) => {
           isUserLeading:
             userHighestBid > 0 && userHighestBid >= (highest.amount || 0),
         },
-        // Auction details
         auction: auction
           ? {
               animalType: auction.animalType,
@@ -518,86 +421,56 @@ export const getUserBidsWithAuctionDetails = async (req, res) => {
           : null,
       };
     });
-
     return res.status(200).json({
       success: true,
       count: bids.length,
       data: transformedBids,
     });
   } catch (error) {
-    console.error(
-      "[BidController] ❌ Error fetching user bids with details:",
-      error,
-    );
-    return res.status(500).json({
+return res.status(500).json({
       success: false,
       message: "Failed to fetch user bids",
       error: error.message,
     });
   }
 };
-
-// Mark a bid as winner - only the auction seller can do this
 export const markBidAsWinner = async (req, res) => {
   try {
     const { bidId } = req.params;
     const { sellerId } = req.body; // Optional explicit seller ID from client
     const effectiveSellerId =
       sellerId || req.session?.user?.id || req.session?.user?._id;
-
-    console.log(
-      "[BidController] Marking bid as winner:",
-      bidId,
-      "by seller:",
-      effectiveSellerId,
-    );
-
-    if (!effectiveSellerId) {
+if (!effectiveSellerId) {
       return res.status(400).json({
         success: false,
         message: "Seller ID is required",
       });
     }
-
-    // Find the bid first
     const bid = await Bid.findById(bidId).populate({
       path: "listingId",
       select: "seller",
     });
-
     if (!bid) {
       return res.status(404).json({
         success: false,
         message: "Bid not found",
       });
     }
-
-    // Check if the user is the auction seller
     if (!bid.listingId || !bid.listingId.seller) {
       return res.status(400).json({
         success: false,
         message: "Auction not found or has no seller",
       });
     }
-
     const auctionSellerId = normalizeObjectIdString(bid.listingId.seller);
     const requestSellerId = normalizeObjectIdString(effectiveSellerId);
-
     if (!auctionSellerId || !requestSellerId || auctionSellerId !== requestSellerId) {
-      console.log(
-        "[BidController] Unauthorized - Auction seller:",
-        auctionSellerId,
-        "Request from:",
-        requestSellerId,
-      );
-      return res.status(403).json({
+return res.status(403).json({
         success: false,
         message:
           "You are not authorized to mark winner for this auction. Only the auction creator can do this.",
       });
     }
-
-    // First, reject all other bids for this auction
     await Bid.updateMany(
       {
         listingId: bid.listingId._id,
@@ -605,23 +478,17 @@ export const markBidAsWinner = async (req, res) => {
       },
       { status: "rejected" },
     );
-
-    // Then mark this bid as accepted (winner)
     const winningBid = await Bid.findByIdAndUpdate(
       bidId,
       { status: "accepted" },
       { new: true },
     );
-
-    console.log("[BidController] Bid marked as winner:", winningBid._id);
-
     return res.status(200).json({
       success: true,
       message: "Bid marked as winner successfully",
       data: winningBid,
     });
   } catch (error) {
-    console.error("[BidController] Error marking bid as winner:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to mark bid as winner",
@@ -629,28 +496,16 @@ export const markBidAsWinner = async (req, res) => {
     });
   }
 };
-
-// Get bids for a specific auction (public for all, control for seller)
 export const getBidsForAuction = async (req, res) => {
   try {
     const { auctionId } = req.params;
     const { sellerId } = req.query; // Optional - if provided, seller gets control
-
-    console.log(
-      "[BidController] Fetching bids for auction:",
-      auctionId,
-      "sellerId:",
-      sellerId,
-    );
-
-    const bids = await Bid.find({ listingId: auctionId })
+const bids = await Bid.find({ listingId: auctionId })
       .populate({
         path: "bidderId",
         select: "name email phone",
       })
       .sort({ amount: -1 }); // Sort by highest bid first
-
-    // Check if the requester is the seller
     let canControl = false;
     if (sellerId) {
       const auction = await Auction.findById(auctionId);
@@ -660,7 +515,6 @@ export const getBidsForAuction = async (req, res) => {
           new mongoose.Types.ObjectId(sellerId).toString();
       }
     }
-
     const transformedBids = bids.map((bid) => ({
       _id: bid._id,
       listingId: bid.listingId,
@@ -674,7 +528,6 @@ export const getBidsForAuction = async (req, res) => {
       updatedAt: bid.updatedAt,
       canControl: canControl && bid.status === "pending",
     }));
-
     return res.status(200).json({
       success: true,
       count: bids.length,
@@ -682,7 +535,6 @@ export const getBidsForAuction = async (req, res) => {
       data: transformedBids,
     });
   } catch (error) {
-    console.error("[BidController] ❌ Error fetching auction bids:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to fetch auction bids",
@@ -690,8 +542,6 @@ export const getBidsForAuction = async (req, res) => {
     });
   }
 };
-
-// Get ALL bids in the system (Admin only)
 export const getAllBidsAdmin = async (req, res) => {
   try {
     const sessionRole = req.session?.user?.role?.trim().toLowerCase();
@@ -702,9 +552,6 @@ export const getAllBidsAdmin = async (req, res) => {
         message: "Admin access required",
       });
     }
-
-    console.log("[BidController] Fetching all bids for admin");
-
     const bids = await Bid.find()
       .populate({
         path: "listingId",
@@ -712,10 +559,6 @@ export const getAllBidsAdmin = async (req, res) => {
           "animalType breed age sex weight healthStatus quantity location photos description seller createdAt",
       })
       .sort({ createdAt: -1 });
-
-    console.log("[BidController] Found all bids:", bids.length);
-
-    // Transform data
     const transformedBids = bids.map((bid) => {
       const auction = bid.listingId;
       return {
@@ -747,8 +590,6 @@ export const getAllBidsAdmin = async (req, res) => {
           : null,
       };
     });
-
-    // Group by auction
     const groupedBids = transformedBids.reduce((acc, bid) => {
       const auctionId = bid.listingId?.toString() || "unknown";
       if (!acc[auctionId]) {
@@ -760,7 +601,6 @@ export const getAllBidsAdmin = async (req, res) => {
       acc[auctionId].bids.push(bid);
       return acc;
     }, {});
-
     return res.status(200).json({
       success: true,
       count: bids.length,
@@ -768,7 +608,6 @@ export const getAllBidsAdmin = async (req, res) => {
       data: transformedBids,
     });
   } catch (error) {
-    console.error("[BidController] ❌ Error fetching all bids:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to fetch all bids",
@@ -776,7 +615,6 @@ export const getAllBidsAdmin = async (req, res) => {
     });
   }
 };
-
 export default {
   createBid,
   getBidsForListing,

@@ -1,10 +1,8 @@
-// controllers/verificationController.js
-import mongoose from "mongoose";
+﻿import mongoose from "mongoose";
 import Verification from "../models/Verification.js";
 import Auction from "../models/Auction.js";
 import { uploadFromBuffer } from "../utils/cloudinaryUpload.js";
 import { comprehensiveVerification } from "../services/geminiService.js";
-
 const ACTIVE_GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 const ADMIN_ROLES = new Set(["admin", "administrator"]);
 const ALLOWED_VERIFICATION_STATUSES = new Set([
@@ -16,23 +14,19 @@ const ALLOWED_VERIFICATION_STATUSES = new Set([
   "incomplete",
 ]);
 const ALLOWED_VERIFICATION_TYPES = new Set(["ownership", "health", "both"]);
-
 function getSessionRole(req) {
   return String(req.session?.user?.role || "")
     .trim()
     .toLowerCase();
 }
-
 function isAdminRequest(req) {
   return ADMIN_ROLES.has(getSessionRole(req));
 }
-
 function parsePositiveInt(value, fallback, { min = 1, max = 200 } = {}) {
   const parsed = Number.parseInt(value, 10);
   if (Number.isNaN(parsed)) return fallback;
   return Math.max(min, Math.min(max, parsed));
 }
-
 function normalizeMimeType(mimeType, url) {
   if (mimeType && typeof mimeType === "string") return mimeType;
   const lowercaseUrl = String(url || "").toLowerCase();
@@ -42,28 +36,22 @@ function normalizeMimeType(mimeType, url) {
   if (lowercaseUrl.endsWith(".gif")) return "image/gif";
   return "image/jpeg";
 }
-
 async function urlToInlinePart(url, fallbackMimeType) {
   if (!url) return null;
-
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 15000);
-
   try {
     const response = await fetch(url, { signal: controller.signal });
     if (!response.ok) {
       throw new Error(`Unable to fetch document (${response.status})`);
     }
-
     const contentType = response.headers.get("content-type");
     const mimeType = normalizeMimeType(contentType || fallbackMimeType, url);
     const arrayBuffer = await response.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-
     if (buffer.byteLength > 8 * 1024 * 1024) {
       throw new Error("File too large for AI inline analysis");
     }
-
     return {
       base64Data: buffer.toString("base64"),
       mimeType,
@@ -72,13 +60,11 @@ async function urlToInlinePart(url, fallbackMimeType) {
     clearTimeout(timeout);
   }
 }
-
 async function buildAIInputFromVerification(verification) {
   const ownerName =
     verification.farmer?.name ||
     verification.additionalDetails?.previousOwner ||
     "Unknown Owner";
-
   const auction = verification.auction;
   const animalDetails = auction
     ? {
@@ -101,7 +87,6 @@ async function buildAIInputFromVerification(verification) {
         healthStatus: "Unknown",
         ownerName,
       };
-
   const ownershipDocuments = (
     await Promise.allSettled(
       (verification.ownershipDocuments || []).map(async (doc) => {
@@ -116,7 +101,6 @@ async function buildAIInputFromVerification(verification) {
   )
     .filter((result) => result.status === "fulfilled" && result.value)
     .map((result) => result.value);
-
   const healthDocuments = (
     await Promise.allSettled(
       (verification.healthDocuments || []).map(async (doc) => {
@@ -131,7 +115,6 @@ async function buildAIInputFromVerification(verification) {
   )
     .filter((result) => result.status === "fulfilled" && result.value)
     .map((result) => result.value);
-
   const animalPhotos = (
     await Promise.allSettled(
       (verification.animalPhotos || []).map(async (photo) => {
@@ -143,7 +126,6 @@ async function buildAIInputFromVerification(verification) {
   )
     .filter((result) => result.status === "fulfilled" && result.value)
     .map((result) => result.value);
-
   return {
     animalDetails,
     ownershipDocuments,
@@ -151,64 +133,63 @@ async function buildAIInputFromVerification(verification) {
     animalPhotos,
   };
 }
-
 async function runAIAnalysisForVerification(verification) {
   verification.status = "processing";
   await verification.save();
-
   const verificationData = await buildAIInputFromVerification(verification);
   const hasAnyInput =
     verificationData.ownershipDocuments.length > 0 ||
     verificationData.healthDocuments.length > 0 ||
     verificationData.animalPhotos.length > 0;
-
   if (!hasAnyInput) {
     throw new Error("No readable documents/photos found for AI analysis");
   }
-
   const aiResults = await comprehensiveVerification(verificationData);
-
   verification.aiVerification = {
     ownershipVerified: aiResults.ownership?.verified || false,
     ownershipConfidence: aiResults.ownership?.confidence || 0,
     ownershipAnalysis: aiResults.ownership?.analysis || "",
     ownershipFlags: aiResults.ownership?.flags || [],
-
     healthVerified: aiResults.health?.verified || false,
     healthConfidence: aiResults.health?.confidence || 0,
     healthAnalysis: aiResults.health?.analysis || "",
     healthAssessment: aiResults.health?.healthAssessment || "needs_review",
     healthFlags: aiResults.health?.flags || [],
-
     photoVerified: aiResults.photos?.verified || false,
     photoAnalysis: aiResults.photos?.analysis || "",
     detectedBreed: aiResults.photos?.detectedBreed || "",
     breedMatches: aiResults.photos?.breedMatches || false,
     photoQuality: aiResults.photos?.photoQuality?.overall || "medium",
     photoFlags: aiResults.photos?.flags || [],
-
     verificationDate: new Date(),
     aiModel: ACTIVE_GEMINI_MODEL,
     processingTime: aiResults.overall?.processingTime || 0,
   };
-
   verification.calculateVerificationScore();
   verification.status = aiResults.overall?.status || "needs_review";
   verification.overallApproved = aiResults.overall?.approved || false;
   verification.expiresAt = new Date(Date.now() + 6 * 30 * 24 * 60 * 60 * 1000);
-
   if (
     verification.status === "needs_review" ||
     Number(verification.verificationScore || 0) < 75
   ) {
     verification.manualReview.required = true;
   }
-
   await verification.save();
   return verification;
 }
-
 function makeVerificationSummary(record) {
+  const ownershipFlags = Array.isArray(record.aiVerification?.ownershipFlags)
+    ? record.aiVerification.ownershipFlags
+    : [];
+  const healthFlags = Array.isArray(record.aiVerification?.healthFlags)
+    ? record.aiVerification.healthFlags
+    : [];
+  const photoFlags = Array.isArray(record.aiVerification?.photoFlags)
+    ? record.aiVerification.photoFlags
+    : [];
+  const totalFlags =
+    ownershipFlags.length + healthFlags.length + photoFlags.length;
   return {
     _id: record._id,
     verificationType: record.verificationType,
@@ -222,6 +203,11 @@ function makeVerificationSummary(record) {
       healthConfidence: record.aiVerification?.healthConfidence || 0,
       verificationDate: record.aiVerification?.verificationDate || null,
       aiModel: record.aiVerification?.aiModel || null,
+      ownershipFlags,
+      healthFlags,
+      photoFlags,
+      totalFlags,
+      hasFlags: totalFlags > 0,
     },
     documentCounts: {
       ownership: record.ownershipDocuments?.length || 0,
@@ -247,12 +233,6 @@ function makeVerificationSummary(record) {
       : null,
   };
 }
-
-/**
- * Submit verification documents
- * auctionId and authentication are optional
- * Anyone can submit (guest/anonymous allowed)
- */
 export const submitVerification = async (req, res) => {
   try {
     const {
@@ -266,7 +246,6 @@ export const submitVerification = async (req, res) => {
       acquisitionDate,
       previousOwner,
     } = req.body;
-
     if (
       !verificationType ||
       !["ownership", "health", "both"].includes(verificationType)
@@ -277,9 +256,7 @@ export const submitVerification = async (req, res) => {
           "Valid verificationType is required (ownership, health, or both)",
       });
     }
-
     const farmerId = req.session?.user?.id || null;
-
     let auction = null;
     if (auctionId) {
       if (!mongoose.Types.ObjectId.isValid(auctionId)) {
@@ -288,7 +265,6 @@ export const submitVerification = async (req, res) => {
           message: "Invalid Auction ID format",
         });
       }
-
       auction = await Auction.findById(auctionId);
       if (!auction) {
         return res.status(404).json({
@@ -297,13 +273,10 @@ export const submitVerification = async (req, res) => {
         });
       }
     }
-
     const ownershipDocs = [];
     const healthDocs = [];
     const animalPhotos = [];
-
     const maxFiles = { ownership: 5, health: 5, photos: 10 };
-
     if (req.files?.ownershipDocuments) {
       if (req.files.ownershipDocuments.length > maxFiles.ownership) {
         return res.status(400).json({
@@ -324,7 +297,6 @@ export const submitVerification = async (req, res) => {
         });
       }
     }
-
     if (req.files?.healthDocuments) {
       if (req.files.healthDocuments.length > maxFiles.health) {
         return res.status(400).json({
@@ -342,7 +314,6 @@ export const submitVerification = async (req, res) => {
         });
       }
     }
-
     if (req.files?.animalPhotos) {
       if (req.files.animalPhotos.length > maxFiles.photos) {
         return res.status(400).json({
@@ -359,7 +330,6 @@ export const submitVerification = async (req, res) => {
         });
       }
     }
-
     const verificationData = {
       ...(farmerId && { farmer: farmerId }),
       verificationType,
@@ -379,13 +349,10 @@ export const submitVerification = async (req, res) => {
       },
       status: "pending",
     };
-
     if (auction) {
       verificationData.auction = auction._id;
     }
-
     const verification = await Verification.create(verificationData);
-
     return res.status(201).json({
       success: true,
       message: "Verification documents submitted successfully",
@@ -393,7 +360,6 @@ export const submitVerification = async (req, res) => {
       data: verification,
     });
   } catch (error) {
-    console.error("Submit verification error:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to submit verification",
@@ -401,21 +367,15 @@ export const submitVerification = async (req, res) => {
     });
   }
 };
-
-/**
- * Process AI verification
- */
 export const processAIVerification = async (req, res) => {
   try {
     const { verificationId } = req.params;
-
     if (!mongoose.Types.ObjectId.isValid(verificationId)) {
       return res.status(400).json({
         success: false,
         message: "Invalid Verification ID format",
       });
     }
-
     if (!process.env.GEMINI_API_KEY) {
       return res.status(500).json({
         success: false,
@@ -423,28 +383,22 @@ export const processAIVerification = async (req, res) => {
           "GEMINI_API_KEY is not configured. Add it to your environment file.",
       });
     }
-
     const verification = await Verification.findById(verificationId)
       .populate("auction")
       .populate("farmer", "name email phone");
-
     if (!verification) {
       return res.status(404).json({
         success: false,
         message: "Verification not found",
       });
     }
-
     const updatedVerification = await runAIAnalysisForVerification(verification);
-
     return res.status(200).json({
       success: true,
       message: "AI verification completed",
       data: updatedVerification,
     });
   } catch (error) {
-    console.error("AI verification error:", error);
-
     if (
       req.params.verificationId &&
       mongoose.Types.ObjectId.isValid(req.params.verificationId)
@@ -458,7 +412,6 @@ export const processAIVerification = async (req, res) => {
         { runValidators: true },
       );
     }
-
     return res.status(500).json({
       success: false,
       message: `AI verification failed: ${error.message}`,
@@ -466,10 +419,6 @@ export const processAIVerification = async (req, res) => {
     });
   }
 };
-
-/**
- * List verification submissions for Admin AI module
- */
 export const getAdminAIVerificationSubmissions = async (req, res) => {
   try {
     if (!isAdminRequest(req)) {
@@ -478,7 +427,6 @@ export const getAdminAIVerificationSubmissions = async (req, res) => {
         message: "Admin access is required",
       });
     }
-
     const page = parsePositiveInt(req.query.page, 1, { min: 1, max: 10000 });
     const limit = parsePositiveInt(req.query.limit, 12, { min: 1, max: 100 });
     const status = String(req.query.status || "all").trim().toLowerCase();
@@ -487,7 +435,6 @@ export const getAdminAIVerificationSubmissions = async (req, res) => {
     const q = String(req.query.q || "").trim().toLowerCase();
     const dateFrom = req.query.dateFrom ? new Date(req.query.dateFrom) : null;
     const dateTo = req.query.dateTo ? new Date(req.query.dateTo) : null;
-
     const mongoQuery = {};
     if (ALLOWED_VERIFICATION_STATUSES.has(status)) {
       mongoQuery.status = status;
@@ -509,14 +456,11 @@ export const getAdminAIVerificationSubmissions = async (req, res) => {
         delete mongoQuery.createdAt;
       }
     }
-
     const records = await Verification.find(mongoQuery)
       .populate("farmer", "name email phone")
       .populate("auction", "animalType breed location expectedPrice")
       .sort({ createdAt: -1 });
-
     let summaries = records.map(makeVerificationSummary);
-
     if (aiState === "analyzed") {
       summaries = summaries.filter(
         (item) =>
@@ -532,7 +476,6 @@ export const getAdminAIVerificationSubmissions = async (req, res) => {
           item.aiVerification.healthConfidence === 0,
       );
     }
-
     if (q) {
       summaries = summaries.filter((item) => {
         const haystack = [
@@ -553,7 +496,6 @@ export const getAdminAIVerificationSubmissions = async (req, res) => {
         return haystack.includes(q);
       });
     }
-
     const stats = {
       total: summaries.length,
       pending: summaries.filter((item) => item.status === "pending").length,
@@ -566,12 +508,10 @@ export const getAdminAIVerificationSubmissions = async (req, res) => {
       analyzed: summaries.filter((item) => !!item.aiVerification.verificationDate)
         .length,
     };
-
     const totalPages = Math.max(1, Math.ceil(summaries.length / limit));
     const safePage = Math.min(page, totalPages);
     const startIndex = (safePage - 1) * limit;
     const pagedData = summaries.slice(startIndex, startIndex + limit);
-
     return res.status(200).json({
       success: true,
       data: pagedData,
@@ -586,7 +526,6 @@ export const getAdminAIVerificationSubmissions = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Get admin AI submissions error:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to fetch AI verification submissions",
@@ -594,10 +533,6 @@ export const getAdminAIVerificationSubmissions = async (req, res) => {
     });
   }
 };
-
-/**
- * Get one verification record for AI review panel
- */
 export const getAdminAIVerificationSubmission = async (req, res) => {
   try {
     if (!isAdminRequest(req)) {
@@ -606,7 +541,6 @@ export const getAdminAIVerificationSubmission = async (req, res) => {
         message: "Admin access is required",
       });
     }
-
     const { verificationId } = req.params;
     if (!mongoose.Types.ObjectId.isValid(verificationId)) {
       return res.status(400).json({
@@ -614,27 +548,23 @@ export const getAdminAIVerificationSubmission = async (req, res) => {
         message: "Invalid Verification ID format",
       });
     }
-
     const verification = await Verification.findById(verificationId)
       .populate("farmer", "name email phone")
       .populate(
         "auction",
         "animalType breed age weight sex healthStatus location expectedPrice",
       );
-
     if (!verification) {
       return res.status(404).json({
         success: false,
         message: "Verification not found",
       });
     }
-
     return res.status(200).json({
       success: true,
       data: verification,
     });
   } catch (error) {
-    console.error("Get admin AI submission detail error:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to fetch verification details",
@@ -642,10 +572,6 @@ export const getAdminAIVerificationSubmission = async (req, res) => {
     });
   }
 };
-
-/**
- * Trigger AI analysis on one verification record (Admin only)
- */
 export const analyzeVerificationForAdmin = async (req, res) => {
   try {
     if (!isAdminRequest(req)) {
@@ -654,7 +580,6 @@ export const analyzeVerificationForAdmin = async (req, res) => {
         message: "Admin access is required",
       });
     }
-
     if (!process.env.GEMINI_API_KEY) {
       return res.status(500).json({
         success: false,
@@ -662,7 +587,6 @@ export const analyzeVerificationForAdmin = async (req, res) => {
           "GEMINI_API_KEY is not configured. Add it to your environment file.",
       });
     }
-
     const { verificationId } = req.params;
     if (!mongoose.Types.ObjectId.isValid(verificationId)) {
       return res.status(400).json({
@@ -670,28 +594,22 @@ export const analyzeVerificationForAdmin = async (req, res) => {
         message: "Invalid Verification ID format",
       });
     }
-
     const verification = await Verification.findById(verificationId)
       .populate("auction")
       .populate("farmer", "name email phone");
-
     if (!verification) {
       return res.status(404).json({
         success: false,
         message: "Verification not found",
       });
     }
-
     const analyzedRecord = await runAIAnalysisForVerification(verification);
-
     return res.status(200).json({
       success: true,
       message: "AI analysis completed successfully",
       data: analyzedRecord,
     });
   } catch (error) {
-    console.error("Analyze verification for admin error:", error);
-
     if (
       req.params.verificationId &&
       mongoose.Types.ObjectId.isValid(req.params.verificationId)
@@ -705,7 +623,6 @@ export const analyzeVerificationForAdmin = async (req, res) => {
         { runValidators: true },
       );
     }
-
     return res.status(500).json({
       success: false,
       message: `AI analysis failed: ${error.message}`,
@@ -713,38 +630,29 @@ export const analyzeVerificationForAdmin = async (req, res) => {
     });
   }
 };
-
-/**
- * Get verification status
- */
 export const getVerificationStatus = async (req, res) => {
   try {
     const { verificationId } = req.params;
-
     if (!mongoose.Types.ObjectId.isValid(verificationId)) {
       return res.status(400).json({
         success: false,
         message: "Invalid Verification ID format",
       });
     }
-
     const verification = await Verification.findById(verificationId)
       .populate("auction", "breed animalType location")
       .populate("farmer", "name email");
-
     if (!verification) {
       return res.status(404).json({
         success: false,
         message: "Verification not found",
       });
     }
-
     return res.status(200).json({
       success: true,
       data: verification,
     });
   } catch (error) {
-    console.error("Get verification error:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to get verification status",
@@ -752,32 +660,24 @@ export const getVerificationStatus = async (req, res) => {
     });
   }
 };
-
-/**
- * Get all verifications for a farmer
- */
 export const getFarmerVerifications = async (req, res) => {
   try {
     const farmerId = req.user?._id || req.params.farmerId;
-
     if (!farmerId || !mongoose.Types.ObjectId.isValid(farmerId)) {
       return res.status(400).json({
         success: false,
         message: "Valid Farmer ID is required for this endpoint",
       });
     }
-
     const verifications = await Verification.find({ farmer: farmerId })
       .populate("auction", "breed animalType location photos")
       .sort({ createdAt: -1 });
-
     return res.status(200).json({
       success: true,
       count: verifications.length,
       data: verifications,
     });
   } catch (error) {
-    console.error("Get farmer verifications error:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to get verifications",
@@ -785,38 +685,29 @@ export const getFarmerVerifications = async (req, res) => {
     });
   }
 };
-
-/**
- * Get verification by auction ID
- */
 export const getVerificationByAuction = async (req, res) => {
   try {
     const { auctionId } = req.params;
-
     if (!auctionId || !mongoose.Types.ObjectId.isValid(auctionId)) {
       return res.status(400).json({
         success: false,
         message: "Valid Auction ID is required for this endpoint",
       });
     }
-
     const verification = await Verification.findOne({ auction: auctionId })
       .populate("farmer", "name email")
       .sort({ createdAt: -1 });
-
     if (!verification) {
       return res.status(404).json({
         success: false,
         message: "No verification found for this auction",
       });
     }
-
     return res.status(200).json({
       success: true,
       data: verification,
     });
   } catch (error) {
-    console.error("Get verification by auction error:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to get verification",
@@ -824,17 +715,12 @@ export const getVerificationByAuction = async (req, res) => {
     });
   }
 };
-
-/**
- * Get ALL verifications (Admin only)
- */
 export const getAllVerifications = async (req, res) => {
   try {
     const verifications = await Verification.find()
       .populate("auction", "breed animalType location photos")
       .populate("farmer", "name email phone")
       .sort({ createdAt: -1 });
-
     const stats = {
       total: verifications.length,
       pending: verifications.filter((v) => v.status === "pending").length,
@@ -845,14 +731,12 @@ export const getAllVerifications = async (req, res) => {
         .length,
       incomplete: verifications.filter((v) => v.status === "incomplete").length,
     };
-
     return res.status(200).json({
       success: true,
       data: verifications,
       stats,
     });
   } catch (error) {
-    console.error("Get all verifications error:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to get verifications",
@@ -860,26 +744,19 @@ export const getAllVerifications = async (req, res) => {
     });
   }
 };
-
-/**
- * Get current user's verifications (Farmer/Seller/Buyer)
- */
 export const getMyVerifications = async (req, res) => {
   try {
     const userId = req.session?.user?.id;
-
     if (!userId) {
       return res.status(401).json({
         success: false,
         message: "Authentication required",
       });
     }
-
     const verifications = await Verification.find({ farmer: userId })
       .populate("auction", "breed animalType location photos")
       .populate("farmer", "name email phone")
       .sort({ createdAt: -1 });
-
     const stats = {
       total: verifications.length,
       pending: verifications.filter((v) => v.status === "pending").length,
@@ -890,14 +767,12 @@ export const getMyVerifications = async (req, res) => {
         .length,
       incomplete: verifications.filter((v) => v.status === "incomplete").length,
     };
-
     return res.status(200).json({
       success: true,
       data: verifications,
       stats,
     });
   } catch (error) {
-    console.error("Get my verifications error:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to get verifications",
@@ -905,22 +780,16 @@ export const getMyVerifications = async (req, res) => {
     });
   }
 };
-
-/**
- * Update verification status (Admin only)
- */
 export const updateVerificationStatus = async (req, res) => {
   try {
     const { verificationId } = req.params;
     const { status, notes } = req.body;
-
     if (!mongoose.Types.ObjectId.isValid(verificationId)) {
       return res.status(400).json({
         success: false,
         message: "Invalid Verification ID format",
       });
     }
-
     const validStatuses = [
       "pending",
       "processing",
@@ -935,36 +804,29 @@ export const updateVerificationStatus = async (req, res) => {
         message: "Invalid status value",
       });
     }
-
     const verification = await Verification.findById(verificationId);
-
     if (!verification) {
       return res.status(404).json({
         success: false,
         message: "Verification not found",
       });
     }
-
     verification.status = status;
     if (notes) {
       verification.notes = notes;
     }
-
     if (status === "verified" || status === "rejected") {
       verification.manualReview.completed = true;
       verification.manualReview.reviewDate = new Date();
       verification.manualReview.approved = status === "verified";
     }
-
     await verification.save();
-
     return res.status(200).json({
       success: true,
       message: "Status updated successfully",
       data: verification,
     });
   } catch (error) {
-    console.error("Update verification status error:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to update status",
@@ -972,27 +834,20 @@ export const updateVerificationStatus = async (req, res) => {
     });
   }
 };
-
-/**
- * Get current user info for frontend
- */
 export const getCurrentUser = async (req, res) => {
   try {
     const user = req.session?.user;
-
     if (!user) {
       return res.status(200).json({
         success: true,
         user: null,
       });
     }
-
     return res.status(200).json({
       success: true,
       user,
     });
   } catch (error) {
-    console.error("Get current user error:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to get user info",
@@ -1000,7 +855,6 @@ export const getCurrentUser = async (req, res) => {
     });
   }
 };
-
 export default {
   submitVerification,
   processAIVerification,
@@ -1015,3 +869,4 @@ export default {
   updateVerificationStatus,
   getCurrentUser,
 };
+

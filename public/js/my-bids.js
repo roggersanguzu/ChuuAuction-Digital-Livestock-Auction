@@ -1,47 +1,28 @@
-// my-bids.js - JavaScript for My Bids page with search and filters
-
+﻿
 var userId = null;
 var allBids = []; // Store all bids for filtering
-
-// Wait for DOM to be ready
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("DOM Content Loaded - Starting bid loading");
-
   var bidsContainer = document.getElementById("bids-container");
   if (bidsContainer) {
     userId = bidsContainer.getAttribute("data-user-id");
-    console.log("User ID from container:", userId);
   }
-
   if (!userId && typeof window.userId !== "undefined") {
     userId = window.userId;
-    console.log("User ID from window:", userId);
   }
-
-  console.log("Final userId being used:", userId);
-  console.log("userId is truthy:", !!userId);
-
   if (userId && userId.length > 0) {
     loadBids();
   } else {
-    console.error("No userId found! Showing error.");
     var loading = document.getElementById("loading");
     if (loading) {
       loading.classList.add("hidden");
     }
     showError("User ID not found. Please log in again.");
   }
-
-  // Set up event listeners for search and filters
   setupSearchAndFilters();
 });
-
-// Set up search and filter event listeners
 function setupSearchAndFilters() {
-  // Search input
   var searchInput = document.getElementById("search-input");
   var clearSearch = document.getElementById("clear-search");
-
   if (searchInput) {
     searchInput.addEventListener(
       "input",
@@ -51,7 +32,6 @@ function setupSearchAndFilters() {
         applyFilters();
       }, 300),
     );
-
     searchInput.addEventListener("keyup", function (e) {
       if (e.key === "Escape") {
         this.value = "";
@@ -60,7 +40,6 @@ function setupSearchAndFilters() {
       }
     });
   }
-
   if (clearSearch) {
     clearSearch.addEventListener("click", function () {
       searchInput.value = "";
@@ -68,35 +47,25 @@ function setupSearchAndFilters() {
       applyFilters();
     });
   }
-
-  // Status filter buttons
   var filterBtns = document.querySelectorAll(".filter-btn");
   filterBtns.forEach(function (btn) {
     btn.addEventListener("click", function () {
-      // Remove active class from siblings
       var parent = this.parentElement;
       parent.querySelectorAll(".filter-btn").forEach(function (b) {
         b.classList.remove("active");
       });
-      // Add active class to clicked button
       this.classList.add("active");
       applyFilters();
     });
   });
-
-  // Animal type filter
   var animalTypeFilter = document.getElementById("animal-type-filter");
   if (animalTypeFilter) {
     animalTypeFilter.addEventListener("change", applyFilters);
   }
-
-  // Sort filter
   var sortFilter = document.getElementById("sort-filter");
   if (sortFilter) {
     sortFilter.addEventListener("change", applyFilters);
   }
-
-  // Quick filter buttons
   var quickFilters = document.querySelectorAll(".quick-filter");
   quickFilters.forEach(function (btn) {
     btn.addEventListener("click", function () {
@@ -104,8 +73,6 @@ function setupSearchAndFilters() {
       applyFilters();
     });
   });
-
-  // Clear filters button
   var clearFilters = document.getElementById("clear-filters");
   if (clearFilters) {
     clearFilters.addEventListener("click", function () {
@@ -113,11 +80,8 @@ function setupSearchAndFilters() {
     });
   }
 }
-
-// Apply all filters to bids
 function applyFilters() {
   if (allBids.length === 0) return;
-
   var searchQuery = document
     .getElementById("search-input")
     .value.toLowerCase()
@@ -127,33 +91,23 @@ function applyFilters() {
     .getAttribute("data-value");
   var animalTypeFilter = document.getElementById("animal-type-filter").value;
   var sortFilter = document.getElementById("sort-filter").value;
-
-  // Get quick filter states
   var quickFilters = {};
   document.querySelectorAll(".quick-filter.active").forEach(function (btn) {
     var field = btn.getAttribute("data-field");
     var value = btn.getAttribute("data-value");
     quickFilters[field] = value;
   });
-
-  // Filter bids
   var filteredBids = allBids.filter(function (bid) {
     var auction = bid.auction || {};
-
-    // Status filter
     if (statusFilter !== "all" && bid.status !== statusFilter) {
       return false;
     }
-
-    // Animal type filter
     if (animalTypeFilter !== "all") {
       var animalType = (auction.animalType || "").toLowerCase();
       if (!animalType.includes(animalTypeFilter)) {
         return false;
       }
     }
-
-    // Search query filter
     if (searchQuery) {
       var searchFields = [
         auction.animalType || "",
@@ -164,13 +118,10 @@ function applyFilters() {
       ]
         .join(" ")
         .toLowerCase();
-
       if (!searchFields.includes(searchQuery)) {
         return false;
       }
     }
-
-    // Quick filters
     if (quickFilters.hasNotes === "true" && !bid.notes) {
       return false;
     }
@@ -184,11 +135,8 @@ function applyFilters() {
     if (quickFilters.maxAmount) {
       if (bid.amount > parseInt(quickFilters.maxAmount)) return false;
     }
-
     return true;
   });
-
-  // Sort bids
   filteredBids.sort(function (a, b) {
     switch (sortFilter) {
       case "newest":
@@ -203,48 +151,29 @@ function applyFilters() {
         return 0;
     }
   });
-
-  // Update results count
   document.getElementById("results-count").textContent = filteredBids.length;
-
-  // Render filtered bids
   renderBids(filteredBids);
 }
-
-// Clear all filters
 function clearAllFilters() {
-  // Reset search
   var searchInput = document.getElementById("search-input");
   var clearSearch = document.getElementById("clear-search");
   if (searchInput) searchInput.value = "";
   if (clearSearch) clearSearch.classList.add("hidden");
-
-  // Reset status filters
   document.querySelectorAll(".filter-btn").forEach(function (btn) {
     btn.classList.remove("active");
     if (btn.getAttribute("data-value") === "all") {
       btn.classList.add("active");
     }
   });
-
-  // Reset animal type
   var animalTypeFilter = document.getElementById("animal-type-filter");
   if (animalTypeFilter) animalTypeFilter.value = "all";
-
-  // Reset sort
   var sortFilter = document.getElementById("sort-filter");
   if (sortFilter) sortFilter.value = "newest";
-
-  // Reset quick filters
   document.querySelectorAll(".quick-filter").forEach(function (btn) {
     btn.classList.remove("active");
   });
-
-  // Apply filters (which will show all)
   applyFilters();
 }
-
-// Debounce function for search
 function debounce(func, wait) {
   var timeout;
   return function executedFunction() {
@@ -258,13 +187,9 @@ function debounce(func, wait) {
     timeout = setTimeout(later, wait);
   };
 }
-
-// Format currency function
 function formatCurrency(amount) {
   return "UGX " + new Intl.NumberFormat("en-UG").format(amount || 0);
 }
-
-// Format date function
 function formatDate(dateStr) {
   var date = new Date(dateStr);
   return date.toLocaleDateString("en-US", {
@@ -275,8 +200,6 @@ function formatDate(dateStr) {
     minute: "2-digit",
   });
 }
-
-// Get status badge
 function getStatusBadge(status) {
   var statusMap = {
     pending: {
@@ -306,16 +229,12 @@ function getStatusBadge(status) {
     "</span>"
   );
 }
-
-// Get animal image
 function getAnimalImage(photos) {
   if (photos && photos.length > 0) {
     return photos[0].url;
   }
   return "/img/cow.png";
 }
-
-// Render bid card
 function renderBidCard(bid) {
   var auction = bid.auction || {};
   var photoUrl = getAnimalImage(auction.photos);
@@ -326,7 +245,6 @@ function renderBidCard(bid) {
       bid._id +
       '" class="px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 hover:shadow-lg hover:shadow-green-500/30 transition text-sm font-semibold"><i class="bi bi-credit-card mr-2"></i>Proceed to Payment</a>'
     : "";
-
   return (
     '<div class="bid-card glass-strong border border-gray-800 rounded-2xl p-6 transition-all duration-300 ' +
     (isWinner ? "ring-2 ring-green-500/50" : "") +
@@ -400,93 +318,53 @@ function renderBidCard(bid) {
     "</div>"
   );
 }
-
-// Render bids to container
 function renderBids(bids) {
   var container = document.getElementById("bids-container");
   var noResults = document.getElementById("no-results");
   var loading = document.getElementById("loading");
   var noBids = document.getElementById("no-bids");
-
-  // Hide loading
   loading.classList.add("hidden");
-
-  // Check if we have bids at all
   if (allBids.length === 0) {
     noBids.classList.remove("hidden");
     container.classList.add("hidden");
     noResults.classList.add("hidden");
     return;
   }
-
-  // Check if filtered results
   if (bids.length === 0) {
     noResults.classList.remove("hidden");
     container.classList.add("hidden");
     noBids.classList.add("hidden");
     return;
   }
-
-  // Show bids
   noResults.classList.add("hidden");
   noBids.classList.add("hidden");
   container.classList.remove("hidden");
-
   container.innerHTML = bids.map(renderBidCard).join("");
 }
-
-// Fetch and render bids
 async function loadBids() {
   try {
-    console.log("Fetching bids from API...");
-    console.log("User ID being used:", userId);
-    console.log("User ID type:", typeof userId);
-
     var apiUrl = "/api/bids/user/" + userId + "/details";
-    console.log("API URL:", apiUrl);
-
     var response = await fetch(apiUrl);
-
-    console.log("Response status:", response.status);
-    console.log("Response ok:", response.ok);
-
     if (!response.ok) {
       throw new Error("HTTP error! status: " + response.status);
     }
-
     var result = await response.json();
-
-    console.log("API Response:", result);
-
     document.getElementById("loading").classList.add("hidden");
-
     if (!result.success) {
-      console.error("API returned error:", result.message);
       showError("API Error: " + (result.message || "Unknown error"));
       return;
     }
-
     if (result.count === 0 || !result.data) {
-      // Show no bids message
       allBids = [];
       document.getElementById("stat-pending").textContent = "0";
       document.getElementById("stat-accepted").textContent = "0";
       document.getElementById("stat-rejected").textContent = "0";
       document.getElementById("stat-total").textContent = "0";
       document.getElementById("results-count").textContent = "0";
-
       document.getElementById("no-bids").classList.remove("hidden");
-      console.log("No bids found for userId:", userId);
       return;
     }
-
-    console.log("Bids loaded:", result.count);
-    console.log("Sample bid data:", result.data[0]);
-
-    // Store all bids for filtering
     allBids = result.data;
-
-    // Update stats
     var pending = allBids.filter(function (b) {
       return b.status === "pending";
     }).length;
@@ -496,22 +374,16 @@ async function loadBids() {
     var rejected = allBids.filter(function (b) {
       return b.status === "rejected";
     }).length;
-
     document.getElementById("stat-pending").textContent = pending;
     document.getElementById("stat-accepted").textContent = accepted;
     document.getElementById("stat-rejected").textContent = rejected;
     document.getElementById("stat-total").textContent = allBids.length;
     document.getElementById("results-count").textContent = allBids.length;
-
-    // Apply initial filters (show all)
     applyFilters();
   } catch (error) {
-    console.error("Error loading bids:", error);
-    console.error("Error details:", error.stack);
     showError("Error loading bids: " + error.message);
   }
 }
-
 function showError(message) {
   var loading = document.getElementById("loading");
   if (loading) {

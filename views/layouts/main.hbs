@@ -1,4 +1,4 @@
-<html lang="en">
+﻿<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,7 +20,6 @@
       rel="stylesheet"
       href="/vendor/bootstrap-icons/css/bootstrap-icons.css"
     />
-
     <style>
       :root {
         --bg: #050810;
@@ -62,7 +61,6 @@
         flex-direction: column;
         overflow-x: hidden;
       }
-
       /* Grain Texture Overlay */
       .grain-overlay {
         position: fixed;
@@ -72,7 +70,6 @@
         z-index: 0;
         opacity: 0.6;
       }
-
       /* Ambient Glow */
       .ambient-glow {
         position: fixed;
@@ -96,7 +93,6 @@
         pointer-events: none;
         z-index: 0;
       }
-
       /* Custom Scrollbar */
       ::-webkit-scrollbar {
         width: 4px;
@@ -108,7 +104,6 @@
         background: rgba(255, 255, 255, 0.1);
         border-radius: 99px;
       }
-
       /* Header Styles */
       .header {
         position: sticky;
@@ -160,7 +155,6 @@
         border-radius: 4px;
         margin-left: 4px;
       }
-
       .header-center {
         display: flex;
         align-items: center;
@@ -185,7 +179,6 @@
         0%, 100% { opacity: 1; transform: scale(1); }
         50% { opacity: 0.5; transform: scale(0.8); }
       }
-
       .header-right {
         display: flex;
         align-items: center;
@@ -239,7 +232,6 @@
         background: #86efac;
         box-shadow: 0 0 28px rgba(74, 222, 128, 0.4);
       }
-
       .avatar {
         width: 34px;
         height: 34px;
@@ -254,7 +246,6 @@
         cursor: pointer;
         border: 2px solid rgba(74, 222, 128, 0.4);
       }
-
       /* Sidebar Styles */
       .layout {
         display: flex;
@@ -262,7 +253,6 @@
         position: relative;
         z-index: 1;
       }
-
       .sidebar {
         width: 220px;
         min-width: 220px;
@@ -339,13 +329,11 @@
         border-radius: 0 2px 2px 0;
         box-shadow: 0 0 8px var(--accent);
       }
-
       .sb-divider {
         height: 1px;
         background: var(--border);
         margin: 10px 10px;
       }
-
       .sb-info {
         margin-top: auto;
         padding: 14px;
@@ -364,7 +352,6 @@
         font-size: 11px;
         color: var(--accent);
       }
-
       /* Main Content */
       .main {
         flex: 1;
@@ -379,7 +366,6 @@
         flex-direction: column;
         gap: 24px;
       }
-
       /* Page Header */
       .page-header {
         display: flex;
@@ -413,7 +399,6 @@
         color: var(--text3);
         margin-top: 6px;
       }
-
       /* Card Styles */
       .card {
         background: var(--surface);
@@ -429,7 +414,6 @@
         transform: translateY(-3px);
         box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
       }
-
       /* Button Styles */
       .btn {
         display: inline-flex;
@@ -464,7 +448,6 @@
         background: rgba(255, 255, 255, 0.1);
         color: var(--text);
       }
-
       /* Form Styles */
       .form-input {
         width: 100%;
@@ -486,7 +469,6 @@
       .form-input::placeholder {
         color: var(--text3);
       }
-
       .form-select {
         padding: 10px 14px;
         background: rgba(0, 0, 0, 0.3);
@@ -506,7 +488,6 @@
       .form-select option {
         background: #080c18;
       }
-
       /* Toast Styles */
       .toast-wrap {
         position: fixed;
@@ -537,7 +518,6 @@
       .toast.error {
         border-left: 3px solid var(--accent4);
       }
-
       /* Animations */
       @keyframes fadeInUp {
         from {
@@ -549,11 +529,9 @@
           transform: translateY(0);
         }
       }
-
       .animate-fade-in-up {
         animation: fadeInUp 0.4s ease-out forwards;
       }
-
       /* Flash message styles */
       .flash-container {
         position: fixed;
@@ -588,7 +566,6 @@
         border: 1px solid rgba(34, 211, 238, 0.3);
         color: var(--accent2);
       }
-
       /* Responsive */
       @media (max-width: 900px) {
         .mobile-menu-btn {
@@ -641,15 +618,9 @@
       }
     </style>
   </head>
-
   <body>
-    <!-- Grain Texture Overlay -->
     <div class="grain-overlay"></div>
-    
-    <!-- Ambient Glow -->
     <div class="ambient-glow"></div>
-
-    <!-- Flash Messages -->
     <div class="flash-container">
       {{#if success_msg}}
         <div class="flash flash-success">
@@ -664,14 +635,12 @@
         </div>
       {{/if}}
     </div>
-
     {{#if loggedIn}}
-    <!-- Header for Authenticated Pages -->
     <header class="header">
       <a class="logo" href="/">
-        <div class="logo-icon">🐄</div>
-        <span class="logo-name">Live<em>Stock</em></span>
-        <span class="logo-version">v2.4</span>
+        <div class="logo-icon"><img src="/img/logo.png" alt="ChuuAuction Logo" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" /></div>
+        <span class="logo-name"><span style="color:#f97316">Chuu</span>Auction</span>
+        <span class="logo-version">UG</span>
       </a>
       <div class="header-center">
         <span class="dot"></span>
@@ -700,9 +669,7 @@
         </div>
       </div>
     </header>
-
     <div class="layout">
-      <!-- Sidebar -->
       <aside id="app-sidebar" class="sidebar">
         <div class="sidebar-mobile-top">
           <strong style="font-size:12px;color:var(--text2);">Menu</strong>
@@ -755,9 +722,7 @@
             </a>
           {{/ifEquals}}
         </div>
-
         <div class="sb-divider"></div>
-
         <div class="sb-section">
           <div class="sb-label">Account</div>
           {{#ifEquals user.role 'farmer'}}
@@ -776,90 +741,78 @@
             </a>
           {{/ifEquals}}
         </div>
-
         <div class="sb-divider"></div>
-
         <form action="/auth/logout" method="POST" class="w-full">
           <button type="submit" class="nav-item w-full text-left" style="color: var(--accent4);">
             <i class="fas fa-sign-out-alt"></i> Logout
           </button>
         </form>
-
         <div class="sb-info">
           <div class="sb-info-label">Logged in as</div>
           <div class="sb-info-val">{{user.name}}</div>
         </div>
       </aside>
       <div id="app-sidebar-overlay" class="sidebar-overlay"></div>
-
-      <!-- Main Content -->
       <main class="main">
         {{{body}}}
       </main>
     </div>
     {{else}}
-    <!-- Main content for non-authenticated pages -->
     <main class="relative z-10" style="min-height: 100vh;">
       {{{body}}}
     </main>
     {{/if}}
-
-    <!-- Footer (only for public pages) -->
     {{#unless loggedIn}}
-    <footer class="relative z-10 border-t border-gray-800 bg-gray-950/80 backdrop-blur-sm">
-      <div class="container mx-auto px-4 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          <!-- Brand Section -->
-          <div class="md:col-span-2">
-            <h3 class="text-2xl font-bold mb-4" style="font-family: 'Syne', sans-serif;">
-              <span style="background: linear-gradient(135deg, #f97316, #dc2626); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Chuu</span><span class="text-white">Auction</span>
-            </h3>
-            <p class="text-gray-400 mb-4 max-w-md" style="font-family: 'DM Sans', sans-serif;">
-              Transforming Uganda's livestock trade through transparency,
-              technology, and trust. Empowering farmers, connecting buyers,
-              building futures.
-            </p>
-            <div class="flex gap-4">
-              <a href="https://www.facebook.com/itsanguzur" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:scale-110 transition-transform">
-                <i class="bi bi-facebook text-white"></i>
-              </a>
-              <a href="https://x.com/itsranguzu" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:scale-110 transition-transform">
-                <i class="bi bi-twitter text-white"></i>
-              </a>
-              <a href="https://www.instagram.com/itsranguzu_/" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:scale-110 transition-transform">
-                <i class="bi bi-instagram text-white"></i>
-              </a>
-              <a href="https://www.linkedin.com/in/roggersanguzu/" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:scale-110 transition-transform">
-                <i class="bi bi-linkedin text-white"></i>
-              </a>
+    <footer class="app-footer" data-app-footer="1">
+      <div class="app-footer-inner">
+        <div class="app-footer-grid">
+          <div class="app-footer-brand">
+            <a href="/" class="app-footer-logo">
+              <span class="app-footer-logo-badge"><img src="/img/logo.png" alt="ChuuAuction Logo" /></span>
+              <span class="app-footer-logo-title"><span class="accent">Chuu</span>Auction</span>
+            </a>
+            <p class="app-footer-sub">Digital livestock auction infrastructure for trusted trade, transparent pricing, and verifiable records across Uganda.</p>
+            <div class="app-footer-socials">
+              <a href="https://www.facebook.com/itsanguzur" target="_blank" rel="noopener" class="app-footer-social" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+              <a href="https://x.com/itsranguzu" target="_blank" rel="noopener" class="app-footer-social" aria-label="X"><i class="bi bi-twitter"></i></a>
+              <a href="https://www.instagram.com/itsranguzu_/" target="_blank" rel="noopener" class="app-footer-social" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+              <a href="https://www.linkedin.com/in/roggersanguzu/" target="_blank" rel="noopener" class="app-footer-social" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
             </div>
           </div>
-
-          <!-- Quick Links -->
           <div>
-            <h4 class="font-semibold mb-4 text-orange-500" style="font-family: 'Syne', sans-serif;">Quick Links</h4>
-            <ul class="space-y-2 text-gray-400" style="font-family: 'DM Sans', sans-serif;">
-              <li><a href="/#features" class="hover:text-orange-500 transition-colors">Features</a></li>
-              <li><a href="/#how" class="hover:text-orange-500 transition-colors">How It Works</a></li>
-              <li><a href="/#impact" class="hover:text-orange-500 transition-colors">Our Impact</a></li>
-              <li><a href="/#testimonials" class="hover:text-orange-500 transition-colors">Stories</a></li>
+            <p class="app-footer-head">Platform</p>
+            <ul class="app-footer-links">
+              <li><a href="/">Marketplace Home</a></li>
+              <li><a href="/auctions/animalList">Live Auctions</a></li>
+              <li><a href="/verification/status">Verification Status</a></li>
+              <li><a href="/livestock/priceCalculator">Price Calculator</a></li>
             </ul>
           </div>
-
-          <!-- Contact -->
           <div>
-            <h4 class="font-semibold mb-4 text-orange-500" style="font-family: 'Syne', sans-serif;">Contact</h4>
-            <ul class="space-y-2 text-gray-400" style="font-family: 'DM Sans', sans-serif;">
-              <li class="flex items-center gap-2"><i class="bi bi-envelope text-orange-500"></i> info@chuuauction.ug</li>
-              <li class="flex items-center gap-2"><i class="bi bi-phone text-orange-500"></i> +256 700 000 000</li>
-              <li class="flex items-center gap-2"><i class="bi bi-geo-alt text-orange-500"></i> Kampala, Uganda</li>
+            <p class="app-footer-head">Resources</p>
+            <ul class="app-footer-links">
+              <li><a href="/auth/login">Sign In</a></li>
+              <li><a href="/auth/register">Create Account</a></li>
+              <li><a href="/auth/terms">Terms</a></li>
+              <li><a href="/auth/privacy">Privacy Policy</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="app-footer-head">Contact</p>
+            <ul class="app-footer-contact">
+              <li><i class="bi bi-envelope"></i> support@chuuauction.ug</li>
+              <li><i class="bi bi-telephone"></i> +256 700 000 000</li>
+              <li><i class="bi bi-geo-alt"></i> Kampala, Uganda</li>
             </ul>
           </div>
         </div>
-
-        <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm" style="font-family: 'DM Sans', sans-serif;">
-          <p>&copy; <span class="js-year">2026</span> ChuuAuction. All rights reserved. | Empowering Uganda's Livestock Future</p>
-          <p class="mt-2">Contributing to SDG 1, 2, 8 & 9 | Building Transparent Markets</p>
+        <div class="app-footer-bottom">
+          <p class="app-footer-copy">© <span class="js-year"></span> ChuuAuction. All rights reserved.</p>
+          <div class="app-footer-badges">
+            <span class="app-footer-pill">Enterprise Security</span>
+            <span class="app-footer-pill">Audit Ready</span>
+            <span class="app-footer-pill">Real-Time Marketplace</span>
+          </div>
         </div>
       </div>
     </footer>

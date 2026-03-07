@@ -1,4 +1,4 @@
-<html lang="en">
+﻿<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,7 +15,6 @@
       href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-
     <script>
       tailwind.config = { darkMode: "class", theme: { extend: { fontFamily: {
       display: ["Crimson Pro", "serif"], mono: ["Space Mono", "monospace"],
@@ -30,7 +29,6 @@
       "0 0 20px rgba(59, 130, 246, 0.3)" }, "50%": { boxShadow: "0 0 40px
       rgba(59, 130, 246, 0.6)" }, }, }, }, }, };
     </script>
-
     <style>
       .font-display {
         font-family: "Crimson Pro", serif;
@@ -41,45 +39,37 @@
       .font-body {
         font-family: "Inter", sans-serif;
       }
-
       .glass {
         background: rgba(255, 255, 255, 0.02);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border: 1px solid rgba(255, 255, 255, 0.05);
       }
-
       .glass-strong {
         background: rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(30px);
         -webkit-backdrop-filter: blur(30px);
         border: 1px solid rgba(255, 255, 255, 0.1);
       }
-
       .file-upload-zone {
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
-
       .file-upload-zone.drag-over {
         background: rgba(59, 130, 246, 0.1);
         border-color: #3b82f6;
         transform: scale(1.02);
       }
-
       .file-preview {
         position: relative;
         overflow: hidden;
       }
-
       .file-preview:hover .file-remove {
         opacity: 1;
       }
-
       .file-remove {
         opacity: 0;
         transition: opacity 0.3s ease;
       }
-
       @keyframes progress {
         0% {
           width: 0%;
@@ -88,16 +78,13 @@
           width: 100%;
         }
       }
-
       .progress-bar {
         animation: progress 2s ease-out;
       }
-
       .step-circle {
         position: relative;
         z-index: 1;
       }
-
       ::-webkit-scrollbar {
         width: 8px;
       }
@@ -108,7 +95,6 @@
         background: linear-gradient(180deg, #3b82f6, #2563eb);
         border-radius: 4px;
       }
-
       @keyframes ai-pulse {
         0%,
         100% {
@@ -118,15 +104,12 @@
           box-shadow: 0 0 0 10px rgba(139, 92, 246, 0);
         }
       }
-
       .ai-badge {
         animation: ai-pulse 2s infinite;
       }
     </style>
   </head>
-
   <body class="min-h-screen bg-gray-950 text-white font-body overflow-x-hidden">
-    <!-- Background -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
       <div
         class="absolute top-20 left-20 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[150px]"
@@ -135,10 +118,7 @@
         class="absolute bottom-20 right-20 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[150px]"
       ></div>
     </div>
-
-    <!-- Main Container -->
     <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <!-- Header -->
       <div class="mb-12 animate-fade-in text-center">
         <div class="flex items-center justify-center gap-3 mb-4">
           <div
@@ -166,8 +146,6 @@
             Flash</span>
         </div>
       </div>
-
-      <!-- Progress Steps -->
       <div class="mb-12 relative">
         <div class="flex items-center justify-between max-w-2xl mx-auto">
           <div class="flex flex-col items-center step-circle">
@@ -208,14 +186,11 @@
           </div>
         </div>
       </div>
-
-      <!-- Form -->
       <form
         id="verification-form"
         class="space-y-8"
         enctype="multipart/form-data"
       >
-        <!-- Step 1: Document Upload -->
         <div id="step1" class="step-container animate-slide-in">
           <div class="p-8 rounded-3xl glass-strong border border-gray-800/50">
             <h2
@@ -224,8 +199,6 @@
               <i class="bi bi-file-earmark-text text-blue-500"></i>
               Verification Documents
             </h2>
-
-            <!-- Verification Type -->
             <div class="mb-8">
               <label class="block text-sm font-bold text-gray-300 mb-4">What do
                 you want to verify?</label>
@@ -288,8 +261,6 @@
                 </label>
               </div>
             </div>
-
-            <!-- Ownership Documents -->
             <div id="ownership-section" class="mb-8" style="display: none">
               <h3 class="text-xl font-bold mb-4 text-blue-400">
                 <i class="bi bi-folder2-open mr-2"></i>
@@ -324,8 +295,6 @@
                 class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4"
               ></div>
             </div>
-
-            <!-- Health Documents -->
             <div id="health-section" class="mb-8" style="display: none">
               <h3 class="text-xl font-bold mb-4 text-green-400">
                 <i class="bi bi-clipboard2-pulse mr-2"></i>
@@ -360,7 +329,6 @@
                 class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4"
               ></div>
             </div>
-
             <div class="flex justify-end">
               <button
                 type="button"
@@ -372,8 +340,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Step 2: Animal Photos -->
         <div id="step2" class="step-container" style="display: none">
           <div
             class="p-8 rounded-3xl glass-strong border border-gray-800/50 animate-slide-in"
@@ -384,7 +350,6 @@
               <i class="bi bi-camera text-purple-500"></i>
               Animal Photos
             </h2>
-
             <div
               class="mb-6 p-4 rounded-xl bg-purple-500/10 border border-purple-500/30"
             >
@@ -393,13 +358,12 @@
                 Photo Requirements
               </h4>
               <ul class="text-sm text-gray-300 space-y-1">
-                <li>✓ Clear, well-lit photos from multiple angles</li>
-                <li>✓ Show identifying features (markings, tags, etc.)</li>
-                <li>✓ Full body shots and close-ups</li>
-                <li>✓ Recent photos (taken within last 7 days)</li>
+                <li>✅ Clear, well-lit photos from multiple angles</li>
+                <li>✅ Show identifying features (markings, tags, etc.)</li>
+                <li>✅ Full body shots and close-ups</li>
+                <li>✅ Recent photos (taken within last 7 days)</li>
               </ul>
             </div>
-
             <div
               class="file-upload-zone p-12 rounded-2xl border-2 border-dashed border-gray-700 hover:border-purple-500 transition-all cursor-pointer text-center"
               id="photos-drop-zone"
@@ -420,12 +384,10 @@
                 class="hidden"
               />
             </div>
-
             <div
               id="photos-previews"
               class="grid grid-cols-2 md:grid-cols-5 gap-4 mt-6"
             ></div>
-
             <div class="flex justify-between mt-8">
               <button
                 type="button"
@@ -444,8 +406,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Step 3: Additional Details -->
         <div id="step3" class="step-container" style="display: none">
           <div
             class="p-8 rounded-3xl glass-strong border border-gray-800/50 animate-slide-in"
@@ -456,9 +416,7 @@
               <i class="bi bi-pencil-square text-blue-500"></i>
               Additional Information
             </h2>
-
             <div class="grid md:grid-cols-2 gap-6">
-              <!-- Ownership Details -->
               <div>
                 <label
                   class="block text-sm font-bold text-gray-300 mb-2"
@@ -470,8 +428,6 @@
                   placeholder="How did you acquire this animal? Include purchase date, seller info, etc."
                 ></textarea>
               </div>
-
-              <!-- Health Notes -->
               <div>
                 <label class="block text-sm font-bold text-gray-300 mb-2">Health
                   Notes</label>
@@ -482,8 +438,6 @@
                   placeholder="Any health concerns, treatments, or medical history..."
                 ></textarea>
               </div>
-
-              <!-- Veterinarian Info -->
               <div>
                 <label
                   class="block text-sm font-bold text-gray-300 mb-2"
@@ -495,8 +449,6 @@
                 placeholder="Roggers Anguzu"
                 />
               </div>
-
-              <!-- Vet Contact -->
               <div>
                 <label
                   class="block text-sm font-bold text-gray-300 mb-2"
@@ -508,8 +460,6 @@
                   placeholder="+256 700 123 456"
                 />
               </div>
-
-              <!-- Last Vaccination -->
               <div>
                 <label class="block text-sm font-bold text-gray-300 mb-2">Last
                   Vaccination Date</label>
@@ -519,8 +469,6 @@
                   class="w-full px-4 py-3 rounded-xl glass border border-gray-800 focus:border-blue-500 focus:outline-none transition-all text-white bg-gray-900/50"
                 />
               </div>
-
-              <!-- Acquisition Date -->
               <div>
                 <label
                   class="block text-sm font-bold text-gray-300 mb-2"
@@ -531,8 +479,6 @@
                   class="w-full px-4 py-3 rounded-xl glass border border-gray-800 focus:border-blue-500 focus:outline-none transition-all text-white bg-gray-900/50"
                 />
               </div>
-
-              <!-- Previous Owner -->
               <div class="md:col-span-2">
                 <label
                   class="block text-sm font-bold text-gray-300 mb-2"
@@ -545,7 +491,6 @@
                 />
               </div>
             </div>
-
             <div class="flex justify-between mt-8">
               <button
                 type="button"
@@ -565,8 +510,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Step 4: Review & Submit -->
         <div id="step4" class="step-container" style="display: none">
           <div
             class="p-8 rounded-3xl glass-strong border border-gray-800/50 animate-slide-in"
@@ -576,12 +519,8 @@
             >
               Review & Submit
             </h2>
-
             <div id="review-summary" class="space-y-6 mb-8">
-              <!-- Summary will be populated by JavaScript -->
             </div>
-
-            <!-- Terms -->
             <div class="p-6 rounded-xl glass border border-gray-800 mb-6">
               <label class="flex items-start gap-3 cursor-pointer">
                 <input
@@ -597,7 +536,6 @@
                 </span>
               </label>
             </div>
-
             <div class="flex justify-between">
               <button
                 type="button"
@@ -616,12 +554,8 @@
             </div>
           </div>
         </div>
-
-        <!-- Hidden auction ID field -->
         <input type="hidden" name="auctionId" id="auctionId" value="" />
       </form>
-
-      <!-- Loading Modal -->
       <div
         id="loading-modal"
         class="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 hidden items-center justify-center"
@@ -641,8 +575,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Success Modal -->
       <div
         id="success-modal"
         class="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 hidden items-center justify-center"
@@ -660,7 +592,6 @@
             Your documents are being verified by our AI system. You'll receive
             results shortly.
           </p>
-          <!-- Inside success-modal -->
           <button
             id="view-verifications-btn"
             class="w-full px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 font-bold hover:shadow-lg transition-all"
@@ -671,10 +602,9 @@
         </div>
       </div>
     </div>
-
-    <!-- External JavaScript -->
     <script src="/js/verification.js"></script>
       <script src="/js/app-theme.js"></script>
   </body>
 </html>
+
 

@@ -1,7 +1,6 @@
-(function () {
+﻿(function () {
   var tableBody = document.getElementById("users-table-body");
   if (!tableBody) return;
-
   var state = {
     search: "",
     role: "all",
@@ -14,15 +13,12 @@
     totalPages: 1,
     users: [],
   };
-
   function toast(message, level) {
     if (typeof window.showToast === "function") {
       window.showToast(message, level || "info");
     } else {
-      console.log("[admin-users]", message);
     }
   }
-
   function escapeHtml(value) {
     return String(value || "")
       .replace(/&/g, "&amp;")
@@ -31,7 +27,6 @@
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#39;");
   }
-
   function initials(name) {
     var clean = String(name || "").trim();
     if (!clean) return "?";
@@ -43,14 +38,12 @@
       .join("")
       .toUpperCase();
   }
-
   function formatRole(role) {
     var r = String(role || "").toLowerCase();
     if (r === "seller" || r === "farmer") return "Farmer";
     if (r === "administrator" || r === "admin") return "Admin";
     return "Buyer";
   }
-
   function formatDate(value) {
     var date = value ? new Date(value) : null;
     if (!date || Number.isNaN(date.getTime())) return "-";
@@ -60,7 +53,6 @@
       day: "numeric",
     });
   }
-
   async function api(path, options) {
     var response = await fetch(
       path,
@@ -72,21 +64,18 @@
         options || {},
       ),
     );
-
     var payload = null;
     try {
       payload = await response.json();
     } catch (_) {
       payload = null;
     }
-
     if (!response.ok || !payload || payload.success === false) {
       var msg = (payload && payload.message) || "Request failed";
       throw new Error(msg);
     }
     return payload;
   }
-
   function buildQuery() {
     var query = new URLSearchParams();
     query.set("search", state.search);
@@ -98,26 +87,22 @@
     query.set("limit", String(state.limit));
     return query.toString();
   }
-
   function renderRows(users) {
     var roleStyles = {
       Farmer: "bg-orange-500/15 text-orange-400",
       Buyer: "bg-blue-500/15 text-blue-400",
       Admin: "bg-purple-500/15 text-purple-400",
     };
-
     var statusStyles = {
       active: "bg-green-500/15 text-green-400",
       inactive: "bg-gray-500/15 text-gray-400",
       suspended: "bg-red-500/15 text-red-400",
     };
-
     if (!users.length) {
       tableBody.innerHTML =
         '<tr><td colspan="7" class="px-5 py-10 text-center text-gray-500">No users found for the current filters.</td></tr>';
       return;
     }
-
     tableBody.innerHTML = users
       .map(function (u, i) {
         var roleLabel = formatRole(u.role);
@@ -127,7 +112,6 @@
         var selfTag = u.isCurrentUser
           ? '<span class="ml-2 text-[10px] text-orange-400">(You)</span>'
           : "";
-
         return (
           '<tr class="border-b border-gray-800/30 hover:bg-gray-800/20 transition-colors group animate-slide-up" style="animation-delay:' +
           i * 0.03 +
@@ -185,23 +169,19 @@
       })
       .join("");
   }
-
   function renderPagination() {
     var label = document.getElementById("user-count-label");
     var numbers = document.getElementById("users-page-numbers");
     var prev = document.getElementById("users-prev-page");
     var next = document.getElementById("users-next-page");
     if (!label || !numbers || !prev || !next) return;
-
     var from = state.total === 0 ? 0 : (state.page - 1) * state.limit + 1;
     var to = Math.min(state.total, state.page * state.limit);
     label.textContent = "Showing " + from + "-" + to + " of " + state.total;
-
     prev.disabled = state.page <= 1;
     next.disabled = state.page >= state.totalPages;
     prev.classList.toggle("opacity-40", prev.disabled);
     next.classList.toggle("opacity-40", next.disabled);
-
     var pages = [];
     for (
       var p = Math.max(1, state.page - 1);
@@ -210,7 +190,6 @@
     ) {
       pages.push(p);
     }
-
     numbers.innerHTML = pages
       .map(function (p) {
         var active = p === state.page;
@@ -228,7 +207,6 @@
       })
       .join("");
   }
-
   async function loadUsers() {
     try {
       var payload = await api("/api/user/admin/users?" + buildQuery());
@@ -238,7 +216,6 @@
             .getElementById("dashboard-stats-context")
             .getAttribute("data-user-id")
         : null;
-
       state.users = list.map(function (u) {
         return Object.assign({}, u, {
           isCurrentUser: currentUserId
@@ -255,14 +232,12 @@
       toast(error.message || "Failed to load users", "error");
     }
   }
-
   function roleValueFromLabel(label) {
     var value = String(label || "").toLowerCase();
     if (value === "farmer" || value === "seller") return "seller";
     if (value === "admin" || value === "administrator") return "administrator";
     return "buyer";
   }
-
   function openUserModal(user) {
     var isEdit = !!user;
     var modal = document.createElement("div");
@@ -310,21 +285,16 @@
       "</div>" +
       "</form>" +
       "</div>";
-
     document.body.appendChild(modal);
-
     function close() {
       modal.remove();
     }
-
     modal.querySelectorAll("[data-close]").forEach(function (btn) {
       btn.addEventListener("click", close);
     });
-
     modal.addEventListener("click", function (event) {
       if (event.target === modal) close();
     });
-
     modal
       .querySelector("#admin-user-form")
       .addEventListener("submit", async function (event) {
@@ -337,7 +307,6 @@
           role: roleValueFromLabel(fd.get("role")),
         };
         if (!isEdit) payload.password = String(fd.get("password") || "");
-
         try {
           if (isEdit) {
             await api("/api/user/admin/users/" + encodeURIComponent(user._id), {
@@ -359,19 +328,16 @@
         }
       });
   }
-
   function getUserById(id) {
     return state.users.find(function (u) {
       return String(u._id) === String(id);
     });
   }
-
   async function updateStatus(userId, currentStatus) {
     var next = "active";
     if (currentStatus === "active") next = "inactive";
     if (currentStatus === "inactive") next = "suspended";
     if (currentStatus === "suspended") next = "active";
-
     try {
       await api(
         "/api/user/admin/users/" + encodeURIComponent(userId) + "/status",
@@ -386,7 +352,6 @@
       toast(error.message || "Failed to update status", "error");
     }
   }
-
   async function resetPassword(userId) {
     var value = window.prompt("Enter new password (min 6 characters):");
     if (!value) return;
@@ -403,7 +368,6 @@
       toast(error.message || "Failed to reset password", "error");
     }
   }
-
   async function deleteUser(userId) {
     var user = getUserById(userId);
     var label = user ? user.name : "this user";
@@ -419,7 +383,6 @@
       toast(error.message || "Failed to delete user", "error");
     }
   }
-
   function downloadCsv() {
     var rows = [["Name", "Email", "Phone", "Role", "Status", "Joined"]];
     state.users.forEach(function (u) {
@@ -441,7 +404,6 @@
           .join(",");
       })
       .join("\n");
-
     var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     var url = URL.createObjectURL(blob);
     var link = document.createElement("a");
@@ -452,7 +414,6 @@
     link.remove();
     URL.revokeObjectURL(url);
   }
-
   var searchInput = document.getElementById("user-search");
   var roleFilter = document.getElementById("role-filter");
   var statusFilter = document.getElementById("status-filter");
@@ -461,7 +422,6 @@
   var prevBtn = document.getElementById("users-prev-page");
   var nextBtn = document.getElementById("users-next-page");
   var numbersEl = document.getElementById("users-page-numbers");
-
   var searchTimer = null;
   if (searchInput) {
     searchInput.addEventListener("input", function () {
@@ -473,7 +433,6 @@
       }, 250);
     });
   }
-
   if (roleFilter) {
     roleFilter.addEventListener("change", function () {
       state.role = roleFilter.value;
@@ -488,21 +447,18 @@
       loadUsers();
     });
   }
-
   if (addUserBtn) {
     addUserBtn.onclick = null;
     addUserBtn.addEventListener("click", function () {
       openUserModal(null);
     });
   }
-
   if (exportBtn) {
     exportBtn.addEventListener("click", function () {
       downloadCsv();
       toast("CSV export ready", "success");
     });
   }
-
   if (prevBtn) {
     prevBtn.addEventListener("click", function () {
       if (state.page > 1) {
@@ -527,14 +483,12 @@
       loadUsers();
     });
   }
-
   tableBody.addEventListener("click", function (event) {
     var btn = event.target.closest("[data-action]");
     if (!btn) return;
     var userId = btn.getAttribute("data-id");
     var action = btn.getAttribute("data-action");
     if (!userId || !action) return;
-
     if (action === "edit") {
       var user = getUserById(userId);
       if (user) openUserModal(user);
@@ -552,7 +506,6 @@
       deleteUser(userId);
     }
   });
-
   window.filterUsers = function () {
     state.search = searchInput ? searchInput.value.trim() : "";
     state.role = roleFilter ? roleFilter.value : "all";
@@ -560,7 +513,6 @@
     state.page = 1;
     loadUsers();
   };
-
   window.sortUsers = function (field) {
     var mappedField = field === "status" ? "accountStatus" : field;
     if (state.sortBy === mappedField) {
@@ -573,6 +525,33 @@
     loadUsers();
     toast("Sorted by " + field, "info");
   };
-
+  window.openUserManagement = function (options) {
+    var opts = options || {};
+    if (typeof window.switchTab === "function") {
+      window.switchTab("users", null);
+      window.location.hash = "users";
+    }
+    if (typeof opts.search === "string" && searchInput) {
+      searchInput.value = opts.search;
+      state.search = opts.search.trim();
+    }
+    if (typeof opts.role === "string" && roleFilter) {
+      roleFilter.value = opts.role;
+      state.role = opts.role;
+    }
+    if (typeof opts.status === "string" && statusFilter) {
+      statusFilter.value = opts.status;
+      state.status = opts.status;
+    }
+    state.page = 1;
+    loadUsers().then(function () {
+      if (!opts.userId) return;
+      var match = getUserById(opts.userId);
+      if (match && typeof window.showToast === "function") {
+        window.showToast("User loaded for management: " + (match.name || "User"), "info");
+      }
+    });
+  };
   loadUsers();
 })();
+

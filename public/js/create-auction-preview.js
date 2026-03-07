@@ -1,8 +1,7 @@
-(function () {
+﻿(function () {
   function byId(id) {
     return document.getElementById(id);
   }
-
   var state = {
     files: [],
     countdownIntervalId: null,
@@ -13,16 +12,13 @@
       4: "fas fa-clock",
     },
   };
-
   function setStep(step, status) {
     var item = byId("stepItem" + step);
     var dot = byId("step" + step);
     if (!item || !dot) return;
     var label = item.querySelector(".step-label");
-
     item.classList.remove("active", "completed");
     dot.classList.remove("active", "completed");
-
     if (status === "completed") {
       item.classList.add("completed");
       dot.classList.add("completed");
@@ -34,7 +30,6 @@
       }
       return;
     }
-
     if (status === "active") {
       item.classList.add("active");
       dot.classList.add("active");
@@ -46,7 +41,6 @@
       }
       return;
     }
-
     dot.innerHTML = '<i class="' + state.stepIcons[step] + '"></i>';
     if (label) {
       var baseTextR = label.getAttribute("data-base") || label.textContent.split(" (")[0];
@@ -54,12 +48,10 @@
       label.textContent = baseTextR + " (Remaining)";
     }
   }
-
   function parseNumber(value) {
     var n = Number(value);
     return Number.isFinite(n) ? n : 0;
   }
-
   function detailsComplete() {
     var animalType = byId("animalTypeSelect");
     var breed = byId("breedInput");
@@ -71,7 +63,6 @@
     var ageYears = document.querySelector('input[name="ageYears"]');
     var ageMonths = document.querySelector('input[name="ageMonths"]');
     var sex = document.querySelector('input[name="sex"]:checked');
-
     return !!(
       animalType &&
       animalType.value &&
@@ -94,11 +85,9 @@
       sex
     );
   }
-
   function photosComplete() {
     return state.files.length >= 2 && state.files.length <= 4;
   }
-
   function pricingComplete() {
     var start = byId("startingPrice");
     var reserve = byId("reservePrice");
@@ -107,7 +96,6 @@
     var reserveEmpty = !reserve || reserve.value === "";
     return startVal > 0 && (reserveEmpty || reserveVal >= startVal);
   }
-
   function buildEndDateFromInputs() {
     var endDate = byId("endDate");
     var endTime = byId("endTime");
@@ -119,24 +107,20 @@
     if (Number.isNaN(parsed.getTime())) return null;
     return parsed;
   }
-
   function timingComplete() {
     var endAt = buildEndDateFromInputs();
     return !!(endAt && endAt.getTime() > Date.now());
   }
-
   function refreshStepState() {
     var c1 = detailsComplete();
     var c2 = photosComplete();
     var c3 = pricingComplete();
     var c4 = timingComplete();
-
     setStep(1, c1 ? "completed" : "active");
     setStep(2, c2 ? "completed" : c1 ? "active" : "remaining");
     setStep(3, c3 ? "completed" : c2 ? "active" : "remaining");
     setStep(4, c4 ? "completed" : c3 ? "active" : "remaining");
   }
-
   function initLivePreview() {
     var categoryMap = {
       1: "Cattle",
@@ -155,7 +139,6 @@
     var breedInput = byId("breedInput");
     var weightInput = byId("weightInput");
     var locationInput = byId("locationInput");
-
     function update() {
       if (category && typeInput) {
         category.textContent = typeInput.value ? categoryMap[typeInput.value] || "-" : "-";
@@ -168,7 +151,6 @@
         location.textContent = locationInput.value.trim() || "-";
       }
     }
-
     [typeInput, breedInput, weightInput, locationInput].forEach(function (el) {
       if (el) {
         el.addEventListener("input", function () {
@@ -181,33 +163,27 @@
         });
       }
     });
-
     update();
   }
-
   function initDescriptionCounter() {
     var input = byId("descTextarea");
     var count = byId("descCharCount");
     if (!input || !count) return;
-
     function update() {
       var len = input.value.length;
       count.textContent = String(len);
       count.className = len >= 50 ? "ok" : "";
       refreshStepState();
     }
-
     input.addEventListener("input", update);
     update();
   }
-
   function initVaccinationToggle() {
     var toggle = byId("vaccinatedToggle");
     var label = byId("vaccinatedLabel");
     var section = byId("vaccinationLicenseSection");
     var license = byId("vaccinationLicense");
     if (!toggle || !label || !section || !license) return;
-
     function update() {
       if (toggle.checked) {
         label.textContent = "Yes";
@@ -221,14 +197,12 @@
         license.required = false;
       }
     }
-
     toggle.addEventListener("change", function () {
       update();
       refreshStepState();
     });
     update();
   }
-
   function syncInputFiles(input) {
     var dt = new DataTransfer();
     state.files.forEach(function (f) {
@@ -236,7 +210,6 @@
     });
     input.files = dt.files;
   }
-
   function initPhotoPreview() {
     var input = byId("animalPhotosInput");
     var grid = byId("photoPreviewGrid");
@@ -244,9 +217,7 @@
     var badge = byId("photoCountBadge");
     var badgeText = byId("photoCountText");
     var zone = byId("photoZone");
-
     if (!input || !grid || !prompt || !badge || !badgeText) return;
-
     function render() {
       grid.innerHTML = "";
       if (state.files.length === 0) {
@@ -256,7 +227,6 @@
         refreshStepState();
         return;
       }
-
       grid.classList.add("show");
       prompt.classList.add("hidden");
       badge.classList.remove("hidden");
@@ -265,7 +235,6 @@
         " photo" +
         (state.files.length === 1 ? "" : "s") +
         " selected";
-
       state.files.forEach(function (file, index) {
         var reader = new FileReader();
         reader.onload = function (ev) {
@@ -296,7 +265,6 @@
       });
       refreshStepState();
     }
-
     function addFiles(files) {
       var incoming = Array.from(files || []).filter(function (f) {
         return f && String(f.type || "").indexOf("image/") === 0;
@@ -312,11 +280,9 @@
       syncInputFiles(input);
       render();
     }
-
     input.addEventListener("change", function (event) {
       addFiles(event.target.files);
     });
-
     grid.addEventListener("click", function (event) {
       var btn = event.target.closest("[data-remove-index]");
       if (!btn) return;
@@ -326,7 +292,6 @@
       syncInputFiles(input);
       render();
     });
-
     if (zone) {
       zone.addEventListener("dragover", function (event) {
         event.preventDefault();
@@ -341,16 +306,13 @@
         addFiles(event.dataTransfer.files);
       });
     }
-
     window.removeAllPhotos = function () {
       state.files = [];
       syncInputFiles(input);
       render();
     };
-
     render();
   }
-
   function initAuctionTimerPreview() {
     var endDateInput = byId("endDate");
     var endTimeInput = byId("endTime");
@@ -368,10 +330,8 @@
     ) {
       return;
     }
-
     var tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000);
     endDateInput.min = tomorrow.toISOString().slice(0, 10);
-
     if (!endDateInput.value || !endTimeInput.value) {
       var defaultEnd = new Date(Date.now() + 24 * 60 * 60 * 1000);
       endDateInput.value = defaultEnd.toISOString().slice(0, 10);
@@ -380,7 +340,6 @@
         ":" +
         String(defaultEnd.getMinutes()).padStart(2, "0");
     }
-
     function refresh() {
       var endAt = buildEndDateFromInputs();
       if (!endAt) {
@@ -392,7 +351,6 @@
         refreshStepState();
         return;
       }
-
       var diff = endAt.getTime() - Date.now();
       if (diff <= 0) {
         daysEl.textContent = "00";
@@ -402,11 +360,9 @@
         refreshStepState();
         return;
       }
-
       var days = Math.floor(diff / 86400000);
       var hours = Math.floor((diff % 86400000) / 3600000);
       var mins = Math.floor((diff % 3600000) / 60000);
-
       daysEl.textContent = String(days).padStart(2, "0");
       hoursEl.textContent = String(hours).padStart(2, "0");
       minsEl.textContent = String(mins).padStart(2, "0");
@@ -426,26 +382,21 @@
         ".";
       refreshStepState();
     }
-
     function restartTimer() {
       if (state.countdownIntervalId) clearInterval(state.countdownIntervalId);
       state.countdownIntervalId = setInterval(refresh, 1000);
       refresh();
     }
-
     endDateInput.addEventListener("change", restartTimer);
     endTimeInput.addEventListener("change", restartTimer);
     var tz = document.querySelector('select[name="timezone"]');
     if (tz) tz.addEventListener("change", restartTimer);
-
     restartTimer();
   }
-
   function initPricingValidation() {
     var start = byId("startingPrice");
     var reserve = byId("reservePrice");
     if (!start || !reserve) return;
-
     function validate() {
       var startVal = parseNumber(start.value);
       var reserveVal = parseNumber(reserve.value);
@@ -456,17 +407,14 @@
       }
       refreshStepState();
     }
-
     start.addEventListener("input", validate);
     reserve.addEventListener("input", validate);
     validate();
   }
-
   function initDraft() {
     var form = byId("auctionForm");
     var saveBtn = byId("saveDraftBtn");
     if (!form || !saveBtn) return;
-
     saveBtn.addEventListener("click", function () {
       var formData = new FormData(form);
       var draft = {};
@@ -481,7 +429,6 @@
         saveBtn.innerHTML = original;
       }, 1700);
     });
-
     try {
       var raw = localStorage.getItem("auctionDraft");
       if (!raw) return;
@@ -504,16 +451,13 @@
         input.value = data[key];
       });
     } catch (_) {
-      // ignore invalid draft
     }
   }
-
   function initSubmit() {
     var form = byId("auctionForm");
     var submitBtn = byId("submitBtn");
     var terms = byId("termsCheckbox");
     if (!form || !submitBtn || !terms) return;
-
     form.addEventListener("submit", function (event) {
       if (!terms.checked) {
         event.preventDefault();
@@ -525,14 +469,12 @@
         '<i class="fas fa-hourglass-split spin"></i>Creating Auction';
     });
   }
-
   function initReactiveRefresh() {
     var form = byId("auctionForm");
     if (!form) return;
     form.addEventListener("input", refreshStepState);
     form.addEventListener("change", refreshStepState);
   }
-
   function init() {
     if (!byId("auctionForm")) return;
     initLivePreview();
@@ -546,10 +488,10 @@
     initReactiveRefresh();
     refreshStepState();
   }
-
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
   } else {
     init();
   }
 })();
+

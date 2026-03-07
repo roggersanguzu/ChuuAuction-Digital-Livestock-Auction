@@ -1,5 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Theme Toggle
+﻿document.addEventListener("DOMContentLoaded", function () {
   var themeToggle = document.getElementById("theme-toggle");
   var html = document.documentElement;
   var currentTheme = localStorage.getItem("chuu-theme") || localStorage.getItem("theme") || "dark";
@@ -14,8 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
       localStorage.setItem("chuu-theme", nextTheme);
     });
   }
-
-  // Password Visibility Toggle
   var togglePassword = document.getElementById("toggle-password");
   var passwordInput = document.getElementById("password");
   var eyeIcon = document.getElementById("eye-icon");
@@ -28,8 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
       eyeIcon.classList.toggle("bi-eye-slash");
     });
   }
-
-  // Password Strength Bars
   var bars = [
     document.getElementById("bar1"),
     document.getElementById("bar2"),
@@ -38,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
   ];
   var strengthText = document.getElementById("password-strength-text");
   var BAR_COLORS = ["#ef4444", "#f97316", "#eab308", "#22c55e"];
-
   function resetBars() {
     bars.forEach(function (bar) {
       if (bar) {
@@ -47,18 +41,15 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-
   function calculateStrength(password) {
     if (!password) {
       return 0;
     }
-
     var score = 0;
     var hasLower = /[a-z]/.test(password);
     var hasUpper = /[A-Z]/.test(password);
     var hasNumber = /[0-9]/.test(password);
     var hasSymbol = /[^a-zA-Z0-9]/.test(password);
-
     if (password.length >= 8) {
       score++;
     }
@@ -71,10 +62,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (hasSymbol) {
       score++;
     }
-
     var isCommonWeak = /^(password|123456|qwerty|admin|letmein|welcome|passw0rd)$/i.test(password);
     var hasRepeating = /(.)\1{2,}/.test(password);
-
     if (password.length < 8) {
       score = Math.min(score, 1);
     }
@@ -84,15 +73,12 @@ document.addEventListener("DOMContentLoaded", function () {
     if (hasRepeating && score > 1) {
       score--;
     }
-
     return Math.max(0, Math.min(score, 4));
   }
-
   if (passwordInput) {
     passwordInput.addEventListener("input", function () {
       var password = this.value;
       var strength = calculateStrength(password);
-
       resetBars();
       if (strengthText) {
         strengthText.textContent = "";
@@ -101,14 +87,12 @@ document.addEventListener("DOMContentLoaded", function () {
       if (password.length === 0) {
         return;
       }
-
       for (var i = 0; i < strength; i++) {
         if (bars[i]) {
           bars[i].style.background = BAR_COLORS[i];
           bars[i].style.opacity = "1";
         }
       }
-
       var labels = ["", "Very Weak", "Weak", "Medium", "Strong"];
       if (strengthText && strength > 0) {
         strengthText.textContent = labels[strength];
@@ -116,8 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-
-  // Password Match Validation
   var confirmPassword = document.getElementById("confirmPassword");
   if (confirmPassword && passwordInput) {
     confirmPassword.addEventListener("input", function () {
@@ -132,8 +114,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-
-  // Form Submission
   var form = document.getElementById("create-account-form");
   var submitBtn = form ? form.querySelector('button[type="submit"]') : null;
   if (form) {
@@ -142,7 +122,6 @@ document.addEventListener("DOMContentLoaded", function () {
       var termsChecked = form.querySelector('[name="terms"]').checked;
       var pwd = passwordInput ? passwordInput.value : "";
       var confirmPwd = confirmPassword ? confirmPassword.value : "";
-
       if (!roleValue) {
         alert("Please select a role");
         e.preventDefault();
@@ -158,7 +137,6 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault();
         return;
       }
-
       if (submitBtn) {
         var originalHTML = submitBtn.innerHTML;
         submitBtn.disabled = true;
@@ -173,6 +151,5 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-
-  console.log("ChuuAuction Registration System Loaded");
 });
+

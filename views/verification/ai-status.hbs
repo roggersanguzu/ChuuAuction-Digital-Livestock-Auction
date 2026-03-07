@@ -1,3 +1,4 @@
+﻿<!DOCTYPE html>
 <html lang="en" data-theme="dark" class="dark">
   <head>
     <meta charset="UTF-8" />
@@ -15,26 +16,23 @@
       href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800;900&family=Geist+Mono:wght@300;400;500;600&family=Cabinet+Grotesk:wght@400;500;700;800&display=swap"
       rel="stylesheet"
     />
-
     <style>
-      /* ═══════════════════════════════════════════════════════
-       DESIGN SYSTEM — "Obsidian Command" for ChuuAuction
+      /*
+       DESIGN SYSTEM  "Obsidian Command" for ChuuAuction
        Deep amber-ember on void. Holographic. Uncompromising.
-    ═══════════════════════════════════════════════════════ */
+     */
       :root {
-        /* Inherited from app-theme.css — we extend, not override */
+        /* Inherited from app-theme.css  we extend, not override */
         --hud-amber: #f59e0b;
         --hud-ember: #f97316;
         --hud-crimson: #dc2626;
         --hud-success: #22c55e;
         --hud-cyan: #22d3ee;
         --hud-blue: #60a5fa;
-
         --hud-amber-glow: rgba(245, 158, 11, 0.22);
         --hud-ember-glow: rgba(249, 115, 22, 0.18);
         --hud-success-glow: rgba(34, 197, 94, 0.18);
         --hud-crimson-glow: rgba(220, 38, 38, 0.18);
-
         --void: #020305;
         --void-2: #07080d;
         --surface: rgba(255, 255, 255, 0.032);
@@ -42,22 +40,18 @@
         --border: rgba(255, 255, 255, 0.07);
         --border-amber: rgba(245, 158, 11, 0.25);
         --border-hi: rgba(245, 158, 11, 0.55);
-
         --text-primary: #f4f6fb;
         --text-muted: #8c94a8;
         --text-dim: #3d4455;
-
         --f-display: "Syne", sans-serif;
         --f-body: "Cabinet Grotesk", sans-serif;
         --f-mono: "Geist Mono", monospace;
-
         --r: 10px;
         --r-lg: 16px;
         --r-xl: 22px;
         --ease: cubic-bezier(0.4, 0, 0.2, 1);
         --t: 0.3s var(--ease);
       }
-
       [data-theme="light"] {
         --void: #f2f4f8;
         --void-2: #ffffff;
@@ -73,7 +67,6 @@
         --hud-ember: #ea580c;
         --hud-success: #16a34a;
       }
-
       *,
       *::before,
       *::after {
@@ -84,7 +77,6 @@
       html {
         scroll-behavior: smooth;
       }
-
       body {
         font-family: var(--f-body);
         background: var(--void);
@@ -92,7 +84,7 @@
         min-height: 100vh;
         overflow-x: hidden;
         line-height: 1.6;
-        /* Subtle scan-line pattern — the unforgettable detail */
+        /* Subtle scan-line pattern  the unforgettable detail */
         background-image: repeating-linear-gradient(
           0deg,
           transparent,
@@ -104,7 +96,6 @@
       [data-theme="light"] body {
         background-image: none;
       }
-
       /* Ambient depth orbs */
       body::before {
         content: "";
@@ -129,7 +120,6 @@
             transparent 55%
           );
       }
-
       /* Grain overlay */
       body::after {
         content: "";
@@ -141,7 +131,6 @@
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         background-size: 160px 160px;
       }
-
       ::-webkit-scrollbar {
         width: 4px;
       }
@@ -152,8 +141,7 @@
         background: var(--hud-amber);
         border-radius: 99px;
       }
-
-      /* ══════════════════ PAGE SHELL ══════════════════ */
+      /*  PAGE SHELL  */
       #page-root {
         position: relative;
         z-index: 1;
@@ -161,10 +149,9 @@
         margin: 0 auto;
         padding: 18px 18px 72px;
       }
-
-      /* ══════════════════════════════════════════════════
+      /*
        HERO COMMAND HEADER
-    ══════════════════════════════════════════════════ */
+     */
       .cmd-hero {
         position: relative;
         overflow: hidden;
@@ -176,7 +163,6 @@
         backdrop-filter: blur(24px) saturate(140%);
         animation: heroEntrance 0.7s var(--ease) both;
       }
-
       /* Top chromatic line */
       .cmd-hero::before {
         content: "";
@@ -195,7 +181,6 @@
         );
         animation: lineShimmer 4s linear infinite;
       }
-
       /* Corner accent marks */
       .cmd-hero::after {
         content: "";
@@ -214,7 +199,6 @@
             transparent
           );
       }
-
       /* HUD grid lines */
       .hud-grid {
         position: absolute;
@@ -230,7 +214,6 @@
           transparent 80%
         );
       }
-
       .cmd-hero-inner {
         position: relative;
         z-index: 2;
@@ -240,7 +223,6 @@
         padding: 28px 32px;
         flex-wrap: wrap;
       }
-
       /* 3D Animal Orbit */
       .orbit-stage {
         flex-shrink: 0;
@@ -249,7 +231,6 @@
         gap: 10px;
         perspective: 800px;
       }
-
       .animal-pod {
         position: relative;
         width: 82px;
@@ -312,7 +293,6 @@
           opacity: 0;
         }
       }
-
       .animal-pod.p-cow {
         animation: podFloat 5.5s ease-in-out infinite;
       }
@@ -330,7 +310,6 @@
         height: 62px;
         font-size: 26px;
       }
-
       @keyframes podFloat {
         0%,
         100% {
@@ -342,7 +321,6 @@
             translateY(-9px);
         }
       }
-
       /* Status ring around main pod */
       .pod-ring {
         position: absolute;
@@ -356,13 +334,11 @@
           transform: rotate(360deg);
         }
       }
-
       /* Hero text */
       .hero-text {
         flex: 1;
         min-width: 260px;
       }
-
       .hero-kicker {
         display: inline-flex;
         align-items: center;
@@ -378,7 +354,6 @@
         border-radius: 99px;
         margin-bottom: 14px;
       }
-
       .hero-title {
         font-family: var(--f-display);
         font-size: clamp(22px, 2.8vw, 36px);
@@ -398,7 +373,6 @@
         -webkit-text-fill-color: transparent;
         background-clip: text;
       }
-
       .hero-desc {
         font-size: 14px;
         color: var(--text-muted);
@@ -406,7 +380,6 @@
         line-height: 1.7;
         margin-bottom: 14px;
       }
-
       /* Live signal badge */
       .signal-badge {
         display: inline-flex;
@@ -440,7 +413,6 @@
           box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
         }
       }
-
       /* Hero actions */
       .hero-actions {
         display: flex;
@@ -449,7 +421,6 @@
         flex-shrink: 0;
         flex-wrap: wrap;
       }
-
       .btn-ghost {
         display: inline-flex;
         align-items: center;
@@ -471,7 +442,6 @@
         color: var(--text-primary);
         background: var(--surface-2);
       }
-
       .btn-prime {
         display: inline-flex;
         align-items: center;
@@ -516,17 +486,15 @@
           transform: rotate(360deg);
         }
       }
-
-      /* ══════════════════════════════════════════════════
+      /*
        METRIC COMMAND STRIP
-    ══════════════════════════════════════════════════ */
+     */
       .metrics-strip {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 14px;
         margin-bottom: 18px;
       }
-
       .m-card {
         position: relative;
         overflow: hidden;
@@ -551,7 +519,6 @@
       .m-card:nth-child(4) {
         animation: cardUp 0.5s var(--ease) 0.26s both;
       }
-
       /* Hover shimmer sweep */
       .m-card::after {
         content: "";
@@ -569,7 +536,6 @@
       .m-card:hover::after {
         transform: translateX(120%);
       }
-
       /* Accent top bar per card */
       .m-card::before {
         content: "";
@@ -621,7 +587,6 @@
         transform: translateY(-4px);
         box-shadow: 0 22px 56px rgba(0, 0, 0, 0.3);
       }
-
       .m-label {
         font-family: var(--f-mono);
         font-size: 9px;
@@ -657,7 +622,6 @@
         font-size: 11px;
         color: var(--text-dim);
       }
-
       /* Mini bar chart */
       .m-bars {
         display: flex;
@@ -688,7 +652,6 @@
       .md .m-bar.hi {
         background: var(--hud-blue);
       }
-
       /* Ghost number watermark */
       .m-ghost {
         position: absolute;
@@ -705,10 +668,9 @@
       .m-card:hover .m-ghost {
         color: rgba(245, 158, 11, 0.06);
       }
-
-      /* ══════════════════════════════════════════════════
+      /*
        FILTER COMMAND BAR
-    ══════════════════════════════════════════════════ */
+     */
       .filter-cmd {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -718,7 +680,6 @@
         backdrop-filter: blur(14px);
         animation: cardUp 0.5s var(--ease) 0.32s both;
       }
-
       .filter-label {
         display: flex;
         align-items: center;
@@ -736,13 +697,11 @@
         height: 1px;
         background: linear-gradient(90deg, var(--border-amber), transparent);
       }
-
       .filter-grid {
         display: grid;
         grid-template-columns: 2.2fr 1fr 1fr 1fr 1fr;
         gap: 10px;
       }
-
       .f-ctrl {
         background: rgba(7, 8, 13, 0.7);
         border: 1px solid var(--border);
@@ -770,20 +729,18 @@
       .f-ctrl option {
         background: #07080d;
       }
-
-      /* ══════════════════════════════════════════════════
+      /*
        MAIN CONTENT SPLIT
-    ══════════════════════════════════════════════════ */
+     */
       .main-split {
         display: grid;
         grid-template-columns: 1fr 400px;
         gap: 16px;
         animation: cardUp 0.5s var(--ease) 0.38s both;
       }
-
-      /* ══════════════════════════════════════════════════
+      /*
        LEFT: SUBMISSION LIST PANEL
-    ══════════════════════════════════════════════════ */
+     */
       .list-panel {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -793,7 +750,6 @@
         display: flex;
         flex-direction: column;
       }
-
       .list-hd {
         padding: 16px 20px 14px;
         border-bottom: 1px solid var(--border);
@@ -812,14 +768,12 @@
         font-size: 10px;
         color: var(--text-dim);
       }
-
       .list-body {
         padding: 12px;
         flex: 1;
         overflow-y: auto;
         min-height: 350px;
       }
-
       /* Submission row */
       .sub-btn {
         width: 100%;
@@ -868,7 +822,6 @@
       .sub-btn.is-active::before {
         opacity: 1;
       }
-
       /* Shimmer on active */
       .sub-btn.is-active::after {
         content: "";
@@ -891,7 +844,6 @@
           transform: translateX(100%);
         }
       }
-
       .sub-top {
         display: flex;
         align-items: flex-start;
@@ -916,7 +868,6 @@
         color: var(--text-dim);
         margin-top: 2px;
       }
-
       .sub-chips {
         display: flex;
         flex-wrap: wrap;
@@ -942,13 +893,11 @@
         border-color: var(--border);
         color: var(--text-dim);
       }
-
       .sub-date {
         font-family: var(--f-mono);
         font-size: 10px;
         color: var(--text-dim);
       }
-
       /* Status pills */
       .spill {
         font-family: var(--f-mono);
@@ -990,7 +939,6 @@
         color: #94a3b8;
         border: 1px solid rgba(100, 116, 139, 0.28);
       }
-
       /* State displays */
       .state-box {
         display: flex;
@@ -1009,7 +957,6 @@
         font-size: 13px;
         color: var(--text-muted);
       }
-
       /* Pagination */
       .list-pg {
         padding: 12px 20px 16px;
@@ -1045,10 +992,9 @@
         font-size: 11px;
         color: var(--text-muted);
       }
-
-      /* ══════════════════════════════════════════════════
+      /*
        RIGHT: DETAIL PANEL
-    ══════════════════════════════════════════════════ */
+     */
       .detail-panel {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -1059,7 +1005,6 @@
         display: flex;
         flex-direction: column;
       }
-
       /* Top chroma edge */
       .detail-panel::before {
         content: "";
@@ -1076,7 +1021,6 @@
           transparent
         );
       }
-
       /* HUD scan lines overlay */
       .detail-panel::after {
         content: "";
@@ -1092,7 +1036,6 @@
           rgba(245, 158, 11, 0.005) 4px
         );
       }
-
       /* Decorative sheep watermark */
       .dp-deco {
         position: absolute;
@@ -1104,7 +1047,6 @@
         z-index: 1;
         transform: scaleX(-1);
       }
-
       .dp-scroll {
         position: relative;
         z-index: 2;
@@ -1112,7 +1054,6 @@
         overflow-y: auto;
         padding: 20px;
       }
-
       /* Placeholder */
       .dp-placeholder {
         display: flex;
@@ -1149,7 +1090,6 @@
           transform: rotate(360deg);
         }
       }
-
       /* Detail sections */
       .d-sec {
         background: var(--surface);
@@ -1175,7 +1115,6 @@
         height: 1px;
         background: var(--border-amber);
       }
-
       .d-row {
         display: flex;
         justify-content: space-between;
@@ -1198,7 +1137,6 @@
         text-align: right;
         word-break: break-word;
       }
-
       /* Confidence meters */
       .conf-wrap {
         margin-bottom: 10px;
@@ -1230,7 +1168,6 @@
       .conf-fill.f-hlt {
         background: linear-gradient(90deg, var(--hud-blue), var(--hud-success));
       }
-
       /* AI notes bubble */
       .ai-bubble {
         background: rgba(34, 211, 238, 0.04);
@@ -1242,7 +1179,6 @@
         line-height: 1.65;
         margin-top: 6px;
       }
-
       /* Doc links */
       .doc-lnk {
         display: inline-flex;
@@ -1263,7 +1199,6 @@
         background: rgba(34, 211, 238, 0.1);
         border-color: rgba(34, 211, 238, 0.35);
       }
-
       /* Analyze CTA */
       .btn-analyze {
         width: 100%;
@@ -1306,7 +1241,6 @@
         transform: none;
         box-shadow: none;
       }
-
       .spin-ring {
         display: inline-block;
         width: 13px;
@@ -1316,10 +1250,9 @@
         border-radius: 50%;
         animation: spinIcon 0.65s linear infinite;
       }
-
-      /* ══════════════════════════════════════════════════
+      /*
        KEYFRAMES
-    ══════════════════════════════════════════════════ */
+     */
       @keyframes heroEntrance {
         from {
           opacity: 0;
@@ -1348,10 +1281,9 @@
           background-position: 200% center;
         }
       }
-
-      /* ══════════════════════════════════════════════════
+      /*
        RESPONSIVE
-    ══════════════════════════════════════════════════ */
+     */
       @media (max-width: 1240px) {
         .main-split {
           grid-template-columns: 1fr 360px;
@@ -1394,32 +1326,25 @@
     </style>
   </head>
   <body>
-
     <div id="page-root">
-
-      <!-- ══════════════ COMMAND HERO ══════════════ -->
       <header class="cmd-hero">
         <div class="hud-grid"></div>
         <div class="cmd-hero-inner">
-
-          <!-- 3D Animal Pods -->
           <div class="orbit-stage">
             <div class="animal-pod p-cow">
               <div class="pod-ring"></div>
               <div class="pod-scan"></div>
-              🐄
+              <img src="/img/cow.png" alt="Cow" style="width:40px;height:40px;object-fit:contain;" />
             </div>
             <div class="animal-pod p-goat">
               <div class="pod-scan" style="animation-delay:-.9s"></div>
-              🐐
+              <img src="/img/goat.png" alt="Goat" style="width:34px;height:34px;object-fit:contain;" />
             </div>
             <div class="animal-pod p-sheep">
               <div class="pod-scan" style="animation-delay:-1.8s"></div>
-              🐑
+              <img src="/img/sheep.png" alt="Sheep" style="width:28px;height:28px;object-fit:contain;" />
             </div>
           </div>
-
-          <!-- Text -->
           <div class="hero-text">
             <div class="hero-kicker">
               <i class="bi bi-shield-fill-check"></i>
@@ -1439,8 +1364,6 @@
               REAL-TIME VERIFICATION WORKFLOW ACTIVE
             </div>
           </div>
-
-          <!-- Actions -->
           <div class="hero-actions">
             <a href="/dashboard/admin" class="btn-ghost">
               <i class="bi bi-arrow-left-short"></i>
@@ -1451,11 +1374,8 @@
               Refresh
             </button>
           </div>
-
         </div>
       </header>
-
-      <!-- ══════════════ METRIC STRIP ══════════════ -->
       <div class="metrics-strip">
         <div class="m-card ma">
           <div class="m-label">Total Submissions</div>
@@ -1469,7 +1389,7 @@
             <div class="m-bar" style="height:59%"></div>
             <div class="m-bar hi" style="height:88%"></div>
           </div>
-          <div class="m-ghost">∑</div>
+          <div class="m-ghost"><i class="bi bi-bar-chart-line"></i></div>
         </div>
         <div class="m-card mb">
           <div class="m-label">Pending Review</div>
@@ -1483,7 +1403,7 @@
             <div class="m-bar" style="height:88%"></div>
             <div class="m-bar hi" style="height:65%"></div>
           </div>
-          <div class="m-ghost">⏳</div>
+          <div class="m-ghost"><i class="bi bi-hourglass-split"></i></div>
         </div>
         <div class="m-card mc">
           <div class="m-label">Verified</div>
@@ -1497,7 +1417,7 @@
             <div class="m-bar" style="height:82%"></div>
             <div class="m-bar hi" style="height:94%"></div>
           </div>
-          <div class="m-ghost">✓</div>
+          <div class="m-ghost"><i class="bi bi-check2-circle"></i></div>
         </div>
         <div class="m-card md">
           <div class="m-label">Gemini Analyzed</div>
@@ -1511,11 +1431,9 @@
             <div class="m-bar" style="height:76%"></div>
             <div class="m-bar hi" style="height:86%"></div>
           </div>
-          <div class="m-ghost">⚡</div>
+          <div class="m-ghost"><i class="bi bi-cpu"></i></div>
         </div>
       </div>
-
-      <!-- ══════════════ FILTER BAR ══════════════ -->
       <div class="filter-cmd">
         <div class="filter-label">
           <i class="bi bi-funnel-fill"></i>
@@ -1556,11 +1474,7 @@
           </select>
         </div>
       </div>
-
-      <!-- ══════════════ MAIN SPLIT ══════════════ -->
       <div class="main-split">
-
-        <!-- LEFT: List -->
         <div class="list-panel">
           <div class="list-hd">
             <span class="list-hd-title">Submitted Verifications</span>
@@ -1573,7 +1487,7 @@
                   class="animal-pod p-cow"
                   style="width:54px;height:54px;font-size:24px;animation:podFloat 5.5s ease-in-out infinite;"
                 >
-                  <div class="pod-scan"></div>🐄
+                  <div class="pod-scan"></div><i class="bi bi-broadcast-pin"></i>
                 </div>
                 <div class="state-txt">Loading submissions...</div>
               </div>
@@ -1591,14 +1505,12 @@
             </button>
           </div>
         </div>
-
-        <!-- RIGHT: Detail -->
         <div class="detail-panel">
-          <div class="dp-deco">🐑</div>
+          <div class="dp-deco"><i class="bi bi-shield-check"></i></div>
           <div class="dp-scroll">
             <div id="detail-panel">
               <div class="dp-placeholder">
-                <div class="dp-placeholder-ico">🔬</div>
+                <div class="dp-placeholder-ico"><i class="bi bi-search"></i></div>
                 <div
                   style="font-family:var(--f-display);font-size:17px;font-weight:800;"
                 >Select a Submission</div>
@@ -1612,12 +1524,10 @@
             </div>
           </div>
         </div>
-
-      </div><!-- end main-split -->
-
-    </div><!-- end page-root -->
-
+      </div>
+    </div>
     <script src="/js/app-theme.js"></script>
     <script src="/js/admin-ai-verification.js"></script>
   </body>
 </html>
+

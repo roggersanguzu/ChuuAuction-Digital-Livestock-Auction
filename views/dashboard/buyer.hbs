@@ -1,9 +1,8 @@
-<html lang="en" class="dark">
+﻿<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ChuuAuction — Buyer Dashboard</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,7 +15,6 @@
     />
     <link href="/css/app-theme.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <style>
       :root {
         --orange-core: #f97316;
@@ -37,7 +35,6 @@
         --ff-display: "Bricolage Grotesque", system-ui, sans-serif;
         --ff-body: "Outfit", system-ui, sans-serif;
       }
-
       *,
       *::before,
       *::after {
@@ -45,11 +42,9 @@
         margin: 0;
         padding: 0;
       }
-
       html {
         scroll-behavior: smooth;
       }
-
       body {
         font-family: var(--ff-body);
         background: var(--surface-0);
@@ -58,7 +53,6 @@
         min-height: 100vh;
         -webkit-font-smoothing: antialiased;
       }
-
       /* ─── SCROLLBAR ─── */
       ::-webkit-scrollbar {
         width: 6px;
@@ -74,7 +68,6 @@
         );
         border-radius: 99px;
       }
-
       /* ─── BACKGROUND CANVAS ─── */
       #bg-canvas {
         position: fixed;
@@ -82,7 +75,6 @@
         z-index: 0;
         pointer-events: none;
       }
-
       .noise-overlay {
         position: fixed;
         inset: 0;
@@ -91,7 +83,6 @@
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
         opacity: 0.025;
       }
-
       /* ─── GRID LINES ─── */
       .grid-bg {
         position: fixed;
@@ -112,7 +103,6 @@
           background-position: 60px 60px;
         }
       }
-
       /* ─── LAYOUT ─── */
       .layout {
         display: flex;
@@ -120,7 +110,6 @@
         position: relative;
         z-index: 2;
       }
-
       /* ─── SIDEBAR ─── */
       .sidebar {
         width: 280px;
@@ -136,7 +125,6 @@
         overflow: hidden;
         transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
       }
-
       .sidebar-inner {
         display: flex;
         flex-direction: column;
@@ -149,7 +137,6 @@
       .sidebar-inner::-webkit-scrollbar {
         display: none;
       }
-
       /* ── SIDEBAR HEADER (logo + close button row) ── */
       .sidebar-header {
         display: flex;
@@ -157,7 +144,6 @@
         gap: 10px;
         margin-bottom: 24px;
       }
-
       /* Logo */
       .logo-block {
         flex: 1;
@@ -192,7 +178,6 @@
       .logo-block:hover::after {
         opacity: 1;
       }
-
       .logo-img {
         width: 44px;
         height: 44px;
@@ -213,7 +198,6 @@
         font-family: var(--ff-display);
         flex-shrink: 0;
       }
-
       .logo-text h1 {
         font-family: var(--ff-display);
         font-size: 18px;
@@ -248,7 +232,6 @@
           box-shadow: 0 0 0 4px rgba(34, 197, 94, 0);
         }
       }
-
       /* Close button — sits beside the logo, NOT inside it */
       .sidebar-close-btn {
         display: none;
@@ -270,7 +253,6 @@
         border-color: rgba(239, 68, 68, 0.3);
         color: #f87171;
       }
-
       /* Wallet mini card */
       .wallet-card {
         background: linear-gradient(
@@ -307,7 +289,6 @@
         align-items: center;
         gap: 4px;
       }
-
       /* Nav section label */
       .nav-section-label {
         font-size: 10px;
@@ -317,7 +298,6 @@
         color: var(--text-muted);
         padding: 12px 8px 6px;
       }
-
       /* Nav item */
       .nav-link {
         display: flex;
@@ -361,7 +341,6 @@
       .nav-link.active {
         color: var(--orange-bright);
       }
-
       .nav-icon {
         width: 36px;
         height: 36px;
@@ -404,7 +383,6 @@
         background: rgba(239, 68, 68, 0.15);
         color: #f87171;
       }
-
       .nav-chevron {
         margin-left: auto;
         font-size: 11px;
@@ -415,7 +393,6 @@
         transform: translateX(3px);
         color: var(--orange-core);
       }
-
       .nav-badge {
         margin-left: auto;
         background: rgba(249, 115, 22, 0.2);
@@ -426,13 +403,11 @@
         padding: 1px 7px;
         border-radius: 99px;
       }
-
       .sidebar-divider {
         height: 1px;
         background: var(--border-subtle);
         margin: 10px 0;
       }
-
       /* Logout */
       .logout-btn {
         display: flex;
@@ -460,7 +435,6 @@
         background: rgba(239, 68, 68, 0.15);
         color: #f87171;
       }
-
       /* ─── MAIN ─── */
       .main {
         flex: 1;
@@ -468,7 +442,6 @@
         padding: 36px 40px;
         overflow-y: auto;
       }
-
       /* ─── PAGE HEADER ─── */
       .page-header {
         display: flex;
@@ -477,11 +450,9 @@
         gap: 24px;
         margin-bottom: 40px;
       }
-
       .page-title-block {
         max-width: 560px;
       }
-
       .page-eyebrow {
         font-size: 11px;
         font-weight: 700;
@@ -501,7 +472,6 @@
         background: var(--orange-core);
         border-radius: 2px;
       }
-
       .page-title {
         font-family: var(--ff-display);
         font-size: clamp(36px, 5vw, 58px);
@@ -531,7 +501,6 @@
           background-position: 100% 50%;
         }
       }
-
       .page-subtitle {
         font-size: 15px;
         color: var(--text-secondary);
@@ -542,7 +511,6 @@
         color: var(--orange-bright);
         font-weight: 600;
       }
-
       /* Header actions */
       .header-actions {
         display: flex;
@@ -550,7 +518,6 @@
         gap: 12px;
         padding-top: 8px;
       }
-
       .btn {
         display: inline-flex;
         align-items: center;
@@ -587,7 +554,6 @@
         transform: translateY(-2px);
         box-shadow: 0 8px 32px rgba(249, 115, 22, 0.45);
       }
-
       .icon-btn {
         width: 44px;
         height: 44px;
@@ -606,7 +572,6 @@
         border-color: var(--border-accent);
         color: var(--orange-bright);
       }
-
       .notif-dot {
         position: absolute;
         top: 8px;
@@ -627,7 +592,6 @@
           transform: scale(1.3);
         }
       }
-
       /* ─── QUICK STATS BAND ─── */
       .stats-grid {
         display: grid;
@@ -635,7 +599,6 @@
         gap: 16px;
         margin-bottom: 36px;
       }
-
       .stat-card {
         background: var(--surface-1);
         border: 1px solid var(--border-subtle);
@@ -676,7 +639,6 @@
       .stat-card.purple::before {
         background: linear-gradient(90deg, transparent, #a855f7, transparent);
       }
-
       .stat-card:hover.blue {
         box-shadow: 0 20px 60px rgba(59, 130, 246, 0.15);
       }
@@ -689,14 +651,12 @@
       .stat-card:hover.purple {
         box-shadow: 0 20px 60px rgba(168, 85, 247, 0.15);
       }
-
       .stat-top {
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
         margin-bottom: 20px;
       }
-
       .stat-icon {
         width: 52px;
         height: 52px;
@@ -726,7 +686,6 @@
         background: rgba(168, 85, 247, 0.12);
         color: #c084fc;
       }
-
       .stat-tag {
         font-size: 10px;
         font-weight: 700;
@@ -772,7 +731,6 @@
         background: #f87171;
         border-radius: 50%;
       }
-
       .stat-value {
         font-family: var(--ff-display);
         font-size: 36px;
@@ -786,7 +744,6 @@
         color: var(--text-secondary);
         margin-bottom: 12px;
       }
-
       .stat-change {
         font-size: 12px;
         display: flex;
@@ -802,7 +759,6 @@
       .stat-change span {
         color: var(--text-muted);
       }
-
       /* ─── SECTION HEADER ─── */
       .section-header {
         display: flex;
@@ -840,7 +796,6 @@
         background: rgba(249, 115, 22, 0.12);
         border-color: rgba(249, 115, 22, 0.4);
       }
-
       /* ─── AUCTION CARDS ─── */
       .auctions-grid {
         display: grid;
@@ -848,7 +803,6 @@
         gap: 20px;
         margin-bottom: 40px;
       }
-
       .auction-card {
         background: var(--surface-1);
         border: 1px solid var(--border-subtle);
@@ -864,7 +818,6 @@
           0 24px 60px rgba(0, 0, 0, 0.4),
           0 0 0 1px rgba(249, 115, 22, 0.1);
       }
-
       .auction-img {
         position: relative;
         height: 200px;
@@ -879,7 +832,6 @@
       .auction-card:hover .auction-img img {
         transform: scale(1.05);
       }
-
       .auction-img-overlay {
         position: absolute;
         inset: 0;
@@ -890,7 +842,6 @@
           transparent 100%
         );
       }
-
       .auction-badges {
         position: absolute;
         top: 14px;
@@ -900,7 +851,6 @@
         align-items: center;
         justify-content: space-between;
       }
-
       .badge-live {
         display: flex;
         align-items: center;
@@ -920,7 +870,6 @@
         border-radius: 50%;
         animation: liveTagPulse 1s ease-in-out infinite;
       }
-
       .btn-heart {
         width: 36px;
         height: 36px;
@@ -947,7 +896,6 @@
         border-color: rgba(244, 63, 94, 0.4);
         background: rgba(244, 63, 94, 0.15);
       }
-
       .auction-meta {
         position: absolute;
         bottom: 14px;
@@ -978,7 +926,6 @@
       .meta-pill .bc {
         color: #60a5fa;
       }
-
       .auction-body {
         padding: 18px 20px 20px;
       }
@@ -994,7 +941,6 @@
         color: var(--text-muted);
         margin-bottom: 16px;
       }
-
       .bid-section {
         background: var(--surface-2);
         border: 1px solid var(--border-subtle);
@@ -1038,7 +984,6 @@
         font-size: 11px;
         color: var(--text-muted);
       }
-
       .bid-progress {
         height: 4px;
         background: var(--surface-3);
@@ -1061,7 +1006,6 @@
         color: var(--text-muted);
         text-align: right;
       }
-
       .btn-bid {
         width: 100%;
         padding: 13px;
@@ -1106,7 +1050,6 @@
           rgba(21, 128, 61, 0.22)
         );
       }
-
       /* ─── MIDDLE ROW ─── */
       .analytics-row {
         display: grid;
@@ -1114,7 +1057,6 @@
         gap: 20px;
         margin-bottom: 36px;
       }
-
       .card {
         background: var(--surface-1);
         border: 1px solid var(--border-subtle);
@@ -1125,14 +1067,12 @@
       .card:hover {
         border-color: var(--border-accent);
       }
-
       .chart-card-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin-bottom: 28px;
       }
-
       .tab-group {
         display: flex;
         gap: 4px;
@@ -1155,12 +1095,10 @@
         background: var(--surface-3);
         color: var(--orange-bright);
       }
-
       .chart-wrap {
         position: relative;
         height: 260px;
       }
-
       /* Activity feed */
       .activity-list {
         display: flex;
@@ -1182,7 +1120,6 @@
       .activity-item:hover {
         padding-left: 6px;
       }
-
       .activity-icon {
         width: 38px;
         height: 38px;
@@ -1209,7 +1146,6 @@
         background: rgba(239, 68, 68, 0.12);
         color: #f87171;
       }
-
       .activity-content {
         flex: 1;
         min-width: 0;
@@ -1258,7 +1194,6 @@
         font-size: 11px;
         color: var(--text-muted);
       }
-
       /* ─── BOTTOM ROW ─── */
       .bottom-row {
         display: grid;
@@ -1266,7 +1201,6 @@
         gap: 20px;
         margin-bottom: 40px;
       }
-
       .donut-wrap {
         display: flex;
         align-items: center;
@@ -1325,7 +1259,6 @@
         font-size: 13px;
         font-weight: 700;
       }
-
       .win-ring-area {
         display: flex;
         flex-direction: column;
@@ -1366,7 +1299,6 @@
         text-anchor: middle;
         dominant-baseline: middle;
       }
-
       .win-stats-row {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -1389,7 +1321,6 @@
         font-size: 11px;
         color: var(--text-muted);
       }
-
       /* ─── QUICK ACTION BAND ─── */
       .quick-band {
         display: grid;
@@ -1437,7 +1368,6 @@
         font-weight: 600;
         white-space: nowrap;
       }
-
       /* ─── MOBILE TOGGLE ─── */
       .mobile-toggle {
         display: none;
@@ -1460,7 +1390,6 @@
       .mobile-toggle:hover {
         border-color: var(--border-accent);
       }
-
       .sidebar-overlay {
         display: none;
         position: fixed;
@@ -1471,7 +1400,6 @@
         opacity: 0;
         transition: opacity 0.3s;
       }
-
       @media (max-width: 1200px) {
         .auctions-grid {
           grid-template-columns: repeat(2, 1fr);
@@ -1531,38 +1459,29 @@
     </style>
   </head>
   <body>
-
-    <!-- Background -->
     <div class="grid-bg"></div>
     <div class="noise-overlay"></div>
-
-    <!-- Mobile elements -->
     <button class="mobile-toggle" id="mobileToggle"><i
         class="bi bi-list"
       ></i></button>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
     <div class="layout">
-
-      <!-- ════════════════ SIDEBAR ════════════════ -->
       <aside class="sidebar" id="sidebar">
         <div
           id="dashboard-stats-context"
           data-role="{{user.role}}"
+          data-user-id="{{user.id}}"
           class="hidden"
         ></div>
         <div class="sidebar-inner">
-
-          <!-- Logo row: logo block + close button side by side -->
           <div class="sidebar-header">
             <div class="logo-block">
-              <div class="logo-img">C</div>
+              <div class="logo-img"><img src="/img/logo.png" alt="ChuuAuction Logo" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" /></div>
               <div class="logo-text">
                 <h1><span class="accent">Chuu</span>Auction</h1>
                 <p><span class="status-dot"></span> Buyer Panel · Online</p>
               </div>
             </div>
-            <!-- Close button is now OUTSIDE the logo block -->
             <button
               class="sidebar-close-btn"
               id="sidebarClose"
@@ -1571,8 +1490,6 @@
               <i class="bi bi-x-lg"></i>
             </button>
           </div>
-
-          <!-- Wallet -->
           <div class="wallet-card">
             <div class="wallet-label">
               <span>Wallet Balance</span>
@@ -1582,10 +1499,7 @@
             <div class="wallet-change"><i class="bi bi-arrow-up-short"></i>
               +12.5% vs last month</div>
           </div>
-
-          <!-- Nav -->
           <div class="nav-section-label">Main</div>
-
           <a href="/dashboard/buyer" class="nav-link active">
             <span class="nav-icon orange"><i
                 class="bi bi-grid-1x2-fill"
@@ -1593,13 +1507,11 @@
             Dashboard
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
-
           <a href="/auctions/animalList" class="nav-link">
             <span class="nav-icon blue"><i class="bi bi-cursor-fill"></i></span>
             Place Bid
             <span class="nav-badge">NEW</span>
           </a>
-
           <a href="/livestock/priceCalculator" class="nav-link">
             <span class="nav-icon green"><i class="bi bi-calculator"></i></span>
             Price Calculator
@@ -1610,15 +1522,12 @@
             Animal Posts
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
-
           <a href="/auctions/create" class="nav-link">
             <span class="nav-icon yellow"><i class="bi bi-hammer"></i></span>
             Initiate Auction
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
-
           <div class="nav-section-label">Manage</div>
-
           <a href="/dashboard/my-bids" class="nav-link">
             <span class="nav-icon green"><i
                 class="bi bi-journal-check"
@@ -1633,7 +1542,6 @@
             Track Auction Bids
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
-
           <a href="/verification/submit" class="nav-link">
             <span class="nav-icon green"><i
                 class="bi bi-file-earmark-check"
@@ -1648,21 +1556,17 @@
             Verification Status
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
-
-          <a href="/buyer/transactions" class="nav-link">
+          <a href="/dashboard/buyer#transactions" class="nav-link">
             <span class="nav-icon purple"><i class="bi bi-receipt"></i></span>
             Transactions
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
-
-          <a href="/livestock/settings" class="nav-link">
+          <a href="/dashboard/buyer#settings" data-open-user-settings="1" class="nav-link">
             <span class="nav-icon gray"><i class="bi bi-gear"></i></span>
             Settings
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
-
           <div class="sidebar-divider"></div>
-
           <form action="/auth/logout" method="POST" style="margin-top:auto;">
             <button type="submit" class="logout-btn">
               <span class="nav-icon red"><i
@@ -1671,14 +1575,9 @@
               Logout
             </button>
           </form>
-
         </div>
       </aside>
-
-      <!-- ════════════════ MAIN CONTENT ════════════════ -->
       <main class="main">
-
-        <!-- Page Header -->
         <header class="page-header">
           <div class="page-title-block">
             <h1 class="page-title">
@@ -1692,9 +1591,13 @@
             </p>
           </div>
           <div class="header-actions">
-            <div class="icon-btn">
+            <div id="buyer-notif-btn" class="icon-btn">
               <i class="bi bi-bell" style="font-size:17px"></i>
-              <span class="notif-dot"></span>
+              <span
+                id="buyer-notif-count"
+                class="notif-dot"
+                style="width:18px;height:18px;top:-3px;right:-3px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;"
+              >0</span>
             </div>
             <button class="btn btn-ghost"><i class="bi bi-funnel"></i>
               Filter</button>
@@ -1704,8 +1607,6 @@
               New Auction</a>
           </div>
         </header>
-
-        <!-- Quick Actions Band -->
         <div class="quick-band">
           <a class="quick-tile" href="/auctions/animalList">
             <div
@@ -1748,8 +1649,6 @@
             </div>
           </a>
         </div>
-
-        <!-- Stats Grid -->
         <div class="stats-grid">
           <div class="stat-card blue" data-link="/dashboard/my-bids">
             <div class="stat-top">
@@ -1764,7 +1663,6 @@
               +2
               <span>from yesterday</span></div>
           </div>
-
           <div class="stat-card green" data-link="/dashboard/my-bids">
             <div class="stat-top">
               <div class="stat-icon green"><i
@@ -1778,7 +1676,6 @@
               +15%
               <span>this month</span></div>
           </div>
-
           <div class="stat-card yellow" data-link="/auctions/animalList">
             <div class="stat-top">
               <div class="stat-icon yellow"><i
@@ -1793,7 +1690,6 @@
               ></i>
               Trending items</div>
           </div>
-
           <div class="stat-card purple" data-link="/auctions/animalList">
             <div class="stat-top">
               <div class="stat-icon purple"><i
@@ -1810,8 +1706,6 @@
               2 ending soon</div>
           </div>
         </div>
-
-        <!-- Live Auctions -->
         <div class="section-header">
           <div>
             <div class="section-title">Live Auctions</div>
@@ -1820,10 +1714,7 @@
           <a class="section-action" href="/auctions/animalList">View All
             <i class="bi bi-arrow-right"></i></a>
         </div>
-
-        <div class="auctions-grid">
-
-          <!-- Card 1 -->
+        <div id="buyer-live-auctions" class="auctions-grid">
           <div class="auction-card">
             <div class="auction-img">
               <img
@@ -1865,8 +1756,6 @@
                 Place Bid</button>
             </div>
           </div>
-
-          <!-- Card 2 -->
           <div class="auction-card">
             <div class="auction-img">
               <img
@@ -1912,8 +1801,6 @@
                 You're Leading</button>
             </div>
           </div>
-
-          <!-- Card 3 -->
           <div class="auction-card">
             <div class="auction-img">
               <img
@@ -1957,13 +1844,8 @@
                 Place Bid</button>
             </div>
           </div>
-
         </div>
-
-        <!-- Analytics Row -->
         <div class="analytics-row">
-
-          <!-- Bidding Chart -->
           <div class="card">
             <div class="chart-card-header">
               <div>
@@ -1982,8 +1864,6 @@
               <canvas id="biddingChart"></canvas>
             </div>
           </div>
-
-          <!-- Recent Activity -->
           <div class="card">
             <div class="chart-card-header" style="margin-bottom:16px">
               <div class="section-title" style="font-size:20px">Recent Activity</div>
@@ -2046,11 +1926,7 @@
             </div>
           </div>
         </div>
-
-        <!-- Bottom Row -->
         <div class="bottom-row">
-
-          <!-- Spending Breakdown -->
           <div class="card">
             <div class="section-title" style="font-size:20px">Spending Overview</div>
             <div
@@ -2091,8 +1967,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Win Rate -->
           <div class="card">
             <div class="section-title" style="font-size:20px">Success Rate</div>
             <div class="section-sub" style="font-size:12px;margin-bottom:0">Your
@@ -2148,8 +2022,6 @@
             </div>
           </div>
         </div>
-
-        <!-- My Bid Outcomes (Read-only, last section) -->
         <div
           class="section-header"
           style="margin-top:30px;margin-bottom:14px;"
@@ -2162,16 +2034,13 @@
           <a class="section-action" href="/dashboard/my-bids">Open My Bids
             <i class="bi bi-arrow-right"></i></a>
         </div>
-
         <div
           id="buyer-bid-outcomes"
           data-user-id="{{user.id}}"
           class="auctions-grid"
         ></div>
-
       </main>
     </div>
-
     <script>
       // ─── Sidebar Mobile ─── const sidebar =
       document.getElementById('sidebar'); const overlay =
@@ -2220,13 +2089,14 @@
       const icon = btn.querySelector('i'); icon.classList.toggle('bi-heart');
       icon.classList.toggle('bi-heart-fill'); }); });
     </script>
-    <script src="/js/buyer-bid-outcomes.js"></script>
-      <script src="/js/app-theme.js"></script>
-      <script src="/js/dashboard-stats.js"></script>
+<script src="/js/buyer-bid-outcomes.js"></script>
+<script src="/js/buyer-dashboard.js"></script>
+<script src="/js/dashboard-notifications.js"></script>
+<script src="/js/dashboard-user-settings.js"></script>
+  <script src="/js/app-theme.js"></script>
+  <script src="/js/dashboard-stats.js"></script>
   </body>
 </html>
-
-
 
 
 

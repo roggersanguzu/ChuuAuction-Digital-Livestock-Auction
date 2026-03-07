@@ -1,4 +1,4 @@
-<html lang="en" class="dark">
+﻿<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,7 +15,6 @@
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Bricolage+Grotesque:opsz,wght@12..60,400;12..60,500;12..60,600;12..60,700;12..60,800&display=swap"
       rel="stylesheet"
     />
-
     <script>
       tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: {
       'display': ['Bricolage Grotesque', 'system-ui', 'sans-serif'], 'body':
@@ -50,7 +49,6 @@
       linear-gradient(90deg, rgba(249,115,22,0.04) 1px, transparent 1px)", },
       backgroundSize: { 'grid-sm': '40px 40px' }, } } };
     </script>
-
     <style>
       .font-display {
         font-family: "Bricolage Grotesque", system-ui, sans-serif;
@@ -58,7 +56,6 @@
       .font-body {
         font-family: "Outfit", system-ui, sans-serif;
       }
-
       /* Gradient Text */
       .text-gradient {
         background: linear-gradient(135deg, #f97316, #dc2626, #ea580c);
@@ -76,7 +73,6 @@
           background-position: 100% 50%;
         }
       }
-
       /* Glass Morphism */
       .glass {
         background: rgba(255, 255, 255, 0.03);
@@ -89,7 +85,6 @@
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
       }
-
       /* Custom Scrollbar */
       ::-webkit-scrollbar {
         width: 6px;
@@ -101,7 +96,6 @@
         background: linear-gradient(180deg, #f97316, #dc2626);
         border-radius: 3px;
       }
-
       /* Sidebar Nav Active Indicator */
       .nav-link {
         position: relative;
@@ -122,7 +116,6 @@
       .nav-link.active::before {
         transform: scaleY(1);
       }
-
       /* Shimmer on cards */
       .shimmer-card {
         position: relative;
@@ -150,7 +143,6 @@
           background-position: -200% 0;
         }
       }
-
       /* Toast */
       #toast-container {
         position: fixed;
@@ -162,7 +154,6 @@
         gap: 10px;
         align-items: flex-end;
       }
-
       /* Dropdown */
       .dropdown-panel {
         max-height: 0;
@@ -176,14 +167,12 @@
         max-height: 300px;
         opacity: 1;
       }
-
       /* Sticky header */
       .sticky-top {
         position: sticky;
         top: 0;
         z-index: 10;
       }
-
       /* Sidebar overlay mobile */
       #sidebar-overlay {
         position: fixed;
@@ -199,7 +188,6 @@
         opacity: 1;
         pointer-events: auto;
       }
-
       /* Chart tooltip */
       .chart-tooltip {
         position: absolute;
@@ -214,14 +202,12 @@
         z-index: 20;
         transition: opacity 0.15s;
       }
-
       /* Progress ring */
       .progress-ring-circle {
         transition: stroke-dashoffset 1s cubic-bezier(0.23, 1, 0.32, 1);
         transform: rotate(-90deg);
         transform-origin: 50% 50%;
       }
-
       /* Status dot pulse */
       .status-online {
         position: relative;
@@ -234,7 +220,6 @@
         background: inherit;
         animation: ringPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
       }
-
       /* Tab underline */
       .tab-underline {
         position: relative;
@@ -254,7 +239,6 @@
       .tab-underline.active::after {
         transform: scaleX(1);
       }
-
       /* Mask fade edges on scroll containers */
       .fade-edges {
         -webkit-mask-image: linear-gradient(
@@ -272,7 +256,6 @@
           transparent
         );
       }
-
       /* Hexagonal pattern bg */
       .hex-bg {
         background-image: url("data:image/svg+xml,%3Csvg width='60' height='52' viewBox='0 0 60 52' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 2L58 17V45L30 50L2 45V17L30 2Z' stroke='rgba(249,115,22,0.06)' fill='none'/%3E%3C/svg%3E");
@@ -281,26 +264,18 @@
     </style>
   </head>
   <body class="min-h-screen bg-gray-950 text-white font-body overflow-x-hidden">
-
-    <!-- Toast Container -->
     <div id="toast-container"></div>
-
-    <!-- Sidebar Overlay (Mobile) -->
     <div id="sidebar-overlay"></div>
-
-    <!-- ============================================================ SIDEBAR ============================================================ -->
     <aside
       id="sidebar"
       class="fixed left-0 top-0 h-full w-72 glass border-r border-gray-800/40 z-50 -translate-x-full lg:translate-x-0 transition-transform duration-500 hex-bg flex flex-col"
     >
-
-      <!-- Logo -->
       <div class="p-5 border-b border-gray-800/40">
         <div class="flex items-center gap-3">
           <div
-            class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center shadow-lg shadow-orange-500/30"
+            class="w-10 h-10 rounded-xl bg-white/10 border border-orange-500/30 flex items-center justify-center shadow-lg shadow-orange-500/30 overflow-hidden"
           >
-            <i class="bi bi-shield-check text-white text-xl"></i>
+            <img src="/img/logo.png" alt="ChuuAuction Logo" class="w-full h-full object-cover" />
           </div>
           <div>
             <h1 class="text-lg font-black font-display leading-tight"><span
@@ -312,17 +287,12 @@
           </div>
         </div>
       </div>
-
-      <!-- Nav -->
       <nav class="flex-1 overflow-y-auto p-4 space-y-1">
-
-        <!-- Section Label -->
         <p
           class="text-xs text-gray-600 font-semibold tracking-widest uppercase px-4 mb-2 mt-1"
         >Overview</p>
-
         <a
-          href="#"
+          href="/dashboard/admin#dashboard"
           class="nav-link active flex items-center gap-3 px-4 py-2.5 rounded-xl bg-gray-800/40 group"
           onclick="switchTab('dashboard',this)"
         >
@@ -335,9 +305,8 @@
             class="font-semibold text-sm text-gray-200 group-hover:text-white transition-colors"
           >Dashboard</span>
         </a>
-
         <a
-          href="#"
+          href="/dashboard/admin#analytics"
           class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
           onclick="switchTab('analytics',this)"
         >
@@ -350,14 +319,11 @@
             class="font-semibold text-sm text-gray-400 group-hover:text-white transition-colors"
           >Analytics</span>
         </a>
-
-        <!-- Section Label -->
         <p
           class="text-xs text-gray-600 font-semibold tracking-widest uppercase px-4 mb-2 mt-4"
         >Management</p>
-
         <a
-          href="#"
+          href="/dashboard/admin#users"
           class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
           onclick="switchTab('users',this)"
         >
@@ -373,9 +339,8 @@
             class="ml-auto text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full"
           >142</span>
         </a>
-
         <a
-          href="/auctions/animalList"
+          href="/dashboard/admin#auctions"
           class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
           onclick="switchTab('auctions',this)"
         >
@@ -394,7 +359,6 @@
         <a
           href="/verification/ai-status"
           class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
-          onclick="switchTab('auctions',this)"
         >
           <div
             class="w-9 h-9 rounded-lg bg-gradient-to-br from-orange-500/20 to-red-600/20 flex items-center justify-center"
@@ -408,9 +372,8 @@
             class="ml-auto text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full animate-pulse"
           >12</span>
         </a>
-
         <a
-          href="#"
+          href="/dashboard/admin#transactions"
           class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
           onclick="switchTab('transactions',this)"
         >
@@ -423,14 +386,11 @@
             class="font-semibold text-sm text-gray-400 group-hover:text-white transition-colors"
           >Transactions</span>
         </a>
-
-        <!-- Section Label -->
         <p
           class="text-xs text-gray-600 font-semibold tracking-widest uppercase px-4 mb-2 mt-4"
         >Control</p>
-
         <a
-          href="#"
+          href="/dashboard/admin#moderation"
           class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
           onclick="switchTab('moderation',this)"
         >
@@ -446,9 +406,8 @@
             class="ml-auto text-xs bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full"
           >7</span>
         </a>
-
         <a
-          href="#"
+          href="/dashboard/admin#system"
           class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
           onclick="switchTab('system',this)"
         >
@@ -464,10 +423,10 @@
               class="status-online inline-block w-2.5 h-2.5 bg-green-500 rounded-full"
             ></span></span>
         </a>
-
         <a
-          href="#"
+          href="/dashboard/admin#settings"
           class="nav-link flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-gray-800/30 group"
+          onclick="switchTab('settings',this)"
         >
           <div
             class="w-9 h-9 rounded-lg bg-gradient-to-br from-gray-500/20 to-gray-700/20 flex items-center justify-center"
@@ -478,11 +437,7 @@
             class="font-semibold text-sm text-gray-400 group-hover:text-white transition-colors"
           >Settings</span>
         </a>
-
       </nav>
-
-      <!-- Admin Profile -->
-      <!-- Admin Profile -->
       <div class="p-4 border-t border-gray-800/40">
         <form action="/auth/logout" method="POST" class="w-full">
           <button
@@ -492,11 +447,11 @@
             <div
               class="w-9 h-9 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center font-bold text-sm shadow-md shadow-orange-500/40"
             >
-              SA
+              <span class="admin-initials">A</span>
             </div>
             <div class="flex-1 min-w-0">
-              <p class="text-sm font-semibold truncate">Super Admin</p>
-              <p class="text-xs text-gray-500 truncate">admin@chuuauction.co</p>
+              <p id="admin-profile-name" class="text-sm font-semibold truncate">{{user.name}}</p>
+              <p id="admin-profile-email" class="text-xs text-gray-500 truncate">{{user.email}}</p>
             </div>
             <i
               class="bi bi-box-arrow-left text-gray-600 group-hover:text-red-400 transition-colors text-sm"
@@ -504,8 +459,6 @@
           </button>
         </form>
       </div>
-
-      <!-- Close btn mobile -->
       <button
         id="sidebar-close"
         class="absolute top-4 right-4 w-7 h-7 rounded-lg hover:bg-gray-800/50 flex items-center justify-center lg:hidden"
@@ -513,19 +466,13 @@
         <i class="bi bi-x-lg text-gray-400 text-sm"></i>
       </button>
     </aside>
-
-    <!-- Mobile toggle -->
     <button
       id="mobile-menu-btn"
       class="fixed top-5 left-5 z-50 w-10 h-10 rounded-xl glass border border-orange-500/30 flex items-center justify-center lg:hidden hover:bg-orange-500/10 transition-colors"
     >
       <i class="bi bi-list text-xl text-white"></i>
     </button>
-
-    <!-- ============================================================ MAIN ============================================================ -->
     <main class="lg:ml-72 min-h-screen relative z-10">
-
-      <!-- Ambient Background -->
       <div
         class="fixed inset-0 pointer-events-none overflow-hidden"
         style="z-index:0;"
@@ -542,7 +489,6 @@
           style="opacity:0.6;"
         ></div>
       </div>
-
       <div class="relative z-10 p-4 lg:p-7">
         <div
           id="dashboard-stats-context"
@@ -550,12 +496,10 @@
           data-user-id="{{user.id}}"
           class="hidden"
         ></div>
-
-        <!-- ===== TOP BAR ===== -->
+        <div id="admin-identity" data-name="{{user.name}}" data-email="{{user.email}}" class="hidden"></div>
         <div
           class="sticky-top bg-gray-950/80 backdrop-blur-xl border-b border-gray-800/40 -mx-4 lg:-mx-7 px-4 lg:px-7 py-4 mb-6 flex items-center justify-between gap-4"
         >
-          <!-- Search -->
           <div class="relative flex-1 max-w-md">
             <i
               class="bi bi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-sm"
@@ -570,10 +514,7 @@
               class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-gray-600 border border-gray-700 rounded px-1.5 py-0.5"
             >⌘K</span>
           </div>
-
-          <!-- Right cluster -->
           <div class="flex items-center gap-2.5">
-            <!-- Real-time indicator -->
             <div
               class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-500/10 border border-green-500/20"
             >
@@ -582,9 +523,8 @@
               ></span>
               <span class="text-xs text-green-400 font-semibold">Live</span>
             </div>
-
-            <!-- Notifications -->
             <button
+              id="admin-notif-btn"
               class="relative w-10 h-10 rounded-xl hover:bg-gray-800/50 flex items-center justify-center transition-colors"
               onclick="toggleNotifications()"
             >
@@ -592,12 +532,11 @@
                 class="bi bi-bell text-gray-400 hover:text-white transition-colors"
               ></i>
               <span
+                id="admin-notif-count"
                 class="absolute -top-0.5 -right-0.5 w-4.5 h-4.5 bg-red-500 rounded-full flex items-center justify-center text-[10px] font-bold"
                 style="width:18px;height:18px;"
               >7</span>
             </button>
-
-            <!-- Notification Dropdown -->
             <div
               id="notif-dropdown"
               class="dropdown-panel absolute top-14 right-4 w-96 bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl shadow-black/40 overflow-hidden"
@@ -610,7 +549,7 @@
                   class="text-xs text-orange-500 hover:text-orange-400"
                 >Mark all read</button>
               </div>
-              <div class="max-h-64 overflow-y-auto">
+              <div id="admin-notif-list" class="max-h-64 overflow-y-auto">
                 <div
                   class="flex items-start gap-3 p-3.5 hover:bg-gray-800/40 cursor-pointer transition-colors border-l-2 border-orange-500"
                 >
@@ -669,15 +608,11 @@
                 </div>
               </div>
             </div>
-
-            <!-- Admin avatar -->
             <div
               class="w-9 h-9 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center font-bold text-xs shadow-md shadow-orange-500/30"
-            >SA</div>
+            ><span class="admin-initials">A</span></div>
           </div>
         </div>
-
-        <!-- ===== PAGE HEADER ===== -->
         <div class="mb-6 animate-fade-in">
           <div class="flex flex-wrap items-end justify-between gap-3">
             <div>
@@ -689,27 +624,20 @@
                 ·
                 <span class="text-orange-400">12 live auctions</span></p>
             </div>
-            <!-- Date range picker style -->
             <div
               class="flex items-center gap-2 bg-gray-900/60 border border-gray-800 rounded-xl px-4 py-2"
             >
               <i class="bi bi-calendar3 text-gray-500 text-sm"></i>
-              <span class="text-sm text-gray-300">Jan 2025 – Feb 2025</span>
+              <span id="admin-range-label" class="text-sm text-gray-300">Current period</span>
               <i class="bi bi-chevron-down text-gray-500 text-xs"></i>
             </div>
           </div>
         </div>
-
-        <!-- ============================================================ TAB PANELS ============================================================ -->
-
-        <!-- ===== DASHBOARD TAB ===== -->
         <div id="tab-dashboard" class="tab-panel">
-
-          <!-- KPI Cards Row -->
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <!-- KPI 1 -->
             <div
               class="shimmer-card glass border border-gray-800/40 rounded-2xl p-5 hover:border-orange-500/40 transition-all duration-300 group cursor-pointer animate-slide-up"
+              data-link="#users"
               style="animation-delay:0s;"
             >
               <div class="flex items-center justify-between mb-3">
@@ -734,10 +662,9 @@
                   style="width:72%;"
                 ></div></div>
             </div>
-
-            <!-- KPI 2 -->
             <div
               class="shimmer-card glass border border-gray-800/40 rounded-2xl p-5 hover:border-blue-500/40 transition-all duration-300 group cursor-pointer animate-slide-up"
+              data-link="#users"
               style="animation-delay:0.08s;"
             >
               <div class="flex items-center justify-between mb-3">
@@ -762,10 +689,9 @@
                   style="width:58%;"
                 ></div></div>
             </div>
-
-            <!-- KPI 3 -->
             <div
               class="shimmer-card glass border border-gray-800/40 rounded-2xl p-5 hover:border-orange-500/40 transition-all duration-300 group cursor-pointer animate-slide-up"
+              data-link="#auctions"
               style="animation-delay:0.16s;"
             >
               <div class="flex items-center justify-between mb-3">
@@ -792,10 +718,9 @@
                   style="width:40%;"
                 ></div></div>
             </div>
-
-            <!-- KPI 4 -->
             <div
               class="shimmer-card glass border border-gray-800/40 rounded-2xl p-5 hover:border-purple-500/40 transition-all duration-300 group cursor-pointer animate-slide-up"
+              data-link="#analytics"
               style="animation-delay:0.24s;"
             >
               <div class="flex items-center justify-between mb-3">
@@ -821,11 +746,10 @@
                 ></div></div>
             </div>
           </div>
-
-          <!-- Second KPI Row -->
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <div
-              class="glass border border-gray-800/40 rounded-2xl p-5 hover:border-teal-500/40 transition-all animate-slide-up"
+              class="glass border border-gray-800/40 rounded-2xl p-5 hover:border-teal-500/40 transition-all animate-slide-up cursor-pointer"
+              data-link="#users"
               style="animation-delay:0.3s;"
             >
               <div class="flex items-center gap-3 mb-2">
@@ -842,7 +766,8 @@
                 ><i class="bi bi-arrow-up text-[9px]"></i>+3 this week</span></div>
             </div>
             <div
-              class="glass border border-gray-800/40 rounded-2xl p-5 hover:border-pink-500/40 transition-all animate-slide-up"
+              class="glass border border-gray-800/40 rounded-2xl p-5 hover:border-pink-500/40 transition-all animate-slide-up cursor-pointer"
+              data-link="#users"
               style="animation-delay:0.36s;"
             >
               <div class="flex items-center gap-3 mb-2">
@@ -859,7 +784,8 @@
                 ><i class="bi bi-arrow-up text-[9px]"></i>+7 this week</span></div>
             </div>
             <div
-              class="glass border border-gray-800/40 rounded-2xl p-5 hover:border-amber-500/40 transition-all animate-slide-up"
+              class="glass border border-gray-800/40 rounded-2xl p-5 hover:border-amber-500/40 transition-all animate-slide-up cursor-pointer"
+              data-link="#transactions"
               style="animation-delay:0.42s;"
             >
               <div class="flex items-center gap-3 mb-2">
@@ -876,7 +802,8 @@
                 >⚡ 5 urgent</span></div>
             </div>
             <div
-              class="glass border border-gray-800/40 rounded-2xl p-5 hover:border-sky-500/40 transition-all animate-slide-up"
+              class="glass border border-gray-800/40 rounded-2xl p-5 hover:border-sky-500/40 transition-all animate-slide-up cursor-pointer"
+              data-link="#moderation"
               style="animation-delay:0.48s;"
             >
               <div class="flex items-center gap-3 mb-2">
@@ -890,13 +817,10 @@
               </div>
               <div class="flex items-center gap-2 mt-2"><span
                   class="text-[11px] text-red-400"
-                >⚠ 3 overdue</span></div>
+                >⚠️ 3 overdue</span></div>
             </div>
           </div>
-
-          <!-- Charts + Activity Row -->
           <div class="grid lg:grid-cols-3 gap-6">
-            <!-- Revenue Chart -->
             <div
               class="lg:col-span-2 glass border border-gray-800/40 rounded-2xl p-6 animate-slide-up"
               style="animation-delay:0.5s;"
@@ -918,7 +842,6 @@
                   >90D</button>
                 </div>
               </div>
-              <!-- SVG Line Chart -->
               <div class="relative h-56" id="revenue-chart-container">
                 <svg
                   id="revenue-chart"
@@ -952,7 +875,6 @@
                       <stop offset="100%" stop-color="#f97316" />
                     </linearGradient>
                   </defs>
-                  <!-- Grid lines -->
                   <line
                     x1="0"
                     y1="50"
@@ -977,7 +899,6 @@
                     stroke="rgba(255,255,255,0.04)"
                     stroke-width="1"
                   />
-                  <!-- Y-axis labels -->
                   <text
                     x="5"
                     y="50"
@@ -999,9 +920,7 @@
                     font-size="10"
                     font-family="Outfit"
                   >4M</text>
-                  <!-- Fill area -->
                   <path id="revenue-fill" d="" fill="url(#revenueGrad)" />
-                  <!-- Line -->
                   <path
                     id="revenue-line"
                     d=""
@@ -1011,9 +930,7 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                   />
-                  <!-- Dots -->
                   <g id="revenue-dots"></g>
-                  <!-- X-axis labels -->
                   <text
                     x="57"
                     y="195"
@@ -1071,7 +988,6 @@
                     text-anchor="middle"
                   >Sun</text>
                 </svg>
-                <!-- Tooltip -->
                 <div
                   id="chart-tooltip"
                   class="chart-tooltip opacity-0 transition-opacity"
@@ -1079,8 +995,6 @@
                 ></div>
               </div>
             </div>
-
-            <!-- Activity Feed -->
             <div
               class="glass border border-gray-800/40 rounded-2xl p-6 animate-slide-up"
               style="animation-delay:0.55s;"
@@ -1097,16 +1011,36 @@
                 id="activity-feed"
                 class="space-y-3 max-h-72 overflow-y-auto pr-1"
               >
-                <!-- populated by JS -->
               </div>
             </div>
           </div>
         </div>
-
-        <!-- ===== ANALYTICS TAB ===== -->
         <div id="tab-analytics" class="tab-panel hidden">
+          <div class="glass border border-gray-800/40 rounded-2xl p-5 mb-6">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <h3 class="font-black font-display text-lg">Advanced Platform Analytics</h3>
+              <span id="admin-analytics-range" class="text-xs text-gray-500">Loading range...</span>
+            </div>
+            <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-3">
+              <div class="rounded-xl border border-gray-800 bg-gray-900/40 p-4">
+                <p class="text-xs text-gray-500 uppercase tracking-wide">Total Revenue</p>
+                <p id="analytics-total-revenue" class="text-lg font-black mt-1">UGX 0</p>
+              </div>
+              <div class="rounded-xl border border-gray-800 bg-gray-900/40 p-4">
+                <p class="text-xs text-gray-500 uppercase tracking-wide">Red Flag Cases</p>
+                <p id="analytics-risk-count" class="text-lg font-black mt-1">0</p>
+              </div>
+              <div class="rounded-xl border border-gray-800 bg-gray-900/40 p-4">
+                <p class="text-xs text-gray-500 uppercase tracking-wide">Total Flags</p>
+                <p id="analytics-total-flags" class="text-lg font-black mt-1">0</p>
+              </div>
+              <div class="rounded-xl border border-gray-800 bg-gray-900/40 p-4">
+                <p class="text-xs text-gray-500 uppercase tracking-wide">Auction Conversion</p>
+                <p id="analytics-conversion-rate" class="text-lg font-black mt-1">0%</p>
+              </div>
+            </div>
+          </div>
           <div class="grid lg:grid-cols-3 gap-6">
-            <!-- Bar Chart: Auction Volume by Category -->
             <div
               class="lg:col-span-2 glass border border-gray-800/40 rounded-2xl p-6"
             >
@@ -1117,7 +1051,6 @@
               </div>
               <div id="bar-chart" class="space-y-4"></div>
             </div>
-            <!-- Donut Chart -->
             <div
               class="glass border border-gray-800/40 rounded-2xl p-6 flex flex-col items-center"
             >
@@ -1193,59 +1126,99 @@
                   class="absolute inset-0 flex flex-col items-center justify-center"
                 >
                   <p class="text-xl font-black font-display text-white">UGX</p>
-                  <p class="text-sm font-bold text-orange-400">12.4M</p>
+                  <p id="analytics-donut-total" class="text-sm font-bold text-orange-400">UGX 0</p>
                 </div>
               </div>
-              <!-- Legend -->
-              <div class="w-full space-y-2.5">
-                <div class="flex items-center justify-between"><div
-                    class="flex items-center gap-2"
-                  ><span class="w-3 h-3 rounded-full bg-orange-500"></span><span
-                      class="text-xs text-gray-400"
-                    >Cattle</span></div><span
-                    class="text-xs font-semibold text-white"
-                  >45%</span></div>
-                <div class="flex items-center justify-between"><div
-                    class="flex items-center gap-2"
-                  ><span class="w-3 h-3 rounded-full bg-blue-500"></span><span
-                      class="text-xs text-gray-400"
-                    >Goats</span></div><span
-                    class="text-xs font-semibold text-white"
-                  >25%</span></div>
-                <div class="flex items-center justify-between"><div
-                    class="flex items-center gap-2"
-                  ><span class="w-3 h-3 rounded-full bg-purple-500"></span><span
-                      class="text-xs text-gray-400"
-                    >Sheep</span></div><span
-                    class="text-xs font-semibold text-white"
-                  >18%</span></div>
-                <div class="flex items-center justify-between"><div
-                    class="flex items-center gap-2"
-                  ><span
-                      class="w-3 h-3 rounded-full bg-emerald-500"
-                    ></span><span
-                      class="text-xs text-gray-400"
-                    >Poultry</span></div><span
-                    class="text-xs font-semibold text-white"
-                  >12%</span></div>
+              <div id="analytics-donut-legend" class="w-full space-y-2.5"></div>
+            </div>
+          </div>
+          <div class="grid xl:grid-cols-3 gap-6 mt-6">
+            <div class="xl:col-span-2 glass border border-gray-800/40 rounded-2xl p-6">
+              <div class="flex items-center justify-between mb-5">
+                <div><h3 class="font-black font-display text-lg">Conversion Funnel</h3><p
+                    class="text-xs text-gray-500"
+                  >Auction lifecycle stages</p></div>
+              </div>
+              <div id="funnel-chart" class="space-y-3"></div>
+            </div>
+            <div class="glass border border-gray-800/40 rounded-2xl p-6">
+              <h3 class="font-black font-display text-lg mb-4">AI Red Flag Queue</h3>
+              <div id="analytics-redflags" class="space-y-3 max-h-80 overflow-y-auto pr-1">
+                <div class="text-xs text-gray-500">Loading flagged records...</div>
               </div>
             </div>
           </div>
-
-          <!-- Conversion Funnel -->
-          <div class="glass border border-gray-800/40 rounded-2xl p-6 mt-6">
-            <div class="flex items-center justify-between mb-5">
-              <div><h3 class="font-black font-display text-lg">Conversion Funnel</h3><p
-                  class="text-xs text-gray-500"
-                >Auction lifecycle stages</p></div>
+          <div class="glass border border-gray-800/40 rounded-2xl p-5 mt-6">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <div>
+                <h3 class="font-black font-display text-lg">Document Compliance Tracking</h3>
+                <p class="text-xs text-gray-500">
+                  Users older than 3 days must have both ownership and health documents submitted.
+                </p>
+              </div>
+              <span id="analytics-compliance-count" class="text-xs text-gray-500">Loading compliance records...</span>
             </div>
-            <div id="funnel-chart" class="space-y-3"></div>
+            <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-3 mb-4">
+              <div class="rounded-xl border border-gray-800 bg-gray-900/40 p-4" data-link="#users">
+                <p class="text-xs text-gray-500 uppercase tracking-wide">Overdue Users</p>
+                <p id="analytics-compliance-overdue" class="text-lg font-black mt-1">0</p>
+              </div>
+              <div class="rounded-xl border border-gray-800 bg-gray-900/40 p-4" data-link="#users">
+                <p class="text-xs text-gray-500 uppercase tracking-wide">Missing Documents</p>
+                <p id="analytics-compliance-missing" class="text-lg font-black mt-1">0</p>
+              </div>
+              <div class="rounded-xl border border-gray-800 bg-gray-900/40 p-4" data-link="#users">
+                <p class="text-xs text-gray-500 uppercase tracking-wide">Missing Both</p>
+                <p id="analytics-compliance-missing-both" class="text-lg font-black mt-1">0</p>
+              </div>
+              <div class="rounded-xl border border-gray-800 bg-gray-900/40 p-4" data-link="#moderation">
+                <p class="text-xs text-gray-500 uppercase tracking-wide">Rejected Cases</p>
+                <p id="analytics-compliance-rejected" class="text-lg font-black mt-1">0</p>
+              </div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-3 mb-4">
+              <div class="md:col-span-2 relative">
+                <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+                <input
+                  id="analytics-compliance-search"
+                  type="text"
+                  placeholder="Search by name, email, role, missing document"
+                  class="w-full bg-gray-900/60 border border-gray-800 rounded-xl pl-9 pr-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-orange-500/50"
+                />
+              </div>
+              <select
+                id="analytics-compliance-filter"
+                class="bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2 text-sm text-gray-300 focus:outline-none focus:border-orange-500/50"
+              >
+                <option value="all">All Compliance Cases</option>
+                <option value="missing_both">Missing Both Docs</option>
+                <option value="missing_ownership">Missing Ownership Only</option>
+                <option value="missing_health">Missing Health Only</option>
+                <option value="rejected">Rejected Documents</option>
+              </select>
+            </div>
+            <div class="overflow-x-auto border border-gray-800/40 rounded-xl">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="border-b border-gray-800/40 bg-gray-900/40">
+                    <th class="text-left px-4 py-3 text-gray-500 font-semibold">User</th>
+                    <th class="text-left px-4 py-3 text-gray-500 font-semibold">Role</th>
+                    <th class="text-left px-4 py-3 text-gray-500 font-semibold">Missing</th>
+                    <th class="text-left px-4 py-3 text-gray-500 font-semibold">Rejected</th>
+                    <th class="text-left px-4 py-3 text-gray-500 font-semibold">Joined</th>
+                    <th class="px-4 py-3 text-gray-500 font-semibold">Manage</th>
+                  </tr>
+                </thead>
+                <tbody id="analytics-compliance-body">
+                  <tr>
+                    <td colspan="6" class="px-4 py-6 text-sm text-gray-500">Loading compliance users...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-
-        <!-- ===== USERS TAB ===== -->
         <div id="tab-users" class="tab-panel hidden">
-          <!-- Toolbar -->
           <div
             class="glass border border-gray-800/40 rounded-2xl p-4 mb-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
           >
@@ -1295,7 +1268,6 @@
               ><i class="bi bi-download"></i> Export</button>
             </div>
           </div>
-          <!-- Table -->
           <div
             class="glass border border-gray-800/40 rounded-2xl overflow-hidden"
           >
@@ -1330,11 +1302,9 @@
                   </tr>
                 </thead>
                 <tbody id="users-table-body">
-                  <!-- JS populated -->
                 </tbody>
               </table>
             </div>
-            <!-- Pagination -->
             <div
               class="flex items-center justify-between px-5 py-3.5 border-t border-gray-800/40 bg-gray-900/20"
             >
@@ -1357,11 +1327,9 @@
             </div>
           </div>
         </div>
-
-        <!-- ===== AUCTIONS TAB ===== -->
         <div id="tab-auctions" class="tab-panel hidden">
           <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
-            <div class="flex gap-2">
+            <div class="flex flex-wrap gap-2">
               <button
                 class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold bg-red-500/15 text-red-400 active-tab-btn"
                 data-filter="live"
@@ -1386,13 +1354,9 @@
             id="auctions-grid"
             class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"
           >
-            <!-- JS populated -->
           </div>
         </div>
-
-        <!-- ===== TRANSACTIONS TAB ===== -->
         <div id="tab-transactions" class="tab-panel hidden">
-          <!-- Summary cards -->
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <div class="glass border border-gray-800/40 rounded-2xl p-4"><p
                 class="text-xs text-gray-500"
@@ -1423,7 +1387,6 @@
                 class="text-[11px] text-green-400 mt-1 flex items-center gap-1"
               ><i class="bi bi-arrow-down text-[9px]"></i>0.3% improvement</p></div>
           </div>
-          <!-- Transactions Table -->
           <div
             class="glass border border-gray-800/40 rounded-2xl overflow-hidden"
           >
@@ -1474,37 +1437,33 @@
                     >Action</th>
                   </tr>
                 </thead>
-                <tbody id="transactions-body"><!-- JS --></tbody>
+                <tbody id="transactions-body"></tbody>
               </table>
             </div>
           </div>
         </div>
-
-        <!-- ===== MODERATION TAB ===== -->
         <div id="tab-moderation" class="tab-panel hidden">
           <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
             <div><h3 class="font-black font-display text-lg">Moderation Queue</h3><p
                 class="text-xs text-gray-500"
-              >7 items require attention</p></div>
+                id="moderation-summary"
+              >Loading AI-analyzed submissions...</p></div>
             <div class="flex gap-2">
               <button
                 class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-500/15 text-red-400"
               >🚨 Urgent (2)</button>
               <button
                 class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500/15 text-amber-400"
-              >⚠ Review (3)</button>
+              >⚠️ Review (3)</button>
               <button
                 class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-500/15 text-sky-400"
               >📋 Docs (2)</button>
             </div>
           </div>
-          <div id="moderation-list" class="space-y-4"><!-- JS --></div>
+          <div id="moderation-list" class="space-y-4"></div>
         </div>
-
-        <!-- ===== SYSTEM TAB ===== -->
         <div id="tab-system" class="tab-panel hidden">
           <div class="grid lg:grid-cols-3 gap-6">
-            <!-- Health Cards -->
             <div class="glass border border-gray-800/40 rounded-2xl p-6">
               <div class="flex items-center justify-between mb-5">
                 <h3 class="font-black font-display">System Status</h3>
@@ -1583,12 +1542,9 @@
                 </div>
               </div>
             </div>
-
-            <!-- Performance Gauges -->
             <div class="glass border border-gray-800/40 rounded-2xl p-6">
               <h3 class="font-black font-display mb-5">Performance</h3>
               <div class="space-y-6">
-                <!-- CPU -->
                 <div>
                   <div class="flex items-center justify-between mb-2"><span
                       class="text-sm font-semibold"
@@ -1603,7 +1559,6 @@
                     ></div></div>
                   <p class="text-xs text-gray-600 mt-1">2 cores · 8GB RAM</p>
                 </div>
-                <!-- Memory -->
                 <div>
                   <div class="flex items-center justify-between mb-2"><span
                       class="text-sm font-semibold"
@@ -1618,7 +1573,6 @@
                     ></div></div>
                   <p class="text-xs text-gray-600 mt-1">4.9GB / 8GB used</p>
                 </div>
-                <!-- Disk -->
                 <div>
                   <div class="flex items-center justify-between mb-2"><span
                       class="text-sm font-semibold"
@@ -1633,7 +1587,6 @@
                     ></div></div>
                   <p class="text-xs text-gray-600 mt-1">18GB / 80GB used</p>
                 </div>
-                <!-- Network -->
                 <div>
                   <div class="flex items-center justify-between mb-2"><span
                       class="text-sm font-semibold"
@@ -1648,7 +1601,6 @@
                     ></div></div>
                   <p class="text-xs text-gray-600 mt-1">↑ 2.4 MB/s · ↓ 1.8 MB/s</p>
                 </div>
-                <!-- Response Time -->
                 <div>
                   <div class="flex items-center justify-between mb-2"><span
                       class="text-sm font-semibold"
@@ -1663,8 +1615,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- Logs -->
             <div
               class="glass border border-gray-800/40 rounded-2xl p-6 flex flex-col"
             >
@@ -1685,58 +1635,112 @@
               <div
                 id="system-logs"
                 class="flex-1 overflow-y-auto max-h-72 space-y-1.5 font-mono"
-              ><!-- JS --></div>
+              ></div>
             </div>
           </div>
         </div>
-
-      </div><!-- end p-4 wrapper -->
+        <div id="tab-settings" class="tab-panel hidden">
+          <div class="grid xl:grid-cols-3 gap-6">
+            <div class="xl:col-span-2 glass border border-gray-800/40 rounded-2xl p-6">
+              <div class="flex items-center justify-between mb-5">
+                <h3 class="font-black font-display text-lg">Platform Settings</h3>
+                <span class="text-xs px-2.5 py-1 rounded-full bg-orange-500/15 text-orange-300">Admin Controls</span>
+              </div>
+              <div class="space-y-5">
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="text-xs font-semibold text-gray-400 uppercase tracking-wide">Default Auction Duration</label>
+                    <select id="setting-auction-duration" class="mt-2 w-full bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-orange-500/50">
+                      <option value="1">1 Day</option>
+                      <option value="3">3 Days</option>
+                      <option value="5">5 Days</option>
+                      <option value="7" selected>7 Days</option>
+                      <option value="14">14 Days</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="text-xs font-semibold text-gray-400 uppercase tracking-wide">Min Verification Score</label>
+                    <input id="setting-min-score" type="number" min="50" max="100" step="1" value="75" class="mt-2 w-full bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-orange-500/50" />
+                  </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div class="flex items-center justify-between p-3 rounded-xl bg-gray-900/50 border border-gray-800/50">
+                    <div>
+                      <p class="text-sm font-semibold">Auto Close Ended Auctions</p>
+                      <p class="text-xs text-gray-500">Automatically close and archive ended listings</p>
+                    </div>
+                    <input id="setting-auto-close" type="checkbox" class="h-5 w-5 accent-orange-500" checked />
+                  </div>
+                  <div class="flex items-center justify-between p-3 rounded-xl bg-gray-900/50 border border-gray-800/50">
+                    <div>
+                      <p class="text-sm font-semibold">Require Buyer Verification</p>
+                      <p class="text-xs text-gray-500">Only verified buyers can place bids above reserve</p>
+                    </div>
+                    <input id="setting-buyer-verification" type="checkbox" class="h-5 w-5 accent-orange-500" checked />
+                  </div>
+                  <div class="flex items-center justify-between p-3 rounded-xl bg-gray-900/50 border border-gray-800/50">
+                    <div>
+                      <p class="text-sm font-semibold">Enable Real-time Alerts</p>
+                      <p class="text-xs text-gray-500">Push moderation and critical system alerts instantly</p>
+                    </div>
+                    <input id="setting-realtime-alerts" type="checkbox" class="h-5 w-5 accent-orange-500" checked />
+                  </div>
+                  <div class="flex items-center justify-between p-3 rounded-xl bg-gray-900/50 border border-gray-800/50">
+                    <div>
+                      <p class="text-sm font-semibold">Maintenance Mode</p>
+                      <p class="text-xs text-gray-500">Temporarily disable buyer actions and bidding</p>
+                    </div>
+                    <input id="setting-maintenance-mode" type="checkbox" class="h-5 w-5 accent-red-500" />
+                  </div>
+                </div>
+                <div>
+                  <label class="text-xs font-semibold text-gray-400 uppercase tracking-wide">Admin Note</label>
+                  <textarea id="setting-admin-note" rows="4" class="mt-2 w-full bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-orange-500/50" placeholder="Write a short operational note visible to admin team..."></textarea>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                  <button id="settings-save-btn" class="px-4 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 text-sm font-semibold hover:shadow-lg hover:shadow-orange-500/30 transition-all">
+                    <i class="bi bi-save mr-1"></i>Save Settings
+                  </button>
+                  <button id="settings-reset-btn" class="px-4 py-2 rounded-xl border border-gray-700 text-sm font-semibold text-gray-300 hover:bg-gray-800/40 transition-all">
+                    <i class="bi bi-arrow-counterclockwise mr-1"></i>Reset Defaults
+                  </button>
+                  <span id="settings-last-saved" class="text-xs text-gray-500"></span>
+                </div>
+              </div>
+            </div>
+            <div class="glass border border-gray-800/40 rounded-2xl p-6">
+              <h3 class="font-black font-display mb-4">Security Quick Actions</h3>
+              <div class="space-y-3">
+                <button id="security-action-revoke" class="w-full text-left p-3 rounded-xl bg-gray-900/50 border border-gray-800 hover:border-orange-500/40 transition-all">
+                  <p class="text-sm font-semibold">Revoke All Active Sessions</p>
+                  <p class="text-xs text-gray-500">Force sign-out and require re-login</p>
+                </button>
+                <button id="security-action-password" class="w-full text-left p-3 rounded-xl bg-gray-900/50 border border-gray-800 hover:border-amber-500/40 transition-all">
+                  <p class="text-sm font-semibold">Enforce Strong Password Policy</p>
+                  <p class="text-xs text-gray-500">Require uppercase, number and symbols</p>
+                </button>
+                <button id="security-action-export" class="w-full text-left p-3 rounded-xl bg-gray-900/50 border border-gray-800 hover:border-sky-500/40 transition-all">
+                  <p class="text-sm font-semibold">Export Security Audit Logs</p>
+                  <p class="text-xs text-gray-500">Generate and download compliance logs</p>
+                </button>
+                <button id="security-action-emergency" class="w-full text-left p-3 rounded-xl bg-red-500/10 border border-red-500/30 hover:bg-red-500/15 transition-all">
+                  <p class="text-sm font-semibold text-red-300">Emergency Platform Lock</p>
+                  <p class="text-xs text-red-200/80">Temporarily block bidding and payments</p>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
-
-    <!-- ============================================================ JAVASCRIPT ============================================================ -->
-    <script>
-      (function () { var sidebar = document.getElementById('sidebar'); var
-      overlay = document.getElementById('sidebar-overlay'); var mobileMenuBtn =
-      document.getElementById('mobile-menu-btn'); var sidebarClose =
-      document.getElementById('sidebar-close'); function closeSidebar() { if
-      (!sidebar || !overlay) return; sidebar.classList.add('-translate-x-full');
-      overlay.classList.remove('active'); } function openSidebar() { if
-      (!sidebar || !overlay) return;
-      sidebar.classList.remove('-translate-x-full');
-      overlay.classList.add('active'); } if (mobileMenuBtn)
-      mobileMenuBtn.addEventListener('click', openSidebar); if (sidebarClose)
-      sidebarClose.addEventListener('click', closeSidebar); if (overlay)
-      overlay.addEventListener('click', closeSidebar);
-      window.addEventListener('resize', function () { if (!sidebar || !overlay)
-      return; if (window.innerWidth >= 1024) {
-      sidebar.classList.remove('-translate-x-full');
-      overlay.classList.remove('active'); } }); var toastId = 0;
-      window.showToast = function (msg, type) { type = type || 'info'; var host
-      = document.getElementById('toast-container'); if (!host) return; toastId
-      += 1; var item = document.createElement('div'); item.id = 'toast-' +
-      toastId; item.className = 'flex items-center gap-3 px-4 py-3 rounded-xl
-      glass border border-gray-800/50 shadow-xl shadow-black/30 max-w-sm';
-      item.innerHTML = '<i class="bi bi-info-circle text-blue-400"></i><p
-      class="text-sm text-white flex-1"></p>';
-      item.querySelector('p').textContent = msg; host.appendChild(item);
-      setTimeout(function () { if (item.parentNode) item.remove(); }, 2800); };
-      window.toggleNotifications = function () { var dropdown =
-      document.getElementById('notif-dropdown'); if (dropdown)
-      dropdown.classList.toggle('open'); }; window.switchTab = function (name,
-      clickedEl) { var panels = document.querySelectorAll('.tab-panel');
-      panels.forEach(function (p) { p.classList.add('hidden'); }); var panel =
-      document.getElementById('tab-' + name); if (panel)
-      panel.classList.remove('hidden'); var links =
-      document.querySelectorAll('.nav-link'); links.forEach(function (l) {
-      l.classList.remove('active', 'bg-gray-800/40'); }); if (clickedEl)
-      clickedEl.classList.add('active', 'bg-gray-800/40'); if (window.innerWidth
-      < 1024) closeSidebar(); }; if (window.location.hash === '#users') { var
-      usersLink =
-      document.querySelector(".nav-link[onclick*=\"switchTab('users'\"]");
-      window.switchTab('users', usersLink || null); } })();
-    </script>
+    <script src="/js/admin-dashboard.js"></script>
     <script src="/js/app-theme.js"></script>
     <script src="/js/dashboard-stats.js"></script>
+    <script src="/js/dashboard-notifications.js"></script>
     <script src="/js/admin-user-management.js"></script>
+    <script src="/js/admin-operations.js"></script>
   </body>
 </html>
+
+
+

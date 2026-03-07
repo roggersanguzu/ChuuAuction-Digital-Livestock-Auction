@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   var state = {
     page: 1,
     limit: 12,
@@ -10,7 +10,6 @@
     rows: [],
     selectedId: null,
   };
-
   var elements = {
     rows: document.getElementById("rows"),
     detailPanel: document.getElementById("detail-panel"),
@@ -28,8 +27,6 @@
     statVerified: document.getElementById("stat-verified"),
     statAnalyzed: document.getElementById("stat-analyzed"),
   };
-
-  /* ── Helpers ── */
   function esc(v) {
     return String(v || "").replace(/[&<>"']/g, function (c) {
       if (c === "&") return "&amp;";
@@ -39,7 +36,6 @@
       return "&#39;";
     });
   }
-
   function fmtDate(v) {
     if (!v) return "N/A";
     var d = new Date(v);
@@ -52,12 +48,9 @@
       minute: "2-digit",
     });
   }
-
   function statusClass(s) {
     return "spill sp-" + String(s || "pending");
   }
-
-  /* Animated number counter */
   function animateNum(el, target) {
     var start = parseInt(el.textContent) || 0;
     var dur = 900;
@@ -70,8 +63,6 @@
     }
     requestAnimationFrame(tick);
   }
-
-  /* ── API ── */
   function api(path, options) {
     return fetch(
       path,
@@ -97,18 +88,15 @@
         });
     });
   }
-
-  /* ── Render rows ── */
   function renderRows() {
     if (!state.rows.length) {
       elements.rows.innerHTML =
         '<div class="state-box">' +
-        '<div class="state-ico">📭</div>' +
+        '<div class="state-ico"><i class="bi bi-inbox"></i></div>' +
         '<div class="state-txt">No submissions found for your current filters.</div>' +
         "</div>";
       return;
     }
-
     elements.rows.innerHTML = state.rows
       .map(function (item) {
         var isActive = state.selectedId === item._id;
@@ -126,7 +114,6 @@
           ((item.documentCounts && item.documentCounts.ownership) || 0) +
           ((item.documentCounts && item.documentCounts.health) || 0) +
           ((item.documentCounts && item.documentCounts.photos) || 0);
-
         return (
           '<button type="button" data-id="' +
           esc(item._id) +
@@ -179,16 +166,12 @@
       })
       .join("");
   }
-
-  /* ── Render stats ── */
   function renderStats(stats) {
     animateNum(elements.statTotal, stats ? stats.total || 0 : 0);
     animateNum(elements.statPending, stats ? stats.pending || 0 : 0);
     animateNum(elements.statVerified, stats ? stats.verified || 0 : 0);
     animateNum(elements.statAnalyzed, stats ? stats.analyzed || 0 : 0);
   }
-
-  /* ── Pagination ── */
   function setPagination(pg) {
     state.totalPages = (pg && pg.totalPages) || 1;
     state.page = (pg && pg.page) || 1;
@@ -197,14 +180,11 @@
     elements.prevPage.disabled = !(pg && pg.hasPrev);
     elements.nextPage.disabled = !(pg && pg.hasNext);
   }
-
-  /* ── Render detail ── */
   function renderDetail(data) {
     var docsOwn = data.ownershipDocuments || [];
     var docsHlt = data.healthDocuments || [];
     var photos = data.animalPhotos || [];
     var ai = data.aiVerification || {};
-
     var allDocs = docsOwn.concat(docsHlt).concat(photos);
     var docLinks =
       allDocs
@@ -221,10 +201,8 @@
         })
         .join("") ||
       '<span style="font-size:12px;color:var(--text-dim);">No files available</span>';
-
     var ownConf = Math.round(ai.ownershipConfidence || 0);
     var hltConf = Math.round(ai.healthConfidence || 0);
-
     var farmerName = (data.farmer && data.farmer.name) || "Guest Submitter";
     var farmerEmail = (data.farmer && data.farmer.email) || "No email";
     var auctionLbl = data.auction
@@ -232,10 +210,8 @@
           .filter(Boolean)
           .join(" / ")
       : "No linked auction";
-
     document.getElementById("detail-panel").innerHTML =
       "<div>" +
-      /* Header */
       '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px;">' +
       "<div>" +
       '<div style="font-family:var(--f-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--hud-amber);margin-bottom:6px;">Selected Submission</div>' +
@@ -252,7 +228,6 @@
       esc(data.status) +
       "</span>" +
       "</div>" +
-      /* Submission details */
       '<div class="d-sec">' +
       '<div class="d-sec-title"><i class="bi bi-info-circle-fill"></i> Submission Details</div>' +
       '<div class="d-row"><span class="d-key">Auction</span><span class="d-val">' +
@@ -270,7 +245,6 @@
       "</span>" +
       "</div>" +
       "</div>" +
-      /* Document chain */
       '<div class="d-sec">' +
       '<div class="d-sec-title"><i class="bi bi-folder2-open"></i> Document Chain</div>' +
       '<div style="display:flex;gap:18px;margin-bottom:10px;font-family:var(--f-mono);font-size:11px;">' +
@@ -288,7 +262,6 @@
       docLinks +
       "</div>" +
       "</div>" +
-      /* AI results */
       '<div class="d-sec">' +
       '<div class="d-sec-title"><i class="bi bi-cpu-fill"></i> Gemini Analysis Results</div>' +
       '<div class="d-row"><span class="d-key">Last Analyzed</span><span class="d-val">' +
@@ -319,13 +292,10 @@
       esc(ai.healthAnalysis || "Not yet analyzed") +
       "</div>" +
       "</div>" +
-      /* Analyze button */
       '<button id="analyze-btn" type="button" class="btn-analyze">' +
       "Run Gemini Analysis" +
       "</button>" +
       "</div>";
-
-    /* Animate confidence bars */
     setTimeout(function () {
       document
         .querySelectorAll(".conf-fill[data-target]")
@@ -333,14 +303,11 @@
           bar.style.width = bar.getAttribute("data-target") + "%";
         });
     }, 120);
-
     var analyzeBtn = document.getElementById("analyze-btn");
     analyzeBtn.addEventListener("click", function () {
       analyzeSubmission(data._id, analyzeBtn);
     });
   }
-
-  /* ── Load rows ── */
   function loadRows() {
     var q = new URLSearchParams({
       page: String(state.page),
@@ -350,18 +317,15 @@
       aiState: state.aiState,
       q: state.q,
     });
-
     elements.rows.innerHTML =
       '<div class="state-box">' +
       '<div class="animal-pod p-cow" style="width:54px;height:54px;font-size:24px;">' +
-      '<div class="pod-scan"></div>🐄</div>' +
+      '<div class="pod-scan"></div><i class="bi bi-arrow-repeat"></i></div>' +
       '<div class="state-txt">Fetching submissions...</div>' +
       "</div>";
-
     return api("/verification/api/admin/ai-submissions?" + q.toString())
       .then(function (payload) {
         state.rows = payload.data || [];
-
         if (state.selectedId) {
           var stillExists = state.rows.some(function (r) {
             return r._id === state.selectedId;
@@ -371,17 +335,15 @@
         if (!state.selectedId && state.rows.length) {
           state.selectedId = state.rows[0]._id;
         }
-
         renderRows();
         renderStats(payload.stats || {});
         setPagination(payload.pagination || {});
-
         if (state.selectedId) {
           loadDetail(state.selectedId);
         } else {
           document.getElementById("detail-panel").innerHTML =
             '<div class="dp-placeholder">' +
-            '<div class="dp-placeholder-ico">🔬</div>' +
+            '<div class="dp-placeholder-ico"><i class="bi bi-search"></i></div>' +
             '<div style="font-family:var(--f-display);font-size:17px;font-weight:800;">Select a Submission</div>' +
             '<div style="font-size:13px;color:var(--text-muted);max-width:210px;line-height:1.65;">Choose a record from the list to view details.</div>' +
             "</div>";
@@ -390,23 +352,20 @@
       .catch(function (err) {
         elements.rows.innerHTML =
           '<div class="state-box">' +
-          '<div class="state-ico" style="color:#f87171;">⚠</div>' +
+          '<div class="state-ico" style="color:#f87171;"><i class="bi bi-exclamation-triangle"></i></div>' +
           '<div class="state-txt">' +
           esc(err.message) +
           "</div>" +
           "</div>";
       });
   }
-
-  /* ── Load detail ── */
   function loadDetail(id) {
     if (!id) return;
     document.getElementById("detail-panel").innerHTML =
       '<div class="dp-placeholder">' +
-      '<div class="dp-placeholder-ico" style="font-size:26px;">⚙️</div>' +
+      '<div class="dp-placeholder-ico" style="font-size:26px;"><i class="bi bi-gear"></i></div>' +
       '<div style="font-size:13px;color:var(--text-muted);">Loading submission details...</div>' +
       "</div>";
-
     return api(
       "/verification/api/admin/ai-submissions/" + encodeURIComponent(id),
     )
@@ -421,15 +380,12 @@
           "</div></div>";
       });
   }
-
-  /* ── Analyze submission ── */
   function analyzeSubmission(id, btn) {
     if (!id) return;
     btn.disabled = true;
     var orig = btn.innerHTML;
     btn.innerHTML =
       '<span class="spin-ring"></span> Running Gemini Analysis...';
-
     api(
       "/verification/api/admin/ai-submissions/" +
         encodeURIComponent(id) +
@@ -453,11 +409,8 @@
         btn.innerHTML = orig;
       });
   }
-
-  /* ── Events ── */
   function setupEvents() {
     var searchTimer = null;
-
     elements.searchInput.addEventListener("input", function (e) {
       clearTimeout(searchTimer);
       searchTimer = setTimeout(function () {
@@ -466,7 +419,6 @@
         loadRows();
       }, 350);
     });
-
     elements.statusFilter.addEventListener("change", function (e) {
       state.status = e.target.value;
       state.page = 1;
@@ -487,14 +439,12 @@
       state.page = 1;
       loadRows();
     });
-
     elements.refreshBtn.addEventListener("click", function () {
       elements.refreshBtn.classList.add("is-spinning");
       loadRows().finally(function () {
         elements.refreshBtn.classList.remove("is-spinning");
       });
     });
-
     elements.prevPage.addEventListener("click", function () {
       if (state.page > 1) {
         state.page--;
@@ -507,7 +457,6 @@
         loadRows();
       }
     });
-
     elements.rows.addEventListener("click", function (e) {
       var btn = e.target.closest("button[data-id]");
       if (!btn) return;
@@ -518,7 +467,7 @@
       loadDetail(id);
     });
   }
-
   setupEvents();
   loadRows();
 })();
+

@@ -1,6 +1,4 @@
-// Bid.js - Bid Model
-import mongoose from "mongoose";
-
+﻿import mongoose from "mongoose";
 const bidSchema = new mongoose.Schema(
   {
     listingId: {
@@ -38,9 +36,6 @@ const bidSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
-
 const Bid = mongoose.model("Bid", bidSchema);
-
-console.log("[Model] Bid model registered");
-
 export default Bid;
+

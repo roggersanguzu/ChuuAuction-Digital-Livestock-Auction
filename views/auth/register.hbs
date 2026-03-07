@@ -1,665 +1,326 @@
-<!-- Add this in your HEAD section or before the form -->
-<script src="https://cdn.tailwindcss.com"></script>
-<link
-  rel="stylesheet"
-  href="/vendor/bootstrap-icons/css/bootstrap-icons.css"
-/>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Bricolage+Grotesque:wght@400;500;600;700;800&display=swap"
-  rel="stylesheet"
-/>
-
-<script>
-  tailwind.config = { darkMode: 'class', theme: { extend: { fontFamily: {
-  'display': ['Bricolage Grotesque', 'system-ui', 'sans-serif'], 'body':
-  ['Outfit', 'system-ui', 'sans-serif'] }, animation: { 'glow': 'glow 2s
-  ease-in-out infinite', 'gradient': 'gradient 6s ease infinite', 'float':
-  'float 3s ease-in-out infinite' }, keyframes: { glow: { '0%, 100%': {
-  boxShadow: '0 0 20px rgba(249, 115, 22, 0.3), 0 0 40px rgba(249, 115, 22,
-  0.1)' }, '50%': { boxShadow: '0 0 40px rgba(249, 115, 22, 0.6), 0 0 80px
-  rgba(249, 115, 22, 0.2)' } }, gradient: { '0%, 100%': { backgroundPosition:
-  '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } }, float: { '0%, 100%':
-  { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-10px)' } }
-  } } } }
-</script>
-
-<style>
-  .font-display {
-    font-family: "Bricolage Grotesque", system-ui, sans-serif;
-  }
-  .font-body {
-    font-family: "Outfit", system-ui, sans-serif;
-  }
-  .text-gradient {
-    background: linear-gradient(135deg, #f97316, #dc2626, #ea580c);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: gradient 6s ease infinite;
-  }
-  .neon-glow {
-    text-shadow:
-      0 0 10px rgba(249, 115, 22, 0.6),
-      0 0 20px rgba(249, 115, 22, 0.4);
-  }
-  select {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-    background-position: right 0.5rem center;
-    background-repeat: no-repeat;
-    background-size: 1.25em 1.25em;
-    padding-right: 2rem;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-  }
-  .dark select {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-  }
-  input[type="checkbox"]:checked {
-    background-color: #f97316;
-    border-color: #f97316;
-    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
-  }
-  .glass-effect {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-  .pattern-dots {
-    background-image: radial-gradient(
-      circle,
-      rgba(255, 255, 255, 0.1) 1px,
-      transparent 1px
-    );
-    background-size: 20px 20px;
-  }
-</style>
-
-<!-- Create Account Page -->
-<div
-  class="min-h-screen flex items-center justify-center p-3 bg-gradient-to-br from-gray-50 via-orange-50/30 to-red-50/20 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 transition-colors duration-500 font-body"
->
-  <div class="w-full max-w-5xl animate-[scaleIn_0.5s_ease-out]">
-    <div
-      class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-2xl shadow-2xl relative overflow-hidden border border-gray-200/50 dark:border-gray-800/50 hover:shadow-orange-500/10 transition-all duration-500"
+﻿<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Account | ChuuAuction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="/vendor/bootstrap-icons/css/bootstrap-icons.css"
+    />
+    <link href="/css/app-theme.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Bricolage+Grotesque:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = { darkMode: "class", theme: { extend: { fontFamily: {
+      display: ["Bricolage Grotesque", "sans-serif"], body: ["Outfit",
+      "sans-serif"], }, keyframes: { drift: { "0%, 100%": { transform:
+      "translateY(0px)" }, "50%": { transform: "translateY(-10px)" }, }, },
+      pulseSoft: { "0%, 100%": { opacity: "0.3", transform: "scale(1)" }, "50%":
+      { opacity: "0.7", transform: "scale(1.08)" }, }, gridShift: { "0%": {
+      transform: "translate(0, 0)" }, "100%": { transform: "translate(40px,
+      40px)" }, }, pulseY: { "0%, 100%": { transform: "translateY(0)" }, "50%":
+      { transform: "translateY(-6px)" }, }, sweep: { "0%": { top: "0%" },
+      "100%": { top: "100%" }, }, sticker: { "0%, 100%": { transform:
+      "translateY(0) rotate(-6deg)" }, "50%": { transform: "translateY(-8px)
+      rotate(-2deg)" }, }, }, animation: { drift: "drift 6s ease-in-out
+      infinite", pulseSoft: "pulseSoft 7s ease-in-out infinite", gridShift:
+      "gridShift 12s linear infinite", pulseY: "pulseY 3s ease-in-out infinite",
+      sweep: "sweep 2.2s linear infinite", sticker: "sticker 4s ease-in-out
+      infinite", }, }, }, };
+    </script>
+  </head>
+  <body
+    class="min-h-screen bg-slate-950 text-gray-100 font-body overflow-x-hidden"
+  >
+    <main
+      class="min-h-screen flex items-center justify-center px-4 py-10 relative"
     >
-      <div
-        class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-orange-500/10 via-red-600/10 to-orange-700/10 rounded-full blur-3xl animate-float"
-      ></div>
-      <div
-        class="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-red-600/10 via-orange-500/10 to-orange-700/10 rounded-full blur-3xl animate-[float_4s_ease-in-out_infinite]"
-        style="animation-delay: 1s;"
-      ></div>
-      <div class="grid lg:grid-cols-5 relative z-10">
-        <!-- LEFT SIDE - Branding -->
+      <div class="fixed inset-0 overflow-hidden pointer-events-none">
         <div
-          class="lg:col-span-2 bg-gradient-to-br from-orange-500 via-red-600 to-orange-700 p-8 flex flex-col justify-center relative overflow-hidden pattern-dots"
+          class="absolute inset-0 opacity-30 animate-gridShift"
+          style="background-image: linear-gradient(rgba(56,189,248,0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(56,189,248,0.10) 1px, transparent 1px); background-size: 40px 40px;"
+        ></div>
+        <div
+          class="absolute top-12 right-8 w-48 h-48 rounded-full bg-cyan-500/10 blur-3xl animate-drift"
+        ></div>
+        <div
+          class="absolute bottom-10 left-10 w-56 h-56 rounded-full bg-blue-500/10 blur-3xl animate-drift"
+          style="animation-delay:1.5s;"
+        ></div>
+        <div
+          class="absolute -top-24 -left-20 w-[28rem] h-[28rem] rounded-full bg-cyan-400/20 blur-3xl animate-pulseSoft"
+        ></div>
+        <div
+          class="absolute top-1/3 right-1/4 w-48 h-48 rounded-full bg-sky-300/20 blur-2xl animate-drift"
+          style="animation-delay:1.1s;"
+        ></div>
+      </div>
+      <div
+        class="w-full max-w-4xl grid lg:grid-cols-5 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl relative z-10"
+      >
+        <section
+          class="lg:col-span-2 p-8 hidden lg:flex flex-col justify-between border-r border-slate-800 bg-slate-900/80"
         >
-          <div
-            class="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent animate-gradient"
-          ></div>
-          <div class="relative z-10 space-y-6">
-            <div class="flex items-center gap-3 group cursor-pointer">
-              <div class="relative">
-                <div
-                  class="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center overflow-hidden shadow-2xl shadow-black/20 group-hover:scale-110 transition-transform duration-500 border border-white/30"
-                >
-                  <img
-                    src="/img/logo.png"
-                    alt="ChuuAuction Logo"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                <div
-                  class="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white animate-pulse shadow-lg"
-                ></div>
-              </div>
-              <div>
-                <h1
-                  class="text-2xl font-black font-display text-white tracking-tight"
-                >ChuuAuction</h1>
-                <p class="text-xs text-white/80 font-medium">Digital Livestock
-                  Market</p>
-              </div>
+          <div>
+            <div class="flex items-center gap-3 mb-6">
+              <img
+                src="/img/logo.png"
+                alt="ChuuAuction Logo"
+                class="w-12 h-12 rounded-xl border border-cyan-400/30"
+              />
+              <h1 class="font-display text-2xl font-extrabold">ChuuAuction</h1>
             </div>
-            <div class="space-y-3">
-              <div class="flex items-start gap-3 group cursor-default">
-                <div
-                  class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0 group-hover:bg-white/30 transition-all duration-300 border border-white/30"
-                >
-                  <i
-                    class="bi bi-shield-check text-white text-xl group-hover:scale-110 transition-transform"
-                  ></i>
-                </div>
-                <div>
-                  <h3 class="text-white font-bold text-sm">ChuuAuction, the
-                    Secure Trading Platform</h3>
-                  <p class="text-white/70 text-xs leading-relaxed">End-to-end
-                    encrypted transactions</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3 group cursor-default">
-                <div
-                  class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0 group-hover:bg-white/30 transition-all duration-300 border border-white/30"
-                >
-                  <i
-                    class="bi bi-graph-up-arrow text-white text-xl group-hover:scale-110 transition-transform"
-                  ></i>
-                </div>
-                <div>
-                  <h3 class="text-white font-bold text-sm">Real-Time Live
-                    Auctions</h3>
-                  <p class="text-white/70 text-xs leading-relaxed">Instant
-                    bidding updates</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3 group cursor-default">
-                <div
-                  class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0 group-hover:bg-white/30 transition-all duration-300 border border-white/30"
-                >
-                  <i
-                    class="bi bi-people-fill text-white text-xl group-hover:scale-110 transition-transform"
-                  ></i>
-                </div>
-                <div>
-                  <h3 class="text-white font-bold text-sm">Trusted Community</h3>
-                  <p class="text-white/70 text-xs leading-relaxed">Join 12,000+
-                    verified traders worldwide</p>
-                </div>
-              </div>
-            </div>
-            <div class="grid grid-cols-3 gap-4 pt-6 border-t border-white/20">
-              <div class="text-center group cursor-default">
-                <div
-                  class="text-2xl font-black text-white group-hover:scale-110 transition-transform"
-                >12K+</div>
-                <div class="text-xs text-white/70 font-medium">Active Users</div>
-              </div>
-              <div class="text-center group cursor-default">
-                <div
-                  class="text-2xl font-black text-white group-hover:scale-110 transition-transform"
-                >45K+</div>
-                <div class="text-xs text-white/70 font-medium">Completed</div>
-              </div>
-              <div class="text-center group cursor-default">
-                <div
-                  class="text-2xl font-black text-white group-hover:scale-110 transition-transform"
-                >98%</div>
-                <div class="text-xs text-white/70 font-medium">Success Rate</div>
-              </div>
-            </div>
-            <div class="flex items-center justify-center gap-4 pt-4">
-              <div
-                class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/30"
-              >
-                <i class="bi bi-shield-fill-check text-green-300 text-xs"></i>
-                <span class="text-white text-xs font-semibold">SSL Secure</span>
-              </div>
-              <div
-                class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/30"
-              >
-                <i class="bi bi-star-fill text-yellow-300 text-xs"></i>
-                <span class="text-white text-xs font-semibold">4.9 Rating</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- RIGHT SIDE - Registration Form -->
-        <div class="lg:col-span-3 p-6 lg:p-8 relative">
-          <div class="absolute top-4 right-4 z-20">
-            <button
-              id="theme-toggle"
-              class="w-10 h-10 rounded-xl bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-sm flex items-center justify-center hover:scale-110 hover:rotate-12 transition-all duration-300 border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl group"
-              title="Toggle theme"
-            >
-              <i
-                class="bi bi-moon-stars text-orange-500 dark:hidden text-lg group-hover:scale-110 transition-transform"
-              ></i>
-              <i
-                class="bi bi-sun-fill text-orange-500 hidden dark:block text-lg group-hover:rotate-180 transition-transform duration-500"
-              ></i>
-            </button>
-          </div>
-          <div class="mb-6 text-center">
             <h2
-              class="text-2xl lg:text-3xl font-black font-display text-gray-900 dark:text-white mb-1 tracking-tight"
-            >Create Account</h2>
-            <p class="text-sm text-gray-600 dark:text-gray-400">Join thousands
-              of traders worldwide</p>
+              class="font-display text-3xl font-extrabold leading-tight"
+            >Create account</h2>
+            <p class="text-sm text-gray-400 mt-2">Start with verified details
+              and safe trading habits.</p>
           </div>
+          <div class="rounded-2xl border border-slate-700 bg-slate-800/60 p-4">
+            <p
+              class="text-xs uppercase tracking-widest text-cyan-300 mb-3"
+            >Safety Sticker Board</p>
+            <div
+              class="relative h-44 rounded-xl border border-slate-700 bg-slate-900 overflow-hidden"
+            >
+              <div
+                class="absolute inset-0 opacity-20"
+                style="background-image: radial-gradient(circle, #67e8f9 1px, transparent 1px); background-size: 18px 18px;"
+              ></div>
+              <div
+                class="absolute left-3 top-3 px-3 py-2 rounded-xl border border-cyan-300/40 bg-cyan-400/15 text-xs font-semibold text-cyan-200 -rotate-6 animate-sticker"
+              >
+                <i class="bi bi-shield-check mr-1"></i>
+                Verify Docs
+              </div>
+              <div
+                class="absolute right-3 top-12 px-3 py-2 rounded-xl border border-blue-300/40 bg-blue-400/15 text-xs font-semibold text-blue-200 rotate-6 animate-sticker"
+                style="animation-delay:0.8s;"
+              >
+                <i class="bi bi-telephone-forward mr-1"></i>
+                Confirm Contact
+              </div>
+              <div
+                class="absolute left-8 bottom-5 px-3 py-2 rounded-xl border border-emerald-300/40 bg-emerald-400/15 text-xs font-semibold text-emerald-200 -rotate-3 animate-sticker"
+                style="animation-delay:1.4s;"
+              >
+                <i class="bi bi-cash-coin mr-1"></i>
+                Pay Securely
+              </div>
+              <div
+                class="absolute right-8 bottom-3 px-3 py-2 rounded-xl border border-slate-300/30 bg-slate-400/10 text-xs font-semibold text-slate-200 rotate-3 animate-sticker"
+                style="animation-delay:2s;"
+              >
+                <i class="bi bi-person-check mr-1"></i>
+                Trusted Trade
+              </div>
+            </div>
+          </div>
+          <div class="space-y-2 text-sm text-gray-400">
+            <p class="inline-flex items-center gap-2"><i
+                class="bi bi-shield-check text-cyan-300"
+              ></i>Secure onboarding</p>
+            <p class="inline-flex items-center gap-2"><i
+                class="bi bi-broadcast-pin text-cyan-300"
+              ></i>Live auction access</p>
+            <p class="inline-flex items-center gap-2"><i
+                class="bi bi-people text-cyan-300"
+              ></i>Verified community</p>
+          </div>
+        </section>
+        <section class="lg:col-span-3 bg-slate-900/90 p-6 sm:p-8">
+          <div class="text-center mb-6">
+            <img
+              src="/img/logo.png"
+              alt="ChuuAuction Logo"
+              class="w-14 h-14 mx-auto rounded-xl border border-cyan-400/30 mb-3 animate-drift"
+            />
+            <h2 class="font-display text-2xl font-extrabold">Create Account</h2>
+          </div>
+          {{#if error_msg}}
+            <div
+              class="mb-4 rounded-xl border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300"
+            >{{error_msg}}</div>
+          {{/if}}
+          {{#if success_msg}}
+            <div
+              class="mb-4 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300"
+            >{{success_msg}}</div>
+          {{/if}}
           <form
             id="create-account-form"
             action="/auth/register"
             method="POST"
             class="space-y-4"
           >
-            <div class="grid md:grid-cols-2 gap-3">
-              <div class="group">
+            <div class="grid sm:grid-cols-2 gap-3">
+              <div>
                 <label
-                  class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5 group-hover:text-orange-500 transition-colors"
-                >Full Name <span class="text-red-500">*</span></label>
-                <div class="relative">
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Roggers Anguzu"
-                    required
-                    class="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 hover:border-gray-400 dark:hover:border-gray-600 transition-all duration-300 peer"
-                  />
-                  <i
-                    class="bi bi-person absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 peer-focus:text-orange-500 transition-colors text-sm"
-                  ></i>
-                </div>
+                  class="text-xs font-semibold text-gray-300 uppercase tracking-wide"
+                >Full Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  placeholder="Roggers Anguzu"
+                  class="mt-1 w-full rounded-xl bg-slate-800 border border-slate-700 focus:border-cyan-500 focus:outline-none px-3 py-2.5 text-sm transition-colors"
+                />
               </div>
-              <div class="group">
+              <div>
                 <label
-                  class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5 group-hover:text-orange-500 transition-colors"
-                >Email Address <span class="text-red-500">*</span></label>
-                <div class="relative">
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="anguzu@gmail.com"
-                    required
-                    class="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 hover:border-gray-400 dark:hover:border-gray-600 transition-all duration-300 peer"
-                  />
-                  <i
-                    class="bi bi-envelope absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 peer-focus:text-orange-500 transition-colors text-sm"
-                  ></i>
-                </div>
+                  class="text-xs font-semibold text-gray-300 uppercase tracking-wide"
+                >Email Address</label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="roggers.anguzu@gmail.com"
+                  class="mt-1 w-full rounded-xl bg-slate-800 border border-slate-700 focus:border-cyan-500 focus:outline-none px-3 py-2.5 text-sm transition-colors"
+                />
               </div>
-              <div class="group">
+              <div>
                 <label
-                  class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5 group-hover:text-orange-500 transition-colors"
+                  class="text-xs font-semibold text-gray-300 uppercase tracking-wide"
                 >Phone Number</label>
-                <div class="relative">
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="+256 712 345 678"
-                    class="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 hover:border-gray-400 dark:hover:border-gray-600 transition-all duration-300 peer"
-                  />
-                  <i
-                    class="bi bi-telephone absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 peer-focus:text-orange-500 transition-colors text-sm"
-                  ></i>
-                </div>
+                <input
+                  type="tel"
+                  name="phone"
+                  required
+                  minlength="10"
+                  placeholder="+256 700 000 000"
+                  class="mt-1 w-full rounded-xl bg-slate-800 border border-slate-700 focus:border-cyan-500 focus:outline-none px-3 py-2.5 text-sm transition-colors"
+                />
               </div>
-              <div class="group">
+              <div>
                 <label
-                  class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5 group-hover:text-orange-500 transition-colors"
-                >Account Role <span class="text-red-500">*</span></label>
+                  class="text-xs font-semibold text-gray-300 uppercase tracking-wide"
+                >Role</label>
                 <select
                   name="role"
                   required
-                  class="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 hover:border-gray-400 dark:hover:border-gray-600 transition-all duration-300 font-semibold cursor-pointer"
+                  class="mt-1 w-full rounded-xl bg-slate-800 border border-slate-700 focus:border-cyan-500 focus:outline-none px-3 py-2.5 text-sm transition-colors"
                 >
-                  <option value="">Select your role</option>
-                  <option value="Seller">Seller - List & Sell Livestock</option>
-                  <option value="Buyer">Buyer - Purchase Livestock</option>
-                  <option value="Administrator">Administrator - Full Access</option>
+                  <option value="">Select role</option>
+                  <option value="Seller">Seller</option>
+                  <option value="Buyer">Buyer</option>
+                  <option value="Administrator">Administrator</option>
                 </select>
               </div>
-              <div class="group">
+              <div>
                 <label
-                  class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5 group-hover:text-orange-500 transition-colors"
-                >Password <span class="text-red-500">*</span></label>
-                <div class="relative">
+                  class="text-xs font-semibold text-gray-300 uppercase tracking-wide"
+                >Password</label>
+                <div class="relative mt-1">
                   <input
                     type="password"
-                    name="password"
                     id="password"
-                    placeholder="••••••••"
+                    name="password"
                     required
-                    class="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 hover:border-gray-400 dark:hover:border-gray-600 transition-all duration-300 pr-10"
+                    placeholder="Create strong password"
+                    class="w-full rounded-xl bg-slate-800 border border-slate-700 focus:border-cyan-500 focus:outline-none px-3 py-2.5 pr-10 text-sm transition-colors"
                   />
                   <button
                     type="button"
                     id="toggle-password"
-                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-500 transition-colors"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-md text-gray-400 hover:text-cyan-300 hover:bg-cyan-500/10 inline-flex items-center justify-center"
+                    aria-label="Show password"
                   >
-                    <i class="bi bi-eye text-sm" id="eye-icon"></i>
+                    <i id="eye-icon" class="bi bi-eye"></i>
                   </button>
                 </div>
-                <div class="flex gap-1 mt-1.5">
+                <div class="flex gap-1 mt-2">
                   <div
                     id="bar1"
-                    class="h-1 flex-1 rounded-full bg-gray-200 dark:bg-gray-700 transition-all duration-300"
+                    class="h-1.5 flex-1 rounded-full bg-slate-700"
                   ></div>
                   <div
                     id="bar2"
-                    class="h-1 flex-1 rounded-full bg-gray-200 dark:bg-gray-700 transition-all duration-300"
+                    class="h-1.5 flex-1 rounded-full bg-slate-700"
                   ></div>
                   <div
                     id="bar3"
-                    class="h-1 flex-1 rounded-full bg-gray-200 dark:bg-gray-700 transition-all duration-300"
+                    class="h-1.5 flex-1 rounded-full bg-slate-700"
                   ></div>
                   <div
                     id="bar4"
-                    class="h-1 flex-1 rounded-full bg-gray-200 dark:bg-gray-700 transition-all duration-300"
+                    class="h-1.5 flex-1 rounded-full bg-slate-700"
                   ></div>
                 </div>
-                <div class="flex items-center justify-between mt-1">
-                  <span
-                    class="text-xs text-gray-500 dark:text-gray-400"
-                  >Password Strength:</span>
-                  <span
-                    id="password-strength-text"
-                    class="text-xs font-bold transition-all duration-300"
-                  ></span>
-                </div>
+                <p
+                  id="password-strength-text"
+                  class="text-xs mt-1 text-gray-400"
+                ></p>
               </div>
-              <div class="group">
+              <div>
                 <label
-                  class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5 group-hover:text-orange-500 transition-colors"
-                >Confirm Password <span class="text-red-500">*</span></label>
-                <div class="relative">
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    id="confirmPassword"
-                    placeholder="••••••••"
-                    required
-                    class="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 hover:border-gray-400 dark:hover:border-gray-600 transition-all duration-300"
-                  />
-                  <i
-                    class="bi bi-lock absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"
-                  ></i>
-                </div>
+                  class="text-xs font-semibold text-gray-300 uppercase tracking-wide"
+                >Confirm Password</label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  required
+                  placeholder="Repeat password"
+                  class="mt-1 w-full rounded-xl bg-slate-800 border border-slate-700 focus:border-cyan-500 focus:outline-none px-3 py-2.5 text-sm transition-colors"
+                />
               </div>
             </div>
-            <div class="pt-2">
-              <label class="flex items-start gap-2.5 cursor-pointer group">
-                <input
-                  type="checkbox"
-                  name="terms"
-                  required
-                  class="mt-0.5 w-4 h-4 rounded border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 cursor-pointer transition-all duration-300 checked:scale-110 hover:border-orange-500"
-                />
-                <span
-                  class="text-xs text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-200 transition-colors leading-relaxed"
-                >
-                  I agree to the
-                  <a
-                  href="#"
-                  onclick="return false;"
-                    class="text-orange-500 hover:text-orange-600 underline font-bold"
-                  >Terms & Conditions</a>
-                  and
-                  <a
-                  href="#"
-                  onclick="return false;"
-                    class="text-orange-500 hover:text-orange-600 underline font-bold"
-                  >Privacy Policy</a>
-                </span>
-              </label>
-            </div>
+            <label class="flex items-start gap-2 text-sm text-gray-400">
+              <input
+                type="checkbox"
+                name="terms"
+                required
+                class="mt-1 accent-cyan-500"
+              />
+              <span>I agree to the
+                <a
+                  href="/auth/terms"
+                  class="text-cyan-300 hover:underline"
+                >Terms & Conditions</a>
+                and
+                <a
+                  href="/auth/privacy"
+                  class="text-cyan-300 hover:underline"
+                >Privacy Policy</a>.</span>
+            </label>
             <button
               type="submit"
-              class="w-full py-2.5 bg-gradient-to-r from-orange-500 via-red-600 to-orange-600 text-white rounded-xl font-bold text-sm hover:shadow-2xl hover:shadow-orange-500/40 transform hover:scale-[1.02] hover:-translate-y-0.5 transition-all duration-300 animate-glow relative overflow-hidden group"
-            >
-              <span
-                class="relative z-10 flex items-center justify-center gap-2"
-              >Create Account</span>
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-orange-600 via-red-700 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              ></div>
-            </button>
-            <div class="relative my-4">
-              <div class="absolute inset-0 flex items-center"><div
-                  class="w-full border-t border-gray-300 dark:border-gray-700"
-                ></div></div>
-              <div class="relative flex justify-center text-xs">
-                <span
-                  class="px-3 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400 font-semibold"
-                >or continue with</span>
-              </div>
-            </div>
-            <div class="grid grid-cols-2 gap-2.5">
-              <a
-                href="#"
-                aria-disabled="true"
-                title="Google sign-up coming soon"
-                onclick="return false;"
-                type="button"
-                class="py-2 px-3 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700 rounded-xl font-semibold text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-orange-500 dark:hover:border-orange-500 transition-all duration-300 flex items-center justify-center gap-2 hover:scale-105 hover:-translate-y-0.5 group"
-              >
-                <i
-                  class="bi bi-google text-orange-500 group-hover:scale-110 transition-transform"
-                ></i>
-                <span>Google</span>
-              </a>
-              <a
-                href="#"
-                aria-disabled="true"
-                title="Facebook sign-up coming soon"
-                onclick="return false;"
-                type="button"
-                class="py-2 px-3 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700 rounded-xl font-semibold text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-orange-500 dark:hover:border-orange-500 transition-all duration-300 flex items-center justify-center gap-2 hover:scale-105 hover:-translate-y-0.5 group"
-              >
-                <i
-                  class="bi bi-facebook text-orange-500 group-hover:scale-110 transition-transform"
-                ></i>
-                <span>Facebook</span>
-              </a>
-            </div>
-            <p
-              class="text-center text-xs text-gray-600 dark:text-gray-400 pt-2"
-            >
-              Already have an account?
-              <a
-                href="/auth/login"
-                class="text-orange-500 hover:text-orange-600 font-bold underline ml-1 hover:no-underline transition-all"
-              >Sign In →</a>
-            </p>
+              class="w-full rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 py-2.5 text-sm font-bold hover:opacity-95 transition"
+            >Create Account</button>
           </form>
-        </div>
+          <p class="text-center text-sm text-gray-400 mt-4">Already have an
+            account?
+            <a
+              href="/auth/login"
+              class="text-cyan-300 font-semibold hover:underline"
+            >Login</a></p>
+        </section>
       </div>
-    </div>
-    <div
-      class="flex items-center justify-center gap-6 mt-4 text-xs text-gray-500 dark:text-gray-400"
-    >
-      <div
-        class="flex items-center gap-1.5 hover:scale-110 transition-transform cursor-default"
-      >
-        <i class="bi bi-shield-fill-check text-green-500"></i>
-        <span class="font-semibold">SSL Secure</span>
-      </div>
-      <div
-        class="flex items-center gap-1.5 hover:scale-110 transition-transform cursor-default"
-      >
-        <i class="bi bi-lock-fill text-blue-500"></i>
-        <span class="font-semibold">Encrypted</span>
-      </div>
-      <div
-        class="flex items-center gap-1.5 hover:scale-110 transition-transform cursor-default"
-      >
-        <i class="bi bi-check-circle-fill text-orange-500"></i>
-        <span class="font-semibold">Verified</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  // Theme Toggle
-  var themeToggle = document.getElementById("theme-toggle");
-  var html = document.documentElement;
-  var currentTheme = localStorage.getItem("chuu-theme") || localStorage.getItem("theme") || "dark";
-  if (currentTheme === "dark") {
-    html.classList.add("dark");
-  }
-  if (themeToggle) {
-    themeToggle.addEventListener("click", function () {
-      html.classList.toggle("dark");
-      var nextTheme = html.classList.contains("dark") ? "dark" : "light";
-      localStorage.setItem("theme", nextTheme);
-      localStorage.setItem("chuu-theme", nextTheme);
-    });
-  }
-
-  // Password Visibility Toggle
-  var togglePassword = document.getElementById("toggle-password");
-  var passwordInput = document.getElementById("password");
-  var eyeIcon = document.getElementById("eye-icon");
-  if (togglePassword && passwordInput && eyeIcon) {
-    togglePassword.addEventListener("click", function () {
-      var type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-      passwordInput.setAttribute("type", type);
-      eyeIcon.classList.toggle("bi-eye");
-      eyeIcon.classList.toggle("bi-eye-slash");
-    });
-  }
-
-  // Password Strength Bars
-  var bars = [
-    document.getElementById("bar1"),
-    document.getElementById("bar2"),
-    document.getElementById("bar3"),
-    document.getElementById("bar4")
-  ];
-  var strengthText = document.getElementById("password-strength-text");
-  var BAR_COLORS = ["#ef4444", "#f97316", "#eab308", "#22c55e"];
-
-  function resetBars() {
-    bars.forEach(function (bar) {
-      if (bar) {
-        bar.style.background = "";
-        bar.style.opacity = "0.2";
-      }
-    });
-  }
-
-  function calculateStrength(password) {
-    if (!password) {
-      return 0;
-    }
-
-    var score = 0;
-    var hasLower = /[a-z]/.test(password);
-    var hasUpper = /[A-Z]/.test(password);
-    var hasNumber = /[0-9]/.test(password);
-    var hasSymbol = /[^a-zA-Z0-9]/.test(password);
-
-    if (password.length >= 8) {
-      score++;
-    }
-    if (hasLower && hasUpper) {
-      score++;
-    }
-    if (hasNumber) {
-      score++;
-    }
-    if (hasSymbol) {
-      score++;
-    }
-
-    var isCommonWeak = /^(password|123456|qwerty|admin|letmein|welcome|passw0rd)$/i.test(password);
-    var hasRepeating = /(.)\1{2,}/.test(password);
-
-    if (password.length < 8) {
-      score = Math.min(score, 1);
-    }
-    if (isCommonWeak) {
-      score = 1;
-    }
-    if (hasRepeating && score > 1) {
-      score--;
-    }
-
-    return Math.max(0, Math.min(score, 4));
-  }
-
-  if (passwordInput) {
-    passwordInput.addEventListener("input", function () {
-      var password = this.value;
-      var strength = calculateStrength(password);
-
-      resetBars();
-      if (strengthText) {
-        strengthText.textContent = "";
-        strengthText.style.color = "";
-      }
-      if (!password.length) {
-        return;
-      }
-
-      for (var i = 0; i < strength; i++) {
-        if (bars[i]) {
-          bars[i].style.background = BAR_COLORS[i];
-          bars[i].style.opacity = "1";
-        }
-      }
-
-      var labels = ["", "Very Weak", "Weak", "Medium", "Strong"];
-      if (strengthText && strength > 0) {
-        strengthText.textContent = labels[strength];
-        strengthText.style.color = BAR_COLORS[strength - 1];
-      }
-    });
-  }
-
-  // Password Match Validation
-  var confirmPassword = document.getElementById("confirmPassword");
-  if (confirmPassword && passwordInput) {
-    confirmPassword.addEventListener("input", function () {
-      if (this.value !== passwordInput.value) {
-        this.setCustomValidity("Passwords do not match");
-        this.classList.add("border-red-500", "dark:border-red-500");
-        this.classList.remove("border-gray-300", "dark:border-gray-700");
-      } else {
-        this.setCustomValidity("");
-        this.classList.remove("border-red-500", "dark:border-red-500");
-        this.classList.add("border-gray-300", "dark:border-gray-700");
-      }
-    });
-  }
-
-  // Form Submission
-  var form = document.getElementById("create-account-form");
-  var submitBtn = form ? form.querySelector('button[type="submit"]') : null;
-  if (form) {
-    form.addEventListener("submit", function (e) {
-      var roleValue = form.querySelector('[name="role"]').value.trim();
-      var termsChecked = form.querySelector('[name="terms"]').checked;
-      var pwd = passwordInput ? passwordInput.value : "";
-      var confirmPwd = confirmPassword ? confirmPassword.value : "";
-
-      if (!roleValue) {
-        alert("Please select a role");
-        e.preventDefault();
-        return;
-      }
-      if (!termsChecked) {
-        alert("Please agree to the Terms & Conditions");
-        e.preventDefault();
-        return;
-      }
-      if (pwd !== confirmPwd) {
-        alert("Passwords do not match");
-        e.preventDefault();
-        return;
-      }
-
-      if (submitBtn) {
-        var originalHTML = submitBtn.innerHTML;
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="bi bi-hourglass-split animate-spin"></i> Creating Account...';
-        setTimeout(function () {
-          if (submitBtn.disabled) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalHTML;
-          }
-        }, 10000);
-      }
-    });
-  }
-
-  console.log("ChuuAuction Registration System Loaded");
-});
-</script>
-
+    </main>
+    <script src="/js/auth-ui.js"></script>
+    <script src="/js/app-theme.js"></script>
+    <script>
+      (function () { var password = document.getElementById("password"); var
+      text = document.getElementById("password-strength-text"); var bars = [
+      document.getElementById("bar1"), document.getElementById("bar2"),
+      document.getElementById("bar3"), document.getElementById("bar4"), ];
+      function setBars(score) { var colors = ["#ef4444", "#f59e0b", "#22d3ee",
+      "#22c55e"]; bars.forEach(function (bar, idx) { if (!bar) return;
+      bar.style.backgroundColor = idx < score ? colors[idx] : "#334155"; }); if
+      (!text) return; if (score === 0) text.textContent = ""; if (score === 1)
+      text.textContent = "Very weak"; if (score === 2) text.textContent =
+      "Weak"; if (score === 3) text.textContent = "Good"; if (score === 4)
+      text.textContent = "Strong"; } function compute(value) { var score = 0; if
+      (value.length >= 8) score += 1; if (/[A-Z]/.test(value) &&
+      /[a-z]/.test(value)) score += 1; if (/[0-9]/.test(value)) score += 1; if
+      (/[^A-Za-z0-9]/.test(value)) score += 1; return score; } if (password) {
+      password.addEventListener("input", function () { var score =
+      compute(password.value || ""); setBars(score); }); } })();
+    </script>
+  </body>
+</html>

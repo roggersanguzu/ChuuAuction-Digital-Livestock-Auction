@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-
+﻿import mongoose from "mongoose";
 const auctionSchema = new mongoose.Schema(
   {
     animalType: {
@@ -19,14 +18,14 @@ const auctionSchema = new mongoose.Schema(
     description: String,
     photos: [{ url: String, publicId: String }],
     seller: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    startingPrice: { type: Number, default: 0 },
+    reservePrice: { type: Number, default: 0 },
+    currentHighestBid: { type: Number, default: 0 },
     endAt: { type: Date },
     timezone: { type: String, default: "EAT" },
   },
   { timestamps: true },
 );
-
 const Auction = mongoose.model("Auction", auctionSchema);
-
-console.log("[Model] Auction model registered");
-
 export default Auction;
+

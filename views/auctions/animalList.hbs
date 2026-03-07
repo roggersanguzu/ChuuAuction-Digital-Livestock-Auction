@@ -1,4 +1,4 @@
-<html lang="en">
+﻿<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,7 +15,6 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Work+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
-
     <script>
       tailwind.config = { darkMode: "class", theme: { extend: { fontFamily: {
       display: ["Playfair Display","serif"], body: ["Work Sans","sans-serif"],
@@ -35,7 +34,6 @@
       backgroundPosition:"1000px 0" } }, pulseSoft: { "0%,100%": { opacity:"1"
       }, "50%": { opacity:"0.7" } } } } } };
     </script>
-
     <style>
       :root {
         --em: #10b981;
@@ -46,7 +44,6 @@
         --border: rgba(255, 255, 255, 0.07);
         --border-hover: rgba(16, 185, 129, 0.4);
       }
-
       .font-display {
         font-family: "Playfair Display", serif;
       }
@@ -56,110 +53,15 @@
       .font-mono {
         font-family: "DM Mono", monospace;
       }
-
-      /* ══════════════════════════════════════════
-         HORIZONTAL CARD LAYOUT
-         Forces every dynamically-generated card
-         to be landscape (wide > tall)
-      ══════════════════════════════════════════ */
-
-      /* Card wrapper — horizontal flex, fixed height */
+      /* Listing cards should keep readable height without forcing tiny rows */
       #listings-container > * {
-        display: flex !important;
-        flex-direction: row !important;
-        height: 160px !important;
-        min-height: 160px !important;
-        max-height: 160px !important;
-        overflow: hidden !important;
-        border-radius: 14px !important;
+        min-height: 28rem;
       }
-
-      /* Image side — fixed width on left */
-      #listings-container .image-container {
-        width: 170px !important;
-        min-width: 170px !important;
-        max-width: 170px !important;
-        height: 160px !important;
-        flex-shrink: 0 !important;
-        border-radius: 14px 0 0 14px !important;
-        overflow: hidden !important;
+      @media (max-width: 640px) {
+        #listings-container > * {
+          min-height: 30rem;
+        }
       }
-
-      /* All card images fill their container */
-      #listings-container .image-container img {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
-        display: block !important;
-      }
-
-      /* Content side */
-      #listings-container .card-content,
-      #listings-container > * > div:not(.image-container):last-of-type {
-        flex: 1 !important;
-        min-width: 0 !important;
-        padding: 11px 14px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: space-between !important;
-        overflow: hidden !important;
-      }
-
-      /* Clamp all text to avoid overflow */
-      #listings-container h3,
-      #listings-container h2 {
-        font-size: 13.5px !important;
-        font-weight: 700 !important;
-        line-height: 1.3 !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-      }
-
-      #listings-container p {
-        font-size: 11px !important;
-        line-height: 1.4 !important;
-      }
-      #listings-container span {
-        font-size: 11px !important;
-      }
-      #listings-container button {
-        font-size: 11.5px !important;
-        padding: 4px 10px !important;
-        border-radius: 8px !important;
-      }
-
-      /* Hide photo galleries inside cards */
-      #listings-container .photo-gallery {
-        display: none !important;
-      }
-
-      /* Compress internal spacing */
-      #listings-container .p-4,
-      #listings-container .p-5,
-      #listings-container .p-6 {
-        padding: 10px 12px !important;
-      }
-      #listings-container .mb-4,
-      #listings-container .mb-3 {
-        margin-bottom: 4px !important;
-      }
-      #listings-container .mt-4,
-      #listings-container .mt-3 {
-        margin-top: 4px !important;
-      }
-      #listings-container .gap-4,
-      #listings-container .gap-3 {
-        gap: 5px !important;
-      }
-
-      /* Status / badge pills — keep tiny */
-      #listings-container [class*="status"] {
-        font-size: 9px !important;
-        padding: 2px 6px !important;
-        border-radius: 999px !important;
-      }
-
       /* ── Glassmorphism ── */
       .glass {
         background: var(--surface);
@@ -173,7 +75,6 @@
         -webkit-backdrop-filter: blur(24px);
         border: 1px solid rgba(255, 255, 255, 0.08);
       }
-
       /* ── Text gradient ── */
       .text-gradient {
         background: linear-gradient(135deg, #10b981, #059669, #34d399);
@@ -182,7 +83,6 @@
         background-clip: text;
         background-size: 200% 200%;
       }
-
       /* ── Scrollbar ── */
       ::-webkit-scrollbar {
         width: 6px;
@@ -194,7 +94,6 @@
         background: linear-gradient(180deg, #10b981, #059669);
         border-radius: 3px;
       }
-
       /* ── Card hover ── */
       .card-hover {
         transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
@@ -204,7 +103,6 @@
         box-shadow: 0 16px 48px var(--em-glow);
         border-color: var(--border-hover) !important;
       }
-
       /* ── Image zoom ── */
       .image-container {
         overflow: hidden;
@@ -216,7 +114,6 @@
       .image-container:hover img {
         transform: scale(1.12);
       }
-
       /* ── Filter chip ── */
       .filter-chip {
         cursor: pointer;
@@ -231,12 +128,10 @@
         border-color: #10b981;
         color: #fff;
       }
-
       /* ── Search glow ── */
       .search-glow:focus {
         box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
       }
-
       /* ── Status live pulse ── */
       @keyframes status-pulse {
         0%,
@@ -250,7 +145,6 @@
       .status-live {
         animation: status-pulse 2s infinite;
       }
-
       /* ── Filter panel ── */
       .filter-panel {
         max-height: 0;
@@ -260,7 +154,6 @@
       .filter-panel.expanded {
         max-height: 800px;
       }
-
       /* ── Shimmer skeleton ── */
       .shimmer {
         background: linear-gradient(
@@ -272,7 +165,6 @@
         background-size: 1000px 100%;
         animation: shimmer 2s infinite;
       }
-
       /* ── Price shine ── */
       .price-shine {
         position: relative;
@@ -302,7 +194,6 @@
           transform: translateX(100%) translateY(100%) rotate(45deg);
         }
       }
-
       /* ── Empty state float ── */
       @keyframes float-gentle {
         0%,
@@ -316,7 +207,6 @@
       .empty-state {
         animation: float-gentle 4s ease-in-out infinite;
       }
-
       /* ── Inputs ── */
       select,
       input[type="text"],
@@ -332,12 +222,10 @@
       input[type="number"]::placeholder {
         color: #64748b !important;
       }
-
       /* ── Stat counter animation ── */
       .stat-item {
         animation: slideUp 0.5s ease-out backwards;
       }
-
       /* ── Tag pill shimmer ── */
       .tag-pill {
         position: relative;
@@ -361,7 +249,6 @@
       .tag-pill:hover::before {
         left: 100%;
       }
-
       /* ── Top border accent on page ── */
       .page-topline {
         position: fixed;
@@ -374,7 +261,6 @@
         background-size: 200% 100%;
         animation: gradient 3s ease infinite;
       }
-
       /* ── Section divider ── */
       .section-divider {
         height: 1px;
@@ -385,7 +271,6 @@
           transparent
         );
       }
-
       /* ── Input row compact ── */
       .inp-compact {
         padding: 7px 14px;
@@ -408,7 +293,6 @@
       .inp-compact::placeholder {
         color: #475569;
       }
-
       /* ── View toggle active ── */
       .view-btn {
         transition: all 0.2s;
@@ -418,7 +302,6 @@
         border-color: rgba(16, 185, 129, 0.5) !important;
         color: #10b981;
       }
-
       /* ── Badge ── */
       .badge {
         display: inline-flex;
@@ -450,7 +333,6 @@
         color: #fca5a5;
         border: 1px solid rgba(239, 68, 68, 0.25);
       }
-
       /* ── Header branding strip ── */
       .header-strip {
         background: linear-gradient(
@@ -462,15 +344,10 @@
       }
     </style>
   </head>
-
   <body
     class="min-h-screen bg-gray-950 text-white font-body overflow-x-hidden relative"
   >
-
-    <!-- Top accent line -->
     <div class="page-topline"></div>
-
-    <!-- Animated Background -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
       <div
         class="absolute top-0 left-0 w-[500px] h-[500px] bg-emerald-500/8 rounded-full blur-[130px] animate-float"
@@ -483,17 +360,11 @@
         class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-emerald-500/4 to-green-600/4 rounded-full blur-3xl animate-pulse-soft"
       ></div>
     </div>
-
-    <!-- ═══════════════════ HEADER STRIP ═══════════════════ -->
     <div class="header-strip relative z-10 pt-5 pb-0">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        <!-- Top row: title + stats -->
         <div
           class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 animate-fade-in"
         >
-
-          <!-- Title block -->
           <div>
             <div class="flex items-center gap-2 mb-1">
               <div
@@ -507,8 +378,6 @@
               Discover exceptional animals from verified farmers across Uganda
             </p>
           </div>
-
-          <!-- Stats row — compact pills -->
           <div
             class="flex items-center gap-2 animate-fade-in"
             style="animation-delay:0.1s;"
@@ -572,14 +441,10 @@
             </div>
           </div>
         </div>
-
-        <!-- ── Search & Filter Bar ── -->
         <div
           class="pb-4 space-y-2.5 animate-slide-up"
           style="animation-delay:0.15s;"
         >
-
-          <!-- Main search -->
           <div class="relative">
             <div
               class="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500"
@@ -599,10 +464,7 @@
               <i class="bi bi-x-circle text-sm"></i>
             </button>
           </div>
-
-          <!-- Filter row -->
           <div class="flex flex-wrap gap-2">
-
             <div class="flex-1 min-w-[150px]">
               <select id="filter-animal-type" class="inp-compact">
                 <option value="">All Animals</option>
@@ -615,7 +477,6 @@
                 <option value="7">Duck</option>
               </select>
             </div>
-
             <div class="flex-1 min-w-[140px]">
               <select id="filter-health" class="inp-compact">
                 <option value="">All Conditions</option>
@@ -624,7 +485,6 @@
                 <option value="Fair">Fair</option>
               </select>
             </div>
-
             <div class="flex-1 min-w-[120px]">
               <select id="filter-sex" class="inp-compact">
                 <option value="">All Sexes</option>
@@ -632,7 +492,6 @@
                 <option value="Female">Female</option>
               </select>
             </div>
-
             <div class="flex-1 min-w-[150px]">
               <select id="sort-by" class="inp-compact">
                 <option value="newest">Newest First</option>
@@ -643,7 +502,6 @@
                 <option value="quantity-low">Least Quantity</option>
               </select>
             </div>
-
             <button
               onclick="toggleAdvancedFilters()"
               class="flex items-center gap-1.5 px-4 py-2 rounded-xl glass border border-gray-800/60 hover:border-emerald-500/40 text-xs font-bold transition-all hover:text-emerald-400"
@@ -651,7 +509,6 @@
               <i class="bi bi-sliders text-sm"></i>
               Advanced
             </button>
-
             <button
               onclick="resetFilters()"
               class="flex items-center gap-1.5 px-4 py-2 rounded-xl glass border border-red-500/30 hover:bg-red-500/10 text-xs font-bold text-red-400 transition-all"
@@ -660,8 +517,6 @@
               Reset
             </button>
           </div>
-
-          <!-- Advanced Filter Panel -->
           <div id="advanced-filters" class="filter-panel">
             <div
               class="p-5 rounded-xl glass-strong border border-gray-800/60 space-y-4 mt-1"
@@ -672,7 +527,6 @@
                   class="text-sm font-bold text-emerald-400 uppercase tracking-wide"
                 >Advanced Filters</h3>
               </div>
-
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label
@@ -735,7 +589,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label
@@ -790,7 +643,6 @@
                   />
                 </div>
               </div>
-
               <div class="flex justify-end pt-1">
                 <button
                   onclick="applyAdvancedFilters()"
@@ -802,19 +654,12 @@
               </div>
             </div>
           </div>
-
-          <!-- Active Filters -->
           <div id="active-filters" class="flex flex-wrap gap-2"></div>
         </div>
-
         <div class="section-divider"></div>
       </div>
     </div>
-
-    <!-- ═══════════════════ MAIN CONTENT ═══════════════════ -->
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-
-      <!-- Results header -->
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 pb-24">
       <div class="flex items-center justify-between mb-5 animate-slide-up">
         <div class="flex items-center gap-3">
           <div>
@@ -830,7 +675,6 @@
               id="filter-description"
             >Showing all available livestock</p>
           </div>
-          <!-- Live indicator -->
           <div
             class="flex items-center gap-1.5 px-2.5 py-1 rounded-full glass border border-emerald-500/20"
           >
@@ -842,8 +686,6 @@
             >Live</span>
           </div>
         </div>
-
-        <!-- View toggle -->
         <div class="flex gap-1.5">
           <button
             onclick="setViewMode('grid')"
@@ -861,14 +703,10 @@
           </button>
         </div>
       </div>
-
-      <!-- Listings Grid -->
       <div
         id="listings-container"
-        class="grid grid-cols-1 lg:grid-cols-2 gap-3"
+        class="grid grid-cols-1 md:grid-cols-2 gap-5"
       ></div>
-
-      <!-- Loading State -->
       <div id="loading-state" class="text-center py-24">
         <div class="inline-flex flex-col items-center gap-4">
           <div class="relative">
@@ -888,8 +726,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Empty State -->
       <div id="empty-state" class="text-center py-24 hidden">
         <div class="empty-state inline-block">
           <div
@@ -909,8 +745,6 @@
           </button>
         </div>
       </div>
-
-      <!-- Load More -->
       <div id="load-more-container" class="text-center mt-10 hidden">
         <button
           onclick="loadMore()"
@@ -921,8 +755,6 @@
         </button>
       </div>
     </div>
-
-    <!-- ═══ BID MODAL ═══ -->
     <div
       id="bid-modal"
       class="fixed inset-0 bg-black/80 backdrop-blur-xl z-[60] hidden items-center justify-center p-4"
@@ -935,8 +767,6 @@
         <div id="bid-modal-content"></div>
       </div>
     </div>
-
-    <!-- ═══ DETAIL MODAL ═══ -->
     <div
       id="detail-modal"
       class="fixed inset-0 bg-black/80 backdrop-blur-xl z-50 hidden items-center justify-center p-4"
@@ -949,10 +779,10 @@
         <div id="modal-content"></div>
       </div>
     </div>
-
     <script src="/js/animalList.js"></script>
       <script src="/js/app-theme.js"></script>
   </body>
 </html>
+
 
 

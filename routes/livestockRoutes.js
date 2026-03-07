@@ -1,5 +1,4 @@
-import express from "express";
-
+﻿import express from "express";
 const router = express.Router();
 router.get("/priceCalculator", (req, res) => {
   res.render("livestock/priceCalculator", {
@@ -7,3 +6,4 @@ router.get("/priceCalculator", (req, res) => {
   });
 });
 export default router;
+

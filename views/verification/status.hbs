@@ -1,20 +1,15 @@
-<html lang="en">
+﻿<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LiveStock Verify — Verification Dashboard</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500;600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="/vendor/fontawesome/css/all.min.css"
-    />
+    <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css" />
     <link href="/css/app-theme.css" rel="stylesheet" />
-
     <style>
       /* ══════════════════════════════════════════════════════════════
    DESIGN TOKENS
@@ -29,7 +24,6 @@
         --border: rgba(255, 255, 255, 0.065);
         --border2: rgba(255, 255, 255, 0.12);
         --border3: rgba(255, 255, 255, 0.18);
-
         --green: #4ade80;
         --green-dim: rgba(74, 222, 128, 0.12);
         --green-glow: rgba(74, 222, 128, 0.25);
@@ -43,22 +37,18 @@
         --violet-dim: rgba(167, 139, 250, 0.1);
         --blue: #60a5fa;
         --blue-dim: rgba(96, 165, 250, 0.1);
-
         --text: #eef2ff;
         --text2: #7d8fa8;
         --text3: #394558;
-
         --r: 6px;
         --r2: 10px;
         --r3: 14px;
         --r4: 18px;
         --r5: 24px;
-
         --sidebar-w: 230px;
         --header-h: 60px;
         --trans: 0.22s cubic-bezier(0.23, 1, 0.32, 1);
       }
-
       /* ══════════════════════════════════════════════════════════════
    BASE
 ══════════════════════════════════════════════════════════════ */
@@ -72,7 +62,6 @@
       html {
         scroll-behavior: smooth;
       }
-
       body {
         font-family: "DM Sans", sans-serif;
         background: var(--bg);
@@ -83,7 +72,6 @@
         overflow-x: hidden;
         line-height: 1.55;
       }
-
       /* NOISE GRAIN */
       body::before {
         content: "";
@@ -94,7 +82,6 @@
         opacity: 0.45;
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
       }
-
       /* AMBIENT MESH */
       .bg-mesh {
         position: fixed;
@@ -147,7 +134,6 @@
         border-radius: 50%;
         animation: meshFloat1 18s ease-in-out infinite reverse;
       }
-
       @keyframes meshFloat1 {
         0%,
         100% {
@@ -166,7 +152,6 @@
           transform: translate(-25px, 20px) scale(1.04);
         }
       }
-
       /* SCROLLBAR */
       ::-webkit-scrollbar {
         width: 4px;
@@ -178,7 +163,6 @@
         background: rgba(255, 255, 255, 0.08);
         border-radius: 99px;
       }
-
       /* ══════════════════════════════════════════════════════════════
    HEADER
 ══════════════════════════════════════════════════════════════ */
@@ -195,7 +179,6 @@
         backdrop-filter: blur(28px) saturate(1.4);
         border-bottom: 1px solid var(--border);
       }
-
       .header::after {
         content: "";
         position: absolute;
@@ -211,7 +194,6 @@
           transparent
         );
       }
-
       /* Logo */
       .logo {
         display: flex;
@@ -250,7 +232,6 @@
       .logo:hover .logo-mark::after {
         opacity: 1;
       }
-
       .logo-wordmark {
         font-family: "Syne", sans-serif;
         font-size: 16px;
@@ -270,7 +251,6 @@
         padding: 2px 7px;
         border-radius: 4px;
       }
-
       /* Center Status */
       .hdr-status {
         display: flex;
@@ -304,7 +284,6 @@
           transform: scale(0.75);
         }
       }
-
       /* Header Right */
       .hdr-right {
         display: flex;
@@ -342,7 +321,6 @@
         background: #86efac;
         box-shadow: 0 0 28px rgba(74, 222, 128, 0.4);
       }
-
       .avatar {
         width: 34px;
         height: 34px;
@@ -362,7 +340,6 @@
         box-shadow: 0 0 20px var(--green-glow);
         transform: scale(1.06);
       }
-
       /* ══════════════════════════════════════════════════════════════
    LAYOUT
 ══════════════════════════════════════════════════════════════ */
@@ -372,7 +349,6 @@
         position: relative;
         z-index: 1;
       }
-
       /* ══════════════════════════════════════════════════════════════
    SIDEBAR
 ══════════════════════════════════════════════════════════════ */
@@ -390,7 +366,6 @@
         height: calc(100vh - var(--header-h));
         overflow-y: auto;
       }
-
       .sb-section {
         margin-bottom: 4px;
       }
@@ -403,7 +378,6 @@
         text-transform: uppercase;
         padding: 12px 14px 6px;
       }
-
       .nav-item {
         display: flex;
         align-items: center;
@@ -432,7 +406,6 @@
       .nav-item:hover i {
         opacity: 0.9;
       }
-
       .nav-item.active {
         background: rgba(74, 222, 128, 0.07);
         border-color: rgba(74, 222, 128, 0.18);
@@ -454,7 +427,6 @@
         border-radius: 0 3px 3px 0;
         box-shadow: 0 0 10px var(--green);
       }
-
       .nav-badge {
         margin-left: auto;
         font-family: "DM Mono", monospace;
@@ -472,13 +444,11 @@
         border-color: rgba(74, 222, 128, 0.3);
         color: var(--green);
       }
-
       .sb-divider {
         height: 1px;
         background: var(--border);
         margin: 10px 10px;
       }
-
       /* Sidebar Footer Widget */
       .sb-footer {
         margin-top: auto;
@@ -530,7 +500,6 @@
         color: var(--green);
         font-size: 9px;
       }
-
       /* ══════════════════════════════════════════════════════════════
    MAIN
 ══════════════════════════════════════════════════════════════ */
@@ -547,7 +516,6 @@
         flex-direction: column;
         gap: 22px;
       }
-
       /* ── PAGE HEADER ── */
       .page-header {
         display: flex;
@@ -590,7 +558,6 @@
         font-size: 12.5px;
         color: var(--text3);
       }
-
       .page-actions {
         display: flex;
         align-items: center;
@@ -629,14 +596,12 @@
         background: var(--surface2);
         color: var(--text);
       }
-
       /* ── STATS GRID ── */
       .stats-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 14px;
       }
-
       .stat-card {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -646,6 +611,19 @@
         overflow: hidden;
         transition: all var(--trans);
         cursor: default;
+      }
+      .stat-card[data-stat-filter] {
+        cursor: pointer;
+      }
+      .stat-card[data-stat-filter]:focus-visible {
+        outline: 2px solid var(--cyan);
+        outline-offset: 2px;
+      }
+      .stat-card.is-active {
+        border-color: color-mix(in srgb, var(--cyan) 55%, var(--border2));
+        box-shadow:
+          0 0 0 1px color-mix(in srgb, var(--cyan) 45%, transparent),
+          0 18px 40px rgba(0, 0, 0, 0.42);
       }
       .stat-card::before {
         content: "";
@@ -662,7 +640,6 @@
       .stat-card:hover::before {
         opacity: 1;
       }
-
       /* Stripe */
       .stat-card .st-stripe {
         position: absolute;
@@ -671,7 +648,6 @@
         right: 0;
         height: 2px;
       }
-
       /* Individual tints */
       .sc-total {
         --card-glow: rgba(34, 211, 238, 0.06);
@@ -689,7 +665,6 @@
         --card-glow: rgba(248, 113, 113, 0.06);
         --border-h: rgba(248, 113, 113, 0.3);
       }
-
       .stat-card::before {
         background: radial-gradient(
           ellipse at 30% 40%,
@@ -700,7 +675,6 @@
       .stat-card:hover {
         border-color: var(--border-h, var(--border2));
       }
-
       .stat-icon {
         width: 40px;
         height: 40px;
@@ -733,7 +707,6 @@
         color: var(--red);
         border: 1px solid rgba(248, 113, 113, 0.2);
       }
-
       .stat-number {
         font-family: "Syne", sans-serif;
         font-size: 36px;
@@ -774,7 +747,6 @@
         background: var(--surface2);
         border: 1px solid var(--border);
       }
-
       /* Sparkline mini chart */
       .stat-sparkline {
         display: flex;
@@ -815,7 +787,6 @@
       .sparkline-red .spark-b {
         background: var(--red);
       }
-
       /* ── ROLE BANNER ── */
       .role-banner {
         display: none;
@@ -846,7 +817,6 @@
         border: 1px solid rgba(74, 222, 128, 0.18);
         color: var(--green);
       }
-
       /* ── TOOLBAR ── */
       .toolbar {
         display: flex;
@@ -892,7 +862,6 @@
         background: rgba(0, 0, 0, 0.4);
         box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.06);
       }
-
       .filter-select {
         padding: 9px 12px;
         background: rgba(0, 0, 0, 0.3);
@@ -912,14 +881,12 @@
       .filter-select option {
         background: #070d1a;
       }
-
       .tb-sep {
         width: 1px;
         height: 26px;
         background: var(--border);
         flex-shrink: 0;
       }
-
       .tb-btn {
         display: inline-flex;
         align-items: center;
@@ -938,7 +905,6 @@
         background: var(--surface2);
         color: var(--text);
       }
-
       .result-count {
         margin-left: auto;
         font-family: "DM Mono", monospace;
@@ -949,14 +915,12 @@
         border: 1px solid var(--border);
         border-radius: 99px;
       }
-
       /* ── CARDS GRID ── */
       .cards-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
         gap: 16px;
       }
-
       /* ── VERIFICATION CARD ── */
       .v-card {
         background: var(--surface);
@@ -979,7 +943,6 @@
           transform: translateY(0);
         }
       }
-
       .v-card:hover {
         transform: translateY(-6px);
         box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
@@ -998,7 +961,6 @@
       .v-card:hover::after {
         opacity: 1;
       }
-
       /* STATUS STRIPE */
       .v-stripe {
         height: 3px;
@@ -1022,7 +984,6 @@
       .s-incomplete .v-stripe {
         background: var(--border);
       }
-
       /* Card glow on status hover */
       .s-verified:hover {
         box-shadow:
@@ -1044,7 +1005,6 @@
           0 20px 50px rgba(96, 165, 250, 0.1),
           0 0 0 1px rgba(96, 165, 250, 0.06);
       }
-
       /* CARD HEAD */
       .v-card-head {
         padding: 16px 20px 14px;
@@ -1069,7 +1029,6 @@
         font-weight: 700;
         color: var(--text);
       }
-
       /* BADGES */
       .status-badge {
         display: inline-flex;
@@ -1088,7 +1047,6 @@
         content: "●";
         font-size: 6px;
       }
-
       .badge-pending {
         color: #fbbf24;
         background: rgba(245, 158, 11, 0.07);
@@ -1119,7 +1077,6 @@
         background: rgba(100, 116, 139, 0.07);
         border-color: rgba(100, 116, 139, 0.22);
       }
-
       /* CARD BODY */
       .v-card-body {
         padding: 14px 20px 12px;
@@ -1151,7 +1108,6 @@
         color: var(--text);
         font-weight: 600;
       }
-
       .type-pill {
         display: inline-flex;
         align-items: center;
@@ -1174,7 +1130,6 @@
         color: var(--text3);
         margin-right: 4px;
       }
-
       /* Progress bar inside card */
       .card-progress {
         margin-top: 6px;
@@ -1198,7 +1153,6 @@
         border-radius: 3px;
         transition: width 0.8s cubic-bezier(0.23, 1, 0.32, 1);
       }
-
       /* CARD FOOTER */
       .v-card-foot {
         padding: 11px 16px;
@@ -1237,7 +1191,6 @@
         font-size: 12px;
         pointer-events: none;
       }
-
       .foot-btn {
         padding: 7px 13px;
         border-radius: var(--r);
@@ -1271,7 +1224,6 @@
         background: var(--surface2);
         color: var(--text);
       }
-
       /* ── STATE BOXES ── */
       .state-box {
         display: flex;
@@ -1301,7 +1253,6 @@
         line-height: 1.7;
         max-width: 280px;
       }
-
       .spinner {
         width: 40px;
         height: 40px;
@@ -1315,7 +1266,6 @@
           transform: rotate(360deg);
         }
       }
-
       /* ── MODAL ── */
       .overlay {
         position: fixed;
@@ -1331,7 +1281,6 @@
       .overlay.open {
         display: flex;
       }
-
       .modal {
         background: var(--bg2);
         border: 1px solid var(--border2);
@@ -1352,7 +1301,6 @@
           opacity: 1;
         }
       }
-
       .modal-head {
         display: flex;
         align-items: center;
@@ -1402,7 +1350,6 @@
         border-color: rgba(248, 113, 113, 0.3);
         color: var(--red);
       }
-
       .modal-body {
         padding: 22px 26px;
         display: flex;
@@ -1426,7 +1373,6 @@
         height: 1px;
         background: var(--border);
       }
-
       .field-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -1455,7 +1401,99 @@
         color: var(--text);
         word-break: break-all;
       }
-
+      .modal-hero {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 12px;
+      }
+      .modal-hero-card {
+        background: linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.04),
+          rgba(255, 255, 255, 0.015)
+        );
+        border: 1px solid var(--border2);
+        border-radius: 14px;
+        padding: 14px 16px;
+      }
+      .modal-hero-title {
+        font-family: "Syne", sans-serif;
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 6px;
+      }
+      .modal-hero-sub {
+        font-size: 12px;
+        color: var(--text2);
+      }
+      .modal-status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.2px;
+        border: 1px solid;
+      }
+      .modal-kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+      .modal-kpi {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px 12px;
+      }
+      .modal-kpi-label {
+        font-family: "DM Mono", monospace;
+        font-size: 9px;
+        color: var(--text3);
+        letter-spacing: 1.7px;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      .modal-kpi-value {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .modal-intel-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .modal-intel-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px 14px;
+      }
+      .modal-intel-card.warning {
+        border-color: rgba(248, 113, 113, 0.28);
+        background: rgba(248, 113, 113, 0.08);
+      }
+      .modal-intel-card.success {
+        border-color: rgba(74, 222, 128, 0.28);
+        background: rgba(74, 222, 128, 0.08);
+      }
+      .modal-intel-label {
+        font-family: "DM Mono", monospace;
+        font-size: 9px;
+        color: var(--text3);
+        letter-spacing: 1.6px;
+        text-transform: uppercase;
+        margin-bottom: 7px;
+      }
+      .modal-intel-value {
+        font-size: 13px;
+        line-height: 1.55;
+        color: var(--text);
+      }
       /* ── TOAST ── */
       .toast-zone {
         position: fixed;
@@ -1509,7 +1547,6 @@
           transform: translateX(16px) scale(0.95);
         }
       }
-
       /* ── RESPONSIVE ── */
       @media (max-width: 960px) {
         .sidebar {
@@ -1536,30 +1573,32 @@
         .search-wrap {
           min-width: 100%;
         }
+        .modal-hero,
+        .modal-kpi-grid,
+        .modal-intel-grid {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
   <body>
-
-    <!-- Background -->
     <div class="bg-mesh">
       <div class="bg-mesh-mid"></div>
     </div>
-
-    <!-- ══════════════ HEADER ══════════════ -->
     <header class="header">
       <a class="logo" href="/">
         <div class="logo-mark">🐄</div>
         <span class="logo-wordmark">Live<em>Stock</em> Verify</span>
         <span class="logo-chip">v2.4.1</span>
       </a>
-
       <div class="hdr-status">
         <div class="status-dot"></div>
-        SYSTEM ONLINE &nbsp;·&nbsp;
+        <span id="hdr-system-state">SYSTEM ONLINE</span>
+        &nbsp;·&nbsp;
         <span id="hdr-clock">--:--:--</span>
+        &nbsp;·&nbsp;
+        <span id="hdr-uptime">UP 00:00:00</span>
       </div>
-
       <div class="hdr-right">
         <button class="hdr-action" onclick="refreshData()">
           <i class="fas fa-sync-alt"></i>Refresh
@@ -1567,12 +1606,8 @@
         <div class="avatar" id="user-avatar" title="User">U</div>
       </div>
     </header>
-
     <div class="layout">
-
-      <!-- ══════════════ SIDEBAR ══════════════ -->
       <aside class="sidebar">
-
         <div class="sb-section">
           <div class="sb-label">Views</div>
           <div
@@ -1624,9 +1659,7 @@
             <span class="nav-badge" id="nb-needs_review">0</span>
           </div>
         </div>
-
         <div class="sb-divider"></div>
-
         <div class="sb-section">
           <div class="sb-label">Quick Filters</div>
           <div class="nav-item" onclick="setTypeFilter('ownership')">
@@ -1639,10 +1672,7 @@
             <i class="fas fa-layer-group"></i>Both Docs
           </div>
         </div>
-
         <div class="sb-divider"></div>
-
-        <!-- Sidebar widget -->
         <div class="sb-footer">
           <div class="sb-widget">
             <div class="sb-widget-row">
@@ -1664,14 +1694,9 @@
             </div>
           </div>
         </div>
-
       </aside>
-
-      <!-- ══════════════ MAIN ══════════════ -->
       <main class="main">
         <div class="main-inner">
-
-          <!-- Page Header -->
           <div class="page-header">
             <div>
               <div class="page-eyebrow">Dashboard · Real-time</div>
@@ -1688,11 +1713,14 @@
               </button>
             </div>
           </div>
-
-          <!-- Stats -->
           <div class="stats-grid">
-
-            <div class="stat-card sc-total">
+            <div
+              class="stat-card sc-total"
+              data-stat-filter="all"
+              tabindex="0"
+              role="button"
+              aria-label="Show all submissions"
+            >
               <div
                 class="v-stripe st-stripe"
                 style="background:linear-gradient(90deg,var(--cyan),transparent)"
@@ -1709,8 +1737,13 @@
               <div class="stat-sparkline sparkline-cyan" id="spark-total"></div>
               <div class="stat-trend trend-up" id="tr-total">—</div>
             </div>
-
-            <div class="stat-card sc-pending">
+            <div
+              class="stat-card sc-pending"
+              data-stat-filter="pending"
+              tabindex="0"
+              role="button"
+              aria-label="Show pending submissions"
+            >
               <div
                 class="v-stripe st-stripe"
                 style="background:linear-gradient(90deg,var(--amber),transparent)"
@@ -1730,8 +1763,13 @@
               ></div>
               <div class="stat-trend trend-flat" id="tr-pending">—</div>
             </div>
-
-            <div class="stat-card sc-verified">
+            <div
+              class="stat-card sc-verified"
+              data-stat-filter="verified"
+              tabindex="0"
+              role="button"
+              aria-label="Show verified submissions"
+            >
               <div
                 class="v-stripe st-stripe"
                 style="background:linear-gradient(90deg,var(--green),transparent)"
@@ -1751,8 +1789,13 @@
               ></div>
               <div class="stat-trend trend-up" id="tr-verified">—</div>
             </div>
-
-            <div class="stat-card sc-rejected">
+            <div
+              class="stat-card sc-rejected"
+              data-stat-filter="rejected"
+              tabindex="0"
+              role="button"
+              aria-label="Show rejected submissions"
+            >
               <div
                 class="v-stripe st-stripe"
                 style="background:linear-gradient(90deg,var(--red),transparent)"
@@ -1770,10 +1813,7 @@
               ></div>
               <div class="stat-trend trend-down" id="tr-rejected">—</div>
             </div>
-
           </div>
-
-          <!-- Banners -->
           <div id="admin-banner" class="role-banner admin">
             <i class="fas fa-shield-alt"></i>
             <strong>Admin View</strong>
@@ -1782,10 +1822,8 @@
           <div id="user-banner" class="role-banner user">
             <i class="fas fa-user-check"></i>
             <strong>My Verifications</strong>
-            — Viewing your own submissions. Only admins can modify status.
+            ,Viewing your own submissions. Only admins can modify status.
           </div>
-
-          <!-- Toolbar -->
           <div class="toolbar">
             <div class="search-wrap">
               <i class="fas fa-search search-icon"></i>
@@ -1827,8 +1865,6 @@
             </button>
             <span class="result-count" id="result-count">0 results</span>
           </div>
-
-          <!-- Cards Container -->
           <div id="cards-container">
             <div class="state-box">
               <div class="spinner"></div>
@@ -1837,13 +1873,9 @@
                 server</div>
             </div>
           </div>
-
         </div>
       </main>
-
-    </div><!-- /layout -->
-
-    <!-- ══════════════ DETAIL MODAL ══════════════ -->
+    </div>
     <div class="overlay" id="detail-overlay" onclick="closeModal(event)">
       <div class="modal" onclick="event.stopPropagation()">
         <div class="modal-head">
@@ -1860,13 +1892,8 @@
         <div class="modal-body" id="modal-body"></div>
       </div>
     </div>
-
-    <!-- ══════════════ TOAST ══════════════ -->
     <div class="toast-zone" id="toast-zone"></div>
-
-    <!-- External script (unchanged connector) -->
     <script src="/js/verificationStatus.js"></script>
-
     <script>
       /* ══ CLOCK ══════════════════════════════════════════════════════ */
       setInterval(()=>{ document.getElementById('hdr-clock').textContent = new
@@ -1953,10 +1980,6 @@
       ════════════════════════════════════════════════════════ */
       document.addEventListener('DOMContentLoaded',()=>{ updateLastSync(); });
     </script>
-
-      <script src="/js/app-theme.js"></script>
+    <script src="/js/app-theme.js"></script>
   </body>
 </html>
-
-
-

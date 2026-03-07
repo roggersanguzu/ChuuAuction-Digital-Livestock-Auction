@@ -1,4 +1,4 @@
-<html lang="en">
+﻿<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,7 +15,6 @@
       href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-
     <style>
       .font-display {
         font-family: "Crimson Pro", serif;
@@ -26,19 +25,16 @@
       .font-body {
         font-family: "Inter", sans-serif;
       }
-
       .glass {
         background: rgba(255, 255, 255, 0.02);
         backdrop-filter: blur(20px);
         border: 1px solid rgba(255, 255, 255, 0.05);
       }
-
       .glass-strong {
         background: rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(30px);
         border: 1px solid rgba(255, 255, 255, 0.1);
       }
-
       ::-webkit-scrollbar {
         width: 8px;
       }
@@ -49,7 +45,6 @@
         background: linear-gradient(180deg, #3b82f6, #2563eb);
         border-radius: 4px;
       }
-
       @keyframes ai-pulse {
         0%,
         100% {
@@ -59,24 +54,19 @@
           box-shadow: 0 0 0 10px rgba(139, 92, 246, 0);
         }
       }
-
       .ai-badge {
         animation: ai-pulse 2s infinite;
       }
-
       .insight-card {
         transition: all 0.3s ease;
       }
-
       .insight-card:hover {
         transform: translateY(-2px);
         box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
       }
     </style>
   </head>
-
   <body class="min-h-screen bg-gray-950 text-white font-body overflow-x-hidden">
-    <!-- Background -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
       <div
         class="absolute top-20 left-20 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[150px]"
@@ -85,9 +75,7 @@
         class="absolute bottom-20 right-20 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[150px]"
       ></div>
     </div>
-
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <!-- Header -->
       <div class="text-center mb-12 animate-fade-in">
         <div class="flex items-center justify-center gap-4 mb-6">
           <div
@@ -116,8 +104,6 @@
             AI</span>
         </div>
       </div>
-
-      <!-- Batch Insights Section -->
       <div id="batch-insights" class="mb-8 hidden">
         <div class="p-6 rounded-2xl glass-strong border border-purple-500/30">
           <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
@@ -127,16 +113,12 @@
           <div class="grid md:grid-cols-4 gap-4" id="batch-stats"></div>
         </div>
       </div>
-
-      <!-- Loading -->
       <div id="loading" class="flex flex-col items-center justify-center py-20">
         <div
           class="w-20 h-20 border-8 border-blue-500 border-t-transparent rounded-full animate-spin mb-6"
         ></div>
         <p class="text-xl text-gray-400">Loading your verifications...</p>
       </div>
-
-      <!-- Empty State -->
       <div id="empty-state" class="hidden text-center py-20">
         <i class="bi bi-clipboard-x text-8xl text-gray-600 mb-8 block"></i>
         <h2 class="text-3xl font-bold mb-4">No Verifications Yet</h2>
@@ -152,13 +134,9 @@
           Submit New Verification
         </a>
       </div>
-
-      <!-- Verifications Grid -->
       <div id="verifications-grid" class="grid gap-8 lg:grid-cols-1 hidden">
-        <!-- Cards will be injected here -->
       </div>
     </div>
-
     <script>
       async function loadVerifications() { const loading =
       document.getElementById("loading"); const empty =
@@ -197,7 +175,7 @@
       hover:shadow-2xl hover:shadow-purple-500/20"; const insights =
       verification.aiVerification?.insights || {}; const analytics =
       verification.aiVerification?.analytics || {}; card.innerHTML = ` <div
-      class="p-8"> <!-- Header --> <div class="flex justify-between items-start
+      class="p-8">  <div class="flex justify-between items-start
       mb-6"> <div> <h3 class="text-3xl font-black font-display capitalize
       bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text
       text-transparent"> ${verification.verificationType} Verification </h3> <p
@@ -208,7 +186,7 @@
       ${verification.status.toUpperCase()} </span>
       ${verification.overallApproved ? '<i class="bi bi-check-circle-fill
       text-3xl text-green-400"></i>' : '<i class="bi bi-x-circle-fill text-3xl
-      text-red-400"></i>' } </div> </div> <!-- Score Bar --> <div class="mb-8">
+      text-red-400"></i>' } </div> </div>  <div class="mb-8">
       <div class="flex justify-between text-sm mb-2"> <span>Verification
       Score</span> <span
       class="font-bold">${Math.round(verification.verificationScore ||
@@ -216,11 +194,10 @@
       overflow-hidden"> <div class="h-full rounded-full transition-all
       duration-1000 ${getScoreColor(verification.verificationScore)}"
       style="width: ${Math.round(verification.verificationScore || 0)}%"></div>
-      </div> </div> <!-- AI Insights Section --> ${insights.recommendations ? `
+      </div> </div>  ${insights.recommendations ? `
       <div class="mb-8 p-6 rounded-2xl glass border border-purple-500/20"> <h4
       class="text-xl font-bold mb-4 flex items-center gap-2"> <i class="bi
-      bi-lightbulb text-yellow-400"></i> AI-Powered Insights </h4> <!-- Trust &
-      Compliance Scores --> <div class="grid grid-cols-2 gap-4 mb-4"> <div
+      bi-lightbulb text-yellow-400"></i> AI-Powered Insights </h4>  <div class="grid grid-cols-2 gap-4 mb-4"> <div
       class="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30"> <div
       class="text-sm text-gray-400 mb-1">Trust Score</div> <div class="text-2xl
       font-bold text-blue-400">${Math.round(insights.trustScore || 0)}%</div>
@@ -228,7 +205,7 @@
       border-green-500/30"> <div class="text-sm text-gray-400
       mb-1">Compliance</div> <div class="text-2xl font-bold
       text-green-400">${Math.round(insights.complianceScore || 0)}%</div> </div>
-      </div> <!-- Risk Assessment --> ${insights.riskAssessment ? ` <div
+      </div>  ${insights.riskAssessment ? ` <div
       class="mb-4 p-4 rounded-xl
       ${getRiskColor(insights.riskAssessment.level)}"> <div class="flex
       items-center gap-2 mb-2"> <i class="bi bi-exclamation-triangle"></i> <span
@@ -236,14 +213,13 @@
       ${insights.riskAssessment.level?.toUpperCase()}</span> </div>
       ${insights.riskAssessment.factors?.length ? ` <div class="text-sm
       space-y-1"> ${insights.riskAssessment.factors.slice(0, 3).map(f => `<div>•
-      ${f}</div>`).join('')} </div> ` : ''} </div> ` : ''} <!-- Immediate
-      Recommendations --> ${insights.recommendations.immediate?.length ? ` <div
+      ${f}</div>`).join('')} </div> ` : ''} </div> ` : ''}  ${insights.recommendations.immediate?.length ? ` <div
       class="mb-4"> <div class="text-sm font-bold text-orange-400 mb-2"> <i
       class="bi bi-lightning mr-1"></i>Immediate Actions: </div> <div
       class="space-y-2"> ${insights.recommendations.immediate.slice(0,
       3).map(rec => ` <div class="flex items-start gap-2 text-sm"> <i class="bi
       bi-check-circle text-orange-400 mt-0.5"></i> <span>${rec}</span> </div>
-      `).join('')} </div> </div> ` : ''} <!-- Market Value Estimate -->
+      `).join('')} </div> </div> ` : ''}
       ${insights.marketValue ? ` <div class="p-4 rounded-xl bg-purple-500/10
       border border-purple-500/30"> <div class="text-sm text-gray-400
       mb-1">Estimated Market Value</div> <div class="text-lg font-bold
@@ -251,17 +227,17 @@
       Analysis'}</div> ${insights.marketValue.factors?.length ? ` <div
       class="text-xs text-gray-400 mt-2"> Based on:
       ${insights.marketValue.factors.slice(0, 2).join(', ')} </div> ` : ''}
-      </div> ` : ''} </div> ` : ''} <!-- Standard Analysis Sections --> <div
+      </div> ` : ''} </div> ` : ''}  <div
       class="space-y-6"> ${renderOwnershipSection(verification)}
       ${renderHealthSection(verification)} ${renderPhotoSection(verification)}
-      </div> <!-- Action Items --> ${analytics.actionItems?.length ? ` <div
+      </div>  ${analytics.actionItems?.length ? ` <div
       class="mt-6 p-4 rounded-xl bg-blue-500/10 border border-blue-500/30"> <h4
       class="font-bold text-blue-400 mb-3"> <i class="bi bi-list-check
       mr-2"></i>Action Items </h4> <div class="space-y-2">
       ${analytics.actionItems.slice(0, 5).map(item => ` <label class="flex
       items-start gap-3 cursor-pointer"> <input type="checkbox" class="mt-1
       rounded border-gray-600"> <span class="text-sm">${item}</span> </label>
-      `).join('')} </div> </div> ` : ''} <!-- Footer --> <div class="mt-8 pt-6
+      `).join('')} </div> </div> ` : ''}  <div class="mt-8 pt-6
       border-t border-gray-700/50 text-sm text-gray-400 flex justify-between
       items-center"> <span>ID: ${verification._id}</span>
       ${verification.expiresAt ? `<span>Expires: ${new
@@ -342,4 +318,5 @@
       <script src="/js/app-theme.js"></script>
   </body>
 </html>
+
 

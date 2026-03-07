@@ -1,4 +1,4 @@
-<html lang="en">
+﻿<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,7 +13,6 @@
       href="/vendor/fontawesome/css/all.min.css"
     />
     <link href="/css/app-theme.css" rel="stylesheet" />
-
     <style>
       /* ── RESET & BASE ─────────────────────────────────────────────────────────── */
       *,
@@ -26,7 +25,6 @@
       html {
         scroll-behavior: smooth;
       }
-
       :root {
         --bg: #04080f;
         --bg2: #080e1a;
@@ -48,7 +46,6 @@
         --r3: 12px;
         --r4: 16px;
       }
-
       body {
         font-family: "DM Sans", sans-serif;
         background: var(--bg);
@@ -57,7 +54,6 @@
         line-height: 1.6;
         overflow-x: hidden;
       }
-
       /* ── BACKGROUND MESH ──────────────────────────────────────────────────────── */
       .bg-mesh {
         position: fixed;
@@ -107,7 +103,6 @@
         );
         border-radius: 50%;
       }
-
       /* ── LAYOUT ───────────────────────────────────────────────────────────────── */
       .wrapper {
         position: relative;
@@ -116,7 +111,6 @@
         margin: 0 auto;
         padding: 40px 20px 100px;
       }
-
       /* ── PAGE HEADER ──────────────────────────────────────────────────────────── */
       .page-header {
         margin-bottom: 40px;
@@ -152,7 +146,6 @@
         color: var(--text2);
         max-width: 480px;
       }
-
       /* ── PROGRESS STEPPER ─────────────────────────────────────────────────────── */
       .stepper {
         display: grid;
@@ -180,7 +173,6 @@
           var(--accent5) 100%
         );
       }
-
       .step-item {
         display: flex;
         flex-direction: column;
@@ -198,7 +190,6 @@
         background: var(--border);
         z-index: 0;
       }
-
       .step-dot {
         position: relative;
         z-index: 1;
@@ -243,7 +234,6 @@
       .step-item.completed .step-label {
         color: var(--accent2);
       }
-
       /* ── FORM CARDS ───────────────────────────────────────────────────────────── */
       .form-card {
         background: var(--surface);
@@ -272,7 +262,6 @@
       .form-card:hover {
         border-color: var(--border2);
       }
-
       /* ── SECTION HEADER ───────────────────────────────────────────────────────── */
       .section-header {
         display: flex;
@@ -326,7 +315,6 @@
         color: var(--orange);
         border: 1px solid rgba(251, 146, 60, 0.2);
       }
-
       .section-header-text h2 {
         font-family: "Syne", sans-serif;
         font-size: 18px;
@@ -338,7 +326,6 @@
         font-size: 13px;
         color: var(--text3);
       }
-
       /* ── GRID ─────────────────────────────────────────────────────────────────── */
       .grid-2 {
         display: grid;
@@ -361,7 +348,6 @@
           grid-column: span 1;
         }
       }
-
       /* ── FORM LABELS & INPUTS ─────────────────────────────────────────────────── */
       .form-group {
         display: flex;
@@ -384,7 +370,6 @@
       .form-label .req {
         color: var(--accent4);
       }
-
       .clean-input,
       .clean-select,
       .clean-textarea {
@@ -425,7 +410,6 @@
         min-height: 120px;
         line-height: 1.7;
       }
-
       .input-icon-wrap {
         position: relative;
       }
@@ -443,7 +427,6 @@
         pointer-events: none;
         font-family: "DM Mono", monospace;
       }
-
       input[type="date"],
       input[type="time"] {
         color-scheme: dark;
@@ -461,7 +444,6 @@
       input[type="checkbox"] {
         accent-color: var(--accent);
       }
-
       /* ── INFO TEXT ────────────────────────────────────────────────────────────── */
       .info-text {
         font-size: 11.5px;
@@ -479,7 +461,6 @@
       .info-text.warn {
         color: var(--accent3);
       }
-
       /* ── RADIO SEX CARDS ──────────────────────────────────────────────────────── */
       .sex-cards {
         display: grid;
@@ -530,7 +511,6 @@
       .sex-card:nth-child(2) label i {
         color: #f9a8d4;
       }
-
       /* ── VACCINATED TOGGLE ────────────────────────────────────────────────────── */
       .toggle-row {
         display: flex;
@@ -605,7 +585,6 @@
         color: var(--text3);
         transition: color 0.2s;
       }
-
       /* ── PREVIEW BAR ──────────────────────────────────────────────────────────── */
       .preview-bar {
         display: grid;
@@ -640,7 +619,6 @@
         color: var(--text);
         font-family: "DM Mono", monospace;
       }
-
       /* ── PHOTO UPLOAD ZONE ────────────────────────────────────────────────────── */
       .photo-zone {
         border: 2px dashed rgba(167, 139, 250, 0.3);
@@ -709,7 +687,6 @@
       .upload-badge i {
         color: var(--accent);
       }
-
       /* ── PHOTO PREVIEW GRID ───────────────────────────────────────────────────── */
       #photoPreviewGrid {
         display: none;
@@ -805,7 +782,6 @@
         color: var(--accent);
         margin-top: 12px;
       }
-
       /* ── PRICING ──────────────────────────────────────────────────────────────── */
       .price-input-wrap {
         position: relative;
@@ -844,7 +820,6 @@
           grid-template-columns: 1fr;
         }
       }
-
       /* ── TIPS BOX ─────────────────────────────────────────────────────────────── */
       .tips-box {
         padding: 18px 20px;
@@ -891,7 +866,6 @@
         font-size: 11px;
         flex-shrink: 0;
       }
-
       /* ── TIMER BOX ────────────────────────────────────────────────────────────── */
       .timer-display {
         display: flex;
@@ -922,7 +896,6 @@
         letter-spacing: 0.1em;
         text-transform: uppercase;
       }
-
       /* ── CHECKLIST ────────────────────────────────────────────────────────────── */
       .checklist {
         display: grid;
@@ -951,7 +924,6 @@
           grid-template-columns: 1fr;
         }
       }
-
       /* ── TERMS BOX ────────────────────────────────────────────────────────────── */
       .terms-box {
         background: rgba(248, 113, 113, 0.05);
@@ -976,7 +948,6 @@
         margin-top: 2px;
         cursor: pointer;
       }
-
       /* ── CHAR COUNTER ─────────────────────────────────────────────────────────── */
       .desc-footer {
         display: flex;
@@ -996,7 +967,6 @@
       .char-count span.ok {
         color: var(--accent);
       }
-
       /* ── BUTTONS ──────────────────────────────────────────────────────────────── */
       .btn-row {
         display: flex;
@@ -1043,7 +1013,6 @@
         cursor: not-allowed;
         transform: none;
       }
-
       .btn-select-photo {
         display: inline-flex;
         align-items: center;
@@ -1063,7 +1032,6 @@
         background: rgba(167, 139, 250, 0.2);
         box-shadow: 0 0 20px rgba(167, 139, 250, 0.15);
       }
-
       /* ── FOOTER NOTE ──────────────────────────────────────────────────────────── */
       .footer-note {
         text-align: center;
@@ -1075,12 +1043,10 @@
         justify-content: center;
         gap: 6px;
       }
-
       /* ── HIDDEN ───────────────────────────────────────────────────────────────── */
       .hidden {
         display: none !important;
       }
-
       /* ── SUCCESS MODAL ────────────────────────────────────────────────────────── */
       .modal-overlay {
         position: fixed;
@@ -1197,7 +1163,6 @@
         background: var(--surface2);
         color: var(--text);
       }
-
       /* ── ANIMATIONS ───────────────────────────────────────────────────────────── */
       @keyframes fadeUp {
         from {
@@ -1227,7 +1192,6 @@
       .fade-up-6 {
         animation: fadeUp 0.5s ease-out 0.44s both;
       }
-
       @keyframes spin {
         to {
           transform: rotate(360deg);
@@ -1236,7 +1200,6 @@
       .spin {
         animation: spin 0.9s linear infinite;
       }
-
       /* ── CONDITIONAL SECTION ──────────────────────────────────────────────────── */
       #vaccinationLicenseSection {
         overflow: hidden;
@@ -1250,7 +1213,6 @@
         max-height: 120px;
         opacity: 1;
       }
-
       /* ── FIELD VALIDATION HINT ────────────────────────────────────────────────── */
       .clean-input.error {
         border-color: rgba(248, 113, 113, 0.5);
@@ -1260,21 +1222,15 @@
       }
     </style>
   </head>
-
   <body>
     <div class="bg-mesh"><div class="mesh-dot"></div></div>
-
     <div class="wrapper">
-
-      <!-- ── PAGE HEADER ─────────────────────────────────────────────────────── -->
       <div class="page-header fade-up-1">
         <div class="page-eyebrow"><i class="fas fa-gavel"></i>Livestock Auction</div>
         <div class="page-title">Create <span>Auction</span></div>
         <div class="page-sub">List your premium livestock and let verified
           buyers compete in real-time bidding on the AgriVault marketplace.</div>
       </div>
-
-      <!-- ── PROGRESS STEPPER ────────────────────────────────────────────────── -->
       <div class="stepper fade-up-2">
         <div class="step-item active" id="stepItem1">
           <div class="step-dot active" id="step1"><i
@@ -1295,16 +1251,12 @@
           <span class="step-label">Timing</span>
         </div>
       </div>
-
-      <!-- ── FORM ────────────────────────────────────────────────────────────── -->
       <form
         action="/auctions"
         method="POST"
         enctype="multipart/form-data"
         id="auctionForm"
       >
-
-        <!-- STEP 1 - Animal Details -->
         <div class="form-card fade-up-3" id="section1">
           <div class="section-header">
             <div class="section-icon blue"><i
@@ -1324,10 +1276,7 @@
                 buyers</p>
             </div>
           </div>
-
           <div class="grid-2">
-
-            <!-- Animal Type -->
             <div class="form-group">
               <label class="form-label"><i class="fas fa-filter"></i>Animal Type
                 <span class="req">*</span></label>
@@ -1347,8 +1296,6 @@
                 <option value="7">🦆 Duck</option>
               </select>
             </div>
-
-            <!-- Breed -->
             <div class="form-group">
               <label class="form-label"><i class="fas fa-award"></i>Breed
                 <span class="req">*</span></label>
@@ -1361,8 +1308,6 @@
                 class="clean-input"
               />
             </div>
-
-            <!-- Age -->
             <div class="form-group">
               <label class="form-label"><i class="fas fa-calendar-alt"></i>Age
                 <span class="req">*</span></label>
@@ -1389,8 +1334,6 @@
               <div class="info-text warn"><i class="fas fa-lightbulb"></i>Age
                 affects productivity and resale value</div>
             </div>
-
-            <!-- Sex -->
             <div class="form-group">
               <label class="form-label"><i class="fas fa-venus-mars"></i>Sex
                 <span class="req">*</span></label>
@@ -1418,8 +1361,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- Weight -->
             <div class="form-group">
               <label class="form-label"><i
                   class="fas fa-weight-hanging"
@@ -1443,8 +1384,6 @@
                   style="color:var(--accent2)"
                 ></i>Weight determines meat value per unit</div>
             </div>
-
-            <!-- Health Status -->
             <div class="form-group">
               <label class="form-label"><i class="fas fa-heart-pulse"></i>Health
                 / Condition
@@ -1456,8 +1395,6 @@
                 <option value="Fair">Fair - Acceptable condition</option>
               </select>
             </div>
-
-            <!-- Quantity -->
             <div class="form-group">
               <label class="form-label"><i class="fas fa-hashtag"></i>Quantity
                 <span class="req">*</span></label>
@@ -1472,8 +1409,6 @@
                 class="clean-input"
               />
             </div>
-
-            <!-- Location -->
             <div class="form-group">
               <label class="form-label"><i
                   class="fas fa-map-marker-alt"
@@ -1488,8 +1423,6 @@
                 class="clean-input"
               />
             </div>
-
-            <!-- Vaccination Toggle -->
             <div class="form-group col-span-2">
               <div class="toggle-row">
                 <div class="toggle-left">
@@ -1517,8 +1450,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- Vaccination License (Conditional) -->
             <div class="form-group col-span-2" id="vaccinationLicenseSection">
               <label class="form-label"><i
                   class="fas fa-file-medical"
@@ -1535,8 +1466,6 @@
                   class="fas fa-check-circle"
                 ></i>Verified certification is a major trust signal for buyers</div>
             </div>
-
-            <!-- Description -->
             <div class="form-group col-span-2">
               <label class="form-label"><i
                   class="fas fa-pencil-alt"
@@ -1563,8 +1492,6 @@
                   >0</span>/1000</div>
               </div>
             </div>
-
-            <!-- Live Preview -->
             <div class="col-span-2">
               <div
                 style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:8px;"
@@ -1603,11 +1530,8 @@
                 </div>
               </div>
             </div>
-
           </div>
         </div>
-
-        <!-- STEP 2 - Photo Gallery -->
         <div class="form-card fade-up-4" id="section2">
           <div class="section-header">
             <div class="section-icon purple"><i class="fas fa-images"></i></div>
@@ -1625,8 +1549,6 @@
                 serious buyer</p>
             </div>
           </div>
-
-          <!-- Drop Zone -->
           <div
             class="photo-zone"
             id="photoZone"
@@ -1641,7 +1563,6 @@
               required
               class="hidden"
             />
-
             <div id="uploadPrompt">
               <i class="fas fa-cloud-upload-alt upload-icon"></i>
               <h3>Drag & Drop Images Here</h3>
@@ -1663,23 +1584,17 @@
                   photos</div>
               </div>
             </div>
-
-            <!-- Preview Grid (shown after upload) -->
             <div id="photoPreviewGrid"></div>
-
-            <!-- Photo count badge -->
             <div id="photoCountBadge" class="photo-count-badge hidden">
               <i class="fas fa-check-circle"></i>
               <span id="photoCountText">0 photos selected</span>
               <span
                 style="margin-left:4px;cursor:pointer;color:var(--accent4);font-weight:700;"
                 onclick="event.stopPropagation();removeAllPhotos()"
-              >✕ Remove all</span>
+              >✖️ Remove all</span>
             </div>
           </div>
         </div>
-
-        <!-- STEP 3 - Pricing -->
         <div class="form-card fade-up-5" id="section3">
           <div class="section-header">
             <div class="section-icon green"><i class="fas fa-tag"></i></div>
@@ -1688,7 +1603,6 @@
               <p>Set competitive prices to attract serious, high-value bidders</p>
             </div>
           </div>
-
           <div class="price-row" style="margin-bottom:20px;">
             <div class="form-group">
               <label class="form-label"><i class="fas fa-gavel"></i>Starting Bid
@@ -1732,7 +1646,6 @@
                 ></i>Hidden from buyers, protects your minimum value</div>
             </div>
           </div>
-
           <div class="tips-box blue">
             <h4><i class="fas fa-lightbulb"></i>Pro Pricing Strategy Tips</h4>
             <div class="tips-list">
@@ -1747,8 +1660,6 @@
             </div>
           </div>
         </div>
-
-        <!-- STEP 4 - Timing -->
         <div class="form-card fade-up-6" id="section4">
           <div class="section-header">
             <div class="section-icon orange"><i class="fas fa-clock"></i></div>
@@ -1757,7 +1668,6 @@
               <p>Configure when your auction closes, minimum 1 day from now</p>
             </div>
           </div>
-
           <div class="grid-2" style="margin-bottom:20px;">
             <div class="form-group">
               <label class="form-label"><i class="fas fa-calendar"></i>Auction
@@ -1793,8 +1703,6 @@
               </select>
             </div>
           </div>
-
-          <!-- Timer Preview -->
           <div class="tips-box orange">
             <h4><i class="fas fa-stopwatch"></i>Auction Duration Preview</h4>
             <p
@@ -1817,8 +1725,6 @@
             </div>
           </div>
         </div>
-
-        <!-- FINAL - Review and Submit -->
         <div
           class="form-card"
           style="animation:fadeUp 0.5s ease-out 0.52s both;"
@@ -1831,7 +1737,6 @@
               style="color:var(--accent)"
             ></i>Pre-Launch Checklist
           </h3>
-
           <div class="checklist">
             <div class="checklist-item"><i class="fas fa-check-circle"></i>All
               animal details provided accurately</div>
@@ -1844,7 +1749,6 @@
                 class="fas fa-check-circle"
               ></i>Auction timing and timezone confirmed</div>
           </div>
-
           <div class="terms-box">
             <label class="terms-label">
               <input type="checkbox" name="terms" id="termsCheckbox" required />
@@ -1857,7 +1761,6 @@
                 suspension.</span>
             </label>
           </div>
-
           <div class="btn-row">
             <button type="button" id="saveDraftBtn" class="btn btn-secondary">
               <i class="fas fa-folder-plus"></i>Save Draft
@@ -1866,17 +1769,13 @@
               <i class="fas fa-gavel"></i>Launch Auction Now
             </button>
           </div>
-
           <div class="footer-note">
             <i class="fas fa-shield-check" style="color:var(--accent)"></i>
             Your auction will go live immediately upon submission
           </div>
         </div>
-
       </form>
     </div>
-
-    <!-- Success Modal -->
     {{#if successMessage}}
       <div class="modal-overlay">
         <div class="modal-box">
@@ -1898,10 +1797,10 @@
         </div>
       </div>
     {{/if}}
-
     <script src="/js/app-theme.js"></script>
     <script src="/js/create-auction-preview.js"></script>
   </body>
 </html>
+
 
 
