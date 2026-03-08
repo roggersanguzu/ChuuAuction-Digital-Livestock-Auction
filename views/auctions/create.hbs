@@ -315,6 +315,13 @@
         color: var(--text);
         margin-bottom: 3px;
       }
+      .section-title-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 4px;
+        flex-wrap: wrap;
+      }
       .section-header-text p {
         font-size: 13px;
         color: var(--text3);
@@ -1192,6 +1199,151 @@
       .clean-input.ok {
         border-color: rgba(74, 222, 128, 0.35);
       }
+      .age-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      @media (max-width: 768px) {
+        .wrapper {
+          padding: 28px 16px 72px;
+        }
+        .page-header {
+          margin-bottom: 24px;
+        }
+        .stepper {
+          grid-template-columns: 1fr 1fr;
+          gap: 14px;
+          padding: 16px;
+        }
+        .step-item:not(:last-child)::after {
+          display: none;
+        }
+        .form-card {
+          padding: 22px 18px;
+          margin-bottom: 18px;
+          border-radius: 16px;
+        }
+        .section-header {
+          align-items: flex-start;
+          gap: 12px;
+          margin-bottom: 18px;
+          padding-bottom: 14px;
+        }
+        .section-icon {
+          width: 44px;
+          height: 44px;
+          border-radius: 12px;
+          font-size: 16px;
+        }
+        .section-header-text h2 {
+          font-size: 16px;
+        }
+        .grid-3 {
+          grid-template-columns: 1fr 1fr;
+        }
+        .toggle-row {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 12px;
+          padding: 14px;
+        }
+        .toggle-left {
+          align-items: flex-start;
+          gap: 10px;
+        }
+        .toggle-right {
+          width: 100%;
+          justify-content: space-between;
+        }
+        .preview-bar {
+          grid-template-columns: 1fr 1fr;
+          padding: 12px;
+        }
+        .checklist {
+          grid-template-columns: 1fr;
+        }
+        .desc-footer {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
+        .btn-row {
+          flex-direction: column;
+        }
+        .btn,
+        .modal-btn {
+          width: 100%;
+        }
+        .photo-zone {
+          min-height: 160px;
+          padding: 24px 16px;
+        }
+        #photoPreviewGrid {
+          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        }
+        .modal-overlay {
+          padding: 14px;
+        }
+        .modal-box {
+          padding: 26px 20px;
+          border-radius: 18px;
+        }
+        .modal-title {
+          font-size: 22px;
+        }
+        .modal-id-value {
+          font-size: 18px;
+          overflow-wrap: anywhere;
+        }
+        .modal-btns {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 480px) {
+        .wrapper {
+          padding: 22px 12px 56px;
+        }
+        .stepper {
+          grid-template-columns: 1fr 1fr;
+          gap: 10px;
+          padding: 12px;
+        }
+        .step-dot {
+          width: 32px;
+          height: 32px;
+          font-size: 11px;
+        }
+        .step-label {
+          font-size: 10px;
+          letter-spacing: 0.03em;
+        }
+        .form-card {
+          padding: 16px 14px;
+        }
+        .grid-3,
+        .preview-bar {
+          grid-template-columns: 1fr;
+        }
+        .clean-input,
+        .clean-select,
+        .clean-textarea {
+          padding: 10px 12px;
+          font-size: 13px;
+        }
+        .age-grid {
+          grid-template-columns: 1fr;
+        }
+        .timer-box {
+          min-width: 56px;
+          font-size: 22px;
+          padding: 8px 12px;
+        }
+        .section-badge {
+          font-size: 9px;
+          padding: 4px 8px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1235,9 +1387,7 @@
                 class="fas fa-clipboard-list"
               ></i></div>
             <div class="section-header-text">
-              <div
-                style="display:flex;align-items:center;gap:10px;margin-bottom:4px;"
-              >
+              <div class="section-title-row">
                 <h2>Step 1: Animal Information</h2>
                 <div class="section-badge"><i
                     class="fas fa-circle"
@@ -1283,7 +1433,7 @@
             <div class="form-group">
               <label class="form-label"><i class="fas fa-calendar-alt"></i>Age
                 <span class="req">*</span></label>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div class="age-grid">
                 <input
                   type="number"
                   name="ageYears"
@@ -1508,9 +1658,7 @@
           <div class="section-header">
             <div class="section-icon purple"><i class="fas fa-images"></i></div>
             <div class="section-header-text">
-              <div
-                style="display:flex;align-items:center;gap:10px;margin-bottom:4px;"
-              >
+              <div class="section-title-row">
                 <h2>Step 2: Photo Gallery</h2>
                 <div class="section-badge"><i
                     class="fas fa-circle"
