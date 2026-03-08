@@ -174,13 +174,13 @@ function renderBidCard(bid) {
       bid._id +
       "', '" +
       (bid.bidderName || "Anonymous") +
-      '\')" class="px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 font-semibold hover:shadow-lg hover:shadow-green-500/30 transition text-sm"><i class="bi bi-trophy-fill mr-1"></i>Declare Winner</button></div>';
+      '\')" class="w-full sm:w-auto px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 font-semibold hover:shadow-lg hover:shadow-green-500/30 transition text-sm"><i class="bi bi-trophy-fill mr-1"></i>Declare Winner</button></div>';
   }
   return (
     '<div class="' +
     cardClass +
     '">' +
-    '<div class="flex items-start gap-4">' +
+    '<div class="flex flex-col sm:flex-row sm:items-start gap-3">' +
     '<div class="relative flex-shrink-0">' +
     '<div class="w-12 h-12 rounded-full bg-gradient-to-br ' +
     bgGradient +
@@ -189,17 +189,17 @@ function renderBidCard(bid) {
     "</div>" +
     winnerBadge +
     "</div>" +
-    '<div class="flex-1 min-w-0">' +
-    '<div class="flex items-start justify-between mb-2">' +
-    '<div><h5 class="font-bold flex items-center gap-2">' +
+    '<div class="flex-1 min-w-0 overflow-hidden">' +
+    '<div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">' +
+    '<div class="min-w-0"><h5 class="font-bold flex flex-wrap items-center gap-2">' +
     (bid.bidderName || "Anonymous") +
-    '<span class="px-2 py-0.5 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-400 text-xs"><i class="bi bi-telephone mr-1"></i>' +
+    '<span class="max-w-full break-all px-2 py-0.5 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-400 text-xs"><i class="bi bi-telephone mr-1"></i>' +
     (bid.bidderPhone || "N/A") +
     "</span></h5>" +
     '<p class="text-xs text-gray-500 mt-1"><i class="bi bi-clock mr-1"></i>' +
     formatDate(bid.createdAt) +
     "</p></div>" +
-    '<div class="text-right"><p class="text-xl font-black ' +
+    '<div class="text-left sm:text-right"><p class="text-lg sm:text-xl font-black ' +
     textColor +
     '">' +
     formatCurrency(bid.amount) +
@@ -276,16 +276,16 @@ function renderAuctionGroup(auctionId, group) {
       '<div class="p-4 rounded-xl border border-dashed border-gray-700 text-gray-500 text-sm">No bids in this category</div>';
   }
   return (
-    '<section class="auction-group glass-strong border border-gray-800 rounded-2xl p-5 md:p-6">' +
+    '<section class="auction-group glass-strong border border-gray-800 rounded-2xl p-4 sm:p-5 md:p-6">' +
     '<div class="flex flex-col lg:flex-row gap-6 pb-5 border-b border-gray-800/70">' +
-    '<div class="lg:w-48 h-36 rounded-xl overflow-hidden relative flex-shrink-0">' +
+    '<div class="w-full sm:w-56 lg:w-48 h-36 rounded-xl overflow-hidden relative flex-shrink-0">' +
     '<img src="' +
     photoUrl +
     '" alt="' +
     animalType +
     '" class="w-full h-full object-cover" onerror="this.src=\'/img/cow.png\'">' +
     '<div class="absolute top-3 right-3"><span class="px-3 py-1 rounded-full bg-green-500/90 backdrop-blur-sm text-xs font-bold flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>LIVE</span></div></div>' +
-    '<div class="flex-1"><h3 class="text-xl font-bold font-display mb-2">' +
+    '<div class="flex-1 min-w-0"><h3 class="text-lg sm:text-xl font-bold font-display mb-2 break-words">' +
     animalType +
     (auction.breed ? "- " + auction.breed : "") +
     "</h3>" +
@@ -295,10 +295,10 @@ function renderAuctionGroup(auctionId, group) {
     locationHtml +
     healthHtml +
     "</div>" +
-    '<p class="text-sm text-gray-400 mb-4">' +
+    '<p class="text-xs sm:text-sm text-gray-400 mb-4 break-words">' +
     (auction.description || "") +
     "</p>" +
-    '<div class="grid grid-cols-3 gap-4"><div class="p-3 rounded-xl bg-gray-800/30"><p class="text-xs text-gray-400 mb-1">Total Bids</p><p class="text-lg font-black">' +
+    '<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4"><div class="p-3 rounded-xl bg-gray-800/30"><p class="text-xs text-gray-400 mb-1">Total Bids</p><p class="text-lg font-black">' +
     group.bids.length +
     "</p></div>" +
     '<div class="p-3 rounded-xl bg-green-500/10 border border-green-500/30"><p class="text-xs text-gray-400 mb-1">Highest Bid</p><p class="text-lg font-black text-green-500">' +
@@ -309,8 +309,8 @@ function renderAuctionGroup(auctionId, group) {
     '">' +
     winnerText +
     "</p></div></div></div></div>" +
-    '<div class="mt-5 rounded-2xl border border-gray-800/70 bg-gray-900/30 p-4 md:p-5">' +
-    '<div class="flex items-center justify-between gap-3 mb-4">' +
+    '<div class="mt-5 rounded-2xl border border-gray-800/70 bg-gray-900/30 p-3 sm:p-4 md:p-5">' +
+    '<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 mb-4">' +
     '<h4 class="text-sm font-bold text-gray-300"><i class="bi bi-hand-thumbs-up mr-2 text-orange-400"></i>Placed Bids</h4>' +
     '<span class="px-2.5 py-1 rounded-lg bg-gray-800/70 border border-gray-700 text-xs font-semibold text-gray-300">' +
     filteredBids.length +
