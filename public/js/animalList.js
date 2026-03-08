@@ -412,7 +412,7 @@ function viewDetails(id) {
         <i class="bi bi-x-lg text-base"></i>
       </button>
     </div>
-    <div class="p-3 space-y-3 pb-20 md:pb-3">
+    <div class="p-3 space-y-3">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
         ${photos
           .map(
@@ -528,13 +528,8 @@ function viewDetails(id) {
           </div>
         </div>
       </div>
-      <div class="hidden md:block sticky bottom-0 -mx-3 px-3 py-2.5 bg-gray-900/96 backdrop-blur-xl border-t border-gray-800/60 z-20">
+      <div class="sticky bottom-0 -mx-3 px-3 py-2.5 bg-gray-900/96 backdrop-blur-xl border-t border-gray-800/60 z-20">
         <button onclick="openBidModal('${listing._id}')" class="w-full px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 font-bold text-sm hover:shadow-2xl hover:shadow-emerald-500/30 transition-all">
-          <i class="bi bi-cart-plus mr-2"></i>Place Bid
-        </button>
-      </div>
-      <div class="md:hidden fixed bottom-3 left-3 right-3 z-[70]">
-        <button onclick="openBidModal('${listing._id}')" class="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 font-bold text-sm shadow-2xl shadow-emerald-900/40 border border-emerald-300/30">
           <i class="bi bi-cart-plus mr-2"></i>Place Bid
         </button>
       </div>

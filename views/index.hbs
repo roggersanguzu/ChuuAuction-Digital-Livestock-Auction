@@ -2437,6 +2437,13 @@
           ham.classList.add("open");
           document.body.style.overflow = "hidden";
         }
+        function forceCloseDrawer(event) {
+          if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          closeDrawer();
+        }
         function scrollToHash(hash) {
           if (!hash || hash === "#") return;
           var target = document.querySelector(hash);
@@ -2466,16 +2473,9 @@
             else openDrawer();
           });
           if (closeBtn) {
-            closeBtn.addEventListener("click", function (event) {
-              event.preventDefault();
-              event.stopPropagation();
-              closeDrawer();
-            });
-            closeBtn.addEventListener("touchend", function (event) {
-              event.preventDefault();
-              event.stopPropagation();
-              closeDrawer();
-            });
+            closeBtn.addEventListener("click", forceCloseDrawer);
+            closeBtn.addEventListener("touchend", forceCloseDrawer);
+            closeBtn.addEventListener("pointerdown", forceCloseDrawer);
           }
           overlay.addEventListener("click", closeDrawer);
           drawer.querySelectorAll(".drw-link, .drw-ft a").forEach(function (item) {
@@ -2487,6 +2487,11 @@
             if (event.key === "Escape") closeDrawer();
           });
         }
+        document.addEventListener("click", function (event) {
+          var trigger = event.target.closest("#drw-close");
+          if (!trigger) return;
+          forceCloseDrawer(event);
+        });
         document.querySelectorAll('a[href^="#"]').forEach(function (link) {
           link.addEventListener("click", function (event) {
             var href = link.getAttribute("href");
