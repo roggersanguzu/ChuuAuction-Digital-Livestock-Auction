@@ -320,4 +320,3 @@ function initializeFormSubmission() {
     }
   });
 }
-

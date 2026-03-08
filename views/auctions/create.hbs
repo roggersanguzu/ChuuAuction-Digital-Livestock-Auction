@@ -14,7 +14,6 @@
     />
     <link href="/css/app-theme.css" rel="stylesheet" />
     <style>
-      /* ── RESET & BASE ─────────────────────────────────────────────────────────── */
       *,
       *::before,
       *::after {
@@ -54,7 +53,6 @@
         line-height: 1.6;
         overflow-x: hidden;
       }
-      /* ── BACKGROUND MESH ──────────────────────────────────────────────────────── */
       .bg-mesh {
         position: fixed;
         inset: 0;
@@ -103,7 +101,6 @@
         );
         border-radius: 50%;
       }
-      /* ── LAYOUT ───────────────────────────────────────────────────────────────── */
       .wrapper {
         position: relative;
         z-index: 1;
@@ -111,7 +108,6 @@
         margin: 0 auto;
         padding: 40px 20px 100px;
       }
-      /* ── PAGE HEADER ──────────────────────────────────────────────────────────── */
       .page-header {
         margin-bottom: 40px;
       }
@@ -146,7 +142,6 @@
         color: var(--text2);
         max-width: 480px;
       }
-      /* ── PROGRESS STEPPER ─────────────────────────────────────────────────────── */
       .stepper {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -234,7 +229,6 @@
       .step-item.completed .step-label {
         color: var(--accent2);
       }
-      /* ── FORM CARDS ───────────────────────────────────────────────────────────── */
       .form-card {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -262,7 +256,6 @@
       .form-card:hover {
         border-color: var(--border2);
       }
-      /* ── SECTION HEADER ───────────────────────────────────────────────────────── */
       .section-header {
         display: flex;
         align-items: center;
@@ -326,7 +319,6 @@
         font-size: 13px;
         color: var(--text3);
       }
-      /* ── GRID ─────────────────────────────────────────────────────────────────── */
       .grid-2 {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -348,7 +340,6 @@
           grid-column: span 1;
         }
       }
-      /* ── FORM LABELS & INPUTS ─────────────────────────────────────────────────── */
       .form-group {
         display: flex;
         flex-direction: column;
@@ -444,7 +435,6 @@
       input[type="checkbox"] {
         accent-color: var(--accent);
       }
-      /* ── INFO TEXT ────────────────────────────────────────────────────────────── */
       .info-text {
         font-size: 11.5px;
         color: var(--text3);
@@ -461,7 +451,6 @@
       .info-text.warn {
         color: var(--accent3);
       }
-      /* ── RADIO SEX CARDS ──────────────────────────────────────────────────────── */
       .sex-cards {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -511,7 +500,6 @@
       .sex-card:nth-child(2) label i {
         color: #f9a8d4;
       }
-      /* ── VACCINATED TOGGLE ────────────────────────────────────────────────────── */
       .toggle-row {
         display: flex;
         align-items: center;
@@ -585,7 +573,6 @@
         color: var(--text3);
         transition: color 0.2s;
       }
-      /* ── PREVIEW BAR ──────────────────────────────────────────────────────────── */
       .preview-bar {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -619,7 +606,6 @@
         color: var(--text);
         font-family: "DM Mono", monospace;
       }
-      /* ── PHOTO UPLOAD ZONE ────────────────────────────────────────────────────── */
       .photo-zone {
         border: 2px dashed rgba(167, 139, 250, 0.3);
         border-radius: 18px;
@@ -687,7 +673,6 @@
       .upload-badge i {
         color: var(--accent);
       }
-      /* ── PHOTO PREVIEW GRID ───────────────────────────────────────────────────── */
       #photoPreviewGrid {
         display: none;
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -782,7 +767,6 @@
         color: var(--accent);
         margin-top: 12px;
       }
-      /* ── PRICING ──────────────────────────────────────────────────────────────── */
       .price-input-wrap {
         position: relative;
       }
@@ -820,7 +804,6 @@
           grid-template-columns: 1fr;
         }
       }
-      /* ── TIPS BOX ─────────────────────────────────────────────────────────────── */
       .tips-box {
         padding: 18px 20px;
         border-radius: var(--r3);
@@ -866,7 +849,6 @@
         font-size: 11px;
         flex-shrink: 0;
       }
-      /* ── TIMER BOX ────────────────────────────────────────────────────────────── */
       .timer-display {
         display: flex;
         gap: 16px;
@@ -896,7 +878,6 @@
         letter-spacing: 0.1em;
         text-transform: uppercase;
       }
-      /* ── CHECKLIST ────────────────────────────────────────────────────────────── */
       .checklist {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -924,7 +905,6 @@
           grid-template-columns: 1fr;
         }
       }
-      /* ── TERMS BOX ────────────────────────────────────────────────────────────── */
       .terms-box {
         background: rgba(248, 113, 113, 0.05);
         border: 1px solid rgba(248, 113, 113, 0.15);
@@ -948,7 +928,6 @@
         margin-top: 2px;
         cursor: pointer;
       }
-      /* ── CHAR COUNTER ─────────────────────────────────────────────────────────── */
       .desc-footer {
         display: flex;
         align-items: center;
@@ -967,7 +946,6 @@
       .char-count span.ok {
         color: var(--accent);
       }
-      /* ── BUTTONS ──────────────────────────────────────────────────────────────── */
       .btn-row {
         display: flex;
         gap: 12px;
@@ -1032,7 +1010,6 @@
         background: rgba(167, 139, 250, 0.2);
         box-shadow: 0 0 20px rgba(167, 139, 250, 0.15);
       }
-      /* ── FOOTER NOTE ──────────────────────────────────────────────────────────── */
       .footer-note {
         text-align: center;
         font-size: 12px;
@@ -1043,11 +1020,9 @@
         justify-content: center;
         gap: 6px;
       }
-      /* ── HIDDEN ───────────────────────────────────────────────────────────────── */
       .hidden {
         display: none !important;
       }
-      /* ── SUCCESS MODAL ────────────────────────────────────────────────────────── */
       .modal-overlay {
         position: fixed;
         inset: 0;
@@ -1163,7 +1138,6 @@
         background: var(--surface2);
         color: var(--text);
       }
-      /* ── ANIMATIONS ───────────────────────────────────────────────────────────── */
       @keyframes fadeUp {
         from {
           opacity: 0;
@@ -1200,7 +1174,6 @@
       .spin {
         animation: spin 0.9s linear infinite;
       }
-      /* ── CONDITIONAL SECTION ──────────────────────────────────────────────────── */
       #vaccinationLicenseSection {
         overflow: hidden;
         max-height: 0;
@@ -1213,7 +1186,6 @@
         max-height: 120px;
         opacity: 1;
       }
-      /* ── FIELD VALIDATION HINT ────────────────────────────────────────────────── */
       .clean-input.error {
         border-color: rgba(248, 113, 113, 0.5);
       }
@@ -1801,6 +1773,3 @@
     <script src="/js/create-auction-preview.js"></script>
   </body>
 </html>
-
-
-

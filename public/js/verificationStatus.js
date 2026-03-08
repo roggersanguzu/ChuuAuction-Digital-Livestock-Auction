@@ -8,7 +8,6 @@ let activeNavStatus = "all";
 let systemOnlineSince = Date.now();
 window.currentUser = null;
 window.isAdmin = false;
-
 function escapeHtml(value) {
   return String(value || "")
     .replace(/&/g, "&amp;")
@@ -17,7 +16,6 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 }
-
 function formatStatus(status) {
   const key = String(status || "").toLowerCase();
   const map = {
@@ -30,7 +28,6 @@ function formatStatus(status) {
   };
   return map[key] || "Unknown";
 }
-
 function getStatusMeta(status) {
   const key = String(status || "").toLowerCase();
   const map = {
@@ -73,7 +70,6 @@ function getStatusMeta(status) {
   };
   return map[key] || map.incomplete;
 }
-
 function updateSystemState(state) {
   const label = document.getElementById("hdr-system-state");
   const dot = document.querySelector(".hdr-status .status-dot");
@@ -94,12 +90,10 @@ function updateSystemState(state) {
   dot.style.background = "var(--green)";
   dot.style.boxShadow = "0 0 12px rgba(74,222,128,0.8)";
 }
-
 function updateLastSync() {
   const syncEl = document.getElementById("last-sync");
   if (syncEl) syncEl.textContent = new Date().toLocaleTimeString();
 }
-
 function formatUptime(ms) {
   const totalSeconds = Math.max(0, Math.floor(ms / 1000));
   const hours = Math.floor(totalSeconds / 3600);
@@ -110,19 +104,16 @@ function formatUptime(ms) {
   const s = String(seconds).padStart(2, "0");
   return "UP " + h + ":" + m + ":" + s;
 }
-
 function updateHeaderTimers() {
   const clockEl = document.getElementById("hdr-clock");
   if (clockEl) clockEl.textContent = new Date().toLocaleTimeString();
   const uptimeEl = document.getElementById("hdr-uptime");
   if (uptimeEl) uptimeEl.textContent = formatUptime(Date.now() - systemOnlineSince);
 }
-
 function startHeaderTimers() {
   updateHeaderTimers();
   setInterval(updateHeaderTimers, 1000);
 }
-
 function resolveFarmer(v) {
   let farmerName = "Guest / Anonymous";
   let farmerPhone = "N/A";
@@ -138,11 +129,9 @@ function resolveFarmer(v) {
   }
   return { farmerName, farmerPhone, farmerEmail };
 }
-
 function getCountByStatus(arr, status) {
   return arr.filter((v) => String(v.status || "") === status).length;
 }
-
 async function loadCurrentUser() {
   try {
     const response = await fetch("/verification/api/current-user", {
@@ -170,14 +159,12 @@ async function loadCurrentUser() {
     loadVerifications();
   }
 }
-
 function showLoadingState() {
   const container = document.getElementById("cards-container");
   if (!container) return;
   container.innerHTML =
     '<div class="state-box"><div class="spinner-ring"></div><div class="state-title">Loading verification records</div><div class="state-sub">Synchronizing live submissions and analytics</div></div>';
 }
-
 function showErrorState(msg) {
   const container = document.getElementById("cards-container");
   if (!container) return;
@@ -186,7 +173,6 @@ function showErrorState(msg) {
     escapeHtml(msg) +
     "</div></div>";
 }
-
 function updateStats(stats) {
   const total = Number(stats?.total || allVerifications.length || 0);
   const pending = Number(
@@ -231,7 +217,6 @@ function updateStats(stats) {
   setTrend("tr-verified", verified > 0 ? Math.min(12, verified) : 0);
   setTrend("tr-rejected", rejected > 0 ? -Math.min(12, rejected) : 0);
 }
-
 function updateNavBadges() {
   const counts = { all: allVerifications.length };
   allVerifications.forEach((v) => {
@@ -251,13 +236,11 @@ function updateNavBadges() {
     if (el) el.textContent = String(counts[k] || 0);
   });
 }
-
 function highlightActiveNav() {
   document.querySelectorAll(".nav-item[data-nav]").forEach((el) => {
     el.classList.toggle("active", el.getAttribute("data-nav") === activeNavStatus);
   });
 }
-
 function bindTopStatCards() {
   document.querySelectorAll(".stat-card[data-stat-filter]").forEach((card) => {
     if (card.dataset.bound === "1") return;
@@ -283,7 +266,6 @@ function bindTopStatCards() {
     });
   });
 }
-
 function createCard(v, idx) {
   const status = getStatusMeta(v.status);
   const types = {
@@ -378,7 +360,6 @@ function createCard(v, idx) {
   if (sel) sel.value = String(v.status || "pending");
   return card;
 }
-
 function displayVerifications() {
   const container = document.getElementById("cards-container");
   if (!container) return;
@@ -400,7 +381,6 @@ function displayVerifications() {
     grid.appendChild(createCard(v, i));
   });
 }
-
 function applyFilters() {
   const search = String(
     document.getElementById("search-input")?.value || "",
@@ -430,7 +410,6 @@ function applyFilters() {
   displayVerifications();
   updateNavBadges();
 }
-
 async function loadVerifications() {
   if (isLoading) return;
   isLoading = true;
@@ -461,7 +440,6 @@ async function loadVerifications() {
     isLoading = false;
   }
 }
-
 window.updateStatus = async function (id) {
   const sel = document.getElementById("sel-" + id);
   const btn = document.getElementById("upd-" + id);
@@ -499,7 +477,6 @@ window.updateStatus = async function (id) {
     btn.textContent = "Save";
   }
 };
-
 window.openDetail = function (id) {
   const v = allVerifications.find((r) => String(r._id) === String(id));
   if (!v) return;
@@ -581,17 +558,14 @@ window.openDetail = function (id) {
     "</div>";
   overlay.classList.add("open");
 };
-
 window.closeModal = function (event) {
   const overlay = document.getElementById("detail-overlay");
   if (!overlay) return;
   if (!event || event.target === overlay) overlay.classList.remove("open");
 };
-
 window.refreshData = function () {
   loadVerifications();
 };
-
 window.clearFilters = function () {
   const search = document.getElementById("search-input");
   const fs = document.getElementById("filter-status");
@@ -603,7 +577,6 @@ window.clearFilters = function () {
   highlightActiveNav();
   applyFilters();
 };
-
 window.setNav = function (status, el) {
   activeNavStatus = String(status || "all");
   const fs = document.getElementById("filter-status");
@@ -623,13 +596,11 @@ window.setNav = function (status, el) {
     el.classList.add("active");
   }
 };
-
 window.setTypeFilter = function (type) {
   const sel = document.getElementById("filter-type");
   if (sel) sel.value = String(type || "all");
   applyFilters();
 };
-
 document.addEventListener("DOMContentLoaded", function () {
   bindTopStatCards();
   const firstStat = document.querySelector('.stat-card[data-stat-filter="all"]');

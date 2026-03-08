@@ -11,9 +11,6 @@
     <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css" />
     <link href="/css/app-theme.css" rel="stylesheet" />
     <style>
-      /* ══════════════════════════════════════════════════════════════
-   DESIGN TOKENS
-══════════════════════════════════════════════════════════════ */
       :root {
         --bg: #04080f;
         --bg2: #070d1a;
@@ -49,9 +46,6 @@
         --header-h: 60px;
         --trans: 0.22s cubic-bezier(0.23, 1, 0.32, 1);
       }
-      /* ══════════════════════════════════════════════════════════════
-   BASE
-══════════════════════════════════════════════════════════════ */
       *,
       *::before,
       *::after {
@@ -72,7 +66,6 @@
         overflow-x: hidden;
         line-height: 1.55;
       }
-      /* NOISE GRAIN */
       body::before {
         content: "";
         position: fixed;
@@ -82,7 +75,6 @@
         opacity: 0.45;
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
       }
-      /* AMBIENT MESH */
       .bg-mesh {
         position: fixed;
         inset: 0;
@@ -152,7 +144,6 @@
           transform: translate(-25px, 20px) scale(1.04);
         }
       }
-      /* SCROLLBAR */
       ::-webkit-scrollbar {
         width: 4px;
       }
@@ -163,9 +154,6 @@
         background: rgba(255, 255, 255, 0.08);
         border-radius: 99px;
       }
-      /* ══════════════════════════════════════════════════════════════
-   HEADER
-══════════════════════════════════════════════════════════════ */
       .header {
         position: sticky;
         top: 0;
@@ -194,7 +182,6 @@
           transparent
         );
       }
-      /* Logo */
       .logo {
         display: flex;
         align-items: center;
@@ -251,7 +238,6 @@
         padding: 2px 7px;
         border-radius: 4px;
       }
-      /* Center Status */
       .hdr-status {
         display: flex;
         align-items: center;
@@ -284,7 +270,6 @@
           transform: scale(0.75);
         }
       }
-      /* Header Right */
       .hdr-right {
         display: flex;
         align-items: center;
@@ -340,18 +325,12 @@
         box-shadow: 0 0 20px var(--green-glow);
         transform: scale(1.06);
       }
-      /* ══════════════════════════════════════════════════════════════
-   LAYOUT
-══════════════════════════════════════════════════════════════ */
       .layout {
         display: flex;
         flex: 1;
         position: relative;
         z-index: 1;
       }
-      /* ══════════════════════════════════════════════════════════════
-   SIDEBAR
-══════════════════════════════════════════════════════════════ */
       .sidebar {
         width: var(--sidebar-w);
         min-width: var(--sidebar-w);
@@ -449,7 +428,6 @@
         background: var(--border);
         margin: 10px 10px;
       }
-      /* Sidebar Footer Widget */
       .sb-footer {
         margin-top: auto;
         padding: 0 4px;
@@ -500,9 +478,6 @@
         color: var(--green);
         font-size: 9px;
       }
-      /* ══════════════════════════════════════════════════════════════
-   MAIN
-══════════════════════════════════════════════════════════════ */
       .main {
         flex: 1;
         min-width: 0;
@@ -516,7 +491,6 @@
         flex-direction: column;
         gap: 22px;
       }
-      /* ── PAGE HEADER ── */
       .page-header {
         display: flex;
         align-items: flex-end;
@@ -596,7 +570,6 @@
         background: var(--surface2);
         color: var(--text);
       }
-      /* ── STATS GRID ── */
       .stats-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -640,7 +613,6 @@
       .stat-card:hover::before {
         opacity: 1;
       }
-      /* Stripe */
       .stat-card .st-stripe {
         position: absolute;
         top: 0;
@@ -648,7 +620,6 @@
         right: 0;
         height: 2px;
       }
-      /* Individual tints */
       .sc-total {
         --card-glow: rgba(34, 211, 238, 0.06);
         --border-h: rgba(34, 211, 238, 0.3);
@@ -747,7 +718,6 @@
         background: var(--surface2);
         border: 1px solid var(--border);
       }
-      /* Sparkline mini chart */
       .stat-sparkline {
         display: flex;
         align-items: flex-end;
@@ -787,7 +757,6 @@
       .sparkline-red .spark-b {
         background: var(--red);
       }
-      /* ── ROLE BANNER ── */
       .role-banner {
         display: none;
         align-items: center;
@@ -817,7 +786,6 @@
         border: 1px solid rgba(74, 222, 128, 0.18);
         color: var(--green);
       }
-      /* ── TOOLBAR ── */
       .toolbar {
         display: flex;
         align-items: center;
@@ -915,13 +883,11 @@
         border: 1px solid var(--border);
         border-radius: 99px;
       }
-      /* ── CARDS GRID ── */
       .cards-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
         gap: 16px;
       }
-      /* ── VERIFICATION CARD ── */
       .v-card {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -961,7 +927,6 @@
       .v-card:hover::after {
         opacity: 1;
       }
-      /* STATUS STRIPE */
       .v-stripe {
         height: 3px;
         width: 100%;
@@ -984,7 +949,6 @@
       .s-incomplete .v-stripe {
         background: var(--border);
       }
-      /* Card glow on status hover */
       .s-verified:hover {
         box-shadow:
           0 20px 50px rgba(74, 222, 128, 0.12),
@@ -1005,7 +969,6 @@
           0 20px 50px rgba(96, 165, 250, 0.1),
           0 0 0 1px rgba(96, 165, 250, 0.06);
       }
-      /* CARD HEAD */
       .v-card-head {
         padding: 16px 20px 14px;
         border-bottom: 1px solid var(--border);
@@ -1029,7 +992,6 @@
         font-weight: 700;
         color: var(--text);
       }
-      /* BADGES */
       .status-badge {
         display: inline-flex;
         align-items: center;
@@ -1077,7 +1039,6 @@
         background: rgba(100, 116, 139, 0.07);
         border-color: rgba(100, 116, 139, 0.22);
       }
-      /* CARD BODY */
       .v-card-body {
         padding: 14px 20px 12px;
         display: flex;
@@ -1130,7 +1091,6 @@
         color: var(--text3);
         margin-right: 4px;
       }
-      /* Progress bar inside card */
       .card-progress {
         margin-top: 6px;
       }
@@ -1153,7 +1113,6 @@
         border-radius: 3px;
         transition: width 0.8s cubic-bezier(0.23, 1, 0.32, 1);
       }
-      /* CARD FOOTER */
       .v-card-foot {
         padding: 11px 16px;
         border-top: 1px solid var(--border);
@@ -1224,7 +1183,6 @@
         background: var(--surface2);
         color: var(--text);
       }
-      /* ── STATE BOXES ── */
       .state-box {
         display: flex;
         flex-direction: column;
@@ -1266,7 +1224,6 @@
           transform: rotate(360deg);
         }
       }
-      /* ── MODAL ── */
       .overlay {
         position: fixed;
         inset: 0;
@@ -1494,7 +1451,6 @@
         line-height: 1.55;
         color: var(--text);
       }
-      /* ── TOAST ── */
       .toast-zone {
         position: fixed;
         bottom: 24px;
@@ -1547,7 +1503,6 @@
           transform: translateX(16px) scale(0.95);
         }
       }
-      /* ── RESPONSIVE ── */
       @media (max-width: 960px) {
         .sidebar {
           display: none;
@@ -1895,26 +1850,21 @@
     <div class="toast-zone" id="toast-zone"></div>
     <script src="/js/verificationStatus.js"></script>
     <script>
-      /* ══ CLOCK ══════════════════════════════════════════════════════ */
       setInterval(()=>{ document.getElementById('hdr-clock').textContent = new
-      Date().toLocaleTimeString(); },1000); /* ══ AVATAR
-      ══════════════════════════════════════════════════════ */ function
+      Date().toLocaleTimeString(); },1000);  function
       updateUserAvatar(){ if(window.currentUser?.name){ const
       av=document.getElementById('user-avatar'); if(av){
       av.textContent=window.currentUser.name.charAt(0).toUpperCase();
       av.title=window.currentUser.name; } } } const
       _origLoadUser=window.loadCurrentUser; window.loadCurrentUser=async
-      function(){ await _origLoadUser?.(); updateUserAvatar(); }; /* ══ LAST
-      SYNC ══════════════════════════════════════════════════ */ function
+      function(){ await _origLoadUser?.(); updateUserAvatar(); };  function
       updateLastSync(){ document.getElementById('last-sync').textContent=new
-      Date().toLocaleTimeString(); } /* ══ SPARKLINES
-      ══════════════════════════════════════════════════ */ function
+      Date().toLocaleTimeString(); }  function
       renderSparkline(containerId, values){ const
       el=document.getElementById(containerId); if(!el) return; const
       max=Math.max(...values,1); el.innerHTML=values.map(v=>{ const
       h=Math.max(4,Math.round((v/max)*100)); return `<div class="spark-b"
-      style="height:${h}%"></div>`; }).join(''); } /* ══ STATS UPDATE (called by
-      verificationStatus.js) ═══════════ */ const
+      style="height:${h}%"></div>`; }).join(''); }  const
       _origUpdateStats=window.updateStats; window.updateStats=function(data){
       _origUpdateStats?.(data); const total = data?.total ?? 0; const pending =
       data?.pending ?? 0; const verified = data?.verified ?? 0; const rejected =
@@ -1936,11 +1886,9 @@
       renderSparkline('spark-pending', [2,4,6,3,5,2,pending]);
       renderSparkline('spark-verified',[1,3,5,4,7,8,verified]);
       renderSparkline('spark-rejected',[2,1,3,2,4,1,rejected]);
-      updateLastSync(); }; /* ══ SIDEBAR TYPE FILTER
-      ════════════════════════════════════════ */ function setTypeFilter(type){
+      updateLastSync(); };  function setTypeFilter(type){
       const sel=document.getElementById('filter-type'); if(sel){ sel.value=type;
-      applyFilters(); } } /* ══ TOAST
-      ══════════════════════════════════════════════════════ */ function
+      applyFilters(); } }  function
       showToast(msg,type='success'){ const
       zone=document.getElementById('toast-zone'); const
       t=document.createElement('div'); t.className='toast '+type; const
@@ -1948,14 +1896,11 @@
       col=type==='success'?'var(--green)':'var(--red)'; t.innerHTML=`<i
       class="fas ${icon}" style="color:${col};font-size:14px;"></i> ${msg}`;
       zone.appendChild(t); setTimeout(()=>{ t.classList.add('hiding');
-      setTimeout(()=>t.remove(),300); },3200); } /* ══ OVERRIDE updateStatus
-      ══════════════════════════════════════ */ const
+      setTimeout(()=>t.remove(),300); },3200); }  const
       _origUpdateStatus=window.updateStatus; window.updateStatus=async
       function(id){ try{ await _origUpdateStatus?.(id); showToast('Status
       updated successfully','success'); updateLastSync(); }catch(e){
-      showToast(e?.message||'Update failed','error'); } }; /* ══ CARD PROGRESS
-      INJECTION ════════════════════════════════════ After cards render, inject
-      a progress indicator per status */ const
+      showToast(e?.message||'Update failed','error'); } };  const
       _origRenderCards=window.renderCards; window.renderCards=function(list){
       _origRenderCards?.(list); injectCardProgress(); }; function
       injectCardProgress(){ document.querySelectorAll('.v-card').forEach(card=>{
@@ -1976,8 +1921,7 @@
       style="width:0%; background:${colMap[status]||'var(--text3)'}"></div>
       </div>`; body.appendChild(div); setTimeout(()=>{ const
       fill=div.querySelector('.card-progress-fill'); if(fill)
-      fill.style.width=pct+'%'; },300); } }); } /* ══ INIT
-      ════════════════════════════════════════════════════════ */
+      fill.style.width=pct+'%'; },300); } }); }
       document.addEventListener('DOMContentLoaded',()=>{ updateLastSync(); });
     </script>
     <script src="/js/app-theme.js"></script>

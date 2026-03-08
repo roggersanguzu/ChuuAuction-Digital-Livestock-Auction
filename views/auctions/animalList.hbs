@@ -53,16 +53,14 @@
       .font-mono {
         font-family: "DM Mono", monospace;
       }
-      /* Listing cards should keep readable height without forcing tiny rows */
       #listings-container > * {
-        min-height: 28rem;
+        min-height: 22.5rem;
       }
       @media (max-width: 640px) {
         #listings-container > * {
-          min-height: 30rem;
+          min-height: 20.5rem;
         }
       }
-      /* ── Glassmorphism ── */
       .glass {
         background: var(--surface);
         backdrop-filter: blur(16px);
@@ -75,7 +73,6 @@
         -webkit-backdrop-filter: blur(24px);
         border: 1px solid rgba(255, 255, 255, 0.08);
       }
-      /* ── Text gradient ── */
       .text-gradient {
         background: linear-gradient(135deg, #10b981, #059669, #34d399);
         -webkit-background-clip: text;
@@ -83,7 +80,6 @@
         background-clip: text;
         background-size: 200% 200%;
       }
-      /* ── Scrollbar ── */
       ::-webkit-scrollbar {
         width: 6px;
       }
@@ -94,16 +90,14 @@
         background: linear-gradient(180deg, #10b981, #059669);
         border-radius: 3px;
       }
-      /* ── Card hover ── */
       .card-hover {
         transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       }
       .card-hover:hover {
-        transform: translateY(-5px) scale(1.01);
-        box-shadow: 0 16px 48px var(--em-glow);
+        transform: translateY(-3px) scale(1.005);
+        box-shadow: 0 12px 32px var(--em-glow);
         border-color: var(--border-hover) !important;
       }
-      /* ── Image zoom ── */
       .image-container {
         overflow: hidden;
         position: relative;
@@ -114,7 +108,6 @@
       .image-container:hover img {
         transform: scale(1.12);
       }
-      /* ── Filter chip ── */
       .filter-chip {
         cursor: pointer;
         transition: all 0.25s ease;
@@ -128,11 +121,9 @@
         border-color: #10b981;
         color: #fff;
       }
-      /* ── Search glow ── */
       .search-glow:focus {
         box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
       }
-      /* ── Status live pulse ── */
       @keyframes status-pulse {
         0%,
         100% {
@@ -145,7 +136,6 @@
       .status-live {
         animation: status-pulse 2s infinite;
       }
-      /* ── Filter panel ── */
       .filter-panel {
         max-height: 0;
         overflow: hidden;
@@ -154,7 +144,6 @@
       .filter-panel.expanded {
         max-height: 800px;
       }
-      /* ── Shimmer skeleton ── */
       .shimmer {
         background: linear-gradient(
           90deg,
@@ -165,7 +154,6 @@
         background-size: 1000px 100%;
         animation: shimmer 2s infinite;
       }
-      /* ── Price shine ── */
       .price-shine {
         position: relative;
         overflow: hidden;
@@ -194,7 +182,6 @@
           transform: translateX(100%) translateY(100%) rotate(45deg);
         }
       }
-      /* ── Empty state float ── */
       @keyframes float-gentle {
         0%,
         100% {
@@ -207,7 +194,6 @@
       .empty-state {
         animation: float-gentle 4s ease-in-out infinite;
       }
-      /* ── Inputs ── */
       select,
       input[type="text"],
       input[type="number"] {
@@ -222,11 +208,9 @@
       input[type="number"]::placeholder {
         color: #64748b !important;
       }
-      /* ── Stat counter animation ── */
       .stat-item {
         animation: slideUp 0.5s ease-out backwards;
       }
-      /* ── Tag pill shimmer ── */
       .tag-pill {
         position: relative;
         overflow: hidden;
@@ -249,7 +233,6 @@
       .tag-pill:hover::before {
         left: 100%;
       }
-      /* ── Top border accent on page ── */
       .page-topline {
         position: fixed;
         top: 0;
@@ -261,7 +244,6 @@
         background-size: 200% 100%;
         animation: gradient 3s ease infinite;
       }
-      /* ── Section divider ── */
       .section-divider {
         height: 1px;
         background: linear-gradient(
@@ -271,7 +253,6 @@
           transparent
         );
       }
-      /* ── Input row compact ── */
       .inp-compact {
         padding: 7px 14px;
         font-size: 12.5px;
@@ -293,7 +274,6 @@
       .inp-compact::placeholder {
         color: #475569;
       }
-      /* ── View toggle active ── */
       .view-btn {
         transition: all 0.2s;
       }
@@ -302,7 +282,6 @@
         border-color: rgba(16, 185, 129, 0.5) !important;
         color: #10b981;
       }
-      /* ── Badge ── */
       .badge {
         display: inline-flex;
         align-items: center;
@@ -333,7 +312,6 @@
         color: #fca5a5;
         border: 1px solid rgba(239, 68, 68, 0.25);
       }
-      /* ── Header branding strip ── */
       .header-strip {
         background: linear-gradient(
           135deg,
@@ -341,6 +319,41 @@
           transparent 60%
         );
         border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+      }
+      @media (max-width: 1024px) {
+        .header-strip .flex.items-center.gap-2.animate-fade-in {
+          width: 100%;
+          justify-content: flex-start;
+          flex-wrap: wrap;
+        }
+      }
+      @media (max-width: 640px) {
+        .header-strip .pb-4.space-y-2\\.5 {
+          padding-bottom: 12px;
+        }
+        #listings-container {
+          grid-template-columns: 1fr !important;
+          gap: 14px !important;
+        }
+        .relative.z-10.max-w-7xl.mx-auto.px-4.sm\\:px-6.lg\\:px-8.py-5.pb-24 {
+          padding-left: 12px !important;
+          padding-right: 12px !important;
+          padding-bottom: 28px !important;
+        }
+      }
+      @media (max-width: 420px) {
+        .header-strip h1 {
+          font-size: 1.75rem !important;
+          line-height: 1.1;
+        }
+        .header-strip .stat-item {
+          min-width: calc(50% - 6px);
+        }
+        .header-strip .flex.items-center.justify-between.mb-5.animate-slide-up {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
       }
     </style>
   </head>
@@ -773,7 +786,7 @@
       onclick="closeDetailModal(event)"
     >
       <div
-        class="max-w-5xl w-full max-h-[90vh] overflow-y-auto rounded-2xl glass-strong border border-gray-800/60 animate-scale-in"
+        class="max-w-4xl w-full max-h-[88vh] overflow-y-auto rounded-2xl glass-strong border border-gray-800/60 animate-scale-in"
         onclick="event.stopPropagation()"
       >
         <div id="modal-content"></div>
@@ -783,6 +796,3 @@
       <script src="/js/app-theme.js"></script>
   </body>
 </html>
-
-
-

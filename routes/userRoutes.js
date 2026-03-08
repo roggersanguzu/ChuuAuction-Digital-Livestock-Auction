@@ -38,4 +38,3 @@ router.patch("/admin/users/:userId/status", adminUpdateUserStatus);
 router.patch("/admin/users/:userId/password", adminResetUserPassword);
 router.delete("/admin/users/:userId", adminDeleteUser);
 export default router;
-

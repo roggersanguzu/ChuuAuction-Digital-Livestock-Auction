@@ -55,4 +55,3 @@ const userPreferenceSchema = new mongoose.Schema(
 );
 const UserPreference = mongoose.model("UserPreference", userPreferenceSchema);
 export default UserPreference;
-

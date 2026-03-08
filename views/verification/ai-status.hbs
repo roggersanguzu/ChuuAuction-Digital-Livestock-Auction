@@ -17,12 +17,7 @@
       rel="stylesheet"
     />
     <style>
-      /*
-       DESIGN SYSTEM  "Obsidian Command" for ChuuAuction
-       Deep amber-ember on void. Holographic. Uncompromising.
-     */
       :root {
-        /* Inherited from app-theme.css  we extend, not override */
         --hud-amber: #f59e0b;
         --hud-ember: #f97316;
         --hud-crimson: #dc2626;
@@ -84,7 +79,6 @@
         min-height: 100vh;
         overflow-x: hidden;
         line-height: 1.6;
-        /* Subtle scan-line pattern  the unforgettable detail */
         background-image: repeating-linear-gradient(
           0deg,
           transparent,
@@ -96,7 +90,6 @@
       [data-theme="light"] body {
         background-image: none;
       }
-      /* Ambient depth orbs */
       body::before {
         content: "";
         position: fixed;
@@ -120,7 +113,6 @@
             transparent 55%
           );
       }
-      /* Grain overlay */
       body::after {
         content: "";
         position: fixed;
@@ -141,7 +133,6 @@
         background: var(--hud-amber);
         border-radius: 99px;
       }
-      /*  PAGE SHELL  */
       #page-root {
         position: relative;
         z-index: 1;
@@ -149,9 +140,6 @@
         margin: 0 auto;
         padding: 18px 18px 72px;
       }
-      /*
-       HERO COMMAND HEADER
-     */
       .cmd-hero {
         position: relative;
         overflow: hidden;
@@ -163,7 +151,6 @@
         backdrop-filter: blur(24px) saturate(140%);
         animation: heroEntrance 0.7s var(--ease) both;
       }
-      /* Top chromatic line */
       .cmd-hero::before {
         content: "";
         position: absolute;
@@ -181,7 +168,6 @@
         );
         animation: lineShimmer 4s linear infinite;
       }
-      /* Corner accent marks */
       .cmd-hero::after {
         content: "";
         position: absolute;
@@ -199,7 +185,6 @@
             transparent
           );
       }
-      /* HUD grid lines */
       .hud-grid {
         position: absolute;
         inset: 0;
@@ -223,7 +208,6 @@
         padding: 28px 32px;
         flex-wrap: wrap;
       }
-      /* 3D Animal Orbit */
       .orbit-stage {
         flex-shrink: 0;
         display: flex;
@@ -263,7 +247,6 @@
           transparent 55%
         );
       }
-      /* Scan sweep inside each pod */
       .pod-scan {
         position: absolute;
         left: 0;
@@ -321,7 +304,6 @@
             translateY(-9px);
         }
       }
-      /* Status ring around main pod */
       .pod-ring {
         position: absolute;
         inset: -6px;
@@ -334,7 +316,6 @@
           transform: rotate(360deg);
         }
       }
-      /* Hero text */
       .hero-text {
         flex: 1;
         min-width: 260px;
@@ -380,7 +361,6 @@
         line-height: 1.7;
         margin-bottom: 14px;
       }
-      /* Live signal badge */
       .signal-badge {
         display: inline-flex;
         align-items: center;
@@ -413,7 +393,6 @@
           box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
         }
       }
-      /* Hero actions */
       .hero-actions {
         display: flex;
         align-items: center;
@@ -486,9 +465,6 @@
           transform: rotate(360deg);
         }
       }
-      /*
-       METRIC COMMAND STRIP
-     */
       .metrics-strip {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -506,7 +482,6 @@
         transition: var(--t);
         cursor: default;
       }
-      /* Staggered entrance */
       .m-card:nth-child(1) {
         animation: cardUp 0.5s var(--ease) 0.08s both;
       }
@@ -519,7 +494,6 @@
       .m-card:nth-child(4) {
         animation: cardUp 0.5s var(--ease) 0.26s both;
       }
-      /* Hover shimmer sweep */
       .m-card::after {
         content: "";
         position: absolute;
@@ -536,7 +510,6 @@
       .m-card:hover::after {
         transform: translateX(120%);
       }
-      /* Accent top bar per card */
       .m-card::before {
         content: "";
         position: absolute;
@@ -622,7 +595,6 @@
         font-size: 11px;
         color: var(--text-dim);
       }
-      /* Mini bar chart */
       .m-bars {
         display: flex;
         align-items: flex-end;
@@ -652,7 +624,6 @@
       .md .m-bar.hi {
         background: var(--hud-blue);
       }
-      /* Ghost number watermark */
       .m-ghost {
         position: absolute;
         bottom: -4px;
@@ -668,9 +639,6 @@
       .m-card:hover .m-ghost {
         color: rgba(245, 158, 11, 0.06);
       }
-      /*
-       FILTER COMMAND BAR
-     */
       .filter-cmd {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -729,18 +697,12 @@
       .f-ctrl option {
         background: #07080d;
       }
-      /*
-       MAIN CONTENT SPLIT
-     */
       .main-split {
         display: grid;
         grid-template-columns: 1fr 400px;
         gap: 16px;
         animation: cardUp 0.5s var(--ease) 0.38s both;
       }
-      /*
-       LEFT: SUBMISSION LIST PANEL
-     */
       .list-panel {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -774,7 +736,6 @@
         overflow-y: auto;
         min-height: 350px;
       }
-      /* Submission row */
       .sub-btn {
         width: 100%;
         display: block;
@@ -790,7 +751,6 @@
         position: relative;
         overflow: hidden;
       }
-      /* Left accent line */
       .sub-btn::before {
         content: "";
         position: absolute;
@@ -822,7 +782,6 @@
       .sub-btn.is-active::before {
         opacity: 1;
       }
-      /* Shimmer on active */
       .sub-btn.is-active::after {
         content: "";
         position: absolute;
@@ -898,7 +857,6 @@
         font-size: 10px;
         color: var(--text-dim);
       }
-      /* Status pills */
       .spill {
         font-family: var(--f-mono);
         font-size: 10px;
@@ -939,7 +897,6 @@
         color: #94a3b8;
         border: 1px solid rgba(100, 116, 139, 0.28);
       }
-      /* State displays */
       .state-box {
         display: flex;
         flex-direction: column;
@@ -957,7 +914,6 @@
         font-size: 13px;
         color: var(--text-muted);
       }
-      /* Pagination */
       .list-pg {
         padding: 12px 20px 16px;
         border-top: 1px solid var(--border);
@@ -992,9 +948,6 @@
         font-size: 11px;
         color: var(--text-muted);
       }
-      /*
-       RIGHT: DETAIL PANEL
-     */
       .detail-panel {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -1005,7 +958,6 @@
         display: flex;
         flex-direction: column;
       }
-      /* Top chroma edge */
       .detail-panel::before {
         content: "";
         position: absolute;
@@ -1021,7 +973,6 @@
           transparent
         );
       }
-      /* HUD scan lines overlay */
       .detail-panel::after {
         content: "";
         position: absolute;
@@ -1036,7 +987,6 @@
           rgba(245, 158, 11, 0.005) 4px
         );
       }
-      /* Decorative sheep watermark */
       .dp-deco {
         position: absolute;
         bottom: -8px;
@@ -1054,7 +1004,6 @@
         overflow-y: auto;
         padding: 20px;
       }
-      /* Placeholder */
       .dp-placeholder {
         display: flex;
         flex-direction: column;
@@ -1090,7 +1039,6 @@
           transform: rotate(360deg);
         }
       }
-      /* Detail sections */
       .d-sec {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -1137,7 +1085,6 @@
         text-align: right;
         word-break: break-word;
       }
-      /* Confidence meters */
       .conf-wrap {
         margin-bottom: 10px;
       }
@@ -1168,7 +1115,6 @@
       .conf-fill.f-hlt {
         background: linear-gradient(90deg, var(--hud-blue), var(--hud-success));
       }
-      /* AI notes bubble */
       .ai-bubble {
         background: rgba(34, 211, 238, 0.04);
         border: 1px solid rgba(34, 211, 238, 0.14);
@@ -1179,7 +1125,6 @@
         line-height: 1.65;
         margin-top: 6px;
       }
-      /* Doc links */
       .doc-lnk {
         display: inline-flex;
         align-items: center;
@@ -1199,7 +1144,6 @@
         background: rgba(34, 211, 238, 0.1);
         border-color: rgba(34, 211, 238, 0.35);
       }
-      /* Analyze CTA */
       .btn-analyze {
         width: 100%;
         padding: 14px;
@@ -1250,9 +1194,6 @@
         border-radius: 50%;
         animation: spinIcon 0.65s linear infinite;
       }
-      /*
-       KEYFRAMES
-     */
       @keyframes heroEntrance {
         from {
           opacity: 0;
@@ -1281,9 +1222,6 @@
           background-position: 200% center;
         }
       }
-      /*
-       RESPONSIVE
-     */
       @media (max-width: 1240px) {
         .main-split {
           grid-template-columns: 1fr 360px;
@@ -1530,4 +1468,3 @@
     <script src="/js/admin-ai-verification.js"></script>
   </body>
 </html>
-

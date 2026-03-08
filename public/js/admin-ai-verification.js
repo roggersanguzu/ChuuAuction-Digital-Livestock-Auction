@@ -470,4 +470,3 @@
   setupEvents();
   loadRows();
 })();
-

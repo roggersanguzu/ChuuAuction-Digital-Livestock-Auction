@@ -20,4 +20,3 @@ export const uploadFromBuffer = (buffer, folder = "animal-auctions") => {
     streamifier.createReadStream(buffer).pipe(stream);
   });
 };
-

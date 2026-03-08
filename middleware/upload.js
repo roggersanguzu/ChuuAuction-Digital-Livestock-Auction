@@ -14,4 +14,3 @@ const allowedTypes = /jpeg|jpg|png/;
   },
 });
 export default upload;
-

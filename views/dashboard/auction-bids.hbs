@@ -109,6 +109,29 @@
         color: white;
         border-color: var(--orange-core);
       }
+      @media (max-width: 768px) {
+        nav .h-16 {
+          height: auto;
+          padding: 10px 0;
+        }
+        nav .h-16 > .flex.items-center.justify-between {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
+        #auction-bids-page {
+          padding-top: 18px;
+        }
+      }
+      @media (max-width: 420px) {
+        #auction-bids-page h1 {
+          font-size: 1.75rem !important;
+          line-height: 1.1;
+        }
+        #auction-bids-page .ml-14 {
+          margin-left: 0 !important;
+        }
+      }
     </style>
   </head>
   <body class="min-h-screen bg-gray-950 text-white">
@@ -327,4 +350,3 @@
       <script src="/js/app-theme.js"></script>
   </body>
 </html>
-

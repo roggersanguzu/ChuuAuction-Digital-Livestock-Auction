@@ -128,4 +128,3 @@ router.patch(
 );
 router.get("/api/current-user", getCurrentUser);
 export default router;
-

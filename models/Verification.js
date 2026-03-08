@@ -153,4 +153,3 @@ verificationSchema.methods.calculateVerificationScore = function () {
 };
 const Verification = mongoose.model("Verification", verificationSchema);
 export default Verification;
-

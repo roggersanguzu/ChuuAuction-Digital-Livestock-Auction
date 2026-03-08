@@ -1,4 +1,3 @@
-﻿
 function parseBoolean(value) {
   return String(value || "").toLowerCase() === "true";
 }
@@ -274,12 +273,11 @@ function renderAuctionGroup(auctionId, group) {
   var noBidsHtml = "";
   if (filteredBids.length === 0) {
     noBidsHtml =
-      '<p class="text-gray-500 text-sm">No bids in this category</p>';
+      '<div class="p-4 rounded-xl border border-dashed border-gray-700 text-gray-500 text-sm">No bids in this category</div>';
   }
   return (
-    '<div class="auction-group">' +
-    '<div class="glass-strong border border-gray-800 rounded-2xl p-6 mb-4">' +
-    '<div class="flex flex-col lg:flex-row gap-6">' +
+    '<section class="auction-group glass-strong border border-gray-800 rounded-2xl p-5 md:p-6">' +
+    '<div class="flex flex-col lg:flex-row gap-6 pb-5 border-b border-gray-800/70">' +
     '<div class="lg:w-48 h-36 rounded-xl overflow-hidden relative flex-shrink-0">' +
     '<img src="' +
     photoUrl +
@@ -310,13 +308,17 @@ function renderAuctionGroup(auctionId, group) {
     winnerClass +
     '">' +
     winnerText +
-    "</p></div></div></div></div></div>" +
-    '<div class="space-y-3 pl-4"><h4 class="text-sm font-bold text-gray-400 mb-3"><i class="bi bi-hand-thumbs-up mr-2"></i>Bids (' +
+    "</p></div></div></div></div>" +
+    '<div class="mt-5 rounded-2xl border border-gray-800/70 bg-gray-900/30 p-4 md:p-5">' +
+    '<div class="flex items-center justify-between gap-3 mb-4">' +
+    '<h4 class="text-sm font-bold text-gray-300"><i class="bi bi-hand-thumbs-up mr-2 text-orange-400"></i>Placed Bids</h4>' +
+    '<span class="px-2.5 py-1 rounded-lg bg-gray-800/70 border border-gray-700 text-xs font-semibold text-gray-300">' +
     filteredBids.length +
-    ")</h4>" +
+    " shown</span></div>" +
+    '<div class="space-y-3">' +
     bidsHtml +
     noBidsHtml +
-    "</div></div>"
+    "</div></div></section>"
   );
 }
 function filterBids(filter) {
@@ -420,4 +422,3 @@ async function loadBids() {
 }
 document.addEventListener("DOMContentLoaded", loadBids);
 window.reloadBids = loadBids;
-

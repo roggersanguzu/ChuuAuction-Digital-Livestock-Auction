@@ -22,4 +22,3 @@ const adminSettingSchema = new mongoose.Schema(
 );
 const AdminSetting = mongoose.model("AdminSetting", adminSettingSchema);
 export default AdminSetting;
-

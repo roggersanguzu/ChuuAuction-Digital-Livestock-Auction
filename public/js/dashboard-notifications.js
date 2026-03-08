@@ -37,6 +37,24 @@
     if (s === "error") return "text-red-400 border-red-500";
     return "text-orange-400 border-orange-500";
   }
+  function getLocalAuctionAlerts() {
+    var source = window.__auctionDueAlerts;
+    if (!Array.isArray(source)) return [];
+    return source
+      .map(function (item) {
+        return Object.assign({}, item, {
+          id: String(item.id || ""),
+          title: String(item.title || "Auction update"),
+          body: String(item.body || ""),
+          severity: item.severity || "info",
+          createdAt: item.createdAt || new Date().toISOString(),
+          link: item.link || "",
+        });
+      })
+      .filter(function (item) {
+        return item.id && item.title;
+      });
+  }
   async function fetchNotifications() {
     var response = await fetch("/api/user/notifications?limit=30", {
       credentials: "same-origin",
@@ -189,7 +207,20 @@
     if (!ctx) return;
     try {
       var payload = await fetchNotifications();
-      var items = Array.isArray(payload.data) ? payload.data : [];
+      var apiItems = Array.isArray(payload.data) ? payload.data : [];
+      var localItems = getLocalAuctionAlerts();
+      var mergedMap = {};
+      apiItems.concat(localItems).forEach(function (item) {
+        var id = String(item.id || "");
+        if (!id) return;
+        mergedMap[id] = item;
+      });
+      var items = Object.keys(mergedMap).map(function (key) {
+        return mergedMap[key];
+      });
+      items.sort(function (a, b) {
+        return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+      });
       var viewed = getViewedSet(ctx);
       var unreadCount = items.filter(function (item) {
         return !viewed.has(String(item.id || ""));
@@ -220,11 +251,42 @@
         renderForFarmer(items, unreadCount, markVisibleAsViewed);
       }
     } catch (error) {
+      var fallbackItems = getLocalAuctionAlerts();
+      if (!fallbackItems.length) return;
+      var viewedFallback = getViewedSet(ctx);
+      var unreadFallback = fallbackItems.filter(function (item) {
+        return !viewedFallback.has(String(item.id || ""));
+      }).length;
+      var markFallbackViewed = function () {
+        var changed = false;
+        fallbackItems.forEach(function (item) {
+          var id = String(item.id || "");
+          if (!id || viewedFallback.has(id)) return;
+          viewedFallback.add(id);
+          changed = true;
+        });
+        if (changed) saveViewedSet(ctx, viewedFallback);
+        if (ctx.role === "admin" || ctx.role === "administrator") {
+          updateBadge(byId("admin-notif-count"), 0);
+        } else if (ctx.role === "buyer") {
+          updateBadge(byId("buyer-notif-count"), 0);
+        } else if (ctx.role === "seller" || ctx.role === "farmer") {
+          updateBadge(byId("farmer-notif-count"), 0);
+        }
+      };
+      if (ctx.role === "admin" || ctx.role === "administrator") {
+        renderForAdmin(fallbackItems, unreadFallback, markFallbackViewed);
+      } else if (ctx.role === "buyer") {
+        renderForBuyer(fallbackItems, unreadFallback, markFallbackViewed);
+      } else if (ctx.role === "seller" || ctx.role === "farmer") {
+        renderForFarmer(fallbackItems, unreadFallback, markFallbackViewed);
+      }
     }
   }
   function init() {
     refresh();
     setInterval(refresh, 45000);
+    window.addEventListener("chuu:auction-alerts-updated", refresh);
   }
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
@@ -232,4 +294,3 @@
     init();
   }
 })();
-

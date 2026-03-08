@@ -43,6 +43,19 @@ function isFavouriteListing(listingId) {
 function setModalBodyLock(lock) {
   document.body.style.overflow = lock ? "hidden" : "";
 }
+function getCurrentUserId() {
+  if (!currentUser) return "";
+  return String(currentUser._id || currentUser.id || "").trim();
+}
+function getListingSellerId(listing) {
+  if (!listing || !listing.seller) return "";
+  return String(listing.seller.id || listing.seller._id || "").trim();
+}
+function canDeleteListing(listing) {
+  const userId = getCurrentUserId();
+  if (!userId) return false;
+  return userId && userId === getListingSellerId(listing);
+}
 document.addEventListener("DOMContentLoaded", function () {
   loadCurrentUser();
   loadListings();
@@ -220,11 +233,33 @@ function createListingCard(listing, index) {
   const healthIcon = healthIcons[listing.healthStatus] || "";
   const ageDisplay = `${listing.age?.years || 0}y ${listing.age?.months || 0}m`;
   const sexLabel = listing.sex || "N/A";
-  const mainPhoto =
-    listing.photos && listing.photos.length > 0
-      ? listing.photos[0]
-      : "https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=400&h=300&fit=crop";
-  const photoCount = listing.photos ? listing.photos.length : 0;
+  const fallbackPhoto =
+    "https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=400&h=300&fit=crop";
+  const photoList = Array.isArray(listing.photos)
+    ? listing.photos
+        .map((p) => (typeof p === "string" ? p : p && p.url ? p.url : ""))
+        .filter(Boolean)
+    : [];
+  const mainPhoto = photoList.length > 0 ? photoList[0] : fallbackPhoto;
+  const photoCount = photoList.length;
+  const cardPhotos = (photoList.length > 0 ? photoList.slice(0, 4) : [mainPhoto]).slice(0, 4);
+  while (cardPhotos.length < 4) {
+    cardPhotos.push(mainPhoto);
+  }
+  const thumbsHtml = cardPhotos
+    .map((photo, thumbIndex) => {
+      const extraOverlay =
+        thumbIndex === 3 && photoCount > 4
+          ? `<div class="absolute inset-0 bg-black/55 flex items-center justify-center text-[11px] font-bold text-white">+${photoCount - 4}</div>`
+          : "";
+      return `
+        <div class="relative h-11 rounded-md overflow-hidden border ${thumbIndex === 0 ? "border-emerald-500/60" : "border-gray-800/60"} cursor-pointer" onclick="viewDetails('${listing._id}')">
+          <img src="${photo}" alt="Listing photo ${thumbIndex + 1}" class="w-full h-full object-cover" onerror="this.src='${fallbackPhoto}'">
+          ${extraOverlay}
+        </div>
+      `;
+    })
+    .join("");
   const countdownLabel = getCountdownLabel(listing.endAt);
   const endAtAttr = listing.endAt ? String(listing.endAt) : "";
   const openingPrice = Number(listing.startingPrice || 0);
@@ -233,102 +268,106 @@ function createListingCard(listing, index) {
   );
   const sellerPhone = normalizePhone(listing.seller?.phone);
   const isFavourite = isFavouriteListing(listing._id);
+  const canDelete = canDeleteListing(listing);
   card.innerHTML = `
-    <div class="image-container relative h-64 overflow-hidden cursor-pointer" onclick="viewDetails('${listing._id}')">
-      <img src="${mainPhoto}" alt="${
-        listing.breed || "Animal"
-      }" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=400&h=300&fit=crop'">
-      <div class="absolute top-3 left-3 flex gap-2">
-        <span class="px-3 py-1 rounded-full glass-strong backdrop-blur-md text-xs font-bold">
+    <div class="p-2.5 pb-0">
+      <div class="image-container relative h-36 overflow-hidden rounded-xl cursor-pointer" onclick="viewDetails('${listing._id}')">
+        <img src="${mainPhoto}" alt="${
+          listing.breed || "Animal"
+        }" class="w-full h-full object-cover" onerror="this.src='${fallbackPhoto}'">
+        <div class="absolute top-2 left-2 flex gap-1.5">
+          <span class="px-2.5 py-1 rounded-full glass-strong backdrop-blur-md text-[11px] font-bold">
           ${animalInfo.name}
-        </span>
+          </span>
         ${
           listing.vaccinated
-            ? '<span class="px-3 py-1 rounded-full bg-green-500/90 backdrop-blur-md text-xs font-bold status-live">Vaccinated</span>'
+            ? '<span class="px-2.5 py-1 rounded-full bg-green-500/90 backdrop-blur-md text-[11px] font-bold status-live">Vaccinated</span>'
             : ""
         }
-      </div>
-      <div class="absolute top-3 right-3">
-        <span class="px-3 py-1 rounded-full glass-strong backdrop-blur-md text-xs font-bold">
-          ${(healthIcon ? healthIcon + " " : "") + (listing.healthStatus || "Good")}
-        </span>
-      </div>
-      <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-        <span class="px-3 py-1 rounded-full bg-emerald-500/95 backdrop-blur-sm text-xs font-bold shadow-lg border border-white/20 auction-countdown" data-end-at="${endAtAttr}">
-          ${countdownLabel}
-        </span>
-      </div>
-      ${
-        photoCount > 1
-          ? `
-        <div class="absolute bottom-3 right-3 px-3 py-1 rounded-full glass-strong backdrop-blur-md text-xs font-bold">
-          <i class="bi bi-images"></i> ${photoCount}
         </div>
-      `
-          : ""
-      }
+        <div class="absolute top-2 right-2">
+          <span class="px-2.5 py-1 rounded-full glass-strong backdrop-blur-md text-[11px] font-bold">
+          ${(healthIcon ? healthIcon + " " : "") + (listing.healthStatus || "Good")}
+          </span>
+        </div>
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+          <span class="px-2.5 py-1 rounded-full bg-emerald-500/95 backdrop-blur-sm text-[11px] font-bold shadow-lg border border-white/20 auction-countdown" data-end-at="${endAtAttr}">
+          ${countdownLabel}
+          </span>
+        </div>
+      </div>
+      <div class="grid grid-cols-4 gap-1.5 mt-1.5">
+        ${thumbsHtml}
+      </div>
     </div>
-    <div class="p-6 flex flex-col gap-4">
+    <div class="p-4 flex flex-col gap-3">
       <div>
-        <h3 class="text-xl font-bold mb-1 font-display cursor-pointer hover:text-emerald-400 transition-colors" onclick="viewDetails('${listing._id}')">${
+        <h3 class="text-lg font-bold mb-1 font-display cursor-pointer hover:text-emerald-400 transition-colors" onclick="viewDetails('${listing._id}')">${
           listing.breed || "Unknown Breed"
         }</h3>
-        <p class="text-sm text-gray-400">
+        <p class="text-xs text-gray-400">
           <i class="bi bi-geo-alt text-emerald-500"></i> ${
             listing.location || "Unknown"
           }
         </p>
       </div>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div class="text-center p-2 rounded-lg bg-gray-800/30">
-          <p class="text-xs text-gray-400 mb-1">Opening</p>
-          <p class="font-bold text-sm text-emerald-400">${formatUGX(openingPrice)}</p>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <div class="text-center p-1.5 rounded-lg bg-gray-800/30">
+          <p class="text-[11px] text-gray-400 mb-0.5">Opening</p>
+          <p class="font-bold text-xs text-emerald-400">${formatUGX(openingPrice)}</p>
         </div>
-        <div class="text-center p-2 rounded-lg bg-gray-800/30">
-          <p class="text-xs text-gray-400 mb-1">Highest Bid</p>
-          <p class="font-bold text-sm text-green-400">${formatUGX(highestBid)}</p>
+        <div class="text-center p-1.5 rounded-lg bg-gray-800/30">
+          <p class="text-[11px] text-gray-400 mb-0.5">Highest Bid</p>
+          <p class="font-bold text-xs text-green-400">${formatUGX(highestBid)}</p>
         </div>
-        <div class="text-center p-2 rounded-lg bg-gray-800/30">
-          <p class="text-xs text-gray-400 mb-1">Age</p>
-          <p class="font-bold text-sm">${ageDisplay}</p>
+        <div class="text-center p-1.5 rounded-lg bg-gray-800/30">
+          <p class="text-[11px] text-gray-400 mb-0.5">Age</p>
+          <p class="font-bold text-xs">${ageDisplay}</p>
         </div>
-        <div class="text-center p-2 rounded-lg bg-gray-800/30">
-          <p class="text-xs text-gray-400 mb-1">Weight</p>
-          <p class="font-bold text-sm">${listing.weight || 0} KG</p>
+        <div class="text-center p-1.5 rounded-lg bg-gray-800/30">
+          <p class="text-[11px] text-gray-400 mb-0.5">Weight</p>
+          <p class="font-bold text-xs">${listing.weight || 0} KG</p>
         </div>
       </div>
-      <div class="text-sm text-gray-400 line-clamp-2">${listing.description || "No description"}</div>
-      <div class="flex items-center justify-between pt-4 border-t border-gray-800/50 gap-2">
+      <div class="text-xs text-gray-400 line-clamp-2">${listing.description || "No description"}</div>
+      <div class="flex items-center justify-between pt-3 border-t border-gray-800/50 gap-2">
         <div class="flex items-center gap-2 min-w-0">
-          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center font-bold text-sm">
+          <div class="w-7 h-7 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center font-bold text-xs">
             ${(listing.seller?.name || "A").charAt(0).toUpperCase()}
           </div>
           <div class="min-w-0">
-            <p class="text-xs font-semibold truncate">${listing.seller?.name || "Anonymous"}</p>
-            <p class="text-xs text-gray-500 truncate"><i class="bi bi-telephone text-blue-400"></i> ${listing.seller?.phone || "N/A"}</p>
+            <p class="text-[11px] font-semibold truncate">${listing.seller?.name || "Anonymous"}</p>
+            <p class="text-[11px] text-gray-500 truncate"><i class="bi bi-telephone text-blue-400"></i> ${listing.seller?.phone || "N/A"}</p>
           </div>
         </div>
-        <div class="flex items-center gap-2">
-          <span class="text-xs text-gray-500 hidden sm:inline">${sexLabel}</span>
-          <button onclick="toggleFavourite('${listing._id}')" class="h-10 w-10 rounded-lg glass border border-gray-800/50 hover:border-rose-500/40 transition-all" title="Favourite">
+        <div class="flex items-center gap-1.5">
+          <span class="text-[11px] text-gray-500 hidden sm:inline">${sexLabel}</span>
+          <button onclick="toggleFavourite('${listing._id}')" class="h-8 w-8 rounded-lg glass border border-gray-800/50 hover:border-rose-500/40 transition-all" title="Favourite">
             <i class="bi ${isFavourite ? "bi-heart-fill text-rose-400" : "bi-heart"}"></i>
           </button>
-          <button onclick="shareListing('${listing._id}')" class="h-10 w-10 rounded-lg glass border border-gray-800/50 hover:border-blue-500/40 transition-all" title="Share">
+          <button onclick="shareListing('${listing._id}')" class="h-8 w-8 rounded-lg glass border border-gray-800/50 hover:border-blue-500/40 transition-all" title="Share">
             <i class="bi bi-share"></i>
           </button>
-          <button onclick="callSeller('${listing._id}')" class="h-10 w-10 rounded-lg glass border border-gray-800/50 hover:border-emerald-500/40 transition-all ${sellerPhone ? "" : "opacity-50 cursor-not-allowed"}" title="${sellerPhone ? "Call seller" : "Seller phone unavailable"}" ${sellerPhone ? "" : "disabled"}>
+          <button onclick="callSeller('${listing._id}')" class="h-8 w-8 rounded-lg glass border border-gray-800/50 hover:border-emerald-500/40 transition-all ${sellerPhone ? "" : "opacity-50 cursor-not-allowed"}" title="${sellerPhone ? "Call seller" : "Seller phone unavailable"}" ${sellerPhone ? "" : "disabled"}>
             <i class="bi bi-telephone"></i>
           </button>
-          <button onclick="viewDetails('${listing._id}')" class="px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-green-600 font-semibold text-sm hover:shadow-lg hover:shadow-emerald-500/30 transition-all">
+          <button onclick="viewDetails('${listing._id}')" class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-emerald-500 to-green-600 font-semibold text-xs hover:shadow-lg hover:shadow-emerald-500/30 transition-all whitespace-nowrap">
             View Details
           </button>
+          ${
+            canDelete
+              ? `<button onclick="deleteListing('${listing._id}')" class="px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/35 text-red-300 hover:bg-red-500/20 transition-all text-xs font-semibold whitespace-nowrap">
+            <i class="bi bi-trash3 mr-1"></i>Delete
+          </button>`
+              : ""
+          }
         </div>
       </div>
       ${
         listing.quantity > 1
           ? `
-        <div class="text-center py-2 rounded-lg bg-blue-500/10 border border-blue-500/30">
-          <p class="text-sm font-bold text-blue-400">
+        <div class="text-center py-1.5 rounded-lg bg-blue-500/10 border border-blue-500/30">
+          <p class="text-xs font-bold text-blue-400">
             <i class="bi bi-stack"></i> ${listing.quantity} Available
           </p>
         </div>
@@ -363,23 +402,22 @@ function viewDetails(id) {
     listing.highestBidAmount || listing.currentHighestBid || openingPrice || 0,
   );
   const sellerPhone = normalizePhone(listing.seller?.phone);
+  const canDelete = canDeleteListing(listing);
   const modal = document.getElementById("detail-modal");
   const content = document.getElementById("modal-content");
   content.innerHTML = `
-    <div class="sticky top-0 bg-gray-900/95 backdrop-blur-xl border-b border-gray-800/50 p-6 flex items-center justify-between z-10">
-      <h2 class="text-3xl font-black font-display text-gradient">Listing Details</h2>
-      <button onclick="closeDetailModal()" class="w-12 h-12 rounded-xl glass hover:bg-gray-800/50 flex items-center justify-center transition-all">
-        <i class="bi bi-x-lg text-xl"></i>
+    <div class="sticky top-0 bg-gray-900/95 backdrop-blur-xl border-b border-gray-800/50 px-3 py-2.5 flex items-center justify-between z-20">
+      <h2 class="text-xl font-black font-display text-gradient">Listing Details</h2>
+      <button onclick="closeDetailModal()" class="w-9 h-9 rounded-xl glass hover:bg-gray-800/50 flex items-center justify-center transition-all">
+        <i class="bi bi-x-lg text-base"></i>
       </button>
     </div>
-    <div class="p-6 space-y-6">
-      <div class="grid grid-cols-1 ${
-        photos.length > 1 ? "md:grid-cols-2" : ""
-      } gap-4">
+    <div class="p-3 space-y-3 pb-20 md:pb-3">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
         ${photos
           .map(
             (photo) => `
-          <div class="image-container rounded-2xl overflow-hidden h-64">
+          <div class="image-container rounded-xl overflow-hidden h-20 sm:h-24">
             <img src="${photo}" alt="${
               listing.breed || "Animal"
             }" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=400&h=300&fit=crop'">
@@ -388,92 +426,99 @@ function viewDetails(id) {
           )
           .join("")}
       </div>
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="space-y-4">
+      <div class="grid md:grid-cols-2 gap-3">
+        <div class="space-y-3">
           <div>
-            <h3 class="text-3xl font-black font-display mb-2">${
+            <h3 class="text-xl font-black font-display mb-1.5">${
               listing.breed || "Unknown Breed"
             }</h3>
-            <div class="flex flex-wrap gap-2">
-              <span class="tag-pill px-4 py-2 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 font-semibold">
+            <div class="flex flex-wrap gap-1.5">
+              <span class="tag-pill px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
                 ${animalInfo.name}
               </span>
-              <span class="tag-pill px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-400 font-semibold">
+              <span class="tag-pill px-3 py-1 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-400 text-xs font-semibold">
                 ${(healthIcon ? healthIcon + " " : "") + (listing.healthStatus || "Good")}
               </span>
               ${
                 listing.vaccinated
-                  ? '<span class="tag-pill px-4 py-2 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 font-semibold">Vaccinated</span>'
+                  ? '<span class="tag-pill px-3 py-1 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 text-xs font-semibold">Vaccinated</span>'
                   : ""
               }
             </div>
           </div>
-          <div class="grid grid-cols-2 gap-4">
-            <div class="p-4 rounded-xl bg-gray-800/30">
-              <p class="text-sm text-gray-400 mb-1">Opening Price</p>
-              <p class="text-xl font-bold text-emerald-400">${formatUGX(openingPrice)}</p>
+          <div class="grid grid-cols-2 gap-1.5">
+            <div class="p-2.5 rounded-xl bg-gray-800/30">
+              <p class="text-xs text-gray-400 mb-1">Opening Price</p>
+              <p class="text-base font-bold text-emerald-400">${formatUGX(openingPrice)}</p>
             </div>
-            <div class="p-4 rounded-xl bg-gray-800/30">
-              <p class="text-sm text-gray-400 mb-1">Highest Bid</p>
-              <p class="text-xl font-bold text-green-400">${formatUGX(highestBid)}</p>
+            <div class="p-2.5 rounded-xl bg-gray-800/30">
+              <p class="text-xs text-gray-400 mb-1">Highest Bid</p>
+              <p class="text-base font-bold text-green-400">${formatUGX(highestBid)}</p>
             </div>
-            <div class="p-4 rounded-xl bg-gray-800/30">
-              <p class="text-sm text-gray-400 mb-1">Age</p>
-              <p class="text-xl font-bold">${ageDisplay}</p>
+            <div class="p-2.5 rounded-xl bg-gray-800/30">
+              <p class="text-xs text-gray-400 mb-1">Age</p>
+              <p class="text-sm font-bold">${ageDisplay}</p>
             </div>
-            <div class="p-4 rounded-xl bg-gray-800/30">
-              <p class="text-sm text-gray-400 mb-1">Weight</p>
-              <p class="text-xl font-bold">${listing.weight || 0} KG</p>
+            <div class="p-2.5 rounded-xl bg-gray-800/30">
+              <p class="text-xs text-gray-400 mb-1">Weight</p>
+              <p class="text-sm font-bold">${listing.weight || 0} KG</p>
             </div>
-            <div class="p-4 rounded-xl bg-gray-800/30">
-              <p class="text-sm text-gray-400 mb-1">Sex</p>
-              <p class="text-xl font-bold">${listing.sex || "N/A"}</p>
+            <div class="p-2.5 rounded-xl bg-gray-800/30">
+              <p class="text-xs text-gray-400 mb-1">Sex</p>
+              <p class="text-sm font-bold">${listing.sex || "N/A"}</p>
             </div>
-            <div class="p-4 rounded-xl bg-gray-800/30">
-              <p class="text-sm text-gray-400 mb-1">Quantity</p>
-              <p class="text-xl font-bold">${listing.quantity || 1}</p>
+            <div class="p-2.5 rounded-xl bg-gray-800/30">
+              <p class="text-xs text-gray-400 mb-1">Quantity</p>
+              <p class="text-sm font-bold">${listing.quantity || 1}</p>
             </div>
           </div>
-          <div class="p-4 rounded-xl bg-gray-800/30">
-            <p class="text-sm text-gray-400 mb-1">
+          <div class="p-2.5 rounded-xl bg-gray-800/30">
+            <p class="text-xs text-gray-400 mb-1">
               <i class="bi bi-geo-alt text-emerald-500"></i> Location
             </p>
-            <p class="text-lg font-bold">${listing.location || "Not specified"}</p>
+            <p class="text-sm font-bold">${listing.location || "Not specified"}</p>
           </div>
         </div>
-        <div class="space-y-4">
-          <div class="p-4 rounded-xl bg-gray-800/30">
-            <h4 class="font-bold text-lg mb-3 text-emerald-500">Description</h4>
-            <p class="text-gray-300 leading-relaxed">${
+        <div class="space-y-3">
+          <div class="p-2.5 rounded-xl bg-gray-800/30">
+            <h4 class="font-bold text-sm mb-1.5 text-emerald-500">Description</h4>
+            <p class="text-xs text-gray-300 leading-relaxed">${
               listing.description || "No description provided"
             }</p>
           </div>
-          <div class="p-4 rounded-xl glass-strong border border-gray-800/50">
-            <h4 class="font-bold text-lg mb-3 text-emerald-500">Seller Information</h4>
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center font-bold text-xl">
+          <div class="p-2.5 rounded-xl glass-strong border border-gray-800/50">
+            <h4 class="font-bold text-sm mb-1.5 text-emerald-500">Seller Information</h4>
+            <div class="flex items-center gap-2.5 mb-3">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center font-bold text-sm">
                 ${(listing.seller?.name || "A").charAt(0).toUpperCase()}
               </div>
               <div>
-                <p class="font-bold text-lg">${listing.seller?.name || "Seller"}</p>
-                <p class="text-sm text-gray-400">${listing.seller?.phone || "No phone"}</p>
+                <p class="font-bold text-sm">${listing.seller?.name || "Seller"}</p>
+                <p class="text-xs text-gray-400">${listing.seller?.phone || "No phone"}</p>
               </div>
             </div>
             <div class="flex gap-2">
-              <button onclick="shareListing('${listing._id}')" class="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 font-semibold hover:shadow-lg transition-all">
+              <button onclick="shareListing('${listing._id}')" class="flex-1 px-3 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-xs font-semibold hover:shadow-lg transition-all">
                 <i class="bi bi-share mr-2"></i>Share
               </button>
-              <button onclick="toggleFavourite('${listing._id}')" class="px-4 py-3 rounded-xl glass border border-gray-800/50 hover:border-rose-500/50 transition-all">
+              <button onclick="toggleFavourite('${listing._id}')" class="px-3 py-2 rounded-xl glass border border-gray-800/50 hover:border-rose-500/50 transition-all">
                 <i class="bi ${isFavouriteListing(listing._id) ? "bi-heart-fill text-rose-400" : "bi-heart"}"></i>
               </button>
-              <button onclick="callSeller('${listing._id}')" class="px-4 py-3 rounded-xl glass border border-gray-800/50 hover:border-emerald-500/50 transition-all ${sellerPhone ? "" : "opacity-50 cursor-not-allowed"}" ${sellerPhone ? "" : "disabled"}>
+              <button onclick="callSeller('${listing._id}')" class="px-3 py-2 rounded-xl glass border border-gray-800/50 hover:border-emerald-500/50 transition-all ${sellerPhone ? "" : "opacity-50 cursor-not-allowed"}" ${sellerPhone ? "" : "disabled"}>
                 <i class="bi bi-telephone"></i>
               </button>
+              ${
+                canDelete
+                  ? `<button onclick="deleteListing('${listing._id}')" class="px-3 py-2 rounded-xl bg-red-500/10 border border-red-500/35 hover:bg-red-500/20 transition-all text-red-300" title="Delete Listing">
+                <i class="bi bi-trash3"></i>
+              </button>`
+                  : ""
+              }
             </div>
           </div>
-          <div class="p-4 rounded-xl bg-gray-800/30">
-            <p class="text-sm text-gray-400">Listed on</p>
-            <p class="text-lg font-bold">${new Date(
+          <div class="p-2.5 rounded-xl bg-gray-800/30">
+            <p class="text-xs text-gray-400">Listed on</p>
+            <p class="text-sm font-bold">${new Date(
               listing.createdAt,
             ).toLocaleDateString("en-US", {
               year: "numeric",
@@ -483,8 +528,13 @@ function viewDetails(id) {
           </div>
         </div>
       </div>
-      <div class="flex gap-3 pt-6 border-t border-gray-800/50">
-        <button onclick="openBidModal('${listing._id}')" class="flex-1 px-6 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 font-bold text-lg hover:shadow-2xl hover:shadow-emerald-500/30 transition-all">
+      <div class="hidden md:block sticky bottom-0 -mx-3 px-3 py-2.5 bg-gray-900/96 backdrop-blur-xl border-t border-gray-800/60 z-20">
+        <button onclick="openBidModal('${listing._id}')" class="w-full px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 font-bold text-sm hover:shadow-2xl hover:shadow-emerald-500/30 transition-all">
+          <i class="bi bi-cart-plus mr-2"></i>Place Bid
+        </button>
+      </div>
+      <div class="md:hidden fixed bottom-3 left-3 right-3 z-[70]">
+        <button onclick="openBidModal('${listing._id}')" class="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 font-bold text-sm shadow-2xl shadow-emerald-900/40 border border-emerald-300/30">
           <i class="bi bi-cart-plus mr-2"></i>Place Bid
         </button>
       </div>
@@ -516,7 +566,6 @@ function openBidModal(listingId) {
       </button>
     </div>
     <div class="p-6 space-y-6">
-      <!-- Listing Info -->
       <div class="p-4 rounded-xl bg-gradient-to-r from-emerald-500/10 to-green-600/10 border border-emerald-500/30">
         <div class="flex items-center gap-4">
           <div class="w-16 h-16 rounded-xl overflow-hidden">
@@ -536,7 +585,6 @@ function openBidModal(listingId) {
           </div>
         </div>
       </div>
-      <!-- Bidder Information (Read-only from database) -->
       <div class="space-y-4">
         <h3 class="text-lg font-bold text-emerald-500">
           <i class="bi bi-person-fill mr-2"></i>Bidder Information
@@ -554,7 +602,6 @@ function openBidModal(listingId) {
           </div>
         </div>
       </div>
-      <!-- Bid Amount -->
       <div class="space-y-4">
         <h3 class="text-lg font-bold text-emerald-500">
           <i class="bi bi-currency-exchange mr-2"></i>Bid Amount
@@ -577,7 +624,6 @@ function openBidModal(listingId) {
           </p>
         </div>
       </div>
-      <!-- Additional Notes (Optional) -->
       <div class="p-4 rounded-xl glass border border-gray-800/50">
         <label class="block text-sm font-semibold text-gray-300 mb-2">
           Additional Notes (Optional)
@@ -589,7 +635,6 @@ function openBidModal(listingId) {
           class="w-full px-4 py-3 rounded-lg bg-gray-900/80 border border-gray-700/50 focus:border-emerald-500/50 focus:outline-none transition-all text-white resize-none"
         ></textarea>
       </div>
-      <!-- Action Buttons -->
       <div class="flex gap-3 pt-4">
         <button onclick="submitBid('${listingId}')" class="flex-1 px-6 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 font-bold text-lg hover:shadow-2xl hover:shadow-emerald-500/30 transition-all">
           <i class="bi bi-check-circle mr-2"></i>Submit Bid
@@ -598,7 +643,6 @@ function openBidModal(listingId) {
           <i class="bi bi-x-circle mr-2"></i>Cancel
         </button>
       </div>
-      <!-- Info Notice -->
       <div class="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30">
         <p class="text-sm text-blue-300">
           <i class="bi bi-shield-check mr-2"></i>
@@ -711,6 +755,41 @@ function callSeller(listingId) {
     return;
   }
   window.location.href = `tel:${sellerPhone}`;
+}
+async function deleteListing(listingId) {
+  const listing = allListings.find((l) => l._id === listingId);
+  if (!listing) return;
+  if (!canDeleteListing(listing)) {
+    alert("You are not allowed to delete this listing.");
+    return;
+  }
+  const proceed = confirm(
+    "Are you sure you want to delete this auction? This will also remove associated bids and cannot be undone.",
+  );
+  if (!proceed) return;
+  try {
+    const response = await fetch(`${API_BASE_URL}/${encodeURIComponent(listingId)}`, {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+      },
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Failed to delete listing");
+    }
+    allListings = allListings.filter((l) => l._id !== listingId);
+    filteredListings = filteredListings.filter((l) => l._id !== listingId);
+    closeDetailModal();
+    closeBidModal();
+    updateStats();
+    displayListings();
+    updateFilterDescription();
+    alert("Auction deleted successfully.");
+  } catch (error) {
+    alert(error.message || "Failed to delete listing.");
+  }
 }
 function setupEventListeners() {
   document
@@ -905,4 +984,3 @@ function setViewMode(mode) {
 function loadMore() {
   currentPage++;
 }
-

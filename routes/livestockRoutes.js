@@ -6,4 +6,3 @@ router.get("/priceCalculator", (req, res) => {
   });
 });
 export default router;
-

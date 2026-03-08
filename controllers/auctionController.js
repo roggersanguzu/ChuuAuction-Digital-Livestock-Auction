@@ -1,6 +1,7 @@
-﻿import Auction from "../models/Auction.js";
+import Auction from "../models/Auction.js";
 import Bid from "../models/Bid.js";
 import { uploadFromBuffer } from "../utils/cloudinaryUpload.js";
+import mongoose from "mongoose";
 export const createAuction = async (req, res) => {
   try {
     if (!req.files || req.files.length < 2) {
@@ -150,6 +151,7 @@ if (auctions.length > 0) {
       highestBidderName: bidStats?.highestBidderName || "",
       bidsCount: Number(bidStats?.bidsCount || 0),
       seller: {
+        id: auction.seller?._id ? String(auction.seller._id) : "",
         name: auction.seller?.name || "Unknown Seller",
         email: auction.seller?.email || "",
         phone: auction.seller?.phone || "",
@@ -211,6 +213,7 @@ const auction = await Auction.findById(req.params.id)
       reservePrice: Number(auction.reservePrice) || 0,
       currentHighestBid: Number(auction.currentHighestBid || auction.startingPrice || 0),
       seller: {
+        id: auction.seller?._id ? String(auction.seller._id) : "",
         name: auction.seller?.name || "Unknown Seller",
         email: auction.seller?.email || "",
         phone: auction.seller?.phone || "",
@@ -361,6 +364,7 @@ const bidAgg = await Bid.aggregate([
       highestBidderName: bidStats?.highestBidderName || "",
       bidsCount: Number(bidStats?.bidsCount || 0),
       seller: {
+        id: auction.seller?._id ? String(auction.seller._id) : "",
         name: auction.seller?.name || "Unknown Seller",
         email: auction.seller?.email || "",
         phone: auction.seller?.phone || "",
@@ -388,4 +392,54 @@ return res.status(200).json({
     });
   }
 };
+export const deleteAuction = async (req, res) => {
+  try {
+    const sessionUser = req.session?.user;
+    if (!sessionUser?.id) {
+      return res.status(401).json({
+        success: false,
+        message: "You must be logged in to delete an auction.",
+      });
+    }
+    const auctionId = String(req.params.id || "").trim();
+    if (!mongoose.Types.ObjectId.isValid(auctionId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid auction ID.",
+      });
+    }
+    const auction = await Auction.findById(auctionId).select("seller").lean();
+    if (!auction) {
+      return res.status(404).json({
+        success: false,
+        message: "Auction not found.",
+      });
+    }
+    const userId = String(sessionUser.id || "");
+    const sellerId = String(auction.seller || "");
+    const isOwner = sellerId && sellerId === userId;
+    if (!isOwner) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not allowed to delete this auction.",
+      });
+    }
+    await Promise.all([
+      Bid.deleteMany({ listingId: auctionId }),
+      Auction.deleteOne({ _id: auctionId }),
+    ]);
+    return res.status(200).json({
+      success: true,
+      message: "Auction deleted successfully.",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to delete auction.",
+      error: err.message,
+    });
+  }
+};
+
+
 

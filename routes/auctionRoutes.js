@@ -2,6 +2,7 @@
 import upload from "../middleware/upload.js";
 import {
   createAuction,
+  deleteAuction,
   getAllAuctions,
   getAuctionById,
   getFilteredAuctions,
@@ -31,6 +32,15 @@ next();
   },
   getAuctionById,
 );
+router.delete("/api/:id", (req, res, next) => {
+  if (!req.session?.user) {
+    return res.status(401).json({
+      success: false,
+      message: "Please log in to continue.",
+    });
+  }
+  next();
+}, deleteAuction);
 router.get("/bids", (req, res) => {
   res.render("auctions/bids", { title: "Received Bids" });
 });
@@ -46,4 +56,3 @@ router.get("/create", (req, res) => {
 });
 router.post("/", upload.array("animalPhotos", 4), createAuction);
 export default router;
-

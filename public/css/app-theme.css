@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --app-bg: #050608;
   --app-bg-soft: #0f1117;
   --app-surface: rgba(255, 255, 255, 0.04);
@@ -21,6 +21,7 @@ html[data-theme="light"] {
   --app-success: #16a34a;
 }
 body {
+  margin: 0;
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 button,
@@ -166,7 +167,7 @@ a[href],
 .app-footer {
   position: relative;
   z-index: 20;
-  margin-top: 40px;
+  margin-top: 0;
   border-top: 1px solid var(--app-border);
   background:
     radial-gradient(1200px 420px at 18% 0%, color-mix(in srgb, var(--app-accent) 16%, transparent), transparent 62%),
@@ -324,6 +325,16 @@ a[href],
   .app-footer-inner {
     padding: 30px 14px 16px;
   }
+  .app-footer-brand {
+    padding-right: 0;
+  }
+  .app-footer-sub {
+    max-width: 100%;
+  }
+  .app-footer-socials {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
   .app-footer-grid {
     grid-template-columns: 1fr;
     gap: 18px;
@@ -331,6 +342,40 @@ a[href],
   .app-footer-bottom {
     margin-top: 20px;
     padding-top: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .app-footer-badges {
+    flex-wrap: wrap;
   }
 }
-
+@media (max-width: 420px) {
+  .app-footer {
+    margin-top: 0;
+  }
+  .app-footer-inner {
+    padding: 24px 12px 14px;
+  }
+  .app-footer-logo-title {
+    font-size: 18px;
+  }
+  .app-footer-copy {
+    font-size: 11px;
+  }
+  .app-footer-pill {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+}
+@media (max-width: 640px) {
+  body {
+    overflow-x: hidden;
+  }
+  .max-w-7xl,
+  .max-w-6xl,
+  .max-w-5xl,
+  .max-w-4xl {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+}

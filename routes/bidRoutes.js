@@ -84,4 +84,3 @@ router.get(
   getAllBidsAdmin,
 );
 export default router;
-

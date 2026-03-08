@@ -91,4 +91,3 @@ const role = req.session.user.role?.trim().toLowerCase();
   });
 });
 export default router;
-

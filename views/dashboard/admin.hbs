@@ -56,7 +56,6 @@
       .font-body {
         font-family: "Outfit", system-ui, sans-serif;
       }
-      /* Gradient Text */
       .text-gradient {
         background: linear-gradient(135deg, #f97316, #dc2626, #ea580c);
         -webkit-background-clip: text;
@@ -73,7 +72,6 @@
           background-position: 100% 50%;
         }
       }
-      /* Glass Morphism */
       .glass {
         background: rgba(255, 255, 255, 0.03);
         backdrop-filter: blur(20px);
@@ -85,7 +83,6 @@
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
       }
-      /* Custom Scrollbar */
       ::-webkit-scrollbar {
         width: 6px;
       }
@@ -96,7 +93,6 @@
         background: linear-gradient(180deg, #f97316, #dc2626);
         border-radius: 3px;
       }
-      /* Sidebar Nav Active Indicator */
       .nav-link {
         position: relative;
       }
@@ -116,7 +112,6 @@
       .nav-link.active::before {
         transform: scaleY(1);
       }
-      /* Shimmer on cards */
       .shimmer-card {
         position: relative;
         overflow: hidden;
@@ -143,7 +138,6 @@
           background-position: -200% 0;
         }
       }
-      /* Toast */
       #toast-container {
         position: fixed;
         top: 24px;
@@ -154,7 +148,6 @@
         gap: 10px;
         align-items: flex-end;
       }
-      /* Dropdown */
       .dropdown-panel {
         max-height: 0;
         overflow: hidden;
@@ -167,13 +160,11 @@
         max-height: 300px;
         opacity: 1;
       }
-      /* Sticky header */
       .sticky-top {
         position: sticky;
         top: 0;
         z-index: 10;
       }
-      /* Sidebar overlay mobile */
       #sidebar-overlay {
         position: fixed;
         inset: 0;
@@ -188,7 +179,6 @@
         opacity: 1;
         pointer-events: auto;
       }
-      /* Chart tooltip */
       .chart-tooltip {
         position: absolute;
         background: rgba(17, 24, 39, 0.95);
@@ -202,13 +192,11 @@
         z-index: 20;
         transition: opacity 0.15s;
       }
-      /* Progress ring */
       .progress-ring-circle {
         transition: stroke-dashoffset 1s cubic-bezier(0.23, 1, 0.32, 1);
         transform: rotate(-90deg);
         transform-origin: 50% 50%;
       }
-      /* Status dot pulse */
       .status-online {
         position: relative;
       }
@@ -220,7 +208,6 @@
         background: inherit;
         animation: ringPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
       }
-      /* Tab underline */
       .tab-underline {
         position: relative;
       }
@@ -239,7 +226,6 @@
       .tab-underline.active::after {
         transform: scaleX(1);
       }
-      /* Mask fade edges on scroll containers */
       .fade-edges {
         -webkit-mask-image: linear-gradient(
           to right,
@@ -256,10 +242,43 @@
           transparent
         );
       }
-      /* Hexagonal pattern bg */
       .hex-bg {
         background-image: url("data:image/svg+xml,%3Csvg width='60' height='52' viewBox='0 0 60 52' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 2L58 17V45L30 50L2 45V17L30 2Z' stroke='rgba(249,115,22,0.06)' fill='none'/%3E%3C/svg%3E");
         background-size: 60px 52px;
+      }
+      @media (max-width: 1024px) {
+        #sidebar {
+          width: min(20rem, 88vw);
+        }
+        #mobile-menu-btn {
+          top: 12px;
+          left: 12px;
+          width: 40px;
+          height: 40px;
+        }
+        main .sticky-top {
+          top: 0;
+        }
+      }
+      @media (max-width: 640px) {
+        .sticky-top {
+          flex-direction: column;
+          align-items: stretch !important;
+          gap: 10px !important;
+        }
+        .sticky-top .relative.flex-1.max-w-md {
+          max-width: 100%;
+        }
+        .sticky-top + .grid {
+          margin-top: 8px;
+        }
+      }
+      @media (max-width: 420px) {
+        #toast-container {
+          right: 10px;
+          left: 10px;
+          align-items: stretch;
+        }
       }
     </style>
   </head>
@@ -437,6 +456,21 @@
             class="font-semibold text-sm text-gray-400 group-hover:text-white transition-colors"
           >Settings</span>
         </a>
+        <form action="/auth/logout" method="POST" class="lg:hidden">
+          <button
+            type="submit"
+            class="nav-link w-full flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-red-500/10 border border-red-500/20 group text-left"
+          >
+            <div
+              class="w-9 h-9 rounded-lg bg-gradient-to-br from-red-500/20 to-rose-600/20 flex items-center justify-center"
+            >
+              <i class="bi bi-box-arrow-left text-red-400 text-lg"></i>
+            </div>
+            <span
+              class="font-semibold text-sm text-red-300 group-hover:text-red-200 transition-colors"
+            >Logout</span>
+          </button>
+        </form>
       </nav>
       <div class="p-4 border-t border-gray-800/40">
         <form action="/auth/logout" method="POST" class="w-full">
@@ -1329,26 +1363,62 @@
         </div>
         <div id="tab-auctions" class="tab-panel hidden">
           <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-2" id="admin-auction-status-filters">
               <button
                 class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold bg-red-500/15 text-red-400 active-tab-btn"
+                data-filter="all"
+                onclick="filterAuctions('all',this)"
+              >📋 All (0)</button>
+              <button
+                class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-gray-500 hover:text-white transition-colors"
                 data-filter="live"
                 onclick="filterAuctions('live',this)"
-              >🔴 Live (12)</button>
+              >🔴 Live (0)</button>
               <button
                 class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-gray-500 hover:text-white transition-colors"
                 data-filter="upcoming"
                 onclick="filterAuctions('upcoming',this)"
-              >⏳ Upcoming (8)</button>
+              >⏳ Upcoming (0)</button>
               <button
                 class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-gray-500 hover:text-white transition-colors"
                 data-filter="completed"
                 onclick="filterAuctions('completed',this)"
-              >✅ Completed (34)</button>
+              >✅ Completed (0)</button>
             </div>
-            <button
-              class="px-4 py-1.5 bg-gradient-to-r from-orange-500 to-red-600 rounded-lg text-xs font-semibold hover:shadow-lg hover:shadow-orange-500/25 transition-all"
-            >+ Create Auction</button>
+            <div class="text-xs text-gray-400" id="admin-auctions-count-label">Loading auctions...</div>
+          </div>
+          <div class="glass border border-gray-800/40 rounded-2xl p-4 mb-5">
+            <div class="grid md:grid-cols-4 gap-3">
+              <div class="md:col-span-2 relative">
+                <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+                <input
+                  id="admin-auctions-search"
+                  type="text"
+                  placeholder="Search by animal, breed, location, seller..."
+                  class="w-full bg-gray-900/60 border border-gray-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-orange-500/50"
+                />
+              </div>
+              <select
+                id="admin-auctions-sort"
+                class="bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500/50"
+              >
+                <option value="newest">Newest first</option>
+                <option value="oldest">Oldest first</option>
+                <option value="highest_bid">Highest bid</option>
+                <option value="ending_soon">Ending soon</option>
+              </select>
+              <select
+                id="admin-auctions-type"
+                class="bg-gray-900/60 border border-gray-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500/50"
+              >
+                <option value="all">All types</option>
+                <option value="cattle">Cattle</option>
+                <option value="goat">Goat</option>
+                <option value="sheep">Sheep</option>
+                <option value="pig">Pig</option>
+                <option value="poultry">Poultry</option>
+              </select>
+            </div>
           </div>
           <div
             id="auctions-grid"
@@ -1741,6 +1811,3 @@
     <script src="/js/admin-operations.js"></script>
   </body>
 </html>
-
-
-

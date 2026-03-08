@@ -1,4 +1,3 @@
-﻿
 var userId = null;
 var allBids = []; // Store all bids for filtering
 document.addEventListener("DOMContentLoaded", function () {
@@ -231,7 +230,9 @@ function getStatusBadge(status) {
 }
 function getAnimalImage(photos) {
   if (photos && photos.length > 0) {
-    return photos[0].url;
+    var first = photos[0];
+    if (typeof first === "string") return first;
+    if (first && typeof first.url === "string") return first.url;
   }
   return "/img/cow.png";
 }
@@ -240,82 +241,84 @@ function renderBidCard(bid) {
   var photoUrl = getAnimalImage(auction.photos);
   var animalType = auction.animalType || "Livestock";
   var isWinner = bid.status === "accepted";
+  var auctionId = bid.listingId || (auction._id || "");
+  var auctionHref = "/auctions/animalList" + (auctionId ? "?auctionId=" + encodeURIComponent(auctionId) : "");
   var paymentButtonHtml = isWinner
     ? '<a href="/dashboard/payment?bidId=' +
       bid._id +
-      '" class="px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 hover:shadow-lg hover:shadow-green-500/30 transition text-sm font-semibold"><i class="bi bi-credit-card mr-2"></i>Proceed to Payment</a>'
+      '" class="px-3 py-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 hover:shadow-lg hover:shadow-green-500/30 transition text-xs font-semibold"><i class="bi bi-credit-card mr-1"></i>Pay</a>'
     : "";
   return (
-    '<div class="bid-card glass-strong border border-gray-800 rounded-2xl p-6 transition-all duration-300 ' +
+    '<article class="bid-card glass-strong border border-gray-800 rounded-2xl p-4 transition-all duration-300 h-full flex flex-col ' +
     (isWinner ? "ring-2 ring-green-500/50" : "") +
     '">' +
-    '<div class="flex flex-col lg:flex-row gap-6">' +
-    '<div class="lg:w-64 h-48 rounded-xl overflow-hidden relative flex-shrink-0">' +
+    '<div class="flex items-start gap-3 mb-3">' +
+    '<div class="w-24 h-20 rounded-xl overflow-hidden relative flex-shrink-0 border border-gray-800/60">' +
     '<img src="' +
     photoUrl +
     '" alt="' +
     animalType +
     '" class="w-full h-full object-cover" onerror="this.src=\'/img/cow.png\'">' +
-    '<div class="absolute top-3 right-3">' +
-    getStatusBadge(bid.status) +
     "</div>" +
-    (isWinner
-      ? '<div class="absolute top-3 left-3 px-3 py-1 rounded-full bg-green-500 text-white text-xs font-bold flex items-center gap-1"><i class="bi bi-trophy-fill"></i> WINNER</div>'
-      : "") +
-    "</div>" +
-    '<div class="flex-1">' +
-    '<div class="flex items-start justify-between mb-4">' +
-    "<div>" +
-    '<h3 class="text-xl font-bold font-display mb-2">' +
+    '<div class="flex-1 min-w-0">' +
+    '<div class="flex items-start justify-between gap-2">' +
+    '<h3 class="text-base font-bold font-display leading-tight">' +
     animalType +
     (auction.breed ? " - " + auction.breed : "") +
     "</h3>" +
-    '<div class="flex flex-wrap gap-2 mb-3">' +
+    '<div class="flex-shrink-0">' +
+    getStatusBadge(bid.status) +
+    "</div>" +
+    "</div>" +
+    '<div class="flex flex-wrap gap-1.5 mt-2">' +
     (auction.sex
-      ? '<span class="px-2 py-1 rounded-lg bg-gray-800/50 text-xs"><i class="bi bi-gender-' +
+      ? '<span class="px-2 py-0.5 rounded-lg bg-gray-800/50 text-[11px]"><i class="bi bi-gender-' +
         auction.sex.toLowerCase() +
         ' mr-1"></i>' +
         auction.sex +
         "</span>"
       : "") +
     (auction.weight
-      ? '<span class="px-2 py-1 rounded-lg bg-gray-800/50 text-xs"><i class="bi bi-activity mr-1"></i>' +
+      ? '<span class="px-2 py-0.5 rounded-lg bg-gray-800/50 text-[11px]"><i class="bi bi-activity mr-1"></i>' +
         auction.weight +
         "kg</span>"
       : "") +
     (auction.location
-      ? '<span class="px-2 py-1 rounded-lg bg-gray-800/50 text-xs"><i class="bi bi-geo-alt mr-1"></i>' +
+      ? '<span class="px-2 py-0.5 rounded-lg bg-gray-800/50 text-[11px]"><i class="bi bi-geo-alt mr-1"></i>' +
         auction.location +
         "</span>"
       : "") +
     "</div>" +
     "</div>" +
-    '<div class="text-right">' +
-    '<p class="text-sm text-gray-400 mb-1">Your Bid Amount</p>' +
-    '<p class="text-3xl font-black ' +
+    "</div>" +
+    '<div class="grid grid-cols-2 gap-2 mb-3">' +
+    '<div class="rounded-lg border border-gray-800/70 bg-gray-900/40 p-2"><p class="text-[11px] text-gray-500">Your Bid</p><p class="text-lg font-black ' +
     (isWinner ? "text-green-500" : "text-orange-500") +
     '">' +
     formatCurrency(bid.amount) +
-    "</p>" +
+    "</p></div>" +
+    '<div class="rounded-lg border border-gray-800/70 bg-gray-900/40 p-2"><p class="text-[11px] text-gray-500">Placed</p><p class="text-xs font-semibold text-gray-300">' +
+    formatDate(bid.createdAt) +
+    "</p></div>" +
     "</div>" +
-    "</div>" +
+    (isWinner
+      ? '<div class="mb-3 px-2.5 py-1.5 rounded-lg bg-green-500/15 border border-green-500/35 text-green-300 text-xs font-semibold"><i class="bi bi-trophy-fill mr-1"></i>You are currently the winner</div>'
+      : "") +
     (bid.notes
-      ? '<div class="p-3 rounded-lg bg-gray-800/30 border border-gray-700/50 mb-4"><p class="text-sm text-gray-300"><i class="bi bi-chat-quote text-orange-500 mr-2"></i>' +
+      ? '<div class="p-2.5 rounded-lg bg-gray-800/30 border border-gray-700/50 mb-3"><p class="text-xs text-gray-300"><i class="bi bi-chat-quote text-orange-500 mr-1"></i>' +
         bid.notes +
         "</p></div>"
       : "") +
-    '<div class="flex items-center justify-between pt-4 border-t border-gray-800">' +
-    '<div class="text-sm text-gray-500"><i class="bi bi-clock mr-1"></i> Bid placed: ' +
-    formatDate(bid.createdAt) +
-    "</div>" +
-    '<div class="flex items-center gap-2">' +
+    '<div class="mt-auto pt-3 border-t border-gray-800 flex items-center gap-2 flex-wrap">' +
     paymentButtonHtml +
-    '<a href="/auctions/animalList" class="px-4 py-2 rounded-lg glass border border-gray-700 hover:border-orange-500 transition text-sm"><i class="bi bi-eye mr-2"></i>View Auction</a>' +
+    '<a href="' +
+    auctionHref +
+    '" class="px-3 py-2 rounded-lg glass border border-gray-700 hover:border-orange-500 transition text-xs font-semibold"><i class="bi bi-eye mr-1"></i>View Auction</a>' +
+    '<a href="/dashboard/auction-bids' +
+    (auctionId ? "/" + encodeURIComponent(auctionId) : "") +
+    '" class="px-3 py-2 rounded-lg bg-orange-500/10 border border-orange-500/30 hover:bg-orange-500/20 transition text-xs font-semibold text-orange-300"><i class="bi bi-kanban mr-1"></i>Track</a>' +
     "</div>" +
-    "</div>" +
-    "</div>" +
-    "</div>" +
-    "</div>"
+    "</article>"
   );
 }
 function renderBids(bids) {
@@ -393,4 +396,3 @@ function showError(message) {
       "</p></div>";
   }
 }
-

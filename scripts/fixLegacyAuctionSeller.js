@@ -24,4 +24,3 @@ if (!targetSellerId) {
     await mongoose.disconnect();
   }
 })();
-

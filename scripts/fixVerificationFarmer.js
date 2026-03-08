@@ -1,4 +1,3 @@
-﻿
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
@@ -31,4 +30,3 @@ await mongoose.disconnect();
 main().catch((err) => {
   process.exit(1);
 });
-
