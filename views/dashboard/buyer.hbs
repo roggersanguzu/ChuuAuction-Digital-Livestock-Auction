@@ -129,7 +129,7 @@
         flex-direction: column;
         height: 100%;
         padding: 28px 20px;
-        gap: 8px;
+        gap: 10px;
         overflow-y: auto;
         scrollbar-width: none;
       }
@@ -290,14 +290,14 @@
         letter-spacing: 1.5px;
         text-transform: uppercase;
         color: var(--text-muted);
-        padding: 12px 8px 6px;
+        padding: 14px 8px 8px;
       }
       .nav-link {
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 11px 14px;
-        border-radius: 12px;
+        gap: 14px;
+        padding: 13px 14px;
+        border-radius: 14px;
         text-decoration: none;
         color: var(--text-secondary);
         font-weight: 500;
@@ -306,10 +306,15 @@
         position: relative;
         overflow: hidden;
         min-width: 0;
+        min-height: 52px;
+      }
+      .nav-link + .nav-link {
+        margin-top: 6px;
       }
       .nav-text {
         min-width: 0;
         overflow-wrap: anywhere;
+        line-height: 1.25;
       }
       .nav-link::before {
         content: "";
@@ -340,9 +345,9 @@
         color: var(--orange-bright);
       }
       .nav-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -398,7 +403,7 @@
         color: var(--orange-bright);
         font-size: 10px;
         font-weight: 700;
-        padding: 1px 7px;
+        padding: 2px 8px;
         border-radius: 99px;
       }
       .sidebar-divider {
@@ -409,9 +414,9 @@
       .logout-btn {
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 12px 14px;
-        border-radius: 12px;
+        gap: 14px;
+        padding: 13px 14px;
+        border-radius: 14px;
         background: rgba(239, 68, 68, 0.07);
         border: 1px solid rgba(239, 68, 68, 0.15);
         color: #f87171;
@@ -422,6 +427,7 @@
         margin-top: auto;
         width: 100%;
         text-align: left;
+        min-height: 52px;
       }
       .logout-btn:hover {
         background: rgba(239, 68, 68, 0.14);
@@ -1576,27 +1582,27 @@
             <span class="nav-icon orange"><i
                 class="bi bi-grid-1x2-fill"
               ></i></span>
-            Dashboard
+            <span class="nav-text">Dashboard</span>
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
           <a href="/auctions/animalList" class="nav-link">
             <span class="nav-icon blue"><i class="bi bi-cursor-fill"></i></span>
-            Place Bid
+            <span class="nav-text">Place Bid</span>
             <span class="nav-badge">NEW</span>
           </a>
           <a href="/livestock/priceCalculator" class="nav-link">
             <span class="nav-icon green"><i class="bi bi-calculator"></i></span>
-            Price Calculator
+            <span class="nav-text">Price Calculator</span>
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
           <a href="/auctions/animalList" class="nav-link">
             <span class="nav-icon green"><i class="bi bi-card-list"></i></span>
-            Animal Posts
+            <span class="nav-text">Animal Posts</span>
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
           <a href="/auctions/create" class="nav-link">
             <span class="nav-icon yellow"><i class="bi bi-hammer"></i></span>
-            Initiate Auction
+            <span class="nav-text">Initiate Auction</span>
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
           <div class="nav-section-label">Manage</div>
@@ -1604,12 +1610,12 @@
             <span class="nav-icon green"><i
                 class="bi bi-journal-check"
               ></i></span>
-            My Bids
+            <span class="nav-text">My Bids</span>
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
           <a href="/dashboard/auction-bids" class="nav-link">
             <span class="nav-icon green"><i class="bi bi-kanban"></i></span>
-            Track Auction Bids
+            <span class="nav-text">Track Auction Bids</span>
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
           <a href="/verification/submit" class="nav-link">
@@ -1628,7 +1634,7 @@
           </a>
           <a href="/dashboard/buyer#transactions" class="nav-link">
             <span class="nav-icon purple"><i class="bi bi-receipt"></i></span>
-            Transactions
+            <span class="nav-text">Transactions</span>
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
           <a
@@ -1637,7 +1643,7 @@
             class="nav-link"
           >
             <span class="nav-icon gray"><i class="bi bi-gear"></i></span>
-            Settings
+            <span class="nav-text">Settings</span>
             <i class="bi bi-chevron-right nav-chevron"></i>
           </a>
           <div class="sidebar-divider"></div>
