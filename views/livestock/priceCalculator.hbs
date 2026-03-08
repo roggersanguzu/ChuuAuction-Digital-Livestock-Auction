@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Smart Price Calculator — AgriVault</title>
+<title>Smart Price Calculator � AgriVault</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/vendor/bootstrap-icons/css/bootstrap-icons.css"/>
@@ -22,12 +22,12 @@ html{scroll-behavior:smooth;}
   --fire2:    #ef4444;
   --fire3:    #fb923c;
   --ember:    rgba(249,115,22,0.12);
-  --cyan:     #22d3ee;
+  --cyan:     #f97316;
   --violet:   #a78bfa;
-  --emerald:  #34d399;
+  --emerald:  #fb923c;
   --amber:    #fbbf24;
   --rose:     #fb7185;
-  --blue:     #60a5fa;
+  --blue:     #fbbf24;
   --text:     #f1f5ff;
   --text2:    #8493a8;
   --text3:    #3d4f63;
@@ -54,7 +54,7 @@ body{
 }
 .orb-1{ top:-10%;left:-5%;  width:600px;height:600px;background:radial-gradient(circle,rgba(249,115,22,0.09),transparent 70%); animation-delay:0s;}
 .orb-2{ bottom:-10%;right:-5%;width:700px;height:700px;background:radial-gradient(circle,rgba(239,68,68,0.07),transparent 70%); animation-delay:3s;}
-.orb-3{ top:40%;left:40%;  width:500px;height:500px;background:radial-gradient(circle,rgba(34,211,238,0.04),transparent 70%); animation-delay:5s;}
+.orb-3{ top:40%;left:40%;  width:500px;height:500px;background:radial-gradient(circle,rgba(249,115,22,0.04),transparent 70%); animation-delay:5s;}
 .bg-grid{
   position:absolute;inset:0;
   background-image:
@@ -137,11 +137,11 @@ body{
 }
 .glass-card:hover .sec-icon{transform:scale(1.08);}
 .ic-fire   {background:rgba(249,115,22,0.12);color:var(--fire);  border:1px solid rgba(249,115,22,0.2);}
-.ic-blue   {background:rgba(96,165,250,0.12); color:var(--blue);  border:1px solid rgba(96,165,250,0.2);}
+.ic-blue   {background:rgba(251,191,36,0.12); color:var(--blue);  border:1px solid rgba(251,191,36,0.2);}
 .ic-violet {background:rgba(167,139,250,0.12);color:var(--violet);border:1px solid rgba(167,139,250,0.2);}
 .ic-amber  {background:rgba(251,191,36,0.12); color:var(--amber); border:1px solid rgba(251,191,36,0.2);}
 .ic-emerald{background:rgba(52,211,153,0.12); color:var(--emerald);border:1px solid rgba(52,211,153,0.2);}
-.ic-cyan   {background:rgba(34,211,238,0.12); color:var(--cyan);  border:1px solid rgba(34,211,238,0.2);}
+.ic-cyan   {background:rgba(249,115,22,0.12); color:var(--cyan);  border:1px solid rgba(249,115,22,0.2);}
 .ic-rose   {background:rgba(251,113,133,0.12);color:var(--rose);  border:1px solid rgba(251,113,133,0.2);}
 .form-group{display:flex;flex-direction:column;gap:8px;}
 .form-label{
@@ -356,7 +356,7 @@ body{
 .breakdown-cell:hover{border-color:var(--border2);}
 .bc-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
 .bc-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;}
-.bc-icon.blue   {background:rgba(96,165,250,0.12);color:var(--blue);}
+.bc-icon.blue   {background:rgba(251,191,36,0.12);color:var(--blue);}
 .bc-icon.amber  {background:rgba(251,191,36,0.12); color:var(--amber);}
 .bc-icon.emerald{background:rgba(52,211,153,0.12); color:var(--emerald);}
 .bc-sub{font-size:10px;color:var(--text3);}
@@ -443,7 +443,7 @@ body{
     <div>
       <div class="eyebrow"><i class="bi bi-calculator"></i>AgriVault Valuation Engine</div>
       <h1 class="page-title">Smart Price <span class="fire">Calculator</span></h1>
-      <p class="page-sub">AI-powered livestock valuation · Uganda market pricing · Real-time analysis</p>
+      <p class="page-sub">AI-powered livestock valuation � Uganda market pricing � Real-time analysis</p>
     </div>
     <div class="live-badge">
       <div class="pulse-dot"></div>
@@ -465,10 +465,10 @@ body{
           <div class="select-wrap">
             <select id="animal-type" class="clean-select">
               <option value="">Select Animal</option>
-              <option value="cattle">🐄 Cattle (Cows & Bulls)</option>
-              <option value="goat">🐐 Goats</option>
-              <option value="sheep">🐑 Sheep</option>
-              <option value="pig">🐷 Pigs</option>
+              <option value="cattle">?? Cattle (Cows & Bulls)</option>
+              <option value="goat">?? Goats</option>
+              <option value="sheep">?? Sheep</option>
+              <option value="pig">?? Pigs</option>
             </select>
             <i class="bi bi-chevron-down select-arrow"></i>
           </div>
@@ -487,25 +487,25 @@ body{
           <div class="select-wrap">
             <select id="weight-range" class="clean-select">
               <option value="">Select Weight Range</option>
-              <optgroup label="🐄 Cattle">
-                <option value="cattle-light">Light (<200kg) — UGX 200K–500K</option>
-                <option value="cattle-medium">Medium (200–350kg) — UGX 600K–1.2M</option>
-                <option value="cattle-heavy">Heavy (350kg+) — UGX 1.5M–2.5M</option>
+              <optgroup label="?? Cattle">
+                <option value="cattle-light">Light (<200kg) � UGX 200K�500K</option>
+                <option value="cattle-medium">Medium (200�350kg) � UGX 600K�1.2M</option>
+                <option value="cattle-heavy">Heavy (350kg+) � UGX 1.5M�2.5M</option>
               </optgroup>
-              <optgroup label="🐐 Goats">
-                <option value="goat-small">Small (30–40kg) — UGX 300K–480K</option>
-                <option value="goat-medium">Medium (50–70kg) — UGX 500K–840K</option>
-                <option value="goat-large">Large (70kg+) — UGX 840K–1M</option>
+              <optgroup label="?? Goats">
+                <option value="goat-small">Small (30�40kg) � UGX 300K�480K</option>
+                <option value="goat-medium">Medium (50�70kg) � UGX 500K�840K</option>
+                <option value="goat-large">Large (70kg+) � UGX 840K�1M</option>
               </optgroup>
-              <optgroup label="🐑 Sheep">
-                <option value="sheep-lamb">Lamb (10–20kg) — UGX 80K–150K</option>
-                <option value="sheep-medium">Medium (25–35kg) — UGX 200K–350K</option>
-                <option value="sheep-large">Large (40–55kg+) — UGX 400K–600K</option>
+              <optgroup label="?? Sheep">
+                <option value="sheep-lamb">Lamb (10�20kg) � UGX 80K�150K</option>
+                <option value="sheep-medium">Medium (25�35kg) � UGX 200K�350K</option>
+                <option value="sheep-large">Large (40�55kg+) � UGX 400K�600K</option>
               </optgroup>
-              <optgroup label="🐷 Pigs">
-                <option value="pig-small">Small (30–50kg) — UGX 200K–350K</option>
-                <option value="pig-medium">Medium (60–80kg) — UGX 400K–650K</option>
-                <option value="pig-heavy">Heavy (90–100kg+) — UGX 700K–900K</option>
+              <optgroup label="?? Pigs">
+                <option value="pig-small">Small (30�50kg) � UGX 200K�350K</option>
+                <option value="pig-medium">Medium (60�80kg) � UGX 400K�650K</option>
+                <option value="pig-heavy">Heavy (90�100kg+) � UGX 700K�900K</option>
               </optgroup>
             </select>
             <i class="bi bi-chevron-down select-arrow"></i>
@@ -513,7 +513,7 @@ body{
           <div id="weight-indicator" class="mini-indicator hidden">
             <div class="mi-top">
               <span class="mi-label">Selected Class</span>
-              <span class="mi-val" id="weight-display" style="color:var(--blue)">—</span>
+              <span class="mi-val" id="weight-display" style="color:var(--blue)">�</span>
             </div>
             <div class="mi-bar-track">
               <div class="mi-bar" id="weight-bar" style="width:0%;background:linear-gradient(90deg,var(--blue),var(--cyan))"></div>
@@ -559,10 +559,10 @@ body{
           <div class="select-wrap">
             <select id="color" class="clean-select">
               <option value="">Select Color</option>
-              <option value="black">⚫ Black — Premium +15%</option>
-              <option value="brown">🟫 Brown — Standard ±0%</option>
-              <option value="white">⚪ White — Standard −5%</option>
-              <option value="mixed">🎨 Mixed / Spotted — Standard ±0%</option>
+              <option value="black">? Black � Premium +15%</option>
+              <option value="brown">?? Brown � Standard �0%</option>
+              <option value="white">? White � Standard -5%</option>
+              <option value="mixed">?? Mixed / Spotted � Standard �0%</option>
             </select>
             <i class="bi bi-chevron-down select-arrow"></i>
           </div>
@@ -587,26 +587,26 @@ body{
           <div class="select-wrap">
             <select id="age-range" class="clean-select">
               <option value="">Select Age Range</option>
-              <optgroup label="🐄 Cattle">
-                <option value="cattle-calf">Calf (0–12 months) — Young −15%</option>
-                <option value="cattle-young">Young Adult (1–3 years) — Prime</option>
-                <option value="cattle-mature">Mature (3–6 years) — Mature +5%</option>
-                <option value="cattle-old">Old (6+ years) — Aging −10%</option>
+              <optgroup label="?? Cattle">
+                <option value="cattle-calf">Calf (0�12 months) � Young -15%</option>
+                <option value="cattle-young">Young Adult (1�3 years) � Prime</option>
+                <option value="cattle-mature">Mature (3�6 years) � Mature +5%</option>
+                <option value="cattle-old">Old (6+ years) � Aging -10%</option>
               </optgroup>
-              <optgroup label="🐐 Goats">
-                <option value="goat-kid">Kid (0–6 months) — Kid −20%</option>
-                <option value="goat-young">Young (6–18 months) — Prime</option>
-                <option value="goat-adult">Adult (18+ months) — Adult +8%</option>
+              <optgroup label="?? Goats">
+                <option value="goat-kid">Kid (0�6 months) � Kid -20%</option>
+                <option value="goat-young">Young (6�18 months) � Prime</option>
+                <option value="goat-adult">Adult (18+ months) � Adult +8%</option>
               </optgroup>
-              <optgroup label="🐑 Sheep">
-                <option value="sheep-lamb-age">Lamb (0–12 months) — Lamb −10%</option>
-                <option value="sheep-yearling">Yearling (1–2 years) — Prime</option>
-                <option value="sheep-mature">Mature (2+ years) — Mature +5%</option>
+              <optgroup label="?? Sheep">
+                <option value="sheep-lamb-age">Lamb (0�12 months) � Lamb -10%</option>
+                <option value="sheep-yearling">Yearling (1�2 years) � Prime</option>
+                <option value="sheep-mature">Mature (2+ years) � Mature +5%</option>
               </optgroup>
-              <optgroup label="🐷 Pigs">
-                <option value="pig-piglet">Piglet (0–3 months) — Piglet −25%</option>
-                <option value="pig-grower">Grower (3–6 months) — Prime</option>
-                <option value="pig-finisher">Finisher (6+ months) — Finisher +10%</option>
+              <optgroup label="?? Pigs">
+                <option value="pig-piglet">Piglet (0�3 months) � Piglet -25%</option>
+                <option value="pig-grower">Grower (3�6 months) � Prime</option>
+                <option value="pig-finisher">Finisher (6+ months) � Finisher +10%</option>
               </optgroup>
             </select>
             <i class="bi bi-chevron-down select-arrow"></i>
@@ -643,27 +643,27 @@ body{
           <div class="monitor-cell" id="mc-animal">
             <i class="bi bi-circle" id="mc-animal-icon"></i>
             <div class="mc-label">Animal</div>
-            <div class="mc-val" id="preview-animal">—</div>
+            <div class="mc-val" id="preview-animal">�</div>
           </div>
           <div class="monitor-cell" id="mc-weight">
             <i class="bi bi-activity"></i>
             <div class="mc-label">Weight</div>
-            <div class="mc-val" id="preview-weight">—</div>
+            <div class="mc-val" id="preview-weight">�</div>
           </div>
           <div class="monitor-cell" id="mc-sex">
             <i class="bi bi-gender-ambiguous" id="mc-sex-icon"></i>
             <div class="mc-label">Sex</div>
-            <div class="mc-val" id="preview-sex">—</div>
+            <div class="mc-val" id="preview-sex">�</div>
           </div>
           <div class="monitor-cell" id="mc-color">
             <div id="color-swatch" style="width:22px;height:22px;border-radius:50%;background:#2a3548;margin-bottom:6px;border:2px solid rgba(255,255,255,0.08);"></div>
             <div class="mc-label">Color</div>
-            <div class="mc-val" id="preview-color">—</div>
+            <div class="mc-val" id="preview-color">�</div>
           </div>
           <div class="monitor-cell" id="mc-age">
             <i class="bi bi-calendar-event"></i>
             <div class="mc-label">Age</div>
-            <div class="mc-val" id="preview-age">—</div>
+            <div class="mc-val" id="preview-age">�</div>
           </div>
         </div>
       </div>
@@ -688,7 +688,7 @@ body{
                 <div class="price-amount">
                   <span class="price-currency">UGX</span>
                   <span class="price-min" id="final-price-min">0</span>
-                  <span class="price-sep">—</span>
+                  <span class="price-sep">�</span>
                   <span class="price-max" id="final-price-max">0</span>
                 </div>
               </div>
@@ -698,7 +698,7 @@ body{
               <div style="flex:1;">
                 <div class="confidence-row">
                   <span class="confidence-label">Valuation Confidence</span>
-                  <span class="confidence-val" id="confidence-score">—</span>
+                  <span class="confidence-val" id="confidence-score">�</span>
                 </div>
                 <div class="conf-track">
                   <div class="conf-fill" id="confidence-bar" style="width:0%"></div>
@@ -752,7 +752,7 @@ body{
                   <div class="bc-sub">Maturity</div>
                 </div>
               </div>
-              <div class="bc-val emerald" id="age-factor" style="font-size:14px;">—</div>
+              <div class="bc-val emerald" id="age-factor" style="font-size:14px;">�</div>
             </div>
           </div>
           <div class="glass-card" style="margin-bottom:16px;background:rgba(0,0,0,0.15);">
@@ -764,19 +764,19 @@ body{
               <div class="comp-table">
                 <div class="comp-row">
                   <div class="comp-left"><i class="bi bi-check-circle-fill" style="color:var(--blue)"></i>Base Weight Category</div>
-                  <span class="comp-right" style="color:var(--blue)" id="breakdown-base">—</span>
+                  <span class="comp-right" style="color:var(--blue)" id="breakdown-base">�</span>
                 </div>
                 <div class="comp-row">
                   <div class="comp-left"><i class="bi bi-palette-fill" style="color:var(--amber)"></i>Color Premium</div>
-                  <span class="comp-right" style="color:var(--amber)" id="breakdown-color">—</span>
+                  <span class="comp-right" style="color:var(--amber)" id="breakdown-color">�</span>
                 </div>
                 <div class="comp-row">
                   <div class="comp-left"><i class="bi bi-gender-ambiguous" style="color:var(--violet)"></i>Sex Modifier</div>
-                  <span class="comp-right" style="color:var(--violet)" id="breakdown-sex">—</span>
+                  <span class="comp-right" style="color:var(--violet)" id="breakdown-sex">�</span>
                 </div>
                 <div class="comp-row">
                   <div class="comp-left"><i class="bi bi-calendar-event-fill" style="color:var(--emerald)"></i>Age Adjustment</div>
-                  <span class="comp-right" style="color:var(--emerald)" id="breakdown-age">—</span>
+                  <span class="comp-right" style="color:var(--emerald)" id="breakdown-age">�</span>
                 </div>
               </div>
             </div>
@@ -798,54 +798,54 @@ body{
 <script>
 const PRICING_DATA = {
   cattle:{
-    name:'Cattle',emoji:'🐄',
+    name:'Cattle',emoji:'??',
     weights:[
       {value:'cattle-light', label:'Light',  kg:'<200kg',   min:200000, max:500000,  barWidth:25},
-      {value:'cattle-medium',label:'Medium', kg:'200–350kg',min:600000, max:1200000, barWidth:62},
+      {value:'cattle-medium',label:'Medium', kg:'200�350kg',min:600000, max:1200000, barWidth:62},
       {value:'cattle-heavy', label:'Heavy',  kg:'350kg+',   min:1500000,max:2500000, barWidth:96}
     ],
     ages:[
-      {value:'cattle-calf',  label:'Calf',        modifier:-0.15,text:'Young (−15%)'},
+      {value:'cattle-calf',  label:'Calf',        modifier:-0.15,text:'Young (-15%)'},
       {value:'cattle-young', label:'Young Adult',  modifier:0,    text:'Prime (Standard)'},
       {value:'cattle-mature',label:'Mature',       modifier:0.05, text:'Mature (+5%)'},
-      {value:'cattle-old',   label:'Old',          modifier:-0.10,text:'Aging (−10%)'}
+      {value:'cattle-old',   label:'Old',          modifier:-0.10,text:'Aging (-10%)'}
     ]
   },
   goat:{
-    name:'Goat',emoji:'🐐',
+    name:'Goat',emoji:'??',
     weights:[
-      {value:'goat-small', label:'Small', kg:'30–40kg',min:300000,max:480000, barWidth:35},
-      {value:'goat-medium',label:'Medium',kg:'50–70kg',min:500000,max:840000, barWidth:70},
+      {value:'goat-small', label:'Small', kg:'30�40kg',min:300000,max:480000, barWidth:35},
+      {value:'goat-medium',label:'Medium',kg:'50�70kg',min:500000,max:840000, barWidth:70},
       {value:'goat-large', label:'Large', kg:'70kg+',  min:840000,max:1000000,barWidth:96}
     ],
     ages:[
-      {value:'goat-kid',  label:'Kid',  modifier:-0.20,text:'Kid (−20%)'},
+      {value:'goat-kid',  label:'Kid',  modifier:-0.20,text:'Kid (-20%)'},
       {value:'goat-young',label:'Young',modifier:0,    text:'Prime (Standard)'},
       {value:'goat-adult',label:'Adult',modifier:0.08, text:'Adult (+8%)'}
     ]
   },
   sheep:{
-    name:'Sheep',emoji:'🐑',
+    name:'Sheep',emoji:'??',
     weights:[
-      {value:'sheep-lamb',  label:'Lamb',  kg:'10–20kg',  min:80000, max:150000,barWidth:18},
-      {value:'sheep-medium',label:'Medium',kg:'25–35kg',  min:200000,max:350000,barWidth:55},
-      {value:'sheep-large', label:'Large', kg:'40–55kg+', min:400000,max:600000,barWidth:92}
+      {value:'sheep-lamb',  label:'Lamb',  kg:'10�20kg',  min:80000, max:150000,barWidth:18},
+      {value:'sheep-medium',label:'Medium',kg:'25�35kg',  min:200000,max:350000,barWidth:55},
+      {value:'sheep-large', label:'Large', kg:'40�55kg+', min:400000,max:600000,barWidth:92}
     ],
     ages:[
-      {value:'sheep-lamb-age', label:'Lamb',     modifier:-0.10,text:'Lamb (−10%)'},
+      {value:'sheep-lamb-age', label:'Lamb',     modifier:-0.10,text:'Lamb (-10%)'},
       {value:'sheep-yearling', label:'Yearling', modifier:0,    text:'Prime (Standard)'},
       {value:'sheep-mature',   label:'Mature',   modifier:0.05, text:'Mature (+5%)'}
     ]
   },
   pig:{
-    name:'Pig',emoji:'🐷',
+    name:'Pig',emoji:'??',
     weights:[
-      {value:'pig-small', label:'Small',  kg:'30–50kg',   min:200000,max:350000,barWidth:30},
-      {value:'pig-medium',label:'Medium', kg:'60–80kg',   min:400000,max:650000,barWidth:65},
-      {value:'pig-heavy', label:'Heavy',  kg:'90–100kg+', min:700000,max:900000,barWidth:96}
+      {value:'pig-small', label:'Small',  kg:'30�50kg',   min:200000,max:350000,barWidth:30},
+      {value:'pig-medium',label:'Medium', kg:'60�80kg',   min:400000,max:650000,barWidth:65},
+      {value:'pig-heavy', label:'Heavy',  kg:'90�100kg+', min:700000,max:900000,barWidth:96}
     ],
     ages:[
-      {value:'pig-piglet',   label:'Piglet',   modifier:-0.25,text:'Piglet (−25%)'},
+      {value:'pig-piglet',   label:'Piglet',   modifier:-0.25,text:'Piglet (-25%)'},
       {value:'pig-grower',   label:'Grower',   modifier:0,    text:'Prime (Standard)'},
       {value:'pig-finisher', label:'Finisher', modifier:0.10, text:'Finisher (+10%)'}
     ]
@@ -865,8 +865,8 @@ function populateDependentOptions(animalKey){
   const ageSel=document.getElementById('age-range');
   if(!weightSel||!ageSel) return;
   if(!animalKey||!PRICING_DATA[animalKey]){
-    weightSel.innerHTML='<option value="">Select Animal First 🐾</option>';
-    ageSel.innerHTML='<option value="">Select Animal First 🐾</option>';
+    weightSel.innerHTML='<option value="">Select Animal First ??</option>';
+    ageSel.innerHTML='<option value="">Select Animal First ??</option>';
     weightSel.disabled=true;
     ageSel.disabled=true;
     return;
@@ -939,7 +939,7 @@ function updateMonitor(){
     mc.classList.add('active');
   } else {
     document.getElementById('mc-animal-icon').className='bi bi-circle';
-    document.getElementById('preview-animal').textContent='—';
+    document.getElementById('preview-animal').textContent='�';
     mc.classList.remove('active');
   }
   const mcw=document.getElementById('mc-weight');
@@ -947,7 +947,7 @@ function updateMonitor(){
     const ak=weightRange.split('-')[0];
     const wd=PRICING_DATA[ak]?.weights.find(w=>w.value===weightRange);
     if(wd){document.getElementById('preview-weight').textContent=wd.kg;mcw.classList.add('active');}
-  } else {document.getElementById('preview-weight').textContent='—';mcw.classList.remove('active');}
+  } else {document.getElementById('preview-weight').textContent='�';mcw.classList.remove('active');}
   const mcs=document.getElementById('mc-sex');
   if(sex){
     const icons={male:'bi-gender-male',female:'bi-gender-female'};
@@ -956,7 +956,7 @@ function updateMonitor(){
     mcs.classList.add('active');
   } else {
     document.getElementById('mc-sex-icon').className='bi bi-gender-ambiguous';
-    document.getElementById('preview-sex').textContent='—';
+    document.getElementById('preview-sex').textContent='�';
     mcs.classList.remove('active');
   }
   const mcc=document.getElementById('mc-color');
@@ -969,7 +969,7 @@ function updateMonitor(){
     mcc.classList.add('active');
   } else {
     document.getElementById('color-swatch').style.background='#2a3548';
-    document.getElementById('preview-color').textContent='—';
+    document.getElementById('preview-color').textContent='�';
     mcc.classList.remove('active');
   }
   const mca=document.getElementById('mc-age');
@@ -977,7 +977,7 @@ function updateMonitor(){
     const ak=ageRange.split('-')[0];
     const ad=PRICING_DATA[ak]?.ages.find(a=>a.value===ageRange);
     if(ad){document.getElementById('preview-age').textContent=ad.label;mca.classList.add('active');}
-  } else {document.getElementById('preview-age').textContent='—';mca.classList.remove('active');}
+  } else {document.getElementById('preview-age').textContent='�';mca.classList.remove('active');}
 }
 function updateIndicators(){
   const {weightRange,color,ageRange}=sel;
@@ -995,7 +995,7 @@ function updateIndicators(){
     if(wi) wi.classList.add('hidden');
   }
   if(color){
-    const pMap={black:'+15%',brown:'±0%',white:'−5%',mixed:'±0%'};
+    const pMap={black:'+15%',brown:'�0%',white:'-5%',mixed:'�0%'};
     const cp=document.getElementById('color-premium');
     if(cp) {
       cp.classList.remove('hidden');
@@ -1038,11 +1038,11 @@ function calculatePrice(){
   if(!wd||!ad) return;
   const colorMods={black:1.15,brown:1.0,white:0.95,mixed:1.0};
   const colorMod=colorMods[color]||1;
-  let colorText={black:'+15% — Black Coat Premium',brown:'±0% — Standard',white:'−5% — White Discount',mixed:'±0% — Standard'}[color];
-  let sexMod=1.0,sexText='±0% — Standard';
+  let colorText={black:'+15% � Black Coat Premium',brown:'�0% � Standard',white:'-5% � White Discount',mixed:'�0% � Standard'}[color];
+  let sexMod=1.0,sexText='�0% � Standard';
   const wClass=weightRange.split('-').slice(1).join('-');
-  if(sex==='female'){sexMod=1.08;sexText='+8% — Female Breeding Premium';}
-  else if(sex==='male'&&(wClass==='heavy'||wClass==='large')){sexMod=1.05;sexText='+5% — Heavy Male Premium';}
+  if(sex==='female'){sexMod=1.08;sexText='+8% � Female Breeding Premium';}
+  else if(sex==='male'&&(wClass==='heavy'||wClass==='large')){sexMod=1.05;sexText='+5% � Heavy Male Premium';}
   const ageMod=1+ad.modifier;
   const totalMod=colorMod*sexMod*ageMod;
   const finalMin=Math.round(wd.min*totalMod);
@@ -1060,13 +1060,13 @@ function calculatePrice(){
   animNum('final-price-max',finalMax);
   animNum('score-num',confidence);
   const basePriceEl = document.getElementById('base-price');
-  if(basePriceEl) basePriceEl.textContent=`UGX ${wd.min.toLocaleString()} – ${wd.max.toLocaleString()}`;
+  if(basePriceEl) basePriceEl.textContent=`UGX ${wd.min.toLocaleString()} � ${wd.max.toLocaleString()}`;
   const premEl = document.getElementById('premium-modifier');
   if(premEl) premEl.textContent=(premiumPct>=0?'+':'')+premiumPct+'%';
   const ageEl = document.getElementById('age-factor');
   if(ageEl) ageEl.textContent=ad.text;
   const bdBase = document.getElementById('breakdown-base');
-  if(bdBase) bdBase.textContent=`UGX ${wd.min.toLocaleString()} – ${wd.max.toLocaleString()}`;
+  if(bdBase) bdBase.textContent=`UGX ${wd.min.toLocaleString()} � ${wd.max.toLocaleString()}`;
   const bdColor = document.getElementById('breakdown-color');
   if(bdColor) bdColor.textContent=colorText;
   const bdSex = document.getElementById('breakdown-sex');
@@ -1106,20 +1106,20 @@ function buildInsights(animal,wClass,sex,color,ageRange,fMin,fMax,ageMod){
   if(wClass==='heavy'||wClass==='large')
     items.push({icon:'bi-graph-up-arrow',col:'var(--emerald)',text:'<strong>Premium weight class detected.</strong> Heavy/Large animals command top-tier bids in all Uganda markets.'});
   else if(wClass==='light'||wClass==='small')
-    items.push({icon:'bi-exclamation-triangle-fill',col:'var(--amber)',text:'<strong>Consider holding for additional gain.</strong> Lighter animals typically yield 30–50% more revenue at heavier weight classes.'});
+    items.push({icon:'bi-exclamation-triangle-fill',col:'var(--amber)',text:'<strong>Consider holding for additional gain.</strong> Lighter animals typically yield 30�50% more revenue at heavier weight classes.'});
   if(color==='black')
-    items.push({icon:'bi-star-fill',col:'var(--amber)',text:'<strong>Black coat premium applied (+15%).</strong> Culturally preferred in most Ugandan markets — highest demand for cultural ceremonies.'});
+    items.push({icon:'bi-star-fill',col:'var(--amber)',text:'<strong>Black coat premium applied (+15%).</strong> Culturally preferred in most Ugandan markets � highest demand for cultural ceremonies.'});
   else if(color==='white')
-    items.push({icon:'bi-info-circle-fill',col:'var(--blue)',text:'<strong>White coat discount (−5%).</strong> Lower local preference; consider eastern market outlets where white animals are preferred.'});
+    items.push({icon:'bi-info-circle-fill',col:'var(--blue)',text:'<strong>White coat discount (-5%).</strong> Lower local preference; consider eastern market outlets where white animals are preferred.'});
   if(sex==='female')
     items.push({icon:'bi-heart-fill',col:'var(--rose)',text:'<strong>Female breeding premium (+8%).</strong> Reproductive potential significantly elevates market value across all weight classes.'});
   if(ageMod===0)
-    items.push({icon:'bi-check-circle-fill',col:'var(--emerald)',text:'<strong>Prime age bracket.</strong> This animal is at optimal maturity for immediate sale — peak value window is now.'});
+    items.push({icon:'bi-check-circle-fill',col:'var(--emerald)',text:'<strong>Prime age bracket.</strong> This animal is at optimal maturity for immediate sale � peak value window is now.'});
   else if(ageMod<0)
     items.push({icon:'bi-hourglass-split',col:'var(--cyan)',text:'<strong>Age discount applied.</strong> Younger or older animals receive value adjustments. Consider timing your listing strategically.'});
   if(avg>=1000000)
     items.push({icon:'bi-gem',col:'var(--fire)',text:'<strong>High-value asset (1M+ UGX).</strong> List on AgriVault premium tier for access to verified corporate buyers and export networks.'});
-  items.push({icon:'bi-clock-history',col:'var(--text2)',text:'<strong>Best auction windows:</strong> Monday & Friday 8AM–12PM EAT achieve 22% higher final prices based on platform data.'});
+  items.push({icon:'bi-clock-history',col:'var(--text2)',text:'<strong>Best auction windows:</strong> Monday & Friday 8AM�12PM EAT achieve 22% higher final prices based on platform data.'});
   const insightsEl = document.getElementById('market-insights');
   if(insightsEl) {
     insightsEl.innerHTML=items.map(i=>

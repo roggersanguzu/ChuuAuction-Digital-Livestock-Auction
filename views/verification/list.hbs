@@ -1,4 +1,4 @@
-﻿<html lang="en">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -42,7 +42,7 @@
         background: #1f2937;
       }
       ::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, #3b82f6, #2563eb);
+        background: linear-gradient(180deg, #f59e0b, #d97706);
         border-radius: 4px;
       }
       @keyframes ai-pulse {
@@ -69,17 +69,17 @@
   <body class="min-h-screen bg-gray-950 text-white font-body overflow-x-hidden">
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
       <div
-        class="absolute top-20 left-20 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[150px]"
+        class="absolute top-20 left-20 w-[600px] h-[600px] bg-amber-500/10 rounded-full blur-[150px]"
       ></div>
       <div
-        class="absolute bottom-20 right-20 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[150px]"
+        class="absolute bottom-20 right-20 w-[500px] h-[500px] bg-orange-600/10 rounded-full blur-[150px]"
       ></div>
     </div>
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="text-center mb-12 animate-fade-in">
         <div class="flex items-center justify-center gap-4 mb-6">
           <div
-            class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-2xl ai-badge"
+            class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-600 to-red-600 flex items-center justify-center shadow-2xl ai-badge"
           >
             <i class="bi bi-shield-check-fill text-4xl text-white"></i>
           </div>
@@ -87,7 +87,7 @@
             class="text-5xl md:text-7xl font-black font-display tracking-tight"
           >
             <span
-              class="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
+              class="bg-gradient-to-r from-amber-400 via-purple-400 to-red-400 bg-clip-text text-transparent"
             >
               My Verifications
             </span>
@@ -97,17 +97,17 @@
           AI-powered analysis with actionable insights
         </p>
         <div
-          class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-purple-500/30"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-orange-500/30"
         >
-          <i class="bi bi-stars text-purple-400"></i>
-          <span class="text-sm font-mono text-purple-300">Enhanced with Gemini
+          <i class="bi bi-stars text-orange-400"></i>
+          <span class="text-sm font-mono text-orange-300">Enhanced with Gemini
             AI</span>
         </div>
       </div>
       <div id="batch-insights" class="mb-8 hidden">
-        <div class="p-6 rounded-2xl glass-strong border border-purple-500/30">
+        <div class="p-6 rounded-2xl glass-strong border border-orange-500/30">
           <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
-            <i class="bi bi-graph-up text-purple-400"></i>
+            <i class="bi bi-graph-up text-orange-400"></i>
             Overall Analytics
           </h2>
           <div class="grid md:grid-cols-4 gap-4" id="batch-stats"></div>
@@ -115,7 +115,7 @@
       </div>
       <div id="loading" class="flex flex-col items-center justify-center py-20">
         <div
-          class="w-20 h-20 border-8 border-blue-500 border-t-transparent rounded-full animate-spin mb-6"
+          class="w-20 h-20 border-8 border-amber-500 border-t-transparent rounded-full animate-spin mb-6"
         ></div>
         <p class="text-xl text-gray-400">Loading your verifications...</p>
       </div>
@@ -128,7 +128,7 @@
         </p>
         <a
           href="/verification/submit"
-          class="inline-flex items-center px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/30 transition-all"
+          class="inline-flex items-center px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-600 to-red-600 font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/30 transition-all"
         >
           <i class="bi bi-plus-lg mr-3 text-xl"></i>
           Submit New Verification
@@ -171,13 +171,13 @@
       } function createVerificationCard(verification) { const card =
       document.createElement("div"); card.className = "rounded-3xl
       overflow-hidden glass-strong border border-gray-700/50
-      hover:border-purple-500/50 transition-all duration-300 shadow-xl
+      hover:border-orange-500/50 transition-all duration-300 shadow-xl
       hover:shadow-2xl hover:shadow-purple-500/20"; const insights =
       verification.aiVerification?.insights || {}; const analytics =
       verification.aiVerification?.analytics || {}; card.innerHTML = ` <div
       class="p-8">  <div class="flex justify-between items-start
       mb-6"> <div> <h3 class="text-3xl font-black font-display capitalize
-      bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text
+      bg-gradient-to-r from-amber-400 to-red-500 bg-clip-text
       text-transparent"> ${verification.verificationType} Verification </h3> <p
       class="text-sm text-gray-400 mt-1"> Submitted ${new
       Date(verification.createdAt).toLocaleDateString()} </p> </div> <div
@@ -185,7 +185,7 @@
       text-sm font-bold ${getStatusClass(verification.status)}">
       ${verification.status.toUpperCase()} </span>
       ${verification.overallApproved ? '<i class="bi bi-check-circle-fill
-      text-3xl text-green-400"></i>' : '<i class="bi bi-x-circle-fill text-3xl
+      text-3xl text-amber-400"></i>' : '<i class="bi bi-x-circle-fill text-3xl
       text-red-400"></i>' } </div> </div>  <div class="mb-8">
       <div class="flex justify-between text-sm mb-2"> <span>Verification
       Score</span> <span
@@ -195,16 +195,16 @@
       duration-1000 ${getScoreColor(verification.verificationScore)}"
       style="width: ${Math.round(verification.verificationScore || 0)}%"></div>
       </div> </div>  ${insights.recommendations ? `
-      <div class="mb-8 p-6 rounded-2xl glass border border-purple-500/20"> <h4
+      <div class="mb-8 p-6 rounded-2xl glass border border-orange-500/20"> <h4
       class="text-xl font-bold mb-4 flex items-center gap-2"> <i class="bi
       bi-lightbulb text-yellow-400"></i> AI-Powered Insights </h4>  <div class="grid grid-cols-2 gap-4 mb-4"> <div
-      class="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30"> <div
+      class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30"> <div
       class="text-sm text-gray-400 mb-1">Trust Score</div> <div class="text-2xl
-      font-bold text-blue-400">${Math.round(insights.trustScore || 0)}%</div>
-      </div> <div class="p-4 rounded-xl bg-green-500/10 border
-      border-green-500/30"> <div class="text-sm text-gray-400
+      font-bold text-amber-400">${Math.round(insights.trustScore || 0)}%</div>
+      </div> <div class="p-4 rounded-xl bg-amber-500/10 border
+      border-amber-500/30"> <div class="text-sm text-gray-400
       mb-1">Compliance</div> <div class="text-2xl font-bold
-      text-green-400">${Math.round(insights.complianceScore || 0)}%</div> </div>
+      text-amber-400">${Math.round(insights.complianceScore || 0)}%</div> </div>
       </div>  ${insights.riskAssessment ? ` <div
       class="mb-4 p-4 rounded-xl
       ${getRiskColor(insights.riskAssessment.level)}"> <div class="flex
@@ -212,7 +212,7 @@
       class="font-bold">Risk Level:
       ${insights.riskAssessment.level?.toUpperCase()}</span> </div>
       ${insights.riskAssessment.factors?.length ? ` <div class="text-sm
-      space-y-1"> ${insights.riskAssessment.factors.slice(0, 3).map(f => `<div>•
+      space-y-1"> ${insights.riskAssessment.factors.slice(0, 3).map(f => `<div>�
       ${f}</div>`).join('')} </div> ` : ''} </div> ` : ''}  ${insights.recommendations.immediate?.length ? ` <div
       class="mb-4"> <div class="text-sm font-bold text-orange-400 mb-2"> <i
       class="bi bi-lightning mr-1"></i>Immediate Actions: </div> <div
@@ -220,10 +220,10 @@
       3).map(rec => ` <div class="flex items-start gap-2 text-sm"> <i class="bi
       bi-check-circle text-orange-400 mt-0.5"></i> <span>${rec}</span> </div>
       `).join('')} </div> </div> ` : ''}
-      ${insights.marketValue ? ` <div class="p-4 rounded-xl bg-purple-500/10
-      border border-purple-500/30"> <div class="text-sm text-gray-400
+      ${insights.marketValue ? ` <div class="p-4 rounded-xl bg-orange-500/10
+      border border-orange-500/30"> <div class="text-sm text-gray-400
       mb-1">Estimated Market Value</div> <div class="text-lg font-bold
-      text-purple-400">${insights.marketValue.estimated || 'Under
+      text-orange-400">${insights.marketValue.estimated || 'Under
       Analysis'}</div> ${insights.marketValue.factors?.length ? ` <div
       class="text-xs text-gray-400 mt-2"> Based on:
       ${insights.marketValue.factors.slice(0, 2).join(', ')} </div> ` : ''}
@@ -231,8 +231,8 @@
       class="space-y-6"> ${renderOwnershipSection(verification)}
       ${renderHealthSection(verification)} ${renderPhotoSection(verification)}
       </div>  ${analytics.actionItems?.length ? ` <div
-      class="mt-6 p-4 rounded-xl bg-blue-500/10 border border-blue-500/30"> <h4
-      class="font-bold text-blue-400 mb-3"> <i class="bi bi-list-check
+      class="mt-6 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30"> <h4
+      class="font-bold text-amber-400 mb-3"> <i class="bi bi-list-check
       mr-2"></i>Action Items </h4> <div class="space-y-2">
       ${analytics.actionItems.slice(0, 5).map(item => ` <label class="flex
       items-start gap-3 cursor-pointer"> <input type="checkbox" class="mt-1
@@ -243,13 +243,13 @@
       ${verification.expiresAt ? `<span>Expires: ${new
       Date(verification.expiresAt).toLocaleDateString()}</span>` : ''} </div>
       </div> `; return card; } function renderOwnershipSection(verification) {
-      return ` <div class="p-6 rounded-2xl glass border border-blue-500/20
+      return ` <div class="p-6 rounded-2xl glass border border-amber-500/20
       insight-card"> <div class="flex items-center gap-3 mb-4"> <i class="bi
-      bi-person-badge-fill text-3xl text-blue-400"></i> <h4 class="text-xl
+      bi-person-badge-fill text-3xl text-amber-400"></i> <h4 class="text-xl
       font-bold">Ownership Verification</h4> </div> <div class="grid grid-cols-2
       gap-4 mb-4 text-sm"> <div> <span class="text-gray-400">Status:</span><br>
       <span class="font-bold ${verification.aiVerification.ownershipVerified ?
-      'text-green-400' : 'text-red-400'}">
+      'text-amber-400' : 'text-red-400'}">
       ${verification.aiVerification.ownershipVerified ? "Verified" : "Not
       Verified"} </span> </div> <div> <span
       class="text-gray-400">Confidence:</span><br> <span
@@ -263,9 +263,9 @@
       class="px-3 py-1 rounded-full text-xs bg-red-500/20 text-red-300 border
       border-red-500/30">${flag}</span> `).join('')} </div> ` : ''} </div> `; }
       function renderHealthSection(verification) { return ` <div class="p-6
-      rounded-2xl glass border border-green-500/20 insight-card"> <div
+      rounded-2xl glass border border-amber-500/20 insight-card"> <div
       class="flex items-center gap-3 mb-4"> <i class="bi bi-heart-pulse-fill
-      text-3xl text-green-400"></i> <h4 class="text-xl font-bold">Health
+      text-3xl text-amber-400"></i> <h4 class="text-xl font-bold">Health
       Assessment</h4> </div> <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
       <div> <span class="text-gray-400">Assessment:</span><br> <span
       class="font-bold
@@ -281,9 +281,9 @@
       => ` <span class="px-3 py-1 rounded-full text-xs bg-red-500/20
       text-red-300 border border-red-500/30">${flag}</span> `).join('')} </div>
       ` : ''} </div> `; } function renderPhotoSection(verification) { return `
-      <div class="p-6 rounded-2xl glass border border-purple-500/20
+      <div class="p-6 rounded-2xl glass border border-orange-500/20
       insight-card"> <div class="flex items-center gap-3 mb-4"> <i class="bi
-      bi-images text-3xl text-purple-400"></i> <h4 class="text-xl
+      bi-images text-3xl text-orange-400"></i> <h4 class="text-xl
       font-bold">Photo & Breed Analysis</h4> </div> <div class="grid grid-cols-2
       gap-4 mb-4 text-sm"> <div> <span class="text-gray-400">Breed:</span><br>
       <span class="font-bold">${verification.aiVerification.detectedBreed ||
@@ -293,16 +293,16 @@
       "Unknown"}</span> </div> </div> <p class="text-gray-300 text-sm
       leading-relaxed"> ${verification.aiVerification.photoAnalysis || "No photo
       analysis available yet."} </p> </div> `; } function getStatusClass(status)
-      { const classes = { verified: "bg-green-500/20 text-green-300 border
-      border-green-500/30", rejected: "bg-red-500/20 text-red-300 border
-      border-red-500/30", processing: "bg-blue-500/20 text-blue-300 border
-      border-blue-500/30 animate-pulse", pending: "bg-yellow-500/20
+      { const classes = { verified: "bg-amber-500/20 text-amber-300 border
+      border-amber-500/30", rejected: "bg-red-500/20 text-red-300 border
+      border-red-500/30", processing: "bg-amber-500/20 text-amber-300 border
+      border-amber-500/30 animate-pulse", pending: "bg-yellow-500/20
       text-yellow-300 border border-yellow-500/30" }; return classes[status] ||
       classes.pending; } function getScoreColor(score) { if (score >= 90) return
-      "bg-green-500"; if (score >= 70) return "bg-blue-500"; if (score >= 50)
+      "bg-amber-500"; if (score >= 70) return "bg-amber-500"; if (score >= 50)
       return "bg-yellow-500"; return "bg-red-500"; } function
-      getRiskColor(level) { const colors = { low: "bg-green-500/10 border
-      border-green-500/30 text-green-300", medium: "bg-yellow-500/10 border
+      getRiskColor(level) { const colors = { low: "bg-amber-500/10 border
+      border-amber-500/30 text-amber-300", medium: "bg-yellow-500/10 border
       border-yellow-500/30 text-yellow-300", high: "bg-red-500/10 border
       border-red-500/30 text-red-300" }; return colors[level] || colors.medium;
       } function showError(container) { container.innerHTML = ` <i class="bi

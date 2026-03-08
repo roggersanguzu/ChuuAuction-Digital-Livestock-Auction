@@ -1,4 +1,4 @@
-﻿<html lang="en">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,16 +28,16 @@
         --surface2: rgba(255, 255, 255, 0.06);
         --border: rgba(255, 255, 255, 0.07);
         --border2: rgba(255, 255, 255, 0.12);
-        --accent: #4ade80;
-        --accent2: #22d3ee;
+        --accent: #fbbf24;
+        --accent2: #f97316;
         --accent3: #f59e0b;
         --accent4: #f87171;
         --accent5: #a78bfa;
         --text: #f0f4ff;
         --text2: #8892aa;
         --text3: #404862;
-        --blue: #3b82f6;
-        --glow-green: rgba(74, 222, 128, 0.15);
+        --blue: #f59e0b;
+        --glow-green: rgba(251, 191, 36, 0.15);
         --glow-cyan: rgba(34, 211, 238, 0.12);
         --r: 6px;
         --r2: 10px;
@@ -77,7 +77,7 @@
         background:
           radial-gradient(
             ellipse 70% 55% at 15% 60%,
-            rgba(74, 222, 128, 0.07) 0%,
+            rgba(251, 191, 36, 0.07) 0%,
             transparent 65%
           ),
           radial-gradient(
@@ -87,7 +87,7 @@
           ),
           radial-gradient(
             ellipse 40% 40% at 50% 90%,
-            rgba(167, 139, 250, 0.05) 0%,
+            rgba(251, 146, 60, 0.05) 0%,
             transparent 65%
           );
         pointer-events: none;
@@ -127,13 +127,13 @@
       .logo-icon {
         width: 36px;
         height: 36px;
-        background: linear-gradient(135deg, #16a34a, #0891b2);
+        background: linear-gradient(135deg, #d97706, #0891b2);
         border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 17px;
-        box-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+        box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
       }
       .logo-name {
         font-family: "Syne", sans-serif;
@@ -226,17 +226,17 @@
         color: #000;
         border-color: var(--accent);
         font-weight: 600;
-        box-shadow: 0 0 20px rgba(74, 222, 128, 0.25);
+        box-shadow: 0 0 20px rgba(251, 191, 36, 0.25);
       }
       .hdr-btn-primary:hover {
         background: #86efac;
-        box-shadow: 0 0 28px rgba(74, 222, 128, 0.4);
+        box-shadow: 0 0 28px rgba(251, 191, 36, 0.4);
       }
       .avatar {
         width: 34px;
         height: 34px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #4ade80, #22d3ee);
+        background: linear-gradient(135deg, #fbbf24, #f97316);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -244,7 +244,7 @@
         font-weight: 700;
         color: #000;
         cursor: pointer;
-        border: 2px solid rgba(74, 222, 128, 0.4);
+        border: 2px solid rgba(251, 191, 36, 0.4);
       }
       /* Sidebar Styles */
       .layout {
@@ -310,8 +310,8 @@
         color: var(--text);
       }
       .nav-item.active {
-        background: rgba(74, 222, 128, 0.08);
-        border-color: rgba(74, 222, 128, 0.2);
+        background: rgba(251, 191, 36, 0.08);
+        border-color: rgba(251, 191, 36, 0.2);
         color: var(--accent);
       }
       .nav-item.active i {
@@ -433,11 +433,11 @@
       .btn-primary {
         background: var(--accent);
         color: #000;
-        box-shadow: 0 0 20px rgba(74, 222, 128, 0.25);
+        box-shadow: 0 0 20px rgba(251, 191, 36, 0.25);
       }
       .btn-primary:hover {
         background: #86efac;
-        box-shadow: 0 0 28px rgba(74, 222, 128, 0.4);
+        box-shadow: 0 0 28px rgba(251, 191, 36, 0.4);
       }
       .btn-secondary {
         background: var(--surface2);
@@ -462,9 +462,9 @@
         transition: all 0.2s;
       }
       .form-input:focus {
-        border-color: rgba(74, 222, 128, 0.4);
+        border-color: rgba(251, 191, 36, 0.4);
         background: rgba(0, 0, 0, 0.4);
-        box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.06);
+        box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.06);
       }
       .form-input::placeholder {
         color: var(--text3);
@@ -483,7 +483,7 @@
         transition: border-color 0.2s;
       }
       .form-select:focus {
-        border-color: rgba(74, 222, 128, 0.4);
+        border-color: rgba(251, 191, 36, 0.4);
       }
       .form-select option {
         background: #080c18;
@@ -552,8 +552,8 @@
         gap: 10px;
       }
       .flash-success {
-        background: rgba(74, 222, 128, 0.15);
-        border: 1px solid rgba(74, 222, 128, 0.3);
+        background: rgba(251, 191, 36, 0.15);
+        border: 1px solid rgba(251, 191, 36, 0.3);
         color: var(--accent);
       }
       .flash-error {
@@ -842,7 +842,7 @@
           </div>
         </div>
         <div class="app-footer-bottom">
-          <p class="app-footer-copy">© <span class="js-year"></span> ChuuAuction. All rights reserved.</p>
+          <p class="app-footer-copy">� <span class="js-year"></span> ChuuAuction. All rights reserved.</p>
           <div class="app-footer-badges">
             <span class="app-footer-pill">Enterprise Security</span>
             <span class="app-footer-pill">Audit Ready</span>

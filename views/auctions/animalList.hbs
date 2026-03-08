@@ -1,4 +1,4 @@
-﻿<html lang="en">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -36,13 +36,13 @@
     </script>
     <style>
       :root {
-        --em: #10b981;
-        --em-dim: rgba(16, 185, 129, 0.15);
-        --em-glow: rgba(16, 185, 129, 0.25);
+        --em: #f97316;
+        --em-dim: rgba(249, 115, 22, 0.15);
+        --em-glow: rgba(249, 115, 22, 0.25);
         --surface: rgba(255, 255, 255, 0.03);
         --surface-strong: rgba(255, 255, 255, 0.055);
         --border: rgba(255, 255, 255, 0.07);
-        --border-hover: rgba(16, 185, 129, 0.4);
+        --border-hover: rgba(249, 115, 22, 0.4);
       }
       .font-display {
         font-family: "Playfair Display", serif;
@@ -74,7 +74,7 @@
         border: 1px solid rgba(255, 255, 255, 0.08);
       }
       .text-gradient {
-        background: linear-gradient(135deg, #10b981, #059669, #34d399);
+        background: linear-gradient(135deg, #f97316, #c2410c, #fb923c);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -87,7 +87,7 @@
         background: #0f172a;
       }
       ::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, #10b981, #059669);
+        background: linear-gradient(180deg, #f97316, #c2410c);
         border-radius: 3px;
       }
       .card-hover {
@@ -117,20 +117,20 @@
         transform: translateY(-2px);
       }
       .filter-chip.active {
-        background: linear-gradient(135deg, #10b981, #059669);
-        border-color: #10b981;
+        background: linear-gradient(135deg, #f97316, #c2410c);
+        border-color: #f97316;
         color: #fff;
       }
       .search-glow:focus {
-        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+        box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
       }
       @keyframes status-pulse {
         0%,
         100% {
-          box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+          box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.7);
         }
         50% {
-          box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+          box-shadow: 0 0 0 6px rgba(249, 115, 22, 0);
         }
       }
       .status-live {
@@ -240,7 +240,7 @@
         right: 0;
         height: 2px;
         z-index: 100;
-        background: linear-gradient(90deg, #10b981, #059669, #10b981);
+        background: linear-gradient(90deg, #f97316, #c2410c, #f97316);
         background-size: 200% 100%;
         animation: gradient 3s ease infinite;
       }
@@ -249,7 +249,7 @@
         background: linear-gradient(
           90deg,
           transparent,
-          rgba(16, 185, 129, 0.25),
+          rgba(249, 115, 22, 0.25),
           transparent
         );
       }
@@ -268,8 +268,8 @@
         font-family: "Work Sans", sans-serif;
       }
       .inp-compact:focus {
-        border-color: rgba(16, 185, 129, 0.5);
-        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.12);
+        border-color: rgba(249, 115, 22, 0.5);
+        box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.12);
       }
       .inp-compact::placeholder {
         color: #475569;
@@ -278,9 +278,9 @@
         transition: all 0.2s;
       }
       .view-btn.active {
-        background: rgba(16, 185, 129, 0.15);
-        border-color: rgba(16, 185, 129, 0.5) !important;
-        color: #10b981;
+        background: rgba(249, 115, 22, 0.15);
+        border-color: rgba(249, 115, 22, 0.5) !important;
+        color: #f97316;
       }
       .badge {
         display: inline-flex;
@@ -293,9 +293,9 @@
         letter-spacing: 0.04em;
       }
       .badge-green {
-        background: rgba(16, 185, 129, 0.15);
-        color: #34d399;
-        border: 1px solid rgba(16, 185, 129, 0.25);
+        background: rgba(249, 115, 22, 0.15);
+        color: #fb923c;
+        border: 1px solid rgba(249, 115, 22, 0.25);
       }
       .badge-blue {
         background: rgba(59, 130, 246, 0.15);
@@ -315,10 +315,10 @@
       .header-strip {
         background: linear-gradient(
           135deg,
-          rgba(16, 185, 129, 0.06) 0%,
+          rgba(249, 115, 22, 0.06) 0%,
           transparent 60%
         );
-        border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+        border-bottom: 1px solid rgba(249, 115, 22, 0.1);
       }
       @media (max-width: 1024px) {
         .header-strip .flex.items-center.gap-2.animate-fade-in {
@@ -363,14 +363,14 @@
     <div class="page-topline"></div>
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
       <div
-        class="absolute top-0 left-0 w-[500px] h-[500px] bg-emerald-500/8 rounded-full blur-[130px] animate-float"
+        class="absolute top-0 left-0 w-[500px] h-[500px] bg-amber-500/8 rounded-full blur-[130px] animate-float"
       ></div>
       <div
-        class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-green-600/7 rounded-full blur-[140px] animate-float"
+        class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-amber-600/7 rounded-full blur-[140px] animate-float"
         style="animation-delay:3s;"
       ></div>
       <div
-        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-emerald-500/4 to-green-600/4 rounded-full blur-3xl animate-pulse-soft"
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-amber-500/4 to-orange-600/4 rounded-full blur-3xl animate-pulse-soft"
       ></div>
     </div>
     <div class="header-strip relative z-10 pt-5 pb-0">
@@ -381,7 +381,7 @@
           <div>
             <div class="flex items-center gap-2 mb-1">
               <div
-                class="w-1 h-8 rounded-full bg-gradient-to-b from-emerald-400 to-green-600"
+                class="w-1 h-8 rounded-full bg-gradient-to-b from-amber-400 to-orange-600"
               ></div>
               <h1 class="text-3xl font-black font-display">
                 <span class="text-gradient">Premium Livestock</span>
@@ -396,17 +396,17 @@
             style="animation-delay:0.1s;"
           >
             <div
-              class="stat-item flex items-center gap-2.5 px-4 py-2.5 rounded-xl glass border border-gray-800/60 hover:border-emerald-500/30 transition-all cursor-default"
+              class="stat-item flex items-center gap-2.5 px-4 py-2.5 rounded-xl glass border border-gray-800/60 hover:border-amber-500/30 transition-all cursor-default"
               style="animation-delay:0.1s;"
             >
               <div
-                class="w-7 h-7 rounded-lg bg-emerald-500/15 flex items-center justify-center"
+                class="w-7 h-7 rounded-lg bg-amber-500/15 flex items-center justify-center"
               >
-                <i class="bi bi-collection text-emerald-500 text-xs"></i>
+                <i class="bi bi-collection text-amber-500 text-xs"></i>
               </div>
               <div>
                 <p
-                  class="text-xl font-black text-emerald-500 leading-none"
+                  class="text-xl font-black text-amber-500 leading-none"
                   id="total-listings"
                 >0</p>
                 <p
@@ -415,17 +415,17 @@
               </div>
             </div>
             <div
-              class="stat-item flex items-center gap-2.5 px-4 py-2.5 rounded-xl glass border border-gray-800/60 hover:border-green-500/30 transition-all cursor-default"
+              class="stat-item flex items-center gap-2.5 px-4 py-2.5 rounded-xl glass border border-gray-800/60 hover:border-amber-500/30 transition-all cursor-default"
               style="animation-delay:0.2s;"
             >
               <div
-                class="w-7 h-7 rounded-lg bg-green-500/15 flex items-center justify-center"
+                class="w-7 h-7 rounded-lg bg-amber-500/15 flex items-center justify-center"
               >
-                <i class="bi bi-broadcast text-green-500 text-xs"></i>
+                <i class="bi bi-broadcast text-amber-500 text-xs"></i>
               </div>
               <div>
                 <p
-                  class="text-xl font-black text-green-500 leading-none"
+                  class="text-xl font-black text-amber-500 leading-none"
                   id="live-auctions"
                 >0</p>
                 <p
@@ -434,17 +434,17 @@
               </div>
             </div>
             <div
-              class="stat-item flex items-center gap-2.5 px-4 py-2.5 rounded-xl glass border border-gray-800/60 hover:border-blue-500/30 transition-all cursor-default"
+              class="stat-item flex items-center gap-2.5 px-4 py-2.5 rounded-xl glass border border-gray-800/60 hover:border-amber-500/30 transition-all cursor-default"
               style="animation-delay:0.3s;"
             >
               <div
-                class="w-7 h-7 rounded-lg bg-blue-500/15 flex items-center justify-center"
+                class="w-7 h-7 rounded-lg bg-amber-500/15 flex items-center justify-center"
               >
-                <i class="bi bi-patch-check text-blue-500 text-xs"></i>
+                <i class="bi bi-patch-check text-amber-500 text-xs"></i>
               </div>
               <div>
                 <p
-                  class="text-xl font-black text-blue-500 leading-none"
+                  class="text-xl font-black text-amber-500 leading-none"
                   id="verified-sellers"
                 >0</p>
                 <p
@@ -460,19 +460,19 @@
         >
           <div class="relative">
             <div
-              class="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500"
+              class="absolute left-4 top-1/2 -translate-y-1/2 text-amber-500"
             >
               <i class="bi bi-search text-sm"></i>
             </div>
             <input
               type="text"
               id="main-search"
-              placeholder="Search by breed, location, seller or keywords…"
-              class="w-full pl-10 pr-10 py-3 text-sm rounded-xl glass-strong border border-gray-800/60 focus:border-emerald-500/50 focus:outline-none search-glow transition-all font-medium text-white bg-gray-900/60"
+              placeholder="Search by breed, location, seller or keywords�"
+              class="w-full pl-10 pr-10 py-3 text-sm rounded-xl glass-strong border border-gray-800/60 focus:border-amber-500/50 focus:outline-none search-glow transition-all font-medium text-white bg-gray-900/60"
             />
             <button
               onclick="clearSearch()"
-              class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-emerald-500 transition-colors"
+              class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-amber-500 transition-colors"
             >
               <i class="bi bi-x-circle text-sm"></i>
             </button>
@@ -517,7 +517,7 @@
             </div>
             <button
               onclick="toggleAdvancedFilters()"
-              class="flex items-center gap-1.5 px-4 py-2 rounded-xl glass border border-gray-800/60 hover:border-emerald-500/40 text-xs font-bold transition-all hover:text-emerald-400"
+              class="flex items-center gap-1.5 px-4 py-2 rounded-xl glass border border-gray-800/60 hover:border-amber-500/40 text-xs font-bold transition-all hover:text-amber-400"
             >
               <i class="bi bi-sliders text-sm"></i>
               Advanced
@@ -535,9 +535,9 @@
               class="p-5 rounded-xl glass-strong border border-gray-800/60 space-y-4 mt-1"
             >
               <div class="flex items-center gap-2 mb-1">
-                <i class="bi bi-funnel text-emerald-500 text-sm"></i>
+                <i class="bi bi-funnel text-amber-500 text-sm"></i>
                 <h3
-                  class="text-sm font-bold text-emerald-400 uppercase tracking-wide"
+                  class="text-sm font-bold text-amber-400 uppercase tracking-wide"
                 >Advanced Filters</h3>
               </div>
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -552,7 +552,7 @@
                       placeholder="Min"
                       class="inp-compact"
                     />
-                    <span class="text-gray-600 text-xs">–</span>
+                    <span class="text-gray-600 text-xs">�</span>
                     <input
                       type="number"
                       id="filter-weight-max"
@@ -572,7 +572,7 @@
                       placeholder="Min"
                       class="inp-compact"
                     />
-                    <span class="text-gray-600 text-xs">–</span>
+                    <span class="text-gray-600 text-xs">�</span>
                     <input
                       type="number"
                       id="filter-age-max"
@@ -592,7 +592,7 @@
                       placeholder="Min"
                       class="inp-compact"
                     />
-                    <span class="text-gray-600 text-xs">–</span>
+                    <span class="text-gray-600 text-xs">�</span>
                     <input
                       type="number"
                       id="filter-quantity-max"
@@ -609,38 +609,38 @@
                   >Vaccination Status</label>
                   <div class="flex gap-2">
                     <label
-                      class="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl glass border border-gray-800/60 cursor-pointer hover:border-emerald-500/40 transition-all text-xs font-semibold"
+                      class="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl glass border border-gray-800/60 cursor-pointer hover:border-amber-500/40 transition-all text-xs font-semibold"
                     >
                       <input
                         type="radio"
                         name="vaccination"
                         value=""
-                        class="accent-emerald-500"
+                        class="accent-amber-500"
                         checked
                       />
                       All
                     </label>
                     <label
-                      class="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl glass border border-gray-800/60 cursor-pointer hover:border-emerald-500/40 transition-all text-xs font-semibold"
+                      class="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl glass border border-gray-800/60 cursor-pointer hover:border-amber-500/40 transition-all text-xs font-semibold"
                     >
                       <input
                         type="radio"
                         name="vaccination"
                         value="true"
-                        class="accent-emerald-500"
+                        class="accent-amber-500"
                       />
-                      ✅ Yes
+                      ? Yes
                     </label>
                     <label
-                      class="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl glass border border-gray-800/60 cursor-pointer hover:border-emerald-500/40 transition-all text-xs font-semibold"
+                      class="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl glass border border-gray-800/60 cursor-pointer hover:border-amber-500/40 transition-all text-xs font-semibold"
                     >
                       <input
                         type="radio"
                         name="vaccination"
                         value="false"
-                        class="accent-emerald-500"
+                        class="accent-amber-500"
                       />
-                      ❌ No
+                      ? No
                     </label>
                   </div>
                 </div>
@@ -651,7 +651,7 @@
                   <input
                     type="text"
                     id="filter-location"
-                    placeholder="Enter location…"
+                    placeholder="Enter location�"
                     class="inp-compact"
                   />
                 </div>
@@ -659,7 +659,7 @@
               <div class="flex justify-end pt-1">
                 <button
                   onclick="applyAdvancedFilters()"
-                  class="flex items-center gap-2 px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-sm font-bold hover:shadow-lg hover:shadow-emerald-500/25 transition-all"
+                  class="flex items-center gap-2 px-5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-sm font-bold hover:shadow-lg hover:shadow-emerald-500/25 transition-all"
                 >
                   <i class="bi bi-check-circle"></i>
                   Apply Filters
@@ -679,7 +679,7 @@
             <h2 class="text-base font-bold text-white">
               <span
                 id="results-count"
-                class="text-emerald-400 font-black"
+                class="text-amber-400 font-black"
               >0</span>
               <span class="text-gray-400 font-medium ml-1">listings found</span>
             </h2>
@@ -689,13 +689,13 @@
             >Showing all available livestock</p>
           </div>
           <div
-            class="flex items-center gap-1.5 px-2.5 py-1 rounded-full glass border border-emerald-500/20"
+            class="flex items-center gap-1.5 px-2.5 py-1 rounded-full glass border border-amber-500/20"
           >
             <span
-              class="w-1.5 h-1.5 rounded-full bg-emerald-500 status-live"
+              class="w-1.5 h-1.5 rounded-full bg-amber-500 status-live"
             ></span>
             <span
-              class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider"
+              class="text-[10px] font-bold text-amber-400 uppercase tracking-wider"
             >Live</span>
           </div>
         </div>
@@ -724,16 +724,16 @@
         <div class="inline-flex flex-col items-center gap-4">
           <div class="relative">
             <div
-              class="w-12 h-12 border-2 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin"
+              class="w-12 h-12 border-2 border-amber-500/20 border-t-emerald-500 rounded-full animate-spin"
             ></div>
             <div
-              class="absolute inset-2 w-8 h-8 border-2 border-emerald-400/10 border-b-emerald-400 rounded-full animate-spin"
+              class="absolute inset-2 w-8 h-8 border-2 border-amber-400/10 border-b-emerald-400 rounded-full animate-spin"
               style="animation-direction:reverse;animation-duration:0.7s;"
             ></div>
           </div>
           <div>
             <p class="text-sm font-bold text-gray-400">Loading premium
-              livestock…</p>
+              livestock�</p>
             <p class="text-xs text-gray-600 mt-1">Fetching the finest animals
               for you</p>
           </div>
@@ -751,7 +751,7 @@
             your filters or search criteria to discover more animals</p>
           <button
             onclick="resetFilters()"
-            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-sm font-bold hover:shadow-xl hover:shadow-emerald-500/25 transition-all"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-sm font-bold hover:shadow-xl hover:shadow-emerald-500/25 transition-all"
           >
             <i class="bi bi-arrow-clockwise"></i>
             Reset All Filters
@@ -761,7 +761,7 @@
       <div id="load-more-container" class="text-center mt-10 hidden">
         <button
           onclick="loadMore()"
-          class="inline-flex items-center gap-2 px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-sm font-bold hover:shadow-2xl hover:shadow-emerald-500/25 transition-all hover:-translate-y-0.5"
+          class="inline-flex items-center gap-2 px-7 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-sm font-bold hover:shadow-2xl hover:shadow-emerald-500/25 transition-all hover:-translate-y-0.5"
         >
           <i class="bi bi-arrow-down-circle"></i>
           Load More Listings

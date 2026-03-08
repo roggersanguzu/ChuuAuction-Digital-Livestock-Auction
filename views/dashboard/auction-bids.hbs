@@ -26,7 +26,7 @@
         --orange-bright: #fb923c;
         --orange-dim: #ea580c;
         --red-core: #dc2626;
-        --green-core: #22c55e;
+        --green-core: #f59e0b;
         --surface-0: #050608;
         --surface-1: #0d0f12;
         --surface-2: #141720;
@@ -64,9 +64,9 @@
         border-color: rgba(234, 179, 8, 0.3);
       }
       .status-accepted {
-        background: rgba(34, 197, 94, 0.15);
-        color: #4ade80;
-        border-color: rgba(34, 197, 94, 0.3);
+        background: rgba(245, 158, 11, 0.15);
+        color: #fbbf24;
+        border-color: rgba(245, 158, 11, 0.3);
       }
       .status-rejected {
         background: rgba(239, 68, 68, 0.15);
@@ -79,12 +79,12 @@
       @keyframes winnerGlow {
         0%,
         100% {
-          box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+          box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
         }
         50% {
           box-shadow:
-            0 0 40px rgba(34, 197, 94, 0.6),
-            0 0 60px rgba(34, 197, 94, 0.3);
+            0 0 40px rgba(245, 158, 11, 0.6),
+            0 0 60px rgba(245, 158, 11, 0.3);
         }
       }
       .bid-card:hover {
@@ -210,8 +210,8 @@
         <div class="glass-strong border border-gray-800 rounded-2xl p-6">
           <div class="flex items-center gap-3 mb-2">
             <div
-              class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center"
-            ><i class="bi bi-collection text-blue-500"></i></div>
+              class="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center"
+            ><i class="bi bi-collection text-amber-500"></i></div>
             <span class="text-gray-400 text-sm">Total Auctions</span>
           </div>
           <p class="text-3xl font-black" id="stat-auctions">0</p>
