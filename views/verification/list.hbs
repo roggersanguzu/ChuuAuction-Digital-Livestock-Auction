@@ -1,4 +1,4 @@
-<html lang="en">
+﻿<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -212,7 +212,7 @@
       class="font-bold">Risk Level:
       ${insights.riskAssessment.level?.toUpperCase()}</span> </div>
       ${insights.riskAssessment.factors?.length ? ` <div class="text-sm
-      space-y-1"> ${insights.riskAssessment.factors.slice(0, 3).map(f => `<div>�
+      space-y-1"> ${insights.riskAssessment.factors.slice(0, 3).map(f => `<div>•
       ${f}</div>`).join('')} </div> ` : ''} </div> ` : ''}  ${insights.recommendations.immediate?.length ? ` <div
       class="mb-4"> <div class="text-sm font-bold text-orange-400 mb-2"> <i
       class="bi bi-lightning mr-1"></i>Immediate Actions: </div> <div
@@ -318,3 +318,5 @@
       <script src="/js/app-theme.js"></script>
   </body>
 </html>
+
+
