@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Winner Payment - ChuuAuction</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-void:    #05080f;
+      --bg-deep:    #070c17;
+      --bg-mid:     #0c1220;
+      --surface:    rgba(255,255,255,0.034);
+      --surface-hi: rgba(255,255,255,0.065);
+      --border:     rgba(255,255,255,0.075);
+      --border-hi:  rgba(255,255,255,0.14);
+      --text:       #eef2f8;
+      --muted:      #7a8fa8;
+      --em:         #22c55e;
+      --em-border:  rgba(34,197,94,0.28);
+      --r:          20px;
+    }
+
+    html, body {
+      min-height: 100vh;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 15px;
+      color: var(--text);
+      background: var(--bg-void);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 18% -5%,  rgba(34,197,94,0.11) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 88% 10%,  rgba(96,165,250,0.08) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 60% at 50% 100%, rgba(34,197,94,0.05) 0%, transparent 60%),
+        linear-gradient(170deg, var(--bg-void) 0%, #060c1a 60%, #08101e 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 2rem;
+      background: rgba(5,8,15,0.76);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar-brand {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+    .topbar-brand-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--em);
+      box-shadow: 0 0 10px var(--em);
+      animation: pulse-dot 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.85); }
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.42rem 0.9rem;
+      transition: color 0.18s, border-color 0.18s, background 0.18s;
+    }
+    .back-link:hover { color: white; border-color: var(--border-hi); background: var(--surface-hi); }
+    .back-link svg { width: 13px; height: 13px; }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.38rem;
+      padding: 0.32rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+    }
+    .chip-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .chip.pending   { background: rgba(245,158,11,0.12); color: #fbbf24; border-color: rgba(245,158,11,0.25); }
+    .chip.pending .chip-dot { background: #fbbf24; animation: blink 1.5s ease-in-out infinite; }
+    .chip.complete  { background: rgba(34,197,94,0.12); color: #4ade80; border-color: rgba(34,197,94,0.28); }
+    .chip.complete .chip-dot { background: #4ade80; }
+    .chip.failed    { background: rgba(251,113,133,0.12); color: #fb7185; border-color: rgba(251,113,133,0.28); }
+    .chip.failed .chip-dot { background: #fb7185; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+    .card-wrap {
+      width: 100%;
+      max-width: 980px;
+      margin-top: 4.5rem;
+      animation: rise 0.7s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header-strip {
+      background: linear-gradient(135deg, rgba(34,197,94,0.08), rgba(96,165,250,0.06));
+      border: 1px solid var(--border-hi);
+      border-radius: 28px 28px 0 0;
+      padding: 2.6rem 2.8rem 2.4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .header-strip::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(34,197,94,0.15), transparent 70%);
+      pointer-events: none;
+    }
+    .header-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--em);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .header-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 20px; height: 1px;
+      background: var(--em);
+    }
+    .header-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: white;
+    }
+    .header-sub {
+      margin-top: 0.75rem;
+      font-size: 0.88rem;
+      color: var(--muted);
+      max-width: 52ch;
+      line-height: 1.65;
+    }
+    .header-meta {
+      margin-top: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .ref-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.28rem 0.7rem;
+      overflow-wrap: anywhere;
+    }
+
+    .card-body {
+      background: var(--bg-mid);
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 28px 28px;
+      padding: 2.2rem 2.8rem 2.6rem;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 2rem;
+    }
+    @media(max-width:840px) {
+      .card-body { grid-template-columns: 1fr; }
+      .header-strip, .card-body { padding-left: 1.4rem; padding-right: 1.4rem; }
+    }
+
+    .amount-hero {
+      background: linear-gradient(135deg, rgba(34,197,94,0.09) 0%, rgba(96,165,250,0.05) 100%);
+      border: 1px solid var(--em-border);
+      border-radius: var(--r);
+      padding: 1.8rem 2rem;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 1.2rem;
+    }
+    .amount-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30px; right: -30px;
+      width: 130px; height: 130px;
+      border-radius: 50%;
+      background: rgba(34,197,94,0.08);
+    }
+    .amount-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(134,239,172,0.85);
+      margin-bottom: 0.5rem;
+    }
+    .amount-row { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+    .amount-cur {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: rgba(134,239,172,0.9);
+      letter-spacing: 0.08em;
+    }
+    .amount-num {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 800;
+      color: white;
+      line-height: 1;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+    .amount-note { margin-top: 0.55rem; font-size: 0.8rem; color: var(--muted); }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+    }
+    @media(max-width:500px) { .info-grid { grid-template-columns: 1fr; } }
+
+    .info-cell {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem 1.2rem;
+      transition: border-color 0.18s, background 0.18s;
+    }
+    .info-cell:hover { border-color: var(--border-hi); background: var(--surface-hi); }
+    .info-cell-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.45rem;
+    }
+    .info-cell-value {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: white;
+      overflow-wrap: anywhere;
+    }
+    .info-cell-icon {
+      font-size: 0.9rem;
+      color: var(--em);
+      margin-bottom: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-weight: 700;
+    }
+
+    .input-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 1.5rem 1.6rem;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .section-title svg { color: var(--em); }
+
+    .input-wrap { position: relative; }
+    .input-prefix {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--em);
+      pointer-events: none;
+    }
+    .field {
+      width: 100%;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid var(--border-hi);
+      border-radius: 12px;
+      color: white;
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      padding: 0.88rem 1rem 0.88rem 4rem;
+      outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s;
+    }
+    .field:focus {
+      border-color: var(--em);
+      box-shadow: 0 0 0 3px rgba(34,197,94,0.16);
+    }
+    .input-help {
+      margin-top: 0.6rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .buyer-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+      margin-top: 0.9rem;
+    }
+    @media(max-width:500px) { .buyer-row { grid-template-columns: 1fr; } }
+
+    .sidebar { display: flex; flex-direction: column; gap: 1rem; }
+
+    .steps-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 1.5rem 1.6rem;
+    }
+    .steps-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 1.2rem;
+    }
+    .steps-list { display: flex; flex-direction: column; gap: 0; }
+    .step {
+      display: flex;
+      gap: 1rem;
+      padding: 0.9rem 0;
+      position: relative;
+    }
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 14px;
+      top: calc(0.9rem + 28px);
+      bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+    .step-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: white;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .step-content { padding-top: 0.2rem; }
+    .step-name { font-size: 0.82rem; font-weight: 700; color: white; margin-bottom: 0.28rem; }
+    .step-desc { font-size: 0.77rem; color: var(--muted); line-height: 1.55; }
+
+    .cta-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      padding: 1rem 1.5rem;
+      border-radius: 14px;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: white;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 14px 32px rgba(22,163,74,0.28);
+      transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s;
+      position: relative;
+      overflow: hidden;
+      margin-top: 1.1rem;
+    }
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent);
+    }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 20px 40px rgba(22,163,74,0.36); }
+    .cta-btn:active { transform: translateY(0); }
+    .cta-btn:disabled { opacity: 0.55; transform: none; cursor: not-allowed; }
+
+    .cta-icon {
+      width: 18px; height: 18px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .status-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 1.5rem 1.6rem;
+    }
+    .status-card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--em);
+      animation: blink 1.4s ease-in-out infinite;
+    }
+    .status-display {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem 1.4rem;
+    }
+    .status-display-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: white;
+      text-transform: capitalize;
+      margin-bottom: 0.45rem;
+    }
+    .status-display-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
+    .checkout-msg {
+      margin-top: 0.85rem;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .warn-card {
+      background: rgba(251,113,133,0.08);
+      border: 1px solid rgba(251,113,133,0.25);
+      border-radius: var(--r);
+      padding: 1.5rem 1.6rem;
+    }
+    .warn-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fda4af;
+      margin-bottom: 0.45rem;
+    }
+    .warn-desc { font-size: 0.82rem; color: rgba(253,164,175,0.75); line-height: 1.6; }
+
+    .hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.1rem 0 1.2rem;
+    }
+
+    .security-bar {
+      margin-top: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.8rem;
+      flex-wrap: wrap;
+    }
+    .sec-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .sec-item svg { color: var(--em); width: 14px; height: 14px; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { display: inline-block; animation: spin 0.9s linear infinite; }
+  </style>
+</head>
+<body>
+  <nav class="topbar">
+    <div class="topbar-brand">
+      <span class="topbar-brand-dot"></span>
+      ChuuAuction
+    </div>
+    <a href="/dashboard/my-bids" class="back-link">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M10 3L5 8l5 5"/>
+      </svg>
+      My Bids
+    </a>
+  </nav>
+
+  <main>
+    <div class="card-wrap">
+      <div class="header-strip">
+        <div class="header-eyebrow">Winner Checkout</div>
+        <h1 class="header-title">Proceed to payment for your winning bid</h1>
+        <p class="header-sub">Confirm the amount below, review your livestock details, then securely launch the IntaSend sandbox checkout - all in one dedicated winner payment flow.</p>
+        <div class="header-meta">
+          <div id="status-badge" class="chip pending">
+            <span class="chip-dot"></span>
+            <span id="badge-label">{{transactionStatus}}</span>
+          </div>
+          <span class="ref-tag">REF: {{transactionApiRef}}</span>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div>
+          <div class="amount-hero">
+            <div class="amount-label">Winning Amount</div>
+            <div class="amount-row">
+              <span class="amount-cur">{{displayCurrency}}</span>
+              <span class="amount-num">{{amount}}</span>
+            </div>
+            <div class="amount-note">Gateway charge currency: {{paymentCurrency}}</div>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-cell">
+              <div class="info-cell-icon">AN</div>
+              <div class="info-cell-label">Animal</div>
+              <div class="info-cell-value">{{animalType}}{{#if breed}} - {{breed}}{{/if}}</div>
+            </div>
+            <div class="info-cell">
+              <div class="info-cell-icon">SE</div>
+              <div class="info-cell-label">Seller</div>
+              <div class="info-cell-value">{{sellerName}}</div>
+            </div>
+            <div class="info-cell">
+              <div class="info-cell-icon">LO</div>
+              <div class="info-cell-label">Location</div>
+              <div class="info-cell-value">{{auctionLocation}}</div>
+            </div>
+            <div class="info-cell">
+              <div class="info-cell-icon">BY</div>
+              <div class="info-cell-label">Buyer</div>
+              <div class="info-cell-value">{{buyerName}}</div>
+            </div>
+          </div>
+
+          {{#if providerConfigured}}
+          <div class="input-section">
+            <div class="section-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>
+              </svg>
+              IntaSend Sandbox Checkout
+            </div>
+
+            <div class="input-wrap">
+              <span class="input-prefix">{{paymentCurrency}}</span>
+              <input
+                id="amount-input"
+                class="field"
+                type="number"
+                min="{{minimumAmount}}"
+                step="1"
+                value="{{amount}}"
+                inputmode="numeric"
+              />
+            </div>
+            <p id="amount-help" class="input-help">Amount confirmed for IntaSend checkout.</p>
+
+            <div class="buyer-row">
+              <div class="info-cell" style="margin:0">
+                <div class="info-cell-label">Buyer Email</div>
+                <div class="info-cell-value">{{buyerEmail}}</div>
+              </div>
+              <div class="info-cell" style="margin:0">
+                <div class="info-cell-label">Buyer Phone</div>
+                <div class="info-cell-value">{{buyerPhone}}</div>
+              </div>
+            </div>
+          </div>
+          {{/if}}
+        </div>
+
+        <div class="sidebar">
+          {{#if providerConfigured}}
+          <form id="checkout-form" class="steps-card" action="/dashboard/payment/checkout" method="POST">
+            <input type="hidden" name="bidId" value="{{bidId}}" />
+            <input id="amount-hidden" type="hidden" name="amount" value="{{amount}}" />
+
+            <div class="steps-title">How It Works</div>
+            <div class="steps-list">
+              <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                  <div class="step-name">Confirm Amount</div>
+                  <div class="step-desc">Verify the amount you want to submit through IntaSend sandbox checkout.</div>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <div class="step-name">Launch Checkout</div>
+                  <div class="step-desc">Click the button below to open the secure hosted payment page.</div>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                  <div class="step-name">Status Syncs</div>
+                  <div class="step-desc">This page auto-refreshes status via webhook and checkout events.</div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="hr" />
+
+            <button id="proceed-btn" type="submit" class="cta-btn">
+              <span class="cta-icon">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                  <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 6v8m-4-4h8"/>
+                </svg>
+              </span>
+              Proceed to Secure Payment
+            </button>
+
+            <div id="checkout-message" class="checkout-msg">
+              Checkout ready - click <strong style="color:white">Proceed to Secure Payment</strong> to continue.
+            </div>
+          </form>
+          {{else}}
+          <div class="warn-card">
+            <div class="warn-title">Sandbox keys missing</div>
+            <p class="warn-desc">Add your IntaSend publishable key to the server environment, restart the app, and reload this page to enable payments.</p>
+          </div>
+          {{/if}}
+
+          <div class="status-card">
+            <div class="status-card-title">
+              <span class="live-dot"></span>
+              Live Payment Status
+            </div>
+            <div class="status-display">
+              <div id="status-text" class="status-display-value">{{transactionStatus}}</div>
+              <div id="status-meta" class="status-display-meta">
+                API Ref: {{transactionApiRef}}<br>
+                {{#if transactionInvoiceId}}Invoice: {{transactionInvoiceId}}{{/if}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="security-bar">
+      <div class="sec-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M12 2l8 4v6c0 5-4 9-8 10C8 21 4 17 4 12V6l8-4z"/>
+        </svg>
+        SSL Encrypted
+      </div>
+      <div class="sec-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        Secure Checkout
+      </div>
+      <div class="sec-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M9 12l2 2 4-4m5.6-4.6A9 9 0 1 1 3.4 18.6"/>
+        </svg>
+        IntaSend Powered
+      </div>
+      <div class="sec-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+        </svg>
+        Sandbox Mode
+      </div>
+    </div>
+  </main>
+
+<script>
+(function () {
+  var bidId = "{{bidId}}";
+  var providerConfigured = {{#if providerConfigured}}true{{else}}false{{/if}};
+  var minimumAmount = Number("{{minimumAmount}}") || 0;
+
+  var statusBadge = document.getElementById("status-badge");
+  var badgeLabel = document.getElementById("badge-label");
+  var statusText = document.getElementById("status-text");
+  var statusMeta = document.getElementById("status-meta");
+  var proceedBtn = document.getElementById("proceed-btn");
+  var checkoutForm = document.getElementById("checkout-form");
+  var amountHidden = document.getElementById("amount-hidden");
+  var amountInput = document.getElementById("amount-input");
+  var amountHelp = document.getElementById("amount-help");
+  var checkoutMsg = document.getElementById("checkout-message");
+
+  function setStatus(status, meta) {
+    var n = String(status || "pending").toLowerCase();
+    if (statusText) statusText.textContent = n;
+    if (badgeLabel) badgeLabel.textContent = n;
+    if (statusBadge) {
+      statusBadge.className = "chip " + (n === "complete" ? "complete" : n === "failed" || n === "cancelled" ? "failed" : "pending");
+    }
+    if (statusMeta && meta) statusMeta.innerHTML = meta.replace(/\|/g, "<br>");
+  }
+
+  function setMsg(html, isError) {
+    if (!checkoutMsg) return;
+    checkoutMsg.innerHTML = html;
+    checkoutMsg.style.borderColor = isError ? "rgba(251,113,133,0.3)" : "var(--border)";
+    checkoutMsg.style.color = isError ? "#fda4af" : "var(--muted)";
+  }
+
+  function getAmount() {
+    return Number(amountInput && amountInput.value ? amountInput.value : minimumAmount);
+  }
+
+  function validateAmount() {
+    var amt = getAmount();
+    if (!amountInput || !amountHelp) return true;
+    if (!Number.isFinite(amt) || amt <= 0) {
+      amountHelp.textContent = "Enter a valid payment amount.";
+      amountHelp.style.color = "#fda4af";
+      return false;
+    }
+    if (amt < minimumAmount) {
+      amountHelp.textContent = "Amount cannot be lower than the winning bid.";
+      amountHelp.style.color = "#fda4af";
+      return false;
+    }
+    amountHelp.textContent = "Amount confirmed for IntaSend checkout.";
+    amountHelp.style.color = "#86efac";
+    return true;
+  }
+
+  async function refreshStatus() {
+    if (!bidId) return;
+    try {
+      var res = await fetch("/api/payments/" + encodeURIComponent(bidId) + "/status");
+      var p = await res.json().catch(function(){return{};});
+      if (!res.ok || !p.success || !p.data) return;
+      var meta = "API Ref: " + (p.data.apiRef || "-");
+      if (p.data.invoiceId) meta += " | Invoice: " + p.data.invoiceId;
+      if (p.data.failedReason) meta += " | Reason: " + p.data.failedReason;
+      setStatus(p.data.status || "pending", meta);
+    } catch(e) {}
+  }
+
+  if (amountInput) {
+    amountInput.addEventListener("input", function () {
+      validateAmount();
+      setMsg('Checkout ready - click <strong style="color:white">Proceed to Secure Payment</strong> to continue.', false);
+    });
+    validateAmount();
+  }
+
+  if (providerConfigured && checkoutForm && proceedBtn) {
+    checkoutForm.addEventListener("submit", function (e) {
+      if (!validateAmount()) {
+        e.preventDefault();
+        setMsg("Enter a valid amount before proceeding.", true);
+        return;
+      }
+      if (amountHidden) amountHidden.value = String(getAmount());
+      proceedBtn.disabled = true;
+      proceedBtn.innerHTML = '<span class="spin">⟳</span> Creating checkout...';
+      setMsg("Redirecting you to IntaSend sandbox...", false);
+    });
+    window.setInterval(refreshStatus, 6000);
+  }
+
+  refreshStatus();
+})();
+</script>
+</body>
+</html>
