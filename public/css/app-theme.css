@@ -24,6 +24,20 @@ body {
   margin: 0;
   transition: background-color 0.25s ease, color 0.25s ease;
 }
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+main,
+.main,
+.main-content,
+.main-inner,
+.shell,
+.container {
+  min-width: 0;
+}
 button,
 a[href],
 [role="button"],
@@ -86,6 +100,41 @@ a[href],
   main {
     padding-left: 16px !important;
     padding-right: 16px !important;
+  }
+  .toolbar,
+  .panel-header,
+  .section-header,
+  .header-actions,
+  .header-meta,
+  .topbar,
+  .page-header {
+    flex-wrap: wrap !important;
+  }
+  .content,
+  .summary-grid,
+  .info-grid,
+  .buyer-row,
+  .card-body {
+    grid-template-columns: 1fr !important;
+  }
+  .card,
+  .panel,
+  .glass,
+  .glass-strong,
+  .steps-card,
+  .status-card,
+  .summary-card,
+  .input-section,
+  .amount-hero {
+    min-width: 0 !important;
+  }
+  .overflow-x-auto,
+  .table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  table {
+    min-width: 680px;
   }
 }
 @keyframes appFadeUp {
@@ -348,6 +397,65 @@ a[href],
   .app-footer-badges {
     flex-wrap: wrap;
   }
+  .toolbar,
+  .panel-header,
+  .section-header,
+  .header-actions,
+  .header-meta,
+  .page-header,
+  .topbar,
+  .top-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .search,
+  .select,
+  .field,
+  .form-input,
+  .form-select,
+  .toolbar-chip {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+  }
+  .btn,
+  .btn-primary,
+  .btn-secondary,
+  .hdr-btn,
+  .btn-fire,
+  .btn-outline {
+    width: 100%;
+  }
+  .card,
+  .panel,
+  .glass,
+  .glass-strong,
+  .summary-card {
+    border-radius: 18px !important;
+  }
+  .card,
+  .panel,
+  .summary-card,
+  .input-section,
+  .steps-card,
+  .status-card,
+  .amount-hero {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  .table-wrap,
+  .overflow-x-auto {
+    margin-left: -4px;
+    margin-right: -4px;
+    padding-bottom: 10px;
+  }
+  table {
+    min-width: 620px;
+  }
+  .theme-fab {
+    right: 12px;
+    bottom: 12px;
+  }
 }
 
 /* Global theme coercion: map non-amber accents to amber/orange/red palette */
@@ -495,6 +603,32 @@ a[href],
   .app-footer-pill {
     font-size: 10px;
     padding: 4px 8px;
+  }
+  .main,
+  .main-content,
+  .main-inner,
+  main,
+  .shell {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  .page-title,
+  .hero h1,
+  h1.text-4xl,
+  h1.text-5xl {
+    font-size: clamp(1.55rem, 8vw, 2rem) !important;
+    line-height: 1.08 !important;
+  }
+  .summary-grid,
+  .stats-grid,
+  .analytics-row,
+  .bottom-row,
+  .auctions-grid,
+  .content {
+    grid-template-columns: 1fr !important;
+  }
+  table {
+    min-width: 560px;
   }
 }
 @media (max-width: 640px) {

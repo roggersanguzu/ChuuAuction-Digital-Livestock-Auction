@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}} - ChuuAuction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Bricolage+Grotesque:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/vendor/bootstrap-icons/css/bootstrap-icons.css" />
+    <style>
+      :root {
+        --bg: #06080d;
+        --bg-soft: #0d121a;
+        --panel: rgba(255, 255, 255, 0.04);
+        --panel-strong: rgba(255, 255, 255, 0.06);
+        --border: rgba(255, 255, 255, 0.08);
+        --text: #eef2f7;
+        --muted: #8f9bb0;
+        --accent: #f97316;
+        --accent-2: #22c55e;
+        --danger: #fb7185;
+        --warn: #f59e0b;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Outfit", system-ui, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(249, 115, 22, 0.14), transparent 28%),
+          radial-gradient(circle at top right, rgba(34, 197, 94, 0.1), transparent 22%),
+          linear-gradient(180deg, #04060b, #0a0f18 45%, #06090f);
+        overflow-x: hidden;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(249, 115, 22, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(249, 115, 22, 0.03) 1px, transparent 1px);
+        background-size: 44px 44px;
+        pointer-events: none;
+        opacity: 0.35;
+      }
+      .shell {
+        width: min(1200px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 28px 0 44px;
+        position: relative;
+        z-index: 1;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 26px;
+        padding: 14px 18px;
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        background: rgba(11, 16, 26, 0.72);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: "Bricolage Grotesque", system-ui, sans-serif;
+        font-size: 1.05rem;
+        font-weight: 800;
+      }
+      .brand-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--accent), #ea580c);
+        box-shadow: 0 0 20px rgba(249, 115, 22, 0.45);
+      }
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        text-decoration: none;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 10px 14px;
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .back-link:hover {
+        color: var(--text);
+        border-color: rgba(249, 115, 22, 0.2);
+      }
+      .hero {
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        padding: 30px;
+        background:
+          linear-gradient(135deg, rgba(249, 115, 22, 0.09), rgba(34, 197, 94, 0.05)),
+          rgba(255, 255, 255, 0.03);
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::after {
+        content: "";
+        position: absolute;
+        width: 260px;
+        height: 260px;
+        border-radius: 999px;
+        right: -90px;
+        top: -110px;
+        background: radial-gradient(circle, rgba(249, 115, 22, 0.18), transparent 70%);
+        pointer-events: none;
+      }
+      .eyebrow {
+        color: #ffb37b;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        font-size: 0.72rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+      .hero h1 {
+        margin: 0;
+        font-family: "Bricolage Grotesque", system-ui, sans-serif;
+        font-size: clamp(2rem, 5vw, 3.4rem);
+        line-height: 0.98;
+      }
+      .hero p {
+        margin: 14px 0 0;
+        color: var(--muted);
+        max-width: 60ch;
+        line-height: 1.7;
+      }
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 22px;
+      }
+      .summary-card,
+      .panel {
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        background: var(--panel);
+        backdrop-filter: blur(18px);
+      }
+      .summary-card {
+        padding: 18px 20px;
+        min-width: 0;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        cursor: pointer;
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease,
+          background 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .summary-card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(249, 115, 22, 0.22);
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .summary-card.is-active {
+        border-color: rgba(249, 115, 22, 0.35);
+        background: linear-gradient(135deg, rgba(249, 115, 22, 0.16), rgba(220, 38, 38, 0.08));
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.05),
+          0 14px 34px rgba(0, 0, 0, 0.18);
+      }
+      .summary-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .summary-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(249, 115, 22, 0.12);
+        color: #ffb37b;
+        font-size: 1rem;
+      }
+      .summary-label {
+        color: var(--muted);
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+      }
+      .summary-value {
+        margin-top: 10px;
+        font-size: clamp(1.2rem, 3vw, 2rem);
+        font-weight: 800;
+        font-family: "Bricolage Grotesque", system-ui, sans-serif;
+      }
+      .summary-note {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+      .content {
+        display: block;
+        margin-top: 20px;
+      }
+      .panel {
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+      }
+      .panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 20px 22px 0;
+      }
+      .panel-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(34, 197, 94, 0.18);
+        background: rgba(34, 197, 94, 0.08);
+        color: #9ae6b4;
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        padding: 7px 12px;
+      }
+      .panel-status::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: currentColor;
+      }
+      .panel-title {
+        margin: 0;
+        font-family: "Bricolage Grotesque", system-ui, sans-serif;
+        font-size: 1.1rem;
+      }
+      .panel-sub {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+      .toolbar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        padding: 16px 22px;
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        background: linear-gradient(180deg, rgba(13, 18, 26, 0.96), rgba(13, 18, 26, 0.88));
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .search {
+        flex: 1;
+        min-width: 220px;
+        position: relative;
+      }
+      .search i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+      }
+      .field,
+      .select {
+        width: 100%;
+        border: 1px solid var(--border);
+        background: rgba(0, 0, 0, 0.24);
+        color: var(--text);
+        border-radius: 14px;
+        padding: 12px 14px;
+        font: inherit;
+      }
+      .field {
+        padding-left: 38px;
+      }
+      .toolbar-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 11px 14px;
+        background: rgba(255, 255, 255, 0.02);
+        font-size: 0.8rem;
+        white-space: nowrap;
+      }
+      .table-wrap {
+        overflow: auto;
+        padding: 0 10px 12px;
+        max-height: 70vh;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(249, 115, 22, 0.6) rgba(255, 255, 255, 0.04);
+      }
+      .table-wrap::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      .table-wrap::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, rgba(249, 115, 22, 0.78), rgba(234, 88, 12, 0.72));
+        border-radius: 999px;
+      }
+      .table-wrap::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 999px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 760px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 14px 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        vertical-align: top;
+      }
+      th {
+        color: var(--muted);
+        font-size: 0.76rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        position: sticky;
+        top: 0;
+        background: rgba(11, 16, 26, 0.96);
+        backdrop-filter: blur(12px);
+        z-index: 2;
+      }
+      td {
+        font-size: 0.95rem;
+      }
+      tbody tr {
+        transition: background-color 0.2s ease, transform 0.2s ease;
+      }
+      tbody tr:hover {
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .cell-title {
+        font-weight: 600;
+      }
+      .cell-meta {
+        color: var(--muted);
+        font-size: 0.82rem;
+        margin-top: 4px;
+        line-height: 1.55;
+      }
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 999px;
+        padding: 7px 12px;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-weight: 700;
+      }
+      .status-pill.pending,
+      .status-pill.processing {
+        background: rgba(245, 158, 11, 0.12);
+        color: #fbbf24;
+      }
+      .status-pill.complete {
+        background: rgba(34, 197, 94, 0.14);
+        color: #86efac;
+      }
+      .status-pill.failed,
+      .status-pill.cancelled {
+        background: rgba(251, 113, 133, 0.12);
+        color: #fda4af;
+      }
+      .status-pill::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: currentColor;
+      }
+      .empty-state,
+      .error-state {
+        padding: 40px 22px 26px;
+        color: var(--muted);
+        text-align: center;
+      }
+      .error-state {
+        color: #fda4af;
+      }
+      @media (max-width: 920px) {
+        .summary-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 768px) {
+        .toolbar {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .search,
+        .select {
+          max-width: none !important;
+        }
+        .panel-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .table-wrap {
+          padding: 0 16px 16px;
+          overflow: auto;
+          max-height: none;
+          -webkit-overflow-scrolling: touch;
+        }
+      }
+      @media (max-width: 640px) {
+        .shell {
+          width: min(100% - 20px, 1200px);
+          padding-top: 20px;
+        }
+        .hero {
+          padding: 22px;
+        }
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .back-link {
+          width: 100%;
+          justify-content: center;
+        }
+        .topbar,
+        .hero {
+          border-radius: 22px;
+        }
+        .panel-header,
+        .toolbar,
+        .table-wrap {
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+        .summary-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 420px) {
+        .hero h1 {
+          font-size: 1.65rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="transactions-context"
+      data-role="{{user.role}}"
+      data-is-admin="{{#if isAdmin}}true{{else}}false{{/if}}"
+      class="hidden"
+    ></div>
+    <div class="shell">
+      <div class="topbar">
+        <div class="brand">
+          <span class="brand-dot"></span>
+          <span>ChuuAuction Transactions</span>
+        </div>
+        <a
+          class="back-link"
+          href="{{dashboardHome}}"
+        >
+          <i class="bi bi-arrow-left"></i>
+          <span>Back to Dashboard</span>
+        </a>
+      </div>
+
+      <section class="hero">
+        <div class="eyebrow">{{#if isAdmin}}Admin Transaction Feed{{else}}My Payment History{{/if}}</div>
+        <h1>{{#if isAdmin}}All platform transactions at a glance{{else}}Every payment tied to your activity{{/if}}</h1>
+        <p>
+          {{#if isAdmin}}
+            Review every transaction completed across the marketplace, including buyer, seller, amount, status, and provider references.
+          {{else}}
+            Track the transactions linked to your account, whether you paid as a winning buyer or received payment as a seller.
+          {{/if}}
+        </p>
+
+        <div class="summary-grid">
+          <div class="summary-card" data-summary-filter="all" role="button" tabindex="0">
+            <div class="summary-top">
+              <div class="summary-label">Total Transactions</div>
+              <div class="summary-icon"><i class="bi bi-collection"></i></div>
+            </div>
+            <div id="summary-total" class="summary-value">0</div>
+            <div class="summary-note">All visible records</div>
+          </div>
+          <div class="summary-card" data-summary-filter="all" role="button" tabindex="0">
+            <div class="summary-top">
+              <div class="summary-label">Total Volume</div>
+              <div class="summary-icon"><i class="bi bi-cash-stack"></i></div>
+            </div>
+            <div id="summary-volume" class="summary-value">KES 0</div>
+            <div id="summary-volume-note" class="summary-note">Across visible transactions</div>
+          </div>
+          <div class="summary-card" data-summary-filter="complete" role="button" tabindex="0">
+            <div class="summary-top">
+              <div class="summary-label">Completed</div>
+              <div class="summary-icon"><i class="bi bi-check2-circle"></i></div>
+            </div>
+            <div id="summary-complete" class="summary-value">0</div>
+            <div class="summary-note">Successful payments</div>
+          </div>
+          <div class="summary-card" data-summary-filter="failed" role="button" tabindex="0">
+            <div class="summary-top">
+              <div class="summary-label">Failed / Cancelled</div>
+              <div class="summary-icon"><i class="bi bi-exclamation-octagon"></i></div>
+            </div>
+            <div id="summary-failed" class="summary-value">0</div>
+            <div class="summary-note">Needs review if unexpected</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">{{#if isAdmin}}Transaction Register{{else}}Visible Transactions{{/if}}</h2>
+              <p class="panel-sub">Search by person, item, invoice, API reference, or status.</p>
+            </div>
+            <div class="panel-status">Scrollable Ledger</div>
+          </div>
+          <div class="toolbar">
+            <div class="search">
+              <i class="bi bi-search"></i>
+              <input id="transactions-search" class="field" type="text" placeholder="Search transactions..." />
+            </div>
+            <select id="transactions-status" class="select" style="max-width: 220px;">
+              <option value="all">All statuses</option>
+              <option value="pending">Pending</option>
+              <option value="processing">Processing</option>
+              <option value="complete">Complete</option>
+              <option value="failed">Failed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <div class="toolbar-chip">
+              <i class="bi bi-arrows-move"></i>
+              <span>Use filters to explore your transaction history</span>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Transaction</th>
+                  <th>Buyer / Seller</th>
+                  <th>Item</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Updated</th>
+                </tr>
+              </thead>
+              <tbody id="transactions-table-body">
+                <tr>
+                  <td colspan="6" class="empty-state">Loading transactions...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="/js/transactions-dashboard.js"></script>
+  </body>
+</html>

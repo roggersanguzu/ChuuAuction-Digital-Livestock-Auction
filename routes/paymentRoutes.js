@@ -4,6 +4,8 @@ import {
   getWinnerPaymentStatus,
   handleIntaSendWebhook,
   initializeWinnerPayment,
+  listAdminTransactions,
+  listMyTransactions,
   recordWinnerPaymentEvent,
   redirectToWinnerCheckoutSession,
   renderWinnerPaymentPage,
@@ -38,6 +40,8 @@ router.get("/dashboard/payment/return/:bidId", requireLogin, (req, res) => {
 router.post("/api/payments/initialize", requireLogin, initializeWinnerPayment);
 router.post("/api/payments/checkout-session", requireLogin, createWinnerCheckoutSession);
 router.post("/api/payments/:bidId/event", requireLogin, recordWinnerPaymentEvent);
+router.get("/api/payments/mine", requireLogin, listMyTransactions);
+router.get("/api/payments/admin/all", requireLogin, listAdminTransactions);
 router.get("/api/payments/:bidId/status", requireLogin, getWinnerPaymentStatus);
 router.post("/api/payments/webhooks/intasend", handleIntaSendWebhook);
 

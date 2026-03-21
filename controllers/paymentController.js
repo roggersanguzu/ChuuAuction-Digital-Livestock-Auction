@@ -14,6 +14,7 @@ import {
 } from "../services/intasendService.js";
 
 const getSessionUserId = (req) => req.session?.user?.id || req.session?.user?._id;
+const getSessionRole = (req) => String(req.session?.user?.role || "").trim().toLowerCase();
 
 const requireWinnerBid = async (req, bidId) => {
   const sessionUserId = getSessionUserId(req);
@@ -126,6 +127,46 @@ const extractProviderErrorMessage = (error, fallback) => {
       .join(" | ");
   }
   return JSON.stringify(data);
+};
+
+const formatTransactionRecord = (transaction) => {
+  const auction = transaction.auction || {};
+  const buyer = transaction.buyer || {};
+  const seller = transaction.seller || {};
+  const bid = transaction.bid || {};
+  return {
+    id: String(transaction._id),
+    bidId: bid && bid._id ? String(bid._id) : "",
+    auctionId: auction && auction._id ? String(auction._id) : "",
+    itemLabel: [auction.animalType, auction.breed].filter(Boolean).join(" - ") || "Livestock",
+    buyerName: buyer.name || bid.bidderName || "Buyer",
+    buyerEmail: buyer.email || "",
+    sellerName: seller.name || "Seller",
+    sellerEmail: seller.email || "",
+    amount: Number(transaction.amount || 0),
+    currency: transaction.currency || "KES",
+    status: transaction.status || "pending",
+    provider: transaction.provider || "IntaSend",
+    paymentProvider: transaction.paymentProvider || "",
+    apiRef: transaction.apiRef || "",
+    invoiceId: transaction.invoiceId || "",
+    failedReason: transaction.failedReason || "",
+    createdAt: transaction.createdAt,
+    updatedAt: transaction.updatedAt,
+  };
+};
+
+const buildTransactionQuery = (req) => {
+  const role = getSessionRole(req);
+  const sessionUserId = getSessionUserId(req);
+  const isAdmin = role === "administrator" || role === "admin";
+  if (isAdmin) return {};
+  return {
+    $or: [
+      { buyer: sessionUserId },
+      { seller: sessionUserId },
+    ],
+  };
 };
 
 export const renderWinnerPaymentPage = async (req, res) => {
@@ -483,6 +524,102 @@ export const getWinnerPaymentStatus = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Unable to fetch payment status",
+    });
+  }
+};
+
+export const listMyTransactions = async (req, res) => {
+  try {
+    const sessionUserId = getSessionUserId(req);
+    if (!sessionUserId) {
+      return res.status(401).json({ success: false, message: "Please log in" });
+    }
+
+    const transactions = await PaymentTransaction.find({
+      $or: [{ buyer: sessionUserId }, { seller: sessionUserId }],
+    })
+      .populate("auction", "animalType breed location")
+      .populate("buyer", "name email")
+      .populate("seller", "name email")
+      .populate("bid", "bidderName")
+      .sort({ createdAt: -1 });
+
+    const rows = transactions.map(formatTransactionRecord);
+    const totals = rows.reduce(
+      (acc, row) => {
+        acc.count += 1;
+        acc.volume += Number(row.amount || 0);
+        if (row.status === "failed" || row.status === "cancelled") acc.failed += 1;
+        if (row.status === "complete") acc.complete += 1;
+        return acc;
+      },
+      { count: 0, volume: 0, failed: 0, complete: 0 },
+    );
+
+    return res.status(200).json({
+      success: true,
+      data: rows,
+      summary: {
+        totalTransactions: totals.count,
+        totalVolume: totals.volume,
+        completedTransactions: totals.complete,
+        failedTransactions: totals.failed,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Unable to fetch your transactions",
+    });
+  }
+};
+
+export const listAdminTransactions = async (req, res) => {
+  try {
+    const role = getSessionRole(req);
+    const isAdmin = role === "administrator" || role === "admin";
+    if (!isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: "Admin access required",
+      });
+    }
+
+    const transactions = await PaymentTransaction.find({})
+      .populate("auction", "animalType breed location")
+      .populate("buyer", "name email")
+      .populate("seller", "name email")
+      .populate("bid", "bidderName")
+      .sort({ createdAt: -1 });
+
+    const rows = transactions.map(formatTransactionRecord);
+    const totals = rows.reduce(
+      (acc, row) => {
+        acc.count += 1;
+        acc.volume += Number(row.amount || 0);
+        if (row.status === "failed" || row.status === "cancelled") acc.failed += 1;
+        if (row.status === "complete") acc.complete += 1;
+        return acc;
+      },
+      { count: 0, volume: 0, failed: 0, complete: 0 },
+    );
+
+    return res.status(200).json({
+      success: true,
+      data: rows,
+      summary: {
+        totalTransactions: totals.count,
+        totalVolume: totals.volume,
+        averageTransaction: totals.count ? totals.volume / totals.count : 0,
+        failedRate: totals.count ? (totals.failed / totals.count) * 100 : 0,
+        completedTransactions: totals.complete,
+        failedTransactions: totals.failed,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Unable to fetch admin transactions",
     });
   }
 };

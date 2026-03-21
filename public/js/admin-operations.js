@@ -648,6 +648,141 @@
       });
     });
   }
+  function formatPaymentAmount(amount, currency) {
+    return String(currency || "KES") + " " + (Number(amount) || 0).toLocaleString("en-US");
+  }
+  function renderAdminTransactionSummary(summary, rows) {
+    var currencies = {};
+    rows.forEach(function (row) {
+      var code = String(row.currency || "KES").trim().toUpperCase();
+      if (code) currencies[code] = true;
+    });
+    var currencyList = Object.keys(currencies);
+    var primaryCurrency = currencyList.length === 1 ? currencyList[0] : "";
+    var totalEl = byId("admin-transactions-total");
+    var volumeEl = byId("admin-transactions-volume");
+    var volumeNoteEl = byId("admin-transactions-volume-note");
+    var averageEl = byId("admin-transactions-average");
+    var failedRateEl = byId("admin-transactions-failed-rate");
+    if (totalEl) totalEl.textContent = String(summary.totalTransactions || rows.length || 0);
+    if (volumeEl) {
+      volumeEl.textContent = primaryCurrency
+        ? formatPaymentAmount(summary.totalVolume || 0, primaryCurrency)
+        : (Number(summary.totalVolume || 0) || 0).toLocaleString("en-US");
+    }
+    if (volumeNoteEl) {
+      volumeNoteEl.textContent = primaryCurrency
+        ? "Across all visible rows"
+        : "Multiple currencies detected";
+    }
+    if (averageEl) {
+      averageEl.textContent = primaryCurrency
+        ? formatPaymentAmount(summary.averageTransaction || 0, primaryCurrency)
+        : (Number(summary.averageTransaction || 0) || 0).toLocaleString("en-US");
+    }
+    if (failedRateEl) {
+      failedRateEl.textContent = (Number(summary.failedRate || 0) || 0).toFixed(1) + "%";
+    }
+  }
+  function renderAdminTransactionsTable(rows) {
+    var body = byId("transactions-body");
+    if (!body) return;
+    if (!rows.length) {
+      body.innerHTML =
+        '<tr><td colspan="7" class="px-5 py-6 text-sm text-gray-500">No payment transactions have been recorded yet.</td></tr>';
+      return;
+    }
+    body.innerHTML = rows
+      .map(function (row) {
+        var status = String(row.status || "pending").toLowerCase();
+        var statusClass = "bg-amber-500/15 text-amber-300";
+        if (status === "complete") statusClass = "bg-emerald-500/15 text-emerald-300";
+        if (status === "failed" || status === "cancelled") statusClass = "bg-red-500/15 text-red-300";
+        return (
+          '<tr class="border-b border-gray-800/30 hover:bg-gray-900/30 transition-colors">' +
+          '<td class="px-5 py-3.5"><p class="text-sm font-semibold text-white">' +
+          escapeHtml(row.id) +
+          '</p><p class="text-[11px] text-gray-500 mt-1">API Ref: ' +
+          escapeHtml(row.apiRef || "-") +
+          (row.invoiceId ? "<br>Invoice: " + escapeHtml(row.invoiceId) : "") +
+          "</p></td>" +
+          '<td class="px-5 py-3.5"><p class="text-sm font-semibold text-white">' +
+          escapeHtml(row.buyerName || "Buyer") +
+          '</p><p class="text-[11px] text-gray-500 mt-1">Buyer: ' +
+          escapeHtml(row.buyerEmail || "No email") +
+          "<br>Seller: " +
+          escapeHtml(row.sellerName || "Seller") +
+          "</p></td>" +
+          '<td class="px-5 py-3.5"><p class="text-sm font-semibold text-white">' +
+          escapeHtml(row.itemLabel || "Livestock") +
+          '</p><p class="text-[11px] text-gray-500 mt-1">' +
+          escapeHtml(row.provider || "IntaSend") +
+          (row.failedReason ? "<br>Reason: " + escapeHtml(row.failedReason) : "") +
+          "</p></td>" +
+          '<td class="px-5 py-3.5 text-sm font-semibold text-white">' +
+          escapeHtml(formatPaymentAmount(row.amount, row.currency)) +
+          "</td>" +
+          '<td class="px-5 py-3.5"><span class="text-[11px] px-2 py-1 rounded-full font-semibold ' +
+          statusClass +
+          '">' +
+          escapeHtml(status) +
+          "</span></td>" +
+          '<td class="px-5 py-3.5 text-xs text-gray-400">' +
+          escapeHtml(formatDateTime(row.updatedAt || row.createdAt)) +
+          "</td>" +
+          '<td class="px-5 py-3.5 text-center"><a href="/dashboard/payment?bidId=' +
+          encodeURIComponent(row.bidId || "") +
+          '" class="inline-flex items-center gap-1 text-xs text-orange-300 hover:text-orange-200 transition-colors">Open<i class="bi bi-arrow-right-short"></i></a></td>' +
+          "</tr>"
+        );
+      })
+      .join("");
+  }
+  function bindAdminTransactionsSearch(rows) {
+    var input = byId("admin-transactions-search");
+    if (!input || input.dataset.bound === "1") return;
+    input.dataset.bound = "1";
+    input.addEventListener("input", function () {
+      var query = String(input.value || "").trim().toLowerCase();
+      var filtered = rows.filter(function (row) {
+        if (!query) return true;
+        var haystack = [
+          row.id,
+          row.itemLabel,
+          row.buyerName,
+          row.buyerEmail,
+          row.sellerName,
+          row.status,
+          row.apiRef,
+          row.invoiceId,
+          row.failedReason,
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+        return haystack.indexOf(query) >= 0;
+      });
+      renderAdminTransactionsTable(filtered);
+    });
+  }
+  async function renderAdminTransactions() {
+    if (!byId("transactions-body")) return;
+    try {
+      var payload = await fetchJson("/api/payments/admin/all");
+      var rows = Array.isArray(payload.data) ? payload.data : [];
+      renderAdminTransactionSummary(payload.summary || {}, rows);
+      renderAdminTransactionsTable(rows);
+      bindAdminTransactionsSearch(rows);
+    } catch (error) {
+      var body = byId("transactions-body");
+      if (body) {
+        body.innerHTML =
+          '<tr><td colspan="7" class="px-5 py-6 text-sm text-red-300">Unable to load transactions: ' +
+          escapeHtml(error.message || "Unknown error") +
+          "</td></tr>";
+      }
+    }
+  }
   function addSystemLog(level, message) {
     systemLogs.unshift({
       level: level,
@@ -848,6 +983,7 @@
   function init() {
     renderModeration();
     renderAnalytics();
+    renderAdminTransactions();
     bindSettings();
     bindSecurityActions();
     addSystemLog("INFO", "Admin operations initialized");

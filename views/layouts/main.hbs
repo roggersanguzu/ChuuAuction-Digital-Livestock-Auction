@@ -571,6 +571,12 @@
         .mobile-menu-btn {
           display: inline-flex;
         }
+        .header {
+          padding: 0 16px;
+        }
+        .header-right {
+          gap: 8px;
+        }
         .sidebar {
           display: flex;
           position: fixed;
@@ -579,6 +585,8 @@
           bottom: 0;
           height: auto;
           z-index: 410;
+          width: min(20rem, 88vw);
+          min-width: min(20rem, 88vw);
           transform: translateX(-100%);
           transition: transform 0.25s ease;
           background: rgba(5, 8, 16, 0.95);
@@ -614,11 +622,33 @@
         }
         .header {
           padding: 0 16px;
+          height: auto;
+          min-height: 62px;
+          padding-top: 10px;
+          padding-bottom: 10px;
+        }
+        .logo {
+          min-width: 0;
+        }
+        .logo-name {
+          font-size: 15px;
         }
         .header-right {
           gap: 6px;
           flex-wrap: wrap;
           justify-content: flex-end;
+        }
+        .header-right .hdr-btn {
+          flex: 1 1 calc(50% - 6px);
+          justify-content: center;
+          min-width: 0;
+        }
+        .page-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .card {
+          padding: 18px 16px;
         }
         .hdr-btn {
           padding: 7px 10px;
@@ -640,6 +670,16 @@
         }
       }
       @media (max-width: 420px) {
+        .header {
+          padding-left: 12px;
+          padding-right: 12px;
+        }
+        .header-right {
+          width: 100%;
+        }
+        .header-right .hdr-btn {
+          flex-basis: 100%;
+        }
         .logo-name {
           font-size: 14px;
         }

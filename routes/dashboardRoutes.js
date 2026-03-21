@@ -53,6 +53,18 @@ res.render("dashboard/my-bids", {
     userId: req.session.user.id,
   });
 });
+router.get("/transactions", requireLogin, (req, res) => {
+  const role = req.session.user.role?.trim().toLowerCase();
+  const isAdmin = role === "administrator" || role === "admin";
+  const dashboardHome =
+    isAdmin ? "/dashboard/admin#transactions" : role === "buyer" ? "/dashboard/buyer" : "/dashboard/farmer";
+  res.render("dashboard/transactions", {
+    title: isAdmin ? "All Transactions" : "My Transactions",
+    user: req.session.user,
+    isAdmin,
+    dashboardHome,
+  });
+});
 router.get("/auction-bids", requireLogin, (req, res) => {
 const role = req.session.user.role?.trim().toLowerCase();
   const isAdmin = role === "administrator" || role === "admin";

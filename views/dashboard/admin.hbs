@@ -1431,31 +1431,36 @@
             <div class="glass border border-gray-800/40 rounded-2xl p-4"><p
                 class="text-xs text-gray-500"
               >Total Transactions</p><p
+                id="admin-transactions-total"
                 class="text-xl font-black font-display mt-1"
-              >284</p><p
-                class="text-[11px] text-green-400 mt-1 flex items-center gap-1"
-              ><i class="bi bi-arrow-up text-[9px]"></i>23% vs last month</p></div>
+              >0</p><p
+                class="text-[11px] text-gray-400 mt-1 flex items-center gap-1"
+              >Live transaction count</p></div>
             <div class="glass border border-gray-800/40 rounded-2xl p-4"><p
                 class="text-xs text-gray-500"
               >Total Volume</p><p
+                id="admin-transactions-volume"
                 class="text-xl font-black font-display mt-1"
-              >UGX 12.4M</p><p
-                class="text-[11px] text-green-400 mt-1 flex items-center gap-1"
-              ><i class="bi bi-arrow-up text-[9px]"></i>18% vs last month</p></div>
+              >KES 0</p><p
+                id="admin-transactions-volume-note"
+                class="text-[11px] text-gray-400 mt-1 flex items-center gap-1"
+              >Across all visible rows</p></div>
             <div class="glass border border-gray-800/40 rounded-2xl p-4"><p
                 class="text-xs text-gray-500"
               >Avg Transaction</p><p
+                id="admin-transactions-average"
                 class="text-xl font-black font-display mt-1"
-              >UGX 43.7K</p><p
-                class="text-[11px] text-red-400 mt-1 flex items-center gap-1"
-              ><i class="bi bi-arrow-down text-[9px]"></i>2.1% vs last month</p></div>
+              >KES 0</p><p
+                class="text-[11px] text-gray-400 mt-1 flex items-center gap-1"
+              >Average transaction size</p></div>
             <div class="glass border border-gray-800/40 rounded-2xl p-4"><p
                 class="text-xs text-gray-500"
               >Failed Rate</p><p
+                id="admin-transactions-failed-rate"
                 class="text-xl font-black font-display mt-1"
-              >1.8%</p><p
-                class="text-[11px] text-green-400 mt-1 flex items-center gap-1"
-              ><i class="bi bi-arrow-down text-[9px]"></i>0.3% improvement</p></div>
+              >0%</p><p
+                class="text-[11px] text-gray-400 mt-1 flex items-center gap-1"
+              >Failed or cancelled transactions</p></div>
           </div>
           <div
             class="glass border border-gray-800/40 rounded-2xl overflow-hidden"
@@ -1470,6 +1475,7 @@
                     class="bi bi-search absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs"
                   ></i>
                   <input
+                    id="admin-transactions-search"
                     type="text"
                     placeholder="Search…"
                     class="bg-gray-900/60 border border-gray-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-orange-500/50 w-44"
@@ -1507,7 +1513,11 @@
                     >Action</th>
                   </tr>
                 </thead>
-                <tbody id="transactions-body"></tbody>
+                <tbody id="transactions-body">
+                  <tr>
+                    <td colspan="7" class="px-5 py-6 text-sm text-gray-500">Loading transactions...</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
