@@ -224,7 +224,7 @@ function updateAuctionCountdowns() {
 function createListingCard(listing, index) {
   const card = document.createElement("div");
   card.className =
-    "card-hover rounded-2xl glass-strong border border-gray-800/50 overflow-hidden animate-scale-in";
+    "card-hover rounded-xl glass-strong border border-gray-800/50 overflow-hidden animate-scale-in";
   card.style.animationDelay = `${index * 0.05}s`;
   const animalInfo = animalTypeMap[listing.animalType] || {
     name: "Unknown",
@@ -253,7 +253,7 @@ function createListingCard(listing, index) {
           ? `<div class="absolute inset-0 bg-black/55 flex items-center justify-center text-[11px] font-bold text-white">+${photoCount - 4}</div>`
           : "";
       return `
-        <div class="relative h-11 rounded-md overflow-hidden border ${thumbIndex === 0 ? "border-emerald-500/60" : "border-gray-800/60"} cursor-pointer" onclick="viewDetails('${listing._id}')">
+        <div class="relative h-9 rounded-md overflow-hidden border ${thumbIndex === 0 ? "border-emerald-500/60" : "border-gray-800/60"} cursor-pointer" onclick="viewDetails('${listing._id}')">
           <img src="${photo}" alt="Listing photo ${thumbIndex + 1}" class="w-full h-full object-cover" onerror="this.src='${fallbackPhoto}'">
           ${extraOverlay}
         </div>
@@ -270,95 +270,95 @@ function createListingCard(listing, index) {
   const isFavourite = isFavouriteListing(listing._id);
   const canDelete = canDeleteListing(listing);
   card.innerHTML = `
-    <div class="p-2.5 pb-0">
-      <div class="image-container relative h-36 overflow-hidden rounded-xl cursor-pointer" onclick="viewDetails('${listing._id}')">
+    <div class="p-2 pb-0">
+      <div class="image-container relative h-28 md:h-30 overflow-hidden rounded-lg cursor-pointer" onclick="viewDetails('${listing._id}')">
         <img src="${mainPhoto}" alt="${
           listing.breed || "Animal"
         }" class="w-full h-full object-cover" onerror="this.src='${fallbackPhoto}'">
         <div class="absolute top-2 left-2 flex gap-1.5">
-          <span class="px-2.5 py-1 rounded-full glass-strong backdrop-blur-md text-[11px] font-bold">
+          <span class="px-2 py-0.5 rounded-full glass-strong backdrop-blur-md text-[10px] font-bold">
           ${animalInfo.name}
           </span>
         ${
           listing.vaccinated
-            ? '<span class="px-2.5 py-1 rounded-full bg-green-500/90 backdrop-blur-md text-[11px] font-bold status-live">Vaccinated</span>'
+            ? '<span class="px-2 py-0.5 rounded-full bg-green-500/90 backdrop-blur-md text-[10px] font-bold status-live">Vaccinated</span>'
             : ""
         }
         </div>
         <div class="absolute top-2 right-2">
-          <span class="px-2.5 py-1 rounded-full glass-strong backdrop-blur-md text-[11px] font-bold">
+          <span class="px-2 py-0.5 rounded-full glass-strong backdrop-blur-md text-[10px] font-bold">
           ${(healthIcon ? healthIcon + " " : "") + (listing.healthStatus || "Good")}
           </span>
         </div>
         <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-          <span class="px-2.5 py-1 rounded-full bg-emerald-500/95 backdrop-blur-sm text-[11px] font-bold shadow-lg border border-white/20 auction-countdown" data-end-at="${endAtAttr}">
+          <span class="px-2 py-0.5 rounded-full bg-emerald-500/95 backdrop-blur-sm text-[10px] font-bold shadow-lg border border-white/20 auction-countdown" data-end-at="${endAtAttr}">
           ${countdownLabel}
           </span>
         </div>
       </div>
-      <div class="grid grid-cols-4 gap-1.5 mt-1.5">
+      <div class="grid grid-cols-4 gap-1 mt-1">
         ${thumbsHtml}
       </div>
     </div>
-    <div class="p-4 flex flex-col gap-3">
+    <div class="p-3 flex flex-col gap-2.5">
       <div>
-        <h3 class="text-lg font-bold mb-1 font-display cursor-pointer hover:text-emerald-400 transition-colors" onclick="viewDetails('${listing._id}')">${
+        <h3 class="text-base font-bold mb-0.5 font-display cursor-pointer hover:text-emerald-400 transition-colors line-clamp-1" onclick="viewDetails('${listing._id}')">${
           listing.breed || "Unknown Breed"
         }</h3>
-        <p class="text-xs text-gray-400">
+        <p class="text-[11px] text-gray-400 truncate">
           <i class="bi bi-geo-alt text-emerald-500"></i> ${
             listing.location || "Unknown"
           }
         </p>
       </div>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
         <div class="text-center p-1.5 rounded-lg bg-gray-800/30">
-          <p class="text-[11px] text-gray-400 mb-0.5">Opening</p>
-          <p class="font-bold text-xs text-emerald-400">${formatUGX(openingPrice)}</p>
+          <p class="text-[10px] text-gray-400 mb-0.5">Opening</p>
+          <p class="font-bold text-[11px] text-emerald-400">${formatUGX(openingPrice)}</p>
         </div>
         <div class="text-center p-1.5 rounded-lg bg-gray-800/30">
-          <p class="text-[11px] text-gray-400 mb-0.5">Highest Bid</p>
-          <p class="font-bold text-xs text-green-400">${formatUGX(highestBid)}</p>
+          <p class="text-[10px] text-gray-400 mb-0.5">Highest Bid</p>
+          <p class="font-bold text-[11px] text-green-400">${formatUGX(highestBid)}</p>
         </div>
         <div class="text-center p-1.5 rounded-lg bg-gray-800/30">
-          <p class="text-[11px] text-gray-400 mb-0.5">Age</p>
-          <p class="font-bold text-xs">${ageDisplay}</p>
+          <p class="text-[10px] text-gray-400 mb-0.5">Age</p>
+          <p class="font-bold text-[11px]">${ageDisplay}</p>
         </div>
         <div class="text-center p-1.5 rounded-lg bg-gray-800/30">
-          <p class="text-[11px] text-gray-400 mb-0.5">Weight</p>
-          <p class="font-bold text-xs">${listing.weight || 0} KG</p>
+          <p class="text-[10px] text-gray-400 mb-0.5">Weight</p>
+          <p class="font-bold text-[11px]">${listing.weight || 0} KG</p>
         </div>
       </div>
-      <div class="text-xs text-gray-400 line-clamp-2">${listing.description || "No description"}</div>
-      <div class="flex items-center justify-between pt-3 border-t border-gray-800/50 gap-2">
+      <div class="text-[11px] text-gray-400 line-clamp-2">${listing.description || "No description"}</div>
+      <div class="flex items-center justify-between pt-2 border-t border-gray-800/50 gap-2">
         <div class="flex items-center gap-2 min-w-0">
-          <div class="w-7 h-7 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center font-bold text-xs">
+          <div class="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center font-bold text-[10px]">
             ${(listing.seller?.name || "A").charAt(0).toUpperCase()}
           </div>
           <div class="min-w-0">
             <p class="text-[11px] font-semibold truncate">${listing.seller?.name || "Anonymous"}</p>
-            <p class="text-[11px] text-gray-500 truncate"><i class="bi bi-telephone text-blue-400"></i> ${listing.seller?.phone || "N/A"}</p>
+            <p class="text-[10px] text-gray-500 truncate"><i class="bi bi-telephone text-blue-400"></i> ${listing.seller?.phone || "N/A"}</p>
           </div>
         </div>
-        <div class="flex items-center gap-1.5">
-          <span class="text-[11px] text-gray-500 hidden sm:inline">${sexLabel}</span>
-          <button onclick="toggleFavourite('${listing._id}')" class="h-8 w-8 rounded-lg glass border border-gray-800/50 hover:border-rose-500/40 transition-all" title="Favourite">
+        <div class="flex items-center gap-1">
+          <span class="text-[10px] text-gray-500 hidden sm:inline">${sexLabel}</span>
+          <button onclick="toggleFavourite('${listing._id}')" class="h-7 w-7 rounded-lg glass border border-gray-800/50 hover:border-rose-500/40 transition-all" title="Favourite">
             <i class="bi ${isFavourite ? "bi-heart-fill text-rose-400" : "bi-heart"}"></i>
           </button>
-          <button onclick="shareListing('${listing._id}')" class="h-8 w-8 rounded-lg glass border border-gray-800/50 hover:border-blue-500/40 transition-all" title="Share">
+          <button onclick="shareListing('${listing._id}')" class="h-7 w-7 rounded-lg glass border border-gray-800/50 hover:border-blue-500/40 transition-all" title="Share">
             <i class="bi bi-share"></i>
           </button>
-          <button onclick="callSeller('${listing._id}')" class="h-8 w-8 rounded-lg glass border border-gray-800/50 hover:border-emerald-500/40 transition-all ${sellerPhone ? "" : "opacity-50 cursor-not-allowed"}" title="${sellerPhone ? "Call seller" : "Seller phone unavailable"}" ${sellerPhone ? "" : "disabled"}>
+          <button onclick="callSeller('${listing._id}')" class="h-7 w-7 rounded-lg glass border border-gray-800/50 hover:border-emerald-500/40 transition-all ${sellerPhone ? "" : "opacity-50 cursor-not-allowed"}" title="${sellerPhone ? "Call seller" : "Seller phone unavailable"}" ${sellerPhone ? "" : "disabled"}>
             <i class="bi bi-telephone"></i>
           </button>
-          <button onclick="viewDetails('${listing._id}')" class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-emerald-500 to-green-600 font-semibold text-xs hover:shadow-lg hover:shadow-emerald-500/30 transition-all whitespace-nowrap">
+          <button onclick="viewDetails('${listing._id}')" class="px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-emerald-500 to-green-600 font-semibold text-[11px] hover:shadow-lg hover:shadow-emerald-500/30 transition-all whitespace-nowrap">
             View Details
           </button>
           ${
             canDelete
-              ? `<button onclick="deleteListing('${listing._id}')" class="px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/35 text-red-300 hover:bg-red-500/20 transition-all text-xs font-semibold whitespace-nowrap">
-            <i class="bi bi-trash3 mr-1"></i>Delete
-          </button>`
+              ? `<button onclick="deleteListing('${listing._id}')" class="px-2.5 py-1.5 rounded-lg bg-red-500/10 border border-red-500/35 text-red-300 hover:bg-red-500/20 transition-all text-[11px] font-semibold whitespace-nowrap">
+             <i class="bi bi-trash3 mr-1"></i>Delete
+           </button>`
               : ""
           }
         </div>
@@ -366,8 +366,8 @@ function createListingCard(listing, index) {
       ${
         listing.quantity > 1
           ? `
-        <div class="text-center py-1.5 rounded-lg bg-blue-500/10 border border-blue-500/30">
-          <p class="text-xs font-bold text-blue-400">
+        <div class="text-center py-1 rounded-lg bg-blue-500/10 border border-blue-500/30">
+          <p class="text-[11px] font-bold text-blue-400">
             <i class="bi bi-stack"></i> ${listing.quantity} Available
           </p>
         </div>
@@ -970,9 +970,10 @@ function setViewMode(mode) {
   listBtn.classList.toggle("border-gray-800/50", mode !== "list");
   if (mode === "list") {
     container.classList.remove("grid", "md:grid-cols-2", "lg:grid-cols-3");
+    container.classList.remove("xl:grid-cols-3");
     container.classList.add("space-y-4");
   } else {
-    container.classList.add("grid", "md:grid-cols-2");
+    container.classList.add("grid", "md:grid-cols-2", "xl:grid-cols-3");
     container.classList.remove("space-y-4");
   }
 }

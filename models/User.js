@@ -1,4 +1,8 @@
-﻿import mongoose from "mongoose";
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
+
+const BCRYPT_HASH_PATTERN = /^\$2[aby]\$\d{2}\$/;
+
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
@@ -20,5 +24,19 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+userSchema.pre("save", async function hashPasswordBeforeSave() {
+  if (!this.isModified("password")) {
+    return;
+  }
+
+  const passwordValue = String(this.password || "");
+  if (!passwordValue || BCRYPT_HASH_PATTERN.test(passwordValue)) {
+    return;
+  }
+
+  this.password = await bcrypt.hash(passwordValue, 12);
+});
+
 const User = mongoose.model("User", userSchema);
 export default User;

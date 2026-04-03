@@ -1,4 +1,4 @@
-﻿import express from "express";
+import express from "express";
 import exphbs from "express-handlebars";
 import path from "path";
 import dotenv from "dotenv";
@@ -32,6 +32,7 @@ const sessionStore = MongoStore.create({
   collectionName: "sessions",
 });
 sessionStore.on("error", (error) => {
+  console.error("Session store error:", error);
 });
 app.use(
   session({
@@ -134,6 +135,7 @@ app.use((req, res) => {
   res.status(404).render("error", { title: "Page Not Found" });
 });
 app.use((err, req, res, next) => {
+  console.error("Unhandled application error:", err);
   if (res.headersSent) {
     return next(err);
   }
@@ -143,3 +145,6 @@ app.use((err, req, res, next) => {
   });
 });
 export default app;
+
+
+

@@ -189,6 +189,81 @@
       toggle.dataset.themeBound = "true";
     }
   }
+  function getFormResetStorageKey(form) {
+    var action = form.getAttribute("action") || window.location.pathname || "";
+    var method = (form.getAttribute("method") || "GET").toUpperCase();
+    var identity =
+      form.id ||
+      form.getAttribute("name") ||
+      form.getAttribute("data-form-reset-key") ||
+      "";
+    return [
+      "chuu-form-reset",
+      window.location.pathname || "/",
+      method,
+      action,
+      identity,
+    ].join("|");
+  }
+  function clearFormFields(form) {
+    Array.prototype.forEach.call(form.elements || [], function (field) {
+      if (!field || field.disabled) return;
+      var tagName = String(field.tagName || "").toLowerCase();
+      var type = String(field.type || "").toLowerCase();
+      if (
+        tagName === "button" ||
+        type === "submit" ||
+        type === "button" ||
+        type === "reset" ||
+        type === "hidden"
+      ) {
+        return;
+      }
+      if (type === "checkbox" || type === "radio") {
+        field.checked = false;
+        return;
+      }
+      if (tagName === "select") {
+        if (field.options && field.options.length > 0) {
+          field.selectedIndex = 0;
+        } else {
+          field.value = "";
+        }
+        return;
+      }
+      field.value = "";
+    });
+  }
+  function restoreSubmittedForms() {
+    document.querySelectorAll("form").forEach(function (form) {
+      if (form.dataset.preserveOnSubmit === "true") return;
+      var storageKey = getFormResetStorageKey(form);
+      if (sessionStorage.getItem(storageKey) !== "1") return;
+      clearFormFields(form);
+      sessionStorage.removeItem(storageKey);
+    });
+  }
+  function bindFormResetBehavior() {
+    restoreSubmittedForms();
+    if (document.body.dataset.formResetBound === "true") return;
+    document.addEventListener(
+      "submit",
+      function (event) {
+        var form = event.target;
+        if (!form || String(form.tagName || "").toLowerCase() !== "form") return;
+        if (form.dataset.preserveOnSubmit === "true") return;
+        var storageKey = getFormResetStorageKey(form);
+        sessionStorage.setItem(storageKey, "1");
+        window.setTimeout(function () {
+          if (document.contains(form)) {
+            clearFormFields(form);
+          }
+        }, 150);
+      },
+      true,
+    );
+    document.body.dataset.formResetBound = "true";
+  }
   function bindSidebarSet(config) {
     var sidebar = document.getElementById(config.sidebarId);
     var openBtn = document.getElementById(config.openId);
@@ -682,6 +757,7 @@
     applyTheme(getSavedTheme());
     ensureThemeButton();
     bindExistingThemeButtons();
+    bindFormResetBehavior();
     bindGenericMobileMenus();
     ensureBreadcrumbs();
     ensureGlobalFooter();

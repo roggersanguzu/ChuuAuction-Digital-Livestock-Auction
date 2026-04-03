@@ -1,16 +1,16 @@
-﻿(function () {
+(function () {
   function run() {
     var form = document.getElementById("login-form");
     if (!form) return;
     var emailInput = form.querySelector('input[name="email"]');
     var passwordInput = form.querySelector('input[name="password"]');
     if (emailInput) {
-      emailInput.setAttribute("autocomplete", "off");
+      emailInput.setAttribute("autocomplete", "username");
       emailInput.setAttribute("autocapitalize", "none");
       emailInput.setAttribute("spellcheck", "false");
     }
     if (passwordInput) {
-      passwordInput.setAttribute("autocomplete", "new-password");
+      passwordInput.setAttribute("autocomplete", "current-password");
       passwordInput.setAttribute("spellcheck", "false");
     }
     if (sessionStorage.getItem("clear-login-fields") === "1") {
