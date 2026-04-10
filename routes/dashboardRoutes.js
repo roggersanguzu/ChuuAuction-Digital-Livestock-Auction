@@ -18,6 +18,20 @@ if (!req.session?.user || !userRole || !allowedRoles.includes(userRole)) {
   }
   next();
 };
+router.get("/", requireLogin, (req, res) => {
+  const role = String(req.session?.user?.role || "").trim().toLowerCase();
+  if (role === "seller" || role === "farmer") {
+    return res.redirect(303, "/dashboard/farmer");
+  }
+  if (role === "buyer") {
+    return res.redirect(303, "/dashboard/buyer");
+  }
+  if (role === "administrator" || role === "admin") {
+    return res.redirect(303, "/dashboard/admin");
+  }
+  req.flash("error_msg", "Your account role is not recognized.");
+  return res.redirect(303, "/auth/login");
+});
 router.get(
   "/farmer",
   requireLogin,

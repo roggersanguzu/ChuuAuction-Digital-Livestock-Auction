@@ -157,14 +157,14 @@ export const loginUser = async (req, res) => {
     await saveSession(req);
 
     const roleLower = String(user.role || "").trim().toLowerCase();
-    if (roleLower === "seller" || roleLower === "farmer") {
-      return res.redirect("/dashboard/farmer");
-    }
-    if (roleLower === "buyer") {
-      return res.redirect("/dashboard/buyer");
-    }
-    if (roleLower === "administrator" || roleLower === "admin") {
-      return res.redirect("/dashboard/admin");
+    if (
+      roleLower === "seller" ||
+      roleLower === "farmer" ||
+      roleLower === "buyer" ||
+      roleLower === "administrator" ||
+      roleLower === "admin"
+    ) {
+      return res.redirect(303, "/dashboard");
     }
 
     console.error("Login failed due to unknown role:", {
