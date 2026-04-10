@@ -32,6 +32,18 @@ async function comparePasswordWithLegacySupport(password, storedPassword) {
   };
 }
 
+function saveSession(req) {
+  return new Promise((resolve, reject) => {
+    req.session.save((err) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve();
+    });
+  });
+}
+
 export const registerUser = async (req, res) => {
   const { name, email, phone, role, password, confirmPassword, terms } = req.body;
   const trimmedName = String(name || "").trim();
@@ -122,8 +134,15 @@ export const loginUser = async (req, res) => {
     }
 
     if (shouldUpgradeHash) {
-      user.password = password;
-      await user.save();
+      try {
+        user.password = password;
+        await user.save({ validateBeforeSave: false });
+      } catch (upgradeError) {
+        console.warn("Password hash upgrade skipped during login:", {
+          email: trimmedEmail,
+          error: upgradeError.message,
+        });
+      }
     }
 
     req.session.user = {
@@ -134,30 +153,32 @@ export const loginUser = async (req, res) => {
       accountStatus: user.accountStatus || "active",
     };
 
-    return req.session.save((err) => {
-      if (err) {
-        console.error("Session save failed during login:", err);
-        req.flash("error_msg", "Session error - login failed");
-        return res.redirect("/auth/login");
-      }
+    req.flash("success_msg", `Welcome back, ${user.name}!`);
+    await saveSession(req);
 
-      req.flash("success_msg", `Welcome back, ${user.name}!`);
-      const roleLower = String(user.role || "").trim().toLowerCase();
-      if (roleLower === "seller" || roleLower === "farmer") {
-        return res.redirect("/dashboard/farmer");
-      }
-      if (roleLower === "buyer") {
-        return res.redirect("/dashboard/buyer");
-      }
-      if (roleLower === "administrator" || roleLower === "admin") {
-        return res.redirect("/dashboard/admin");
-      }
+    const roleLower = String(user.role || "").trim().toLowerCase();
+    if (roleLower === "seller" || roleLower === "farmer") {
+      return res.redirect("/dashboard/farmer");
+    }
+    if (roleLower === "buyer") {
+      return res.redirect("/dashboard/buyer");
+    }
+    if (roleLower === "administrator" || roleLower === "admin") {
+      return res.redirect("/dashboard/admin");
+    }
 
-      req.flash("error_msg", `Unknown role: "${user.role}"`);
-      return res.redirect("/auth/login");
+    console.error("Login failed due to unknown role:", {
+      email: trimmedEmail,
+      role: user.role,
     });
+    req.flash("error_msg", `Unknown role: "${user.role}"`);
+    return res.redirect("/auth/login");
   } catch (err) {
-    console.error("Login failed:", err);
+    console.error("Login failed:", {
+      email: trimmedEmail,
+      message: err.message,
+      stack: err.stack,
+    });
     req.flash("error_msg", "Server error during login. Please try again.");
     return res.redirect("/auth/login");
   }

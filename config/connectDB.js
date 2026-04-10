@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 
 dotenv.config({ quiet: true });
 
+let connectionPromise;
+
 const connectDB = async () => {
   const uri =
     process.env.MONGO_URI ||
@@ -15,14 +17,24 @@ const connectDB = async () => {
   }
 
   try {
-    await mongoose.connect(uri, {
-      serverSelectionTimeoutMS: 10000,
-    });
+    if (mongoose.connection.readyState === 1) {
+      return mongoose.connection;
+    }
+
+    if (!connectionPromise) {
+      connectionPromise = mongoose.connect(uri, {
+        serverSelectionTimeoutMS: 10000,
+      });
+    }
+
+    await connectionPromise;
     console.log("MongoDB connected successfully");
+    return mongoose.connection;
   } catch (err) {
+    connectionPromise = null;
     console.error("MongoDB connection failed:", err.message);
     console.error(err);
-    process.exit(1);
+    throw err;
   }
 };
 
