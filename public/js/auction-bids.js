@@ -134,6 +134,12 @@ function renderBidCard(bid) {
   var isWinner = bid.status === "accepted";
   var isPending = bid.status === "pending";
   var canControl = bid.canControl && isPending;
+  var bidOwnerId = bid.bidderId && typeof bid.bidderId === "object" ? String(bid.bidderId._id || bid.bidderId.id || "") : String(bid.bidderId || "");
+  var isWinningBuyer =
+    isWinner &&
+    !pageContext.canManageBids &&
+    !!pageContext.userId &&
+    bidOwnerId === pageContext.userId;
   var bidderInitials = "??";
   if (bid.bidderName) {
     bidderInitials = bid.bidderName
@@ -175,6 +181,13 @@ function renderBidCard(bid) {
       "', '" +
       (bid.bidderName || "Anonymous") +
       '\')" class="w-full sm:w-auto px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 font-semibold hover:shadow-lg hover:shadow-green-500/30 transition text-sm"><i class="bi bi-trophy-fill mr-1"></i>Declare Winner</button></div>';
+  } else if (isWinningBuyer) {
+    actionHtml =
+      '<div class="flex gap-2 mt-2 flex-wrap">' +
+      '<a href="/dashboard/payment?bidId=' +
+      encodeURIComponent(bid._id || "") +
+      '" class="w-full sm:w-auto px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 font-semibold hover:shadow-lg hover:shadow-green-500/30 transition text-sm text-center"><i class="bi bi-credit-card mr-1"></i>Pay Now</a>' +
+      "</div>";
   }
   return (
     '<div class="' +

@@ -36,6 +36,14 @@
     var auction = bid.auction || {};
     var image = toPhotoUrl(auction.photos);
     var title = [auction.animalType, auction.breed].filter(Boolean).join(" - ") || "Livestock Auction";
+    var paymentAction =
+      bid.status === "accepted"
+        ? '<a class="btn-bid" style="display:inline-flex;justify-content:center;text-decoration:none;background:linear-gradient(135deg,#22c55e,#16a34a);border:none;color:#f8fafc" href="/dashboard/payment?bidId=' +
+          encodeURIComponent(bid._id || "") +
+          '">Pay Now</a>'
+        : "";
+    var secondaryAction =
+      '<a class="btn-bid" style="display:inline-flex;justify-content:center;text-decoration:none" href="/dashboard/my-bids">View Full Bid Status</a>';
     return (
       '<div class="auction-card">' +
       '<div class="auction-img">' +
@@ -65,7 +73,10 @@
       new Date(bid.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) +
       '</div>' +
       '</div>' +
-      '<a class="btn-bid" style="display:inline-flex;justify-content:center;text-decoration:none" href="/dashboard/my-bids">View Full Bid Status</a>' +
+      '<div style="display:flex;gap:10px;flex-wrap:wrap">' +
+      paymentAction +
+      secondaryAction +
+      '</div>' +
       '</div></div>'
     );
   }
