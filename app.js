@@ -19,7 +19,7 @@ dotenv.config({ quiet: true });
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
-app.set("trust proxy", true);
+app.set("trust proxy", 1);
 app.engine("hbs", exphbs.engine({ extname: ".hbs", defaultLayout: false }));
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "views"));
@@ -36,6 +36,7 @@ sessionStore.on("error", (error) => {
 });
 app.use(
   session({
+    name: "chuuauction.sid",
     secret: process.env.SESSION_SECRET || "superSecretKey",
     resave: false,
     saveUninitialized: false,
@@ -44,7 +45,7 @@ app.use(
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: "auto",
       sameSite: "lax",
     },
   }),
@@ -130,8 +131,18 @@ app.use((req, res) => {
     if (role === "administrator" || role === "admin") return res.redirect("/dashboard/admin");
     if (role === "buyer") return res.redirect("/dashboard/buyer");
     if (role === "seller" || role === "farmer") return res.redirect("/dashboard/farmer");
+    console.warn("Unhandled HTML route without authenticated session:", {
+      method: req.method,
+      path: req.path,
+      role,
+    });
     return res.redirect("/auth/login");
   }
+  console.warn("404 route hit:", {
+    method: req.method,
+    path: req.path,
+    hasSessionUser: Boolean(req.session?.user),
+  });
   res.status(404).render("error", { title: "Page Not Found" });
 });
 app.use((err, req, res, next) => {
