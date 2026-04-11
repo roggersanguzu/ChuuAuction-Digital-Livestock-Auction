@@ -28,6 +28,24 @@ return res.status(400).render("auctions/create", {
       endTime,
       timezone,
     } = req.body;
+    const normalizedStartingPrice = Number(startingPrice);
+    const normalizedReservePrice =
+      reservePrice === "" || reservePrice === undefined ? 0 : Number(reservePrice);
+    if (!Number.isFinite(normalizedStartingPrice) || normalizedStartingPrice <= 0) {
+      return res.status(400).render("auctions/create", {
+        errorMessage: "Starting price must be greater than 0.",
+      });
+    }
+    if (!Number.isFinite(normalizedReservePrice) || normalizedReservePrice < 0) {
+      return res.status(400).render("auctions/create", {
+        errorMessage: "Reserve price cannot be negative.",
+      });
+    }
+    if (normalizedReservePrice > 0 && normalizedReservePrice < normalizedStartingPrice) {
+      return res.status(400).render("auctions/create", {
+        errorMessage: "Reserve price must be equal to or higher than the starting price.",
+      });
+    }
     let endAt = null;
     if (endDate && endTime) {
       const tzSuffix = String(timezone || "EAT").toUpperCase() === "UTC" ? "Z" : "+03:00";
@@ -68,9 +86,9 @@ throw uploadErr;
       vaccinated: vaccinated === "on",
       vaccinationLicense: vaccinated === "on" ? vaccinationLicense : null,
       description,
-      startingPrice: Number(startingPrice) || 0,
-      reservePrice: Number(reservePrice) || 0,
-      currentHighestBid: Number(startingPrice) || 0,
+      startingPrice: normalizedStartingPrice,
+      reservePrice: normalizedReservePrice,
+      currentHighestBid: normalizedStartingPrice,
       photos,
       seller: sellerId,
       endAt,
