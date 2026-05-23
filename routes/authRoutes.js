@@ -21,11 +21,36 @@ router.get("/farmer", (req, res) => {
 });
 router.post("/login", loginUser);
 router.post("/register", registerUser);
-router.post("/logout", (req, res) => {
+
+const logoutUser = (req, res) => {
+  const baseCookieOptions = {
+    path: "/",
+    httpOnly: true,
+    sameSite: "lax",
+  };
+
+  const finishLogout = () => {
+    for (const secure of [false, true]) {
+      res.clearCookie("chuuauction.sid", { ...baseCookieOptions, secure });
+      res.clearCookie("connect.sid", { ...baseCookieOptions, secure });
+    }
+    res.set("Cache-Control", "no-store");
+    return res.redirect(303, "/auth/login");
+  };
+
+  if (!req.session) {
+    return finishLogout();
+  }
+
+  req.session.user = null;
   req.session.destroy((err) => {
-    if (err) return res.status(500).json({ message: "Logout failed" });
-    res.clearCookie("connect.sid");
-    res.redirect("/auth/login");
+    if (err) {
+      console.error("Logout failed:", err);
+    }
+    return finishLogout();
   });
-});
+};
+
+router.post("/logout", logoutUser);
+router.get("/logout", logoutUser);
 export default router;

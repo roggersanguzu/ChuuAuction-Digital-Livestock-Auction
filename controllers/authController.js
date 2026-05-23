@@ -16,6 +16,14 @@ function normalizePublicRegistrationRole(inputRole) {
   return normalizedRole === "Administrator" ? null : normalizedRole;
 }
 
+function normalizeSessionRole(inputRole) {
+  const role = String(inputRole || "").trim().toLowerCase();
+  if (role === "seller" || role === "farmer") return "farmer";
+  if (role === "buyer") return "buyer";
+  if (role === "admin" || role === "administrator") return "admin";
+  return "";
+}
+
 async function comparePasswordWithLegacySupport(password, storedPassword) {
   const incomingPassword = String(password || "");
   const savedPassword = String(storedPassword || "");
@@ -154,7 +162,8 @@ export const loginUser = async (req, res) => {
       id: user._id.toString(),
       name: user.name,
       email: user.email,
-      role: user.role,
+      role: normalizeSessionRole(user.role),
+      accountRole: user.role,
       accountStatus: user.accountStatus || "active",
     };
 

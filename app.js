@@ -54,6 +54,23 @@ app.use(flash());
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash("success_msg");
   res.locals.error_msg = req.flash("error_msg");
+  if (req.session?.user) {
+    const role = String(req.session.user.role || req.session.user.accountRole || "")
+      .trim()
+      .toLowerCase();
+    if (role === "seller" || role === "farmer") {
+      req.session.user.role = "farmer";
+    } else if (role === "buyer") {
+      req.session.user.role = "buyer";
+    } else if (role === "administrator" || role === "admin") {
+      req.session.user.role = "admin";
+    }
+    res.locals.user = req.session.user;
+    res.locals.loggedIn = true;
+  } else {
+    res.locals.user = null;
+    res.locals.loggedIn = false;
+  }
   next();
 });
 app.use((req, res, next) => {
