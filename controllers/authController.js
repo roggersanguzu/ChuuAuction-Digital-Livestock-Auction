@@ -11,6 +11,11 @@ function normalizeRole(inputRole) {
   return null;
 }
 
+function normalizePublicRegistrationRole(inputRole) {
+  const normalizedRole = normalizeRole(inputRole);
+  return normalizedRole === "Administrator" ? null : normalizedRole;
+}
+
 async function comparePasswordWithLegacySupport(password, storedPassword) {
   const incomingPassword = String(password || "");
   const savedPassword = String(storedPassword || "");
@@ -49,7 +54,7 @@ export const registerUser = async (req, res) => {
   const trimmedName = String(name || "").trim();
   const trimmedEmail = String(email || "").trim().toLowerCase();
   const trimmedPhone = String(phone || "").trim();
-  const normalizedRole = normalizeRole(role);
+  const normalizedRole = normalizePublicRegistrationRole(role);
 
   if (!trimmedName || !trimmedEmail || !trimmedPhone || !password || !confirmPassword || !normalizedRole) {
     req.flash("error_msg", "Please fill in all required fields");

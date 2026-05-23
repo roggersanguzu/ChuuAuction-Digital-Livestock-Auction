@@ -2,6 +2,14 @@
 import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 const router = express.Router();
+
+function normalizePublicRegistrationRole(inputRole) {
+  const role = String(inputRole || "").trim().toLowerCase();
+  if (role === "seller" || role === "farmer") return "Seller";
+  if (role === "buyer") return "Buyer";
+  return null;
+}
+
 router.post("/users", async (req, res) => {
   const { name, email, phone, role, password, confirmPassword, terms } = req.body;
   if (!name || !email || !phone || !password || !role) {
@@ -32,9 +40,14 @@ router.post("/users", async (req, res) => {
         message: "Email already registered",
       });
     }
+    const normalizedRole = normalizePublicRegistrationRole(role);
+    if (!normalizedRole) {
+      return res.status(400).json({
+        success: false,
+        message: "Please select either Seller or Buyer",
+      });
+    }
     const hashedPassword = await bcrypt.hash(password, 12);
-    const normalizedRole =
-      role.charAt(0).toUpperCase() + role.slice(1).toLowerCase();
     const newUser = await User.create({
       name: name.trim(),
       email: normalizedEmail,
